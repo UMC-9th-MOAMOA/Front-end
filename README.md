@@ -1,4 +1,4 @@
-## UMC SITE FE
+## MOAMOA FE
 
 | Command | Description |
 |---------|-------------|
@@ -7,26 +7,6 @@
 | `pnpm format` | 포맷팅만 |
 | `pnpm lint` | 린팅 검사만 |
 | `pnpm typecheck` | 타입 체크 |
-
-## 🚀 프로젝트 실행 환경 (Execution Environment)
-
-본 프로젝트는 **React + Vite 기반 웹 서비스**입니다.
-
-## ▶️ 프로젝트 실행 방법 (How to Run)
-
-프로젝트를 실행하기 위한 전체 과정은 아래와 같습니다.
-
-### 1) 패키지 설치
-
-`pnpm install`
-
-### 2) 개발 서버 실행
-
-`pnpm run dev`
-
-### 3) 브라우저에서 확인
-
-`http://localhost:5173`
 
 ## 🤝 협업 규칙
 
@@ -49,7 +29,7 @@
 
 > 1. **브랜치명은 아래의 형식으로 작성합니다. (feature/이름-기능제목#이슈번호)**
 >    - 팀원 wantkdd의 브랜치명: `feature/wantkdd-login#1`
-> 2. **Feature branch -> develop branch로 merge하기 전 PR에서 reviewers 설정하여 팀원 2명 이상에게 approve 받기**
+> 2. **Feature branch -> develop branch로 merge하기 전 PR에서 reviewers 설정하여 팀원 1명 이상에게 approve 받기**
 > 3. **PR 후 팀원들에게 공지하기**
 >    <br>
 
