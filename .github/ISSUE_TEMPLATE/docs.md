@@ -1,8 +1,8 @@
 ---
-name: "\U0001F4DD docs"
+name: "docs"
 about: 문서 관련 이슈
-title: "\U0001F4DD Docs: "
-labels: "\U0001F4DD docs"
+title: "Docs: "
+labels: "docs"
 assignees: ''
 
 ---
