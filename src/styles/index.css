@@ -1,1 +1,19 @@
 @import "tailwindcss";
+@import "./colors.css";
+@import "./fonts.css";
+
+@theme {
+  --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+
+  --width-app: 480px;
+  
+  --width-design-base: 375px;
+
+  --spacing-layout-side: 25px;
+
+  
+  --spacing-safe-top: env(safe-area-inset-top);
+  --spacing-safe-bottom: env(safe-area-inset-bottom);
+  --spacing-safe-left: env(safe-area-inset-left);
+  --spacing-safe-right: env(safe-area-inset-right);
+}

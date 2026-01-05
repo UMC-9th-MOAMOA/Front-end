@@ -2,7 +2,7 @@
 name: "refactor"
 about: 리팩토링 관련 이슈
 title: "Refactor: "
-labels: "\U0001F4DD docs, feature, refactor"
+labels: "docs, feature, refactor"
 assignees: ''
 
 ---
