@@ -1,8 +1,8 @@
 ---
-name: "\U0001F41B fix"
+name: "fix"
 about: 버그 수정 관련 이슈
-title: "\U0001F41B Fix: "
-labels: "\U0001F41B fix"
+title: "Fix: "
+labels: "fix"
 assignees: ''
 
 ---
