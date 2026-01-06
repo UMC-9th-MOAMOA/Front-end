@@ -34,16 +34,18 @@ export default function Header({
         <IcLeft className="size-6" />
       </button>
       <h1 className="heading-2 text-center text-black">{title}</h1>
-      {property === "search" && (
-        <button type="button" aria-label="검색" onClick={onSearch}>
-          <IcSearch className="size-6" />
-        </button>
-      )}
-      {property === "menu" && (
-        <button type="button" aria-label="메뉴" onClick={onMenu}>
-          <IcMenu className="size-6" />
-        </button>
-      )}
+      <div className="flex justify-end">
+        {property === "search" && (
+          <button type="button" aria-label="검색" onClick={onSearch}>
+            <IcSearch className="size-6" />
+          </button>
+        )}
+        {property === "menu" && (
+          <button type="button" aria-label="메뉴" onClick={onMenu}>
+            <IcMenu className="size-6" />
+          </button>
+        )}
+      </div>
     </header>
   );
 }
