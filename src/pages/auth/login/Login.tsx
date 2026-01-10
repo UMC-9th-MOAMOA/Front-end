@@ -1,4 +1,4 @@
-import Logo from "../../../assets/Logo.svg";
+import Logo from "../../../../assets/LOGO.svg";
 import LoginForm from "./components/LoginForm";
 import SocialLoginButtons from "./components/SocialLoginButtons";
 
