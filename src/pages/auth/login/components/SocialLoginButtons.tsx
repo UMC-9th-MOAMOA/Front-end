@@ -1,5 +1,5 @@
-import GoogleIcon from "../../../../assets/icons/GoogleIcon.svg";
-import KakaoIcon from "../../../../assets/icons/KakaoIcon.svg";
+import GoogleIcon from "@/assets/icons/GoogleIcon.svg";
+import KakaoIcon from "@/assets/icons/KakaoIcon.svg";
 
 export default function SocialLoginButtons() {
   return (
