@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { Button } from "../../../../components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
 
 function AuthLinksRow() {
@@ -25,7 +26,7 @@ export default function LoginForm() {
   const [autoLogin, setAutoLogin] = useState(false);
 
   return (
-    <form className="flex flex-col gap-4">
+    <form className="flex flex-col gap-5">
       <AuthTextField
         name="email"
         placeholder="이메일 주소를 입력해주세요"
@@ -44,7 +45,7 @@ export default function LoginForm() {
         width="full"
         variant="outlined"
       />
-      <label className="flex items-center gap-2">
+      <label className="flex items-center gap-3">
         <input
           type="checkbox"
           checked={autoLogin}
@@ -52,6 +53,9 @@ export default function LoginForm() {
         />
         <span className="body-4 text-gray-900">자동 로그인</span>
       </label>
+      <Button type="submit" variant="primary" size="full" className="mt-3 mb-1">
+        로그인
+      </Button>
       <AuthLinksRow />
     </form>
   );
