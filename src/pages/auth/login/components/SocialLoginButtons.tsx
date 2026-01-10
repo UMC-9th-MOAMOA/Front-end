@@ -3,7 +3,7 @@ import KakaoIcon from "../../../../assets/icons/KakaoIcon.svg";
 
 export default function SocialLoginButtons() {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="mt-12.75 flex flex-col gap-3">
       <div className="flex items-center gap-2">
         <div className="h-px flex-1 bg-gray-300" />
         <span className="body-4 text-gray-600">SNS 계정으로 로그인</span>
