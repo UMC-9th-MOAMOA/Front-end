@@ -16,4 +16,6 @@
   --spacing-safe-bottom: env(safe-area-inset-bottom);
   --spacing-safe-left: env(safe-area-inset-left);
   --spacing-safe-right: env(safe-area-inset-right);
+
+  --animate-spin: spin 1.5s linear infinite;
 }
