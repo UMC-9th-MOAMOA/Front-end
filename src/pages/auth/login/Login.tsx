@@ -1,4 +1,4 @@
-import Logo from "../../../assets/LOGO.svg";
+import Logo from "@/assets/LOGO.svg";
 import LoginForm from "./components/LoginForm";
 import SocialLoginButtons from "./components/SocialLoginButtons";
 
@@ -9,9 +9,9 @@ export default function Login() {
         <img
           src={Logo}
           alt="모아모아 로고"
-          className="mx-auto mt-19.25 block h-auto w-48.25"
+          className="mx-auto mt-[77px] block h-auto w-[193px]"
         />
-        <h1 className="heading-1 mt-7.25 text-center text-black">
+        <h1 className="heading-1 mt-[29px] text-center text-black">
           <span>반가워요!</span>
           <span className="block">모아모아를 시작해볼까요?</span>
         </h1>
@@ -19,7 +19,7 @@ export default function Login() {
           함께 숨겨진 시간을 찾아 생산적인 하루를 보내보세요.
         </p>
       </header>
-      <section className="mt-15.25">
+      <section className="mt-[61px]">
         <LoginForm />
       </section>
       <section className="mt-8">

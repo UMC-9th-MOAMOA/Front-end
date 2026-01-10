@@ -10,7 +10,7 @@ export const textFieldVariants = cva(
         md: "w-[9.75rem]",
       },
       variant: {
-        outlined: "border border-1.7 border-gray-500 bg-gray-100",
+        outlined: "border border-2 border-gray-500 bg-gray-100",
         ghost: "border-none bg-gray-100",
       },
       error: {

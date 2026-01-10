@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Button } from "../../../../components/common/button/Button";
+import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
 
 function AuthLinksRow() {
@@ -25,8 +25,12 @@ export default function LoginForm() {
   const [password, setPassword] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
-    <form className="flex flex-col gap-5">
+    <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
       <AuthTextField
         name="email"
         placeholder="이메일 주소를 입력해주세요"
