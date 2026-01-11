@@ -1,3 +1,4 @@
+import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import type { MissionStatus, PerformanceSummary } from "../types/mypage.type";
 
 function StatusPill({ status }: { status: MissionStatus }) {
@@ -68,7 +69,7 @@ export default function PerformanceSection({
 
             <div className="flex items-center justify-center gap-1 text-gray-700 text-sm">
               <span>{formatAcorn(item.acornDelta)}</span>
-              <span aria-hidden>🌰</span>
+              <IcAcorn className="h-[40px] w-[29px]" aria-hidden />
             </div>
 
             <div className="flex justify-end">
@@ -86,7 +87,7 @@ export default function PerformanceSection({
         <div className="text-center">{totalMin}분</div>
         <div className="flex items-center justify-center gap-1">
           <span>{formatAcorn(totalAcorn)}</span>
-          <span aria-hidden>🌰</span>
+          <IcAcorn className="h-[40px] w-[29px]" aria-hidden />
         </div>
         <div />
       </div>
