@@ -15,7 +15,7 @@ export default function Login() {
           <span>반가워요!</span>
           <span className="block">모아모아를 시작해볼까요?</span>
         </h1>
-        <p className="body-4 mt-3 text-center text-gray-600">
+        <p className="body-4 mt-3 text-center text-gray-500">
           함께 숨겨진 시간을 찾아 생산적인 하루를 보내보세요.
         </p>
       </header>
