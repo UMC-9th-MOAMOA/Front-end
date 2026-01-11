@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 
 type AttendanceDay = {
   date: string; // "2026-01-07"
@@ -112,9 +113,7 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
 
                 {/* 도토리 표시(지금은 텍스트로. 나중에 아이콘 SVG로 교체) */}
                 {hasAcorn && (
-                  <span className="absolute right-0 -bottom-1 text-[10px]">
-                    🌰
-                  </span>
+                  <IcAcorn className="absolute right-0 -bottom-1 h-3 w-3" />
                 )}
               </div>
             </div>

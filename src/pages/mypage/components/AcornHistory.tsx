@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
+
 import type {
   AcornHistoryFilterKey,
   AcornHistoryItem,
@@ -112,7 +114,7 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
 
                   <div className="flex items-center gap-1 text-gray-800 text-sm">
                     <span>{formatDelta(item.acornDelta)}</span>
-                    <span aria-hidden>🌰</span>
+                    <IcAcorn className="h-[40px] w-[29px]" aria-hidden />
                   </div>
                 </div>
               </li>

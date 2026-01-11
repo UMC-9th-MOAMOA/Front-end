@@ -1,4 +1,5 @@
 import { useNavigate } from "react-router-dom";
+import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 
 export default function AcornSummary({ count }: { count: number }) {
   const navigate = useNavigate();
@@ -15,7 +16,7 @@ export default function AcornSummary({ count }: { count: number }) {
         <div>
           <h2 className="font-bold text-base text-black">내 도토리</h2>
           <div className="mt-2 flex items-center gap-2 text-gray-800">
-            <span aria-hidden>🌰</span>
+            <IcAcorn className="h-[40px] w-[29px]" aria-hidden />
             <span className="font-semibold">{count}</span>
             <span className="text-gray-500 text-sm">개</span>
           </div>
