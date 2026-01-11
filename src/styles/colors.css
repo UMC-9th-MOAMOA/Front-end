@@ -11,46 +11,55 @@
   --color-moamoa-800: #051842;
   --color-moamoa-900: #010713;
 
-  /* Positive */
+  /* Secondary */
+  --color-secondary: #FEF7E5;
+
+  /* 도토리 획득 */
+  --color-acorn: #B75A25;
+
+  /* State */
   --color-positive: #2664ED;
+  --color-informative: #56D7A6;
+  --color-warning: #FE5353;
+  --color-delay: #FBCF4A;
   
-  /* Informative (Green) */
-  --color-informative-50: #F3FFFA;
-  --color-informative-100: #E4FBF3;
-  --color-informative-200: #C9F5E4;
-  --color-informative-300: #A8EAD1;
-  --color-informative-400: #7FE1BC;
-  --color-informative-500: #56D7A6;
-  --color-informative-600: #30CA8F;
-  --color-informative-700: #26A172;
-  --color-informative-800: #1C7855;
-  --color-informative-900: #124F38;
+  /* Green */
+  --color-green-50: #F3FFFA;
+  --color-green-100: #E4FBF3;
+  --color-green-200: #C9F5E4;
+  --color-green-300: #A8EAD1;
+  --color-green-400: #7FE1BC;
+  --color-green-500: #56D7A6;
+  --color-green-600: #30CA8F;
+  --color-green-700: #26A172;
+  --color-green-800: #1C7855;
+  --color-green-900: #124F38;
 
-  /* Warning (Red) */
-  --color-warning-50: #FFF7F5;
-  --color-warning-100: #FFDADB;
-  --color-warning-200: #FFBEBF;
-  --color-warning-300: #FD8585;
-  --color-warning-400: #FE5353;
-  --color-warning-500: #F02C2C;
-  --color-warning-600: #D9140D;
-  --color-warning-700: #BE0B05;
-  --color-warning-800: #9F0A01;
-  --color-warning-900: #7D0800;
+  /* Red */
+  --color-red-50: #FFF7F5;
+  --color-red-100: #FFDADB;
+  --color-red-200: #FFBEBF;
+  --color-red-300: #FD8585;
+  --color-red-400: #FE5353;
+  --color-red-500: #F02C2C;
+  --color-red-600: #D9140D;
+  --color-red-700: #BE0B05;
+  --color-red-800: #9F0A01;
+  --color-red-900: #7D0800;
 
-  /* Delay (Yellow) */
-  --color-delay-50: #FFFCF5;
-  --color-delay-100: #FFF9E5;
-  --color-delay-200: #FFF2C9;
-  --color-delay-300: #FFE89B;
-  --color-delay-400: #FFE073;
-  --color-delay-500: #FBCF4A;
-  --color-delay-600: #FAC219;
-  --color-delay-700: #DCA605;
-  --color-delay-800: #AA8004;
-  --color-delay-900: #785B03;
+  /* Yellow */
+  --color-yellow-50: #FFFCF5;
+  --color-yellow-100: #FFF9E5;
+  --color-yellow-200: #FFF2C9;
+  --color-yellow-300: #FFE89B;
+  --color-yellow-400: #FFE073;
+  --color-yellow-500: #FBCF4A;
+  --color-yellow-600: #FAC219;
+  --color-yellow-700: #DCA605;
+  --color-yellow-800: #AA8004;
+  --color-yellow-900: #785B03;
 
-  /* Gray Scale */
+  /* Gray */
   --color-gray-50: #FCFCFC;
   --color-gray-100: #F5F5F5;
   --color-gray-200: #EEEEEE;
