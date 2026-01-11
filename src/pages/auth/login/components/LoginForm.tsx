@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
+import { PasswordTextField } from "./PasswordTextField";
 
 function AuthLinksRow() {
   return (
@@ -40,10 +41,9 @@ export default function LoginForm() {
         width="full"
         variant="outlined"
       />
-      <AuthTextField
+      <PasswordTextField
         name="password"
         placeholder="비밀번호를 입력해주세요"
-        type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         width="full"

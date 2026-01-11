@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { type ReactNode, useId } from "react";
 import { textFieldVariants } from "./authTextField.variants";
 
 export type AuthTextFieldProps = {
@@ -16,6 +16,7 @@ export type AuthTextFieldProps = {
   errorMessage?: string;
   disabled?: boolean;
   name?: string;
+  endAdornment?: ReactNode;
 };
 
 export function AuthTextField({
@@ -30,11 +31,20 @@ export function AuthTextField({
   errorMessage,
   disabled = false,
   name,
+  endAdornment,
 }: AuthTextFieldProps) {
   const reactId = useId();
 
   const hasError = Boolean(errorMessage);
   const inputId = name ?? reactId;
+
+  const baseClassName = textFieldVariants({
+    width,
+    variant,
+    error: hasError,
+  });
+
+  const inputClassName = `${baseClassName} ${endAdornment ? "pr-11" : ""}`;
 
   return (
     <div className="flex flex-col gap-1">
@@ -46,21 +56,25 @@ export function AuthTextField({
       )}
 
       {/* Input */}
-      <input
-        id={inputId}
-        name={name}
-        type={type}
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        disabled={disabled}
-        aria-invalid={hasError}
-        className={textFieldVariants({
-          width,
-          variant,
-          error: hasError,
-        })}
-      />
+      <div className="relative">
+        <input
+          id={inputId}
+          name={name}
+          type={type}
+          value={value}
+          onChange={onChange}
+          placeholder={placeholder}
+          disabled={disabled}
+          aria-invalid={hasError}
+          className={inputClassName}
+        />
+
+        {endAdornment && (
+          <div className="absolute top-1/2 right-2 -translate-y-1/2">
+            {endAdornment}
+          </div>
+        )}
+      </div>
 
       {/* Helper / Error message */}
       {hasError ? (
