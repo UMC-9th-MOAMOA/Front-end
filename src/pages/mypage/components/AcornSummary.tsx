@@ -1,12 +1,8 @@
-import { useNavigate } from "react-router-dom";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 
 export default function AcornSummary({ count }: { count: number }) {
-  const navigate = useNavigate();
-
   const goUseAcorn = () => {
     // TODO(API/라우팅 연결 시): navigate("/store") 혹은 상점 페이지로 변경
-    console.log("go to store");
     // navigate("/store");
   };
 

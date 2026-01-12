@@ -19,7 +19,7 @@ export default function MyPage() {
 
   return (
     <div className="px-4">
-      <Header title="내 스페이스" property="menu" />
+      <Header title="내 스페이스" />
 
       <MyPageTabs activeTab={activeTab} onChange={changeTab} />
 
