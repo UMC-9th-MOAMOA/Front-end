@@ -17,11 +17,11 @@ export function PasswordTextField(props: PasswordTextFieldProps) {
         <button
           type="button"
           onClick={() => setIsVisible((v) => !v)}
-          className="grid h-8 w-8 place-items-center"
+          className="grid h-32 w-32 place-items-center"
           aria-label={isVisible ? "비밀번호 숨기기" : "비밀번호 보기"}
           onMouseDown={(e) => e.preventDefault()}
         >
-          <span className="h-6 w-6">
+          <span className="h-24 w-24">
             {isVisible ? <EyeOnIcon /> : <EyeOffIcon />}
           </span>
         </button>
