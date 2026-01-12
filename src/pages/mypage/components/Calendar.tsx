@@ -35,9 +35,9 @@ function getCalendarGrid(month: Date) {
   const start = startOfMonth(month);
   const end = endOfMonth(month);
 
-  // 일(0)~토(6). 달력은 일요일 시작으로 가정
-  const startPad = start.getDay();
-  const endPad = 6 - end.getDay();
+  // 일(0)~토(6). 달력은 월요일 시작으로 가정
+  const startPad = (start.getDay() + 6) % 7;
+  const endPad = (7 - end.getDay()) % 7;
 
   const gridStart = addDays(start, -startPad);
   const gridEnd = addDays(end, endPad);
