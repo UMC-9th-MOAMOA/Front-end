@@ -1,21 +1,22 @@
 import { useMemo, useState } from "react";
+import IcCalendar from "@/assets/icons/ic_calendar.svg?react";
+import IcHeartEmpty from "@/assets/icons/ic_heart.svg?react";
+import IcHeartFilled from "@/assets/icons/ic_heart2.svg?react";
 import { mockDoneMissions, mockLikedMissions } from "../mocks/mypage.mock";
 import type { MissionItem, MissionSubTabKey } from "../types/mypage.type";
 
 type SortKey = "time" | "category";
 
 function HeartIcon({ filled }: { filled: boolean }) {
-  // SVG/아이콘 생기면 여기만 교체하면 됨
+  const Icon = filled ? IcHeartFilled : IcHeartEmpty;
+
   return (
-    <span
-      className={[
-        "text-lg leading-none",
-        filled ? "text-blue-500" : "text-gray-300",
-      ].join(" ")}
+    <Icon
+      className={["h-6 w-6", filled ? "text-blue-500" : "text-gray-300"].join(
+        " "
+      )}
       aria-hidden
-    >
-      {filled ? "💙" : "🤍"}
-    </span>
+    />
   );
 }
 
@@ -65,6 +66,7 @@ function MissionCard({
 export default function MissionTab() {
   const [subTab, setSubTab] = useState<MissionSubTabKey>("liked");
   const [sortKey, setSortKey] = useState<SortKey>("time");
+  const [selectedDate] = useState("2026-01-20"); // 임시 고정값
 
   // TODO(API 연결 시): liked/done 목록을 query로 가져오고, 아래는 selector로 대체
   const [likedList, setLikedList] = useState<MissionItem[]>(mockLikedMissions);
@@ -128,17 +130,32 @@ export default function MissionTab() {
 
       {/* 정렬 */}
       <div className="mt-4 flex items-center justify-between text-gray-600 text-sm">
-        <button
-          type="button"
-          onClick={() => setSortKey("time")}
-          className="flex items-center gap-1"
-        >
-          <span>소요시간 짧은 순</span>
-          <span className={sortKey === "time" ? "text-black" : "text-gray-400"}>
-            ▾
-          </span>
-        </button>
+        {/* 왼쪽 영역 */}
+        {subTab === "done" ? (
+          <button
+            type="button"
+            onClick={() => console.log("open date picker")}
+            className="flex items-center gap-2 text-gray-800"
+          >
+            <IcCalendar className="h-5 w-5" />
+            <span>{selectedDate}</span>
+          </button>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setSortKey("time")}
+            className="flex items-center gap-1"
+          >
+            <span>소요시간 짧은 순</span>
+            <span
+              className={sortKey === "time" ? "text-black" : "text-gray-400"}
+            >
+              ▾
+            </span>
+          </button>
+        )}
 
+        {/* 오른쪽 영역은 그대로 */}
         <button
           type="button"
           onClick={() => setSortKey("category")}

@@ -1,6 +1,9 @@
 import { useMemo, useState } from "react";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 
+const DASH_COLOR = "#5586F1";
+const DASH_W = "1.5px";
+
 type AttendanceDay = {
   date: string; // "2026-01-07"
   attended?: boolean;
@@ -100,21 +103,152 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
           const attended = Boolean(mark?.attended);
           const hasAcorn = Boolean(mark?.hasAcorn);
 
+          // 연속 출석 판별 (앞/뒤 날짜 출석 여부)
+          const prev = addDays(d, -1);
+          const next = addDays(d, 1);
+          const prevAttended = Boolean(markMap.get(toYMD(prev))?.attended);
+          const nextAttended = Boolean(markMap.get(toYMD(next))?.attended);
+
+          const isSingle = attended && !prevAttended && !nextAttended;
+          const isStart = attended && !prevAttended && nextAttended;
+          const isMiddle = attended && prevAttended && nextAttended;
+          const isEnd = attended && prevAttended && !nextAttended;
+
+          // pill 클래스 결정
+          const pillClass = (() => {
+            if (!attended) return "h-8 w-8";
+
+            if (isSingle) return "h-8 w-8 rounded-full bg-blue-100";
+            if (isStart) return "h-8 w-10 rounded-l-full bg-blue-100";
+            if (isMiddle) return "h-8 w-10 rounded-none bg-blue-100";
+            if (isEnd) return "h-8 w-10 rounded-r-full bg-blue-100";
+
+            return "h-8 w-8 rounded-full bg-blue-100";
+          })();
+
           return (
             <div key={ymd} className="flex items-center justify-center">
-              <div
-                className={[
-                  "relative flex h-9 w-9 items-center justify-center rounded-full text-sm",
-                  isCurrentMonth ? "text-black" : "text-gray-300",
-                  attended ? "bg-blue-100" : "",
-                ].join(" ")}
-              >
-                {d.getDate()}
+              {/* 2단 구조: 날짜(위) + 출석 pill(아래) */}
+              <div className="flex flex-col items-center">
+                {/* 날짜 숫자 */}
+                <div
+                  className={[
+                    "text-sm",
+                    isCurrentMonth ? "text-black" : "text-gray-300",
+                  ].join(" ")}
+                >
+                  {d.getDate()}
+                </div>
 
-                {/* 도토리 표시(지금은 텍스트로. 나중에 아이콘 SVG로 교체) */}
-                {hasAcorn && (
-                  <IcAcorn className="absolute right-0 -bottom-1 h-3 w-3" />
-                )}
+                {/* pill 영역: mt-1로 아래 여백 */}
+                <div className="mt-1 flex h-8 w-10 items-center justify-center">
+                  {attended ? (
+                    <div
+                      className={[
+                        "relative flex items-center justify-center overflow-hidden",
+                        pillClass,
+                      ].join(" ")}
+                    >
+                      {/* ===== 점선 외곽선 레이어 (내부 분할선 없음) ===== */}
+                      {isSingle ? (
+                        <div
+                          className="pointer-events-none absolute inset-0 rounded-full border-dashed"
+                          style={{
+                            borderColor: DASH_COLOR,
+                            borderWidth: DASH_W,
+                          }}
+                        />
+                      ) : (
+                        <div className="pointer-events-none absolute inset-0">
+                          {/* Middle 포함: 위/아래 (=) */}
+                          <div
+                            className="absolute top-0 right-0 left-0 border-t border-dashed"
+                            style={{
+                              borderTopColor: DASH_COLOR,
+                              borderTopWidth: DASH_W,
+                            }}
+                          />
+                          <div
+                            className="absolute right-0 bottom-0 left-0 border-b border-dashed"
+                            style={{
+                              borderBottomColor: DASH_COLOR,
+                              borderBottomWidth: DASH_W,
+                            }}
+                          />
+
+                          {/* Start: 왼쪽 세로 + 코너 보정 */}
+                          {isStart && (
+                            <>
+                              <div
+                                className="absolute top-0 bottom-0 left-0 border-l border-dashed"
+                                style={{
+                                  borderLeftColor: DASH_COLOR,
+                                  borderLeftWidth: DASH_W,
+                                }}
+                              />
+                              <div
+                                className="absolute top-0 left-0 h-4 w-4 rounded-tl-full border-dashed"
+                                style={{
+                                  borderLeftColor: DASH_COLOR,
+                                  borderTopColor: DASH_COLOR,
+                                  borderLeftWidth: DASH_W,
+                                  borderTopWidth: DASH_W,
+                                }}
+                              />
+                              <div
+                                className="absolute bottom-0 left-0 h-4 w-4 rounded-bl-full border-dashed"
+                                style={{
+                                  borderLeftColor: DASH_COLOR,
+                                  borderBottomColor: DASH_COLOR,
+                                  borderLeftWidth: DASH_W,
+                                  borderBottomWidth: DASH_W,
+                                }}
+                              />
+                            </>
+                          )}
+
+                          {/* End: 오른쪽 세로 + 코너 보정 */}
+                          {isEnd && (
+                            <>
+                              <div
+                                className="absolute top-0 right-0 bottom-0 border-r border-dashed"
+                                style={{
+                                  borderRightColor: DASH_COLOR,
+                                  borderRightWidth: DASH_W,
+                                }}
+                              />
+                              <div
+                                className="absolute top-0 right-0 h-4 w-4 rounded-tr-full border-dashed"
+                                style={{
+                                  borderRightColor: DASH_COLOR,
+                                  borderTopColor: DASH_COLOR,
+                                  borderRightWidth: DASH_W,
+                                  borderTopWidth: DASH_W,
+                                }}
+                              />
+                              <div
+                                className="absolute right-0 bottom-0 h-4 w-4 rounded-br-full border-dashed"
+                                style={{
+                                  borderRightColor: DASH_COLOR,
+                                  borderBottomColor: DASH_COLOR,
+                                  borderRightWidth: DASH_W,
+                                  borderBottomWidth: DASH_W,
+                                }}
+                              />
+                            </>
+                          )}
+                        </div>
+                      )}
+
+                      {/* 도토리 */}
+                      {hasAcorn && (
+                        <IcAcorn className="h-4 w-4 text-amber-700" />
+                      )}
+                    </div>
+                  ) : (
+                    <div className="h-8 w-8" />
+                  )}
+                </div>
               </div>
             </div>
           );
