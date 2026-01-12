@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
+import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
 import { PasswordTextField } from "./PasswordTextField";
 
 function AuthLinksRow() {
   return (
-    <div className="flex items-center justify-center gap-4 text-gray-600 text-sm">
+    <div className="flex items-center justify-center gap-16 text-gray-600 text-sm">
       <Link to="/find-id" className="hover:underline">
         아이디
       </Link>
@@ -31,7 +33,7 @@ export default function LoginForm() {
   };
 
   return (
-    <form className="flex flex-col gap-5" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-20" onSubmit={handleSubmit}>
       <AuthTextField
         name="email"
         placeholder="이메일 주소를 입력해주세요"
@@ -49,15 +51,24 @@ export default function LoginForm() {
         width="full"
         variant="outlined"
       />
-      <label className="flex items-center gap-3">
+      <label className="inline-flex w-fit items-center gap-8">
         <input
           type="checkbox"
           checked={autoLogin}
           onChange={(e) => setAutoLogin(e.target.checked)}
+          className="sr-only"
         />
+        <span className="h-16 w-16">
+          {autoLogin ? <CheckBoxOnIcon /> : <CheckBoxOffIcon />}
+        </span>
         <span className="body-4 text-gray-900">자동 로그인</span>
       </label>
-      <Button type="submit" variant="primary" size="full" className="mt-3 mb-1">
+      <Button
+        type="submit"
+        variant="primary"
+        size="full"
+        className="mt-12 mb-4"
+      >
         로그인
       </Button>
       <AuthLinksRow />

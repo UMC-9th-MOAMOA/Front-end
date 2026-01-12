@@ -1,7 +1,12 @@
 import { cva } from "class-variance-authority";
 
 export const textFieldVariants = cva(
-  "h-[46px] px-[15px] py-2 rounded-xl body-4 text-gray-900 placeholder:text-gray-500 transition-colors",
+  [
+    "h-46 px-15 py-8 rounded-xl",
+    "body-4 text-gray-900 placeholder:text-gray-500",
+    "transition-colors",
+    "focus:outline focus:outline-1 focus:outline-moamoa-300 focus:outline-offset-[-1px]",
+  ],
   {
     variants: {
       width: {
@@ -10,11 +15,11 @@ export const textFieldVariants = cva(
         md: "w-[9.75rem]",
       },
       variant: {
-        outlined: "border border-2 border-gray-500 bg-gray-100",
+        outlined: "border border-gray-500 bg-gray-100",
         ghost: "border-none bg-gray-100",
       },
       error: {
-        true: "border-warning-500 focus:border-warning-500",
+        true: "border-red-400 focus:border-red-400",
       },
     },
     defaultVariants: {
