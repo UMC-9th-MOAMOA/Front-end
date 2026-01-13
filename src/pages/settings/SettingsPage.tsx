@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Header from "@/components/common/Header";
+import Header from "@/components/common/header/Header";
 import ProfileHeaderCard from "./components/ProfileHeaderCard";
 import ProfilePickerModal from "./components/ProfilePickerModal";
 import SettingsRow from "./components/SettingsRow";

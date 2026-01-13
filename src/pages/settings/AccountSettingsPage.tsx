@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import Header from "@/components/common/Header";
+import Header from "@/components/common/header/Header";
 import AccountInfoForm from "./components/AccountInfoForm";
 import AccountTabs from "./components/AccountTabs";
 import PasswordChangeForm from "./components/PasswordChangeForm";
