@@ -19,8 +19,13 @@ export default function MyPage() {
 
   return (
     <div className="px-4">
-      <Header title="내 스페이스" />
-
+      <Header
+        title="내 스페이스"
+        property="menu"
+        onMenu={() => {
+          // TODO: 메뉴(드로어/시트) 연결
+        }}
+      />
       <MyPageTabs activeTab={activeTab} onChange={changeTab} />
 
       {activeTab === "all" && (
