@@ -6,9 +6,6 @@ import IcCalendarRight from "@/assets/icons/ic_calendarright.svg?react";
 import IcCalendarSolo from "@/assets/icons/ic_calendarsolo.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 
-const DASH_COLOR = "#5586F1";
-const DASH_W = "1.5px";
-
 type AttendanceDay = {
   date: string; // "2026-01-07"
   attended?: boolean;
@@ -77,18 +74,12 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
   }, [grid]);
 
   const currentMonth = month.getMonth();
-  const monthLabel = `${month.getFullYear()}년 ${month.getMonth() + 1}월`;
-
-  const prevMonth = () =>
-    setMonth((d) => new Date(d.getFullYear(), d.getMonth() - 1, 1));
-  const nextMonth = () =>
-    setMonth((d) => new Date(d.getFullYear(), d.getMonth() + 1, 1));
 
   return (
     <section className="h-[460px] w-[342px] rounded-[16px] bg-white p-5 shadow-sm">
       {/* 헤더 (드롭다운형 UI로 교체 예정) */}
-      <div className="relative mb-34 h-[44px]">
-        <div className="absolute top-21 right-[111px] left-[105px] flex items-center justify-center gap-13">
+      <div className="relative mb-[34px] h-[44px]">
+        <div className="absolute top-[21px] right-[111px] left-[105px] flex items-center justify-center gap-[13px]">
           <span className="font-semibold text-sm">{month.getFullYear()}년</span>
           <span className="font-semibold text-sm">
             {month.getMonth() + 1}월
@@ -96,7 +87,7 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
 
           {/* 드롭다운 버튼(기능은 나중) */}
           <button type="button" aria-label="월 선택 열기">
-            <IcDropdown className="h-7 w-13" />
+            <IcDropdown className="h-[7px] w-[13px]" />
           </button>
         </div>
       </div>
@@ -111,7 +102,7 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
       </div>
 
       {/* 날짜 그리드 (week 단위) */}
-      <div className="mt-17 flex flex-col items-center gap-[8px]">
+      <div className="mt-[17px] flex flex-col items-center gap-[8px]">
         {weeks.map((week, wi) => (
           // 1주 박스: 280x61
           <div key={wi} className="flex h-[61px] w-[280px]">
@@ -132,7 +123,6 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
 
               const isSingle = attended && !prevAttended && !nextAttended;
               const isStart = attended && !prevAttended && nextAttended;
-              const isMiddle = attended && prevAttended && nextAttended;
               const isEnd = attended && prevAttended && !nextAttended;
 
               const Outline = isSingle
