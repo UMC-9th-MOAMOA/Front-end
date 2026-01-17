@@ -13,22 +13,28 @@ type Props = {
 
 export default function MyPageTabs({ activeTab, onChange }: Props) {
   return (
-    <div className="mt-6 flex w-full justify-between border-b">
-      {tabs.map((tab) => (
-        <button
-          key={tab.key}
-          type="button"
-          onClick={() => onChange(tab.key)}
-          className={[
-            "flex-1 py-2 text-sm",
-            activeTab === tab.key
-              ? "border-black border-b-2 font-bold text-black"
-              : "text-gray-400",
-          ].join(" ")}
-        >
-          {tab.label}
-        </button>
-      ))}
+    <div className="w-full">
+      {/* 탭 버튼 영역 */}
+      <div className="flex justify-between">
+        {tabs.map((tab) => (
+          <button
+            key={tab.key}
+            type="button"
+            onClick={() => onChange(tab.key)}
+            className={[
+              "inline-flex items-center justify-center whitespace-nowrap px-34 py-10 text-sm",
+              activeTab === tab.key
+                ? "border-black border-b-1 font-bold text-black"
+                : "text-gray-400",
+            ].join(" ")}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      {/* 기본 연한 선 (전체 폭) */}
+      <div className="-mx-25 h-px bg-gray-200" />
     </div>
   );
 }

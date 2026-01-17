@@ -1,4 +1,38 @@
 // mypage.mock.ts
+import type { PerformanceSummary } from "../types/mypage.type";
+
+export const mockPerformance: PerformanceSummary = {
+  userName: "이름이름",
+  items: [
+    {
+      id: "row-1",
+      durationMin: 10,
+      status: "success",
+      missions: [
+        {
+          id: "att-1",
+          kind: "attendance",
+          title: "출석",
+          acornDelta: 1,
+        },
+        {
+          id: "ad-1",
+          kind: "ad",
+          title: "광고",
+          acornDelta: 2,
+        },
+        {
+          id: "mission-1",
+          kind: "mission",
+          title: "미션 이름",
+          acornDelta: 3,
+        },
+      ],
+    },
+  ],
+};
+
+// mypage.mock.ts
 export const mockCalendarData = [
   // 연속 1일 출석
   { date: "2026-01-01", type: "attendance" as const },
@@ -20,42 +54,6 @@ export const calendarMarks = mockCalendarData.map((item) => ({
   hasAcorn: item.type === "acorn",
 }));
 
-import type { PerformanceSummary } from "../types/mypage.type";
-
-export const mockPerformance: PerformanceSummary = {
-  userName: "이름이름",
-  items: [
-    {
-      id: "1",
-      missionTitle: "미션 이름",
-      durationMin: 10,
-      acornDelta: 1,
-      status: "success",
-    },
-    {
-      id: "2",
-      missionTitle: "미션 이름",
-      durationMin: 10,
-      acornDelta: 1,
-      status: "success",
-    },
-    {
-      id: "3",
-      missionTitle: "미션 이름",
-      durationMin: 10,
-      acornDelta: 1,
-      status: "fail",
-    },
-    {
-      id: "4",
-      missionTitle: "미션 이름",
-      durationMin: 10,
-      acornDelta: 1,
-      status: "progress",
-    },
-  ],
-};
-
 import type { MissionItem } from "../types/mypage.type";
 
 export const mockLikedMissions: MissionItem[] = [
@@ -63,7 +61,7 @@ export const mockLikedMissions: MissionItem[] = [
     id: "m1",
     title: "미션 이름",
     expectedMinutes: 10,
-    category: "경제",
+    category: "경제와 금융",
     quizType: "OX",
     liked: true,
     done: false,
@@ -72,7 +70,7 @@ export const mockLikedMissions: MissionItem[] = [
     id: "m2",
     title: "미션 이름",
     expectedMinutes: 10,
-    category: "경제",
+    category: "경제와 금융",
     quizType: "OX",
     liked: true,
     done: false,
@@ -93,7 +91,7 @@ export const mockDoneMissions: MissionItem[] = [
     id: "d1",
     title: "완료한 미션",
     expectedMinutes: 15,
-    category: "건강",
+    category: "시사",
     quizType: "OX",
     liked: false,
     done: true,

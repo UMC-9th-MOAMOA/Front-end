@@ -1,11 +1,18 @@
 export type MissionStatus = "success" | "progress" | "fail";
+export type PerformanceMissionKind = "attendance" | "ad" | "mission";
+
+export interface PerformanceMission {
+  id: string;
+  kind: PerformanceMissionKind;
+  title: string; // "출석" | "광고" | 실제 미션명
+  acornDelta: number; // +1
+}
 
 export interface PerformanceItem {
   id: string;
-  missionTitle: string;
-  durationMin: number; // 10분
-  acornDelta: number; // +1 같은 값
+  durationMin: number;
   status: MissionStatus;
+  missions: PerformanceMission[]; // 👈 추가
 }
 
 export interface PerformanceSummary {
@@ -17,7 +24,7 @@ export type MyPageTopTabKey = "all" | "mission" | "acorn";
 
 export type MissionSubTabKey = "liked" | "done";
 
-export type MissionCategory = "경제" | "IT" | "건강" | "기타";
+export type MissionCategory = "경제와 금융" | "IT" | "영어" | "시사" | "인문";
 
 export type MissionItem = {
   id: string;
@@ -31,7 +38,7 @@ export type MissionItem = {
 
 export type AcornHistoryFilterKey = "all" | "progress" | "done";
 
-export type AcornHistorySortKey = "recent"; // 추후 확장 가능 (oldest 등)
+export type AcornHistorySortKey = "recent" | "doneMission";
 
 export interface AcornHistoryItem {
   id: string;

@@ -31,7 +31,7 @@ export default function Header({
   return (
     <header className="grid grid-cols-[1.5rem_1fr_1.5rem] items-center pt-7">
       <button type="button" aria-label="뒤로가기" onClick={handleBack}>
-        <IcLeft className="size-6" />
+        <IcLeft className="size-24" />
       </button>
       <h1 className="heading-2 text-center text-black">{title}</h1>
       <div className="flex justify-end">

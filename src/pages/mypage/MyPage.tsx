@@ -18,20 +18,22 @@ export default function MyPage() {
   const { activeTab, changeTab } = useMyPageTab("all");
 
   return (
-    <div className="px-4">
-      <Header
-        title="내 스페이스"
-        property="menu"
-        onMenu={() => {
-          // TODO: 메뉴(드로어/시트) 연결
-        }}
-      />
-      <MyPageTabs activeTab={activeTab} onChange={changeTab} />
+    <div>
+      <div className="mt-66">
+        <Header title="내 스페이스" property="common" />
+      </div>
+      <div className="mx-19 mt-26">
+        <MyPageTabs activeTab={activeTab} onChange={changeTab} />
+      </div>
 
       {activeTab === "all" && (
         <>
-          <Calendar marks={calendarMarks} />
-          <PerformanceSection data={mockPerformance} />
+          <div className="mt-22 -mr-11 -ml-6">
+            <Calendar marks={calendarMarks} />
+          </div>
+          <div className="mt-[16px] mr-[-10px] ml-[-7px]">
+            <PerformanceSection data={mockPerformance} />
+          </div>{" "}
         </>
       )}
 
