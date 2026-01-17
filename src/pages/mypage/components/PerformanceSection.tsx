@@ -3,7 +3,7 @@ import IcAd from "@/assets/icons/ic_ad.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
 import IcMissionBadge from "@/assets/icons/ic_details.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
-import type { MissionStatus, PerformanceSummary } from "../types/mypage.type";
+import type { PerformanceSummary } from "../types/mypage.type";
 
 export default function PerformanceSection({
   data,

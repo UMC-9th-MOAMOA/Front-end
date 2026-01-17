@@ -55,7 +55,7 @@ const WEEKDAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
   // 이번 달 기본값
-  const [month, setMonth] = useState(() => new Date());
+  const [month] = useState(() => new Date());
   const [selectedYMD, setSelectedYMD] = useState(() => toYMD(new Date()));
 
   const markMap = useMemo(() => {
