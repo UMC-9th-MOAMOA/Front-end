@@ -1,5 +1,4 @@
 import { useMemo, useState } from "react";
-import IcCalendar from "@/assets/icons/ic_calendar.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 import IcHeartEmpty from "@/assets/icons/ic_heart.svg?react";
 import IcHeartFilled from "@/assets/icons/ic_heart2.svg?react";
@@ -30,13 +29,11 @@ function HeartIcon({ filled }: { filled: boolean }) {
 function MissionCard({
   item,
   keywords,
-  quizCount,
   onToggleLike,
   onClickDetail,
 }: {
   item: MissionItem;
   keywords: string[];
-  quizCount: number; // API 연결 대비
   onToggleLike: (id: string) => void;
   onClickDetail: (id: string) => void;
 }) {
@@ -128,7 +125,6 @@ function MissionCard({
 
 export default function MissionTab() {
   const [subTab, setSubTab] = useState<MissionSubTabKey>("liked");
-  const [selectedDate] = useState("2026-01-20"); // 임시 고정값
   const [doneView, setDoneView] = useState<"done" | "retry">("done");
   const isLikedTab = subTab === "liked";
   const isDoneTab = subTab === "done";

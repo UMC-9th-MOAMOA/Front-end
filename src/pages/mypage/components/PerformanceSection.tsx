@@ -1,38 +1,9 @@
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcAd from "@/assets/icons/ic_ad.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
-import IcMissionBadge from "@/assets/icons/ic_p.svg?react";
+import IcMissionBadge from "@/assets/icons/ic_details.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 import type { MissionStatus, PerformanceSummary } from "../types/mypage.type";
-
-function StatusPill({ status }: { status: MissionStatus }) {
-  const label =
-    status === "success" ? "성공" : status === "fail" ? "실패" : "진행중";
-
-  // 디자인 확정 전: 상태별 톤만 구분
-  const className =
-    status === "success"
-      ? "bg-gray-200 text-gray-600"
-      : status === "fail"
-        ? "bg-gray-200 text-gray-600"
-        : "bg-gray-200 text-gray-600";
-
-  return (
-    <span
-      className={[
-        "inline-flex min-w-[3.25rem] justify-center rounded-lg px-3 py-1 text-sm",
-        className,
-      ].join(" ")}
-    >
-      {label}
-    </span>
-  );
-}
-
-function formatAcorn(delta: number) {
-  const sign = delta >= 0 ? "+" : "";
-  return `${sign}${delta}`;
-}
 
 export default function PerformanceSection({
   data,

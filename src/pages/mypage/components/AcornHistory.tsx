@@ -9,11 +9,6 @@ import type {
   AcornHistorySortKey,
 } from "../types/mypage.type";
 
-function formatDelta(n: number) {
-  const sign = n >= 0 ? "+" : "";
-  return `${sign}${n}`;
-}
-
 export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
   const [filter, setFilter] = useState<AcornHistoryFilterKey>("all");
   const [sortKey, setSortKey] = useState<AcornHistorySortKey>("recent");
