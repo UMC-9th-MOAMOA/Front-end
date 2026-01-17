@@ -381,7 +381,6 @@ export default function MissionTab() {
                     key={m.id}
                     item={m}
                     keywords={["키워드1", "키워드2", "키워드3"]} // TODO: API 연결 시 m.keywords로 교체
-                    quizCount={3}
                     onToggleLike={toggleLike}
                     onClickDetail={goDetail}
                   />
