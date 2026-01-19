@@ -4,6 +4,7 @@ import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
+import Search from "@/pages/search/Search";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
@@ -49,7 +50,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "search",
-        element: <div>검색</div>,
+        element: <Search />,
         handle: { bgColor: "bg-gray-50" },
       },
       {
