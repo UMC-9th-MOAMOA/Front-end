@@ -1,4 +1,5 @@
 import { Outlet, useMatches } from "react-router-dom";
+import BottomNavigation from "@/components/common/navbar/BottomNavbar";
 import type { RouteHandle } from "@/routes/router";
 import { cn } from "@/utils/cn/cn";
 
@@ -9,6 +10,7 @@ const RootLayout = () => {
   const handle = currentMatch?.handle as RouteHandle | undefined;
 
   const bgColor = handle?.bgColor || "bg-white";
+  const hideBottomNav = handle?.hideBottomNav || false;
 
   return (
     <div className="flex h-dvh justify-center bg-gray-100">
@@ -23,12 +25,7 @@ const RootLayout = () => {
           <Outlet />
         </div>
 
-        {/* BottomNavigation 컴포넌트로 교체 예정 */}
-        <nav className="fixed right-0 bottom-0 left-0 z-20 mx-auto h-96 w-full max-w-(--width-app) bg-white pb-safe-bottom">
-          <div className="flex h-full items-center justify-center">
-            하단 네비게이션
-          </div>
-        </nav>
+        {!hideBottomNav && <BottomNavigation />}
       </main>
     </div>
   );
