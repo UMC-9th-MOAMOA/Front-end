@@ -3,8 +3,8 @@ import Header from "@/components/common/header/Header";
 import AcornHistory from "./components/AcornHistory";
 import AcornSummary from "./components/AcornSummary";
 import Calendar from "./components/Calendar";
-import MissionList from "./components/MissionList";
 import MyPageTabs from "./components/MyPageTabs";
+import MissionList from "./components/missioncard/MissionList";
 import PerformanceSection from "./components/PerformanceSection";
 import { useMyPageTab } from "./hooks/useMyPageTab";
 import {

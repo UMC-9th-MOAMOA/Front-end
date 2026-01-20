@@ -37,12 +37,12 @@ export default function Header({
       <div className="flex justify-end">
         {property === "search" && (
           <button type="button" aria-label="검색" onClick={onSearch}>
-            <IcSearch className="size-6" />
+            <IcSearch className="size-24" />
           </button>
         )}
         {property === "menu" && (
           <button type="button" aria-label="메뉴" onClick={onMenu}>
-            <IcMenu className="size-6" />
+            <IcMenu className="size-24" />
           </button>
         )}
       </div>

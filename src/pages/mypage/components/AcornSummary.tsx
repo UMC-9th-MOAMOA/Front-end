@@ -7,32 +7,28 @@ export default function AcornSummary({ count }: { count: number }) {
   };
 
   return (
-    <section className="relative mt-[14px] h-[106px] w-[325px] rounded-[12px] bg-white shadow-sm">
+    <section className="relative mt-23 h-106 w-325 rounded-xl bg-white shadow-sm">
       <div>
-        <h2 className="absolute top-[12px] left-[24px] font-bold text-base text-black">
+        <h2 className="heading-5 color-black absolute top-12 left-24">
           내 도토리
-        </h2>{" "}
-        <div className="absolute top-[43px] left-[17px] flex h-[50px] w-[299px] items-center">
-          <IcAcorn className="h-[40px] w-[29px]" aria-hidden />
+        </h2>
+        <div className="absolute top-43 left-17 flex h-50 w-299 items-center">
+          <IcAcorn className="h-40 w-29" aria-hidden />
 
-          <div className="flex h-[34px] w-[30px] items-center justify-center font-semibold">
-            {count}
+          <div className="color-black flex items-end gap-8">
+            <span className="heading-3">{count}</span>
+            <span className="heading-5">개</span>
           </div>
 
-          <div className="flex h-[25px] w-[16px] items-center justify-center text-gray-500 text-sm">
-            개
-          </div>
-          <div className="w-[52px]" />
+          <div className="w-70" />
 
-          <div className="ml-auto h-[50px] w-[154px]">
-            <button
-              type="button"
-              onClick={goUseAcorn}
-              className="flex h-[50px] w-[154px] items-center justify-center rounded-[12px] bg-blue-50 font-semibold text-blue-600 text-sm active:bg-blue-100"
-            >
-              도토리 사용하기
-            </button>
-          </div>
+          <button
+            type="button"
+            onClick={goUseAcorn}
+            className="heading-5 flex h-43 w-143 items-center justify-center rounded-lg bg-[var(--color-moamoa-50)] text-[var(--color-moamoa-600)] active:bg-[var(--color-moamoa-100)]"
+          >
+            도토리 사용하기
+          </button>
         </div>
       </div>
     </section>
