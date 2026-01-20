@@ -7,9 +7,9 @@ import IcCalendarSolo from "@/assets/icons/ic_calendarsolo.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 
 type AttendanceDay = {
-  date: string; // "2026-01-07"
+  date: string;
   attended?: boolean;
-  hasAcorn?: boolean; // 미션 성공일 표시용(나중에 도토리 아이콘)
+  hasAcorn?: boolean;
 };
 
 function toYMD(d: Date) {
@@ -37,7 +37,6 @@ function getCalendarGrid(month: Date) {
   const start = startOfMonth(month);
   const end = endOfMonth(month);
 
-  // 일(0)~토(6). 달력은 월요일 시작으로 가정
   const startPad = (start.getDay() + 6) % 7;
   const endPad = (7 - end.getDay()) % 7;
 
