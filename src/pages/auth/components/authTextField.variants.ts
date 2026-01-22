@@ -2,17 +2,21 @@ import { cva } from "class-variance-authority";
 
 export const textFieldVariants = cva(
   [
-    "h-46 px-15 py-8 rounded-lg",
+    "px-15 rounded-lg",
     "body-4 text-gray-900 placeholder:text-gray-500",
     "transition-colors",
     "focus:outline focus:outline-1 focus:outline-moamoa-300 focus:outline-offset-[-1px]",
   ],
   {
     variants: {
+      height: {
+        sm: "h-42 py-6",
+        md: "h-46 py-8",
+      },
       width: {
         full: "w-full",
-        lg: "w-[17.75rem]",
-        md: "w-[9.75rem]",
+        lg: "w-210",
+        md: "w-153",
       },
       variant: {
         outlined: "border border-gray-500 bg-gray-100",
@@ -23,6 +27,7 @@ export const textFieldVariants = cva(
       },
     },
     defaultVariants: {
+      height: "md",
       width: "full",
       variant: "outlined",
     },

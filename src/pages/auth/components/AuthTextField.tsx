@@ -9,6 +9,7 @@ export type AuthTextFieldProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
+  height?: "sm" | "md";
   width?: "full" | "lg" | "md";
   variant?: "outlined" | "ghost";
 
@@ -17,6 +18,7 @@ export type AuthTextFieldProps = {
   disabled?: boolean;
   name?: string;
   endAdornment?: ReactNode;
+  endAdornmentPaddingClassName?: string;
 };
 
 export function AuthTextField({
@@ -26,12 +28,14 @@ export function AuthTextField({
   value,
   onChange,
   width,
+  height,
   variant,
   helperText,
   errorMessage,
   disabled = false,
   name,
   endAdornment,
+  endAdornmentPaddingClassName,
 }: AuthTextFieldProps) {
   const reactId = useId();
 
@@ -41,10 +45,15 @@ export function AuthTextField({
   const baseClassName = textFieldVariants({
     width,
     variant,
+    height,
     error: hasError,
   });
 
-  const inputClassName = `${baseClassName} ${endAdornment ? "pr-44" : ""}`;
+  const paddingRight = endAdornment
+    ? (endAdornmentPaddingClassName ?? "pr-44")
+    : "";
+
+  const inputClassName = `${baseClassName} ${paddingRight}`;
 
   return (
     <div className="flex flex-col gap-10">
