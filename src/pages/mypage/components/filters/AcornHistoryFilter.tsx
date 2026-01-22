@@ -41,8 +41,8 @@ const filterTabBase =
 export default function AcornHistoryFilter({
   filter,
   onChangeFilter,
-  sortKey,
-  onChangeSort,
+  sortKey: _sortKey,
+  onChangeSort: _onChangeSort,
   children,
 }: Props) {
   const [isDoneOpen, setIsDoneOpen] = useState(false);

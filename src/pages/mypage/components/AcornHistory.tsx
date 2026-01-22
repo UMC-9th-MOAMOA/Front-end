@@ -15,7 +15,7 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
   const [sortKey, setSortKey] = useState<AcornHistorySortKey>("recent");
   const loadSize = 10;
   const [visibleCount, setVisibleCount] = useState(loadSize);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const sentinelRef = useRef<HTMLLIElement | null>(null);
 
   const filtered = useMemo(() => {
     let base = items;
