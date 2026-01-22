@@ -1,4 +1,4 @@
-import type { MissionSubTabKey } from "../types/mypage.type";
+import type { MissionSubTabKey } from "../../types/mypage.type";
 
 type DoneView = "done" | "retry";
 

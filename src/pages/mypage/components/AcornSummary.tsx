@@ -15,8 +15,8 @@ export default function AcornSummary({ count }: { count: number }) {
         <div className="absolute top-43 left-17 flex h-50 w-299 items-center">
           <IcAcorn className="h-40 w-29" aria-hidden />
 
-          <div className="color-black flex items-end gap-8">
-            <span className="heading-3">{count}</span>
+          <div className="color-black flex items-center gap-8">
+            <span className="heading-1">{count}</span>
             <span className="heading-5">개</span>
           </div>
 

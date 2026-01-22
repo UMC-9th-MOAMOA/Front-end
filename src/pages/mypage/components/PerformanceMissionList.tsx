@@ -1,7 +1,7 @@
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcAd from "@/assets/icons/ic_ad.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
-import IcMissionBadge from "@/assets/icons/ic_left.svg?react";
+import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 
 type RowKind = "attendance" | "ad" | "mission";
@@ -101,8 +101,8 @@ export default function PerformanceMissionList({
 
                       <div className="w-28" />
 
-                      <IcMissionBadge
-                        className="h-24 w-24 shrink-0 rotate-180"
+                      <IcDropdown
+                        className="h-24 w-24 shrink-0 -rotate-90 text-[var(--color-gray-700)]"
                         aria-hidden
                       />
                     </div>
