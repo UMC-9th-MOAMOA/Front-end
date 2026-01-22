@@ -27,7 +27,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
-        path: "reset-password",
+        path: "password",
         element: <ResetPassword />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
