@@ -93,12 +93,11 @@ export default function AcornHistoryFilter({
         </div>
 
         {/* 카드(정렬 버튼 + 리스트(children)) */}
-        <div className="relative mt-14 flex h-410 w-324 flex-col overflow-hidden rounded-xl bg-white shadow-sm">
+        <div className="relative mt-14 flex w-324 flex-col rounded-xl bg-white shadow-sm">
           <div className="flex flex-1 flex-col pt-14">
             {/* 정렬 버튼 */}
             <div className="relative z-40 flex h-26 w-200 items-center gap-12 pl-13">
               <div className="relative h-26 w-88 shrink-0">
-                {/* 닫힌 버튼은 항상 존재: 열리면 invisible로만 처리 */}
                 <button
                   type="button"
                   onClick={() => {
@@ -106,15 +105,17 @@ export default function AcornHistoryFilter({
                     setIsDoneOpen(false);
                   }}
                   className={[
-                    "flex h-26 w-88 shrink-0 items-center justify-center gap-4 rounded-sm bg-[var(--color-gray-200)] px-8",
+                    "flex w-[88px] flex-col items-center justify-center gap-4 rounded-sm bg-[var(--color-gray-200)] px-[8px] py-[4px]",
                     isRecentOpen ? "invisible" : "visible",
                   ].join(" ")}
                 >
-                  <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
-                    {recentLabel}
-                  </span>
-                  <span className="w-5" />
-                  <IcDropdown aria-hidden />
+                  {/* 내부 72 x 18 박스 */}
+                  <div className="flex h-18 w-72 items-center justify-center gap-5 self-stretch">
+                    <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
+                      {recentLabel}
+                    </span>
+                    <IcDropdown className="h-7 w-13" aria-hidden />
+                  </div>
                 </button>
 
                 {isRecentOpen && (
@@ -154,10 +155,10 @@ export default function AcornHistoryFilter({
                             </span>
                             <span
                               className={[
-                                "body-4",
+                                "body-4 whitespace-nowrap",
                                 selected
-                                  ? "text-[var(--color-gray-700)]"
-                                  : "text-[var(--color-gray-600)]",
+                                  ? "text-[var(--color-moamoa-700)]"
+                                  : "text-[var(--color-gray-700)]",
                               ].join(" ")}
                             >
                               {opt.label}
@@ -178,15 +179,17 @@ export default function AcornHistoryFilter({
                     setIsRecentOpen(false);
                   }}
                   className={[
-                    "flex h-26 w-100 shrink-0 items-center justify-center gap-4 rounded-sm bg-[var(--color-gray-200)] px-8",
+                    "flex w-100 flex-col items-center justify-center gap-4 rounded-sm bg-[var(--color-gray-200)] px-8 py-4",
                     isDoneOpen ? "invisible" : "visible",
                   ].join(" ")}
                 >
-                  <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
-                    {doneLabel}
-                  </span>
-                  <span className="w-5" />
-                  <IcDropdown aria-hidden />
+                  {/* 내부 84 x 18 박스 */}
+                  <div className="flex h-18 w-84 items-center justify-center gap-5 self-stretch">
+                    <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
+                      {doneLabel}
+                    </span>
+                    <IcDropdown className="h-7 w-13" aria-hidden />
+                  </div>
                 </button>
 
                 {/* 열렸을 때: 88×124 드롭다운 박스(이미지처럼) */}
@@ -233,10 +236,10 @@ export default function AcornHistoryFilter({
 
                             <span
                               className={[
-                                "body-4",
+                                "body-4 whitespace-nowrap",
                                 selected
-                                  ? "text-[var(--color-gray-700)]"
-                                  : "text-[var(--color-gray-600)]",
+                                  ? "text-[var(--color-moamoa-700)]"
+                                  : "text-[var(--color-gray-700)]",
                               ].join(" ")}
                             >
                               {opt.label}
@@ -250,7 +253,7 @@ export default function AcornHistoryFilter({
               </div>
             </div>
             {/* 리스트(children) */}
-            <div className="flex-1 overflow-y-auto">{children}</div>
+            <div className="flex-1">{children}</div>
           </div>
         </div>
       </div>

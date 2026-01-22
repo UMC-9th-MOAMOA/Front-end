@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 
@@ -13,6 +13,9 @@ import AcornHistoryFilter from "./filters/AcornHistoryFilter";
 export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
   const [filter, setFilter] = useState<AcornHistoryFilterKey>("all");
   const [sortKey, setSortKey] = useState<AcornHistorySortKey>("recent");
+  const loadSize = 10;
+  const [visibleCount, setVisibleCount] = useState(loadSize);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const filtered = useMemo(() => {
     let base = items;
@@ -30,6 +33,31 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
     return copied;
   }, [items, filter, sortKey]);
 
+  useEffect(() => {
+    setVisibleCount(loadSize);
+  }, [filtered.length, loadSize]);
+
+  const visibleList = filtered.slice(0, visibleCount);
+  const hasMore = visibleCount < filtered.length;
+
+  useEffect(() => {
+    if (!hasMore) return;
+    const node = sentinelRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + loadSize, filtered.length));
+        }
+      },
+      { rootMargin: "200px", threshold: 0 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [filtered.length, hasMore, loadSize]);
+
   return (
     <section className="mt-19">
       <h3 className="heading-5 h-25 w-190 text-[var(--color-black)]">
@@ -42,14 +70,14 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
         sortKey={sortKey}
         onChangeSort={setSortKey}
       >
-        <div className="flex-1 overflow-y-auto pr-9 pl-8">
+        <div className="flex-1 pr-9 pl-8">
           {filtered.length === 0 ? (
             <div className="body-4 p-6 text-center text-[var(--color-gray-500)]">
               도토리 내역이 없어요.
             </div>
           ) : (
             <ul>
-              {filtered.map((item) => {
+              {visibleList.map((item) => {
                 const [yy, mm, dd] = item.date.split("-");
 
                 return (
@@ -89,6 +117,7 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
                   </li>
                 );
               })}
+              {hasMore && <li ref={sentinelRef} className="h-1 w-full" />}
             </ul>
           )}
         </div>
