@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/assets/LOGO.svg";
 import { Button } from "@/components/common/button/Button";
@@ -11,31 +11,61 @@ import { AuthTextField } from "../components/AuthTextField";
 import { Modal } from "../components/Modal";
 
 type Step = "EMAIL" | "CODE" | "NEW_PASSWORD";
+type Loading = null | "SEND" | "VERIFY" | "RESET";
+
+type ApiError = {
+  response?: {
+    data?: {
+      code?: string;
+    };
+  };
+};
 
 const USE_MOCK = true;
 
-export default function ResetPassword() {
-  const navigate = useNavigate();
-  const [step, setStep] = useState<Step>("EMAIL");
+const isValidEmail = (value: string) =>
+  /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
+function getServerCode(err: unknown): string | undefined {
+  if (typeof err === "object" && err !== null && "response" in err) {
+    return (err as ApiError).response?.data?.code;
+  }
+  return undefined;
+}
+
+export default function Password() {
+  const navigate = useNavigate();
+
+  const [step, setStep] = useState<Step>("EMAIL");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
 
-  const [loading, setLoading] = useState<null | "SEND" | "VERIFY" | "RESET">(
-    null
-  );
+  const [loading, setLoading] = useState<Loading>(null);
   const [errorText, setErrorText] = useState<string>("");
   const [noAccountModalOpen, setNoAccountModalOpen] = useState(false);
   const [emailError, setEmailError] = useState<string | undefined>(undefined);
 
-  const sendEmail = USE_MOCK ? mockSendResetEmail : undefined;
-  const verifyCode = USE_MOCK ? mockVerifyResetCode : undefined;
+  const { sendEmail, verifyCode } = useMemo(() => {
+    if (USE_MOCK) {
+      return {
+        sendEmail: mockSendResetEmail,
+        verifyCode: mockVerifyResetCode,
+      };
+    }
 
-  const isValidEmail = (value: string) =>
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+    return {
+      sendEmail: async () => {
+        throw new Error("sendEmail API not implemented");
+      },
+      verifyCode: async () => {
+        throw new Error("verifyCode API not implemented");
+      },
+    };
+  }, []);
 
   const handleSendEmail = async () => {
     setErrorText("");
+    setEmailError(undefined);
 
     if (!isValidEmail(email)) {
       setEmailError("이메일 형식을 확인해주세요.");
@@ -44,10 +74,10 @@ export default function ResetPassword() {
 
     try {
       setLoading("SEND");
-      await sendEmail!(email, "SUCCESS");
+      await sendEmail(email, "SUCCESS");
       setStep("CODE");
-    } catch (e: any) {
-      const serverCode = e?.response?.data?.code;
+    } catch (e: unknown) {
+      const serverCode = getServerCode(e);
 
       if (serverCode === "USER_NOT_FOUND") {
         setNoAccountModalOpen(true);
@@ -70,11 +100,11 @@ export default function ResetPassword() {
 
     try {
       setLoading("VERIFY");
-      const data = await verifyCode!(email, code, "INVALID_CODE");
+      const data = await verifyCode(email, code, "SUCCESS");
       setStep("NEW_PASSWORD");
       if (USE_MOCK) console.log("mock resetToken:", data.resetToken);
-    } catch (e: any) {
-      const serverCode = e?.response?.data?.code;
+    } catch (e: unknown) {
+      const serverCode = getServerCode(e);
 
       if (serverCode === "CODE_MISMATCH" || serverCode === "INVALID_CODE") {
         setErrorText("인증번호가 올바르지 않아요.");
@@ -90,6 +120,7 @@ export default function ResetPassword() {
 
   return (
     <div className="flex flex-col">
+      {/* 공통 헤더 */}
       <AuthHeader title="비밀번호 재설정" />
       <img
         src={Logo}
@@ -97,6 +128,7 @@ export default function ResetPassword() {
         className="mx-auto mt-43 block h-auto w-193"
       />
 
+      {/* 가입 안 된 이메일 안내 모달 */}
       <Modal
         open={noAccountModalOpen}
         onClose={() => setNoAccountModalOpen(false)}
@@ -133,6 +165,7 @@ export default function ResetPassword() {
         </div>
       </Modal>
 
+      {/* 이메일 주소 입력 스텝 */}
       {step === "EMAIL" && (
         <>
           <h1 className="heading-3 mt-116 text-center text-black">
@@ -175,6 +208,7 @@ export default function ResetPassword() {
         </>
       )}
 
+      {/* 인증 코드 입력 스텝 */}
       {step === "CODE" && (
         <>
           <h1 className="heading-3 mt-116 text-center text-black">
@@ -205,6 +239,18 @@ export default function ResetPassword() {
             disabled={loading === "VERIFY"}
           >
             {loading === "VERIFY" ? "확인 중..." : "인증번호 확인"}
+          </Button>
+        </>
+      )}
+
+      {/* 새 비밀번호 설정 스텝 */}
+      {step === "NEW_PASSWORD" && (
+        <>
+          <h1 className="heading-3 mt-116 text-center text-black">
+            새로운 비밀번호 입력해주세요
+          </h1>
+          <Button type="button" variant="primary" size="full" className="mt-74">
+            비밀번호 변경하기
           </Button>
         </>
       )}
