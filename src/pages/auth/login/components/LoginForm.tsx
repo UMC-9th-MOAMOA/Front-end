@@ -4,7 +4,7 @@ import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
-import { PasswordTextField } from "./PasswordTextField";
+import { PasswordTextField } from "../../components/PasswordTextField";
 
 function AuthLinksRow() {
   return (
