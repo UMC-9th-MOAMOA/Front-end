@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
+import AgreementList from "@/pages/auth/signup/components/AgreementList";
 import { PWTextField } from "@/pages/auth/signup/components/PWTextField";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
@@ -96,6 +97,9 @@ export default function SignUp() {
           onPasswordConfirmChange={(e) => setPasswordConfirm(e.target.value)}
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
+        <div className="mt-37">
+          <AgreementList />
+        </div>
       </div>
     </div>
   );
