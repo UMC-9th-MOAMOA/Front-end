@@ -29,26 +29,11 @@ export default function Header({
   };
 
   return (
-<<<<<<< HEAD
-    <header className="grid grid-cols-[1.5rem_1fr_1.5rem] items-center pt-7">
-      <button type="button" aria-label="뒤로가기" onClick={handleBack}>
-        <IcLeft className="size-24" />
-      </button>
-      <h1 className="heading-2 text-center text-black">{title}</h1>
-      <div className="flex justify-end">
-        {property === "search" && (
-          <button type="button" aria-label="검색" onClick={onSearch}>
-            <IcSearch className="size-24" />
-          </button>
-        )}
-        {property === "menu" && (
-          <button type="button" aria-label="메뉴" onClick={onMenu}>
-            <IcMenu className="size-24" />
-          </button>
-=======
     <header className="grid grid-cols-[1.5rem_1fr_1.5rem] items-center pt-28">
       <IcLeft className="size-24 cursor-pointer" onClick={handleBack} />
+
       <h1 className="heading-2 text-center text-black">{title}</h1>
+
       <div className="flex justify-end">
         {property === "search" && (
           <IcSearch
@@ -73,7 +58,6 @@ export default function Header({
             className="size-24 cursor-pointer"
             onClick={onRightIconClick}
           />
->>>>>>> origin/develop
         )}
       </div>
     </header>
