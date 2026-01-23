@@ -4,12 +4,12 @@ import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
-import AccountSettingsPage from "@/pages/settings/AccountSettingsPage";
-import SettingsPage from "@/pages/settings/SettingsPage";
+import Search from "@/pages/search/Search";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
   bgColor?: "bg-white" | "bg-moamoa-50" | "bg-gray-100" | "bg-gray-50";
+  hideBottomNav?: boolean;
 }
 
 const routes: (RouteObject & { handle?: RouteHandle })[] = [
@@ -21,36 +21,36 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "login",
         element: <LoginPage />,
-        handle: { bgColor: "bg-white" },
+        handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "signup",
         element: <SignUpPage />,
-        handle: { bgColor: "bg-white" },
+        handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "find-id",
         element: <FindId />,
-        handle: { bgColor: "bg-white" },
+        handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "reset-password",
         element: <ResetPassword />,
-        handle: { bgColor: "bg-white" },
+        handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "onboarding",
         element: <div>온보딩</div>,
-        handle: { bgColor: "bg-gray-50" },
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
         path: "mission",
         element: <div>미션</div>,
-        handle: { bgColor: "bg-gray-50" },
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
         path: "search",
-        element: <div>검색</div>,
+        element: <Search />,
         handle: { bgColor: "bg-gray-50" },
       },
       {
