@@ -1,5 +1,5 @@
 import { useState } from "react";
-import IcDash from "@/assets/icons/ic.dash.svg?react";
+import IcDash from "@/assets/icons/ic.dottedline.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import Header from "@/components/common/header/Header";
 import type { InterestCategoryKey } from "../constants/interests";
@@ -91,19 +91,19 @@ export default function InterestPage() {
                     <IcDash className="block" aria-hidden />
                   </div>
                   <div className="w-full pb-21 pl-27">
-                      {/* 구분선 아래 21 */}
-                      <div className="h-21" />
+                    {/* 구분선 아래 21 */}
+                    <div className="h-21" />
 
-                      {/* 1줄: 264 x 34, inline-flex, gap 16 (버튼 3개) */}
-                      <div className="mx-auto inline-flex h-34 w-264 items-center gap-16">
-                        {/* 경제 흐름 (label: "경제 흐름") -> 4글자 버튼(80x34) */}
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setSelected((prev) =>
-                              toggleSubSelection(prev, cat.key, cat.subs[0].key)
-                            )
-                          }
+                    {/* 1줄: 264 x 34, inline-flex, gap 16 (버튼 3개) */}
+                    <div className="mx-auto inline-flex h-34 w-264 items-center gap-16">
+                      {/* 경제 흐름 (label: "경제 흐름") -> 4글자 버튼(80x34) */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelected((prev) =>
+                            toggleSubSelection(prev, cat.key, cat.subs[0].key)
+                          )
+                        }
                         className={[
                           "body-4 flex h-34 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
                           getSubWidthClass(cat.subs[0]?.label),
@@ -111,18 +111,18 @@ export default function InterestPage() {
                             ? "bg-[var(--color-moamoa-300)] text-[var(--color-white)]"
                             : "bg-[var(--color-moamoa-50)] text-[var(--color-moamoa-300)]",
                         ].join(" ")}
-                        >
-                          {cat.subs[0]?.label}
-                        </button>
+                      >
+                        {cat.subs[0]?.label}
+                      </button>
 
-                        {/* 금융 상식 -> 4글자 버튼(80x34) */}
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setSelected((prev) =>
-                              toggleSubSelection(prev, cat.key, cat.subs[1].key)
-                            )
-                          }
+                      {/* 금융 상식 -> 4글자 버튼(80x34) */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelected((prev) =>
+                            toggleSubSelection(prev, cat.key, cat.subs[1].key)
+                          )
+                        }
                         className={[
                           "body-4 flex h-34 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
                           getSubWidthClass(cat.subs[1]?.label),
@@ -130,18 +130,18 @@ export default function InterestPage() {
                             ? "bg-[var(--color-moamoa-300)] text-[var(--color-white)]"
                             : "bg-[var(--color-moamoa-50)] text-[var(--color-moamoa-300)]",
                         ].join(" ")}
-                        >
-                          {cat.subs[1]?.label}
-                        </button>
+                      >
+                        {cat.subs[1]?.label}
+                      </button>
 
-                        {/* 부동산 -> 3글자 버튼(68x34) */}
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setSelected((prev) =>
-                              toggleSubSelection(prev, cat.key, cat.subs[2].key)
-                            )
-                          }
+                      {/* 부동산 -> 3글자 버튼(68x34) */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelected((prev) =>
+                            toggleSubSelection(prev, cat.key, cat.subs[2].key)
+                          )
+                        }
                         className={[
                           "body-4 flex h-34 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
                           getSubWidthClass(cat.subs[2]?.label),
@@ -149,24 +149,24 @@ export default function InterestPage() {
                             ? "bg-[var(--color-moamoa-300)] text-[var(--color-white)]"
                             : "bg-[var(--color-moamoa-50)] text-[var(--color-moamoa-300)]",
                         ].join(" ")}
-                        >
-                          {cat.subs[2]?.label}
-                        </button>
-                      </div>
+                      >
+                        {cat.subs[2]?.label}
+                      </button>
+                    </div>
 
-                      {/* 1줄 아래 15 */}
-                      <div className="h-15" />
+                    {/* 1줄 아래 15 */}
+                    <div className="h-15" />
 
-                      {/* 2줄: 191 x 34, inline-flex, gap 16 (버튼 2개) */}
-                      <div className="mx-auto inline-flex h-34 w-191 items-center gap-16">
-                        {/* 기업과 산업 -> 5글자 버튼(83x34) */}
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setSelected((prev) =>
-                              toggleSubSelection(prev, cat.key, cat.subs[3].key)
-                            )
-                          }
+                    {/* 2줄: 191 x 34, inline-flex, gap 16 (버튼 2개) */}
+                    <div className="mx-auto inline-flex h-34 w-191 items-center gap-16">
+                      {/* 기업과 산업 -> 5글자 버튼(83x34) */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelected((prev) =>
+                            toggleSubSelection(prev, cat.key, cat.subs[3].key)
+                          )
+                        }
                         className={[
                           "body-4 flex h-34 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
                           getSubWidthClass(cat.subs[3]?.label),
@@ -174,18 +174,18 @@ export default function InterestPage() {
                             ? "bg-[var(--color-moamoa-300)] text-[var(--color-white)]"
                             : "bg-[var(--color-moamoa-50)] text-[var(--color-moamoa-300)]",
                         ].join(" ")}
-                        >
-                          {cat.subs[3]?.label}
-                        </button>
+                      >
+                        {cat.subs[3]?.label}
+                      </button>
 
-                        {/* 투자 기초 -> 4글자 버튼(80x34) */}
-                        <button
-                          type="button"
-                          onClick={() =>
-                            setSelected((prev) =>
-                              toggleSubSelection(prev, cat.key, cat.subs[4].key)
-                            )
-                          }
+                      {/* 투자 기초 -> 4글자 버튼(80x34) */}
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setSelected((prev) =>
+                            toggleSubSelection(prev, cat.key, cat.subs[4].key)
+                          )
+                        }
                         className={[
                           "body-4 flex h-34 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
                           getSubWidthClass(cat.subs[4]?.label),
@@ -193,11 +193,11 @@ export default function InterestPage() {
                             ? "bg-[var(--color-moamoa-300)] text-[var(--color-white)]"
                             : "bg-[var(--color-moamoa-50)] text-[var(--color-moamoa-300)]",
                         ].join(" ")}
-                        >
-                          {cat.subs[4]?.label}
-                        </button>
-                      </div>
+                      >
+                        {cat.subs[4]?.label}
+                      </button>
                     </div>
+                  </div>
                 </>
               )}
             </div>

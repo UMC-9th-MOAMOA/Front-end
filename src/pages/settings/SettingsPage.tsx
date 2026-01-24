@@ -4,6 +4,7 @@ import IcLeft from "@/assets/icons/ic_left.svg?react";
 import Header from "@/components/common/header/Header";
 import ProfileHeaderCard from "./components/ProfileHeaderCard";
 import ProfilePickerModal from "./components/ProfilePickerModal";
+import WithdrawConfirmModal from "./components/WithdrawConfirmModal";
 import SettingsRow from "./components/SettingsRow";
 import SettingsSection from "./components/SettingsSection";
 import { mockProfiles, mockUser } from "./mocks/settings.mock";
@@ -11,6 +12,7 @@ import { mockProfiles, mockUser } from "./mocks/settings.mock";
 export default function SettingsPage() {
   const navigate = useNavigate();
   const [isProfilePickerOpen, setIsProfilePickerOpen] = useState(false);
+  const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
 
   // TODO(API 연결 시): user / profiles를 query로 교체
   const user = mockUser;
@@ -66,7 +68,7 @@ export default function SettingsPage() {
               <div className="flex w-325 flex-col gap-3">
                 <button
                   type="button"
-                  onClick={() => console.log("go: 회원 정보 수정")}
+                  onClick={() => navigate("/settings/account-info")}
                   className="flex h-53 w-325 items-center justify-between self-stretch py-12"
                 >
                   <span className="body-2 font-medium text-[var(--color-black)]">
@@ -80,7 +82,7 @@ export default function SettingsPage() {
 
                 <button
                   type="button"
-                  onClick={() => console.log("go: 비밀번호 변경")}
+                  onClick={() => navigate("/settings/password-change")}
                   className="flex h-53 w-325 items-center justify-between self-stretch py-12"
                 >
                   <span className="body-2 font-medium text-[var(--color-black)]">
@@ -204,12 +206,18 @@ export default function SettingsPage() {
           <button
             type="button"
             className="heading-5 flex h-44 w-126 flex-col items-center justify-center gap-4 rounded-lg bg-[#FFE4E4] px-16 py-10 text-[var(--color-warning)]"
-            onClick={() => console.log("withdraw")}
+            onClick={() => setIsWithdrawOpen(true)}
           >
             회원탈퇴
           </button>
         </div>
       </div>
+
+      <WithdrawConfirmModal
+        open={isWithdrawOpen}
+        onCancel={() => setIsWithdrawOpen(false)}
+        onConfirm={() => setIsWithdrawOpen(false)}
+      />
 
       <ProfilePickerModal
         open={isProfilePickerOpen}
