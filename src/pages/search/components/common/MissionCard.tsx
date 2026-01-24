@@ -53,7 +53,10 @@ export default function MissionCard({
           <span>퀴즈 개수 : {quizCount}개</span>
         </div>
 
-        <Button variant="tertiary" size="sm" onClick={onStartClick}>
+        <Button
+          className="heading-5 w-126 rounded-lg bg-moamoa-50 py-10 text-moamoa-400 active:bg-moamoa-300 active:text-white"
+          onClick={onStartClick}
+        >
           시작하기
         </Button>
       </div>
