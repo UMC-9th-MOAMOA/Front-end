@@ -145,20 +145,18 @@ export default function Password() {
         <div className="mt-32 flex justify-center gap-12">
           <Button
             type="button"
-            variant="secondary"
-            size="sm"
             onClick={() => setNoAccountModalOpen(false)}
+            className="w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
           >
             다시 입력
           </Button>
           <Button
             type="button"
-            variant="primary"
-            size="sm"
             onClick={() => {
               setNoAccountModalOpen(false);
               navigate("/signup");
             }}
+            className="w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
           >
             회원가입
           </Button>
@@ -191,11 +189,9 @@ export default function Password() {
           )}
           <Button
             type="button"
-            variant="primary"
-            size="full"
-            className="mt-74"
             onClick={handleSendEmail}
             disabled={loading === "SEND"}
+            className="mt-74 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
           >
             {loading === "SEND" ? "전송 중..." : "인증 메일 보내기"}
           </Button>
@@ -232,11 +228,9 @@ export default function Password() {
 
           <Button
             type="button"
-            variant="primary"
-            size="full"
-            className="mt-74"
             onClick={handleVerifyCode}
             disabled={loading === "VERIFY"}
+            className="mt-74 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
           >
             {loading === "VERIFY" ? "확인 중..." : "인증번호 확인"}
           </Button>
@@ -249,7 +243,10 @@ export default function Password() {
           <h1 className="heading-3 mt-116 text-center text-black">
             새로운 비밀번호 입력해주세요
           </h1>
-          <Button type="button" variant="primary" size="full" className="mt-74">
+          <Button
+            type="button"
+            className="mt-74 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+          >
             비밀번호 변경하기
           </Button>
         </>

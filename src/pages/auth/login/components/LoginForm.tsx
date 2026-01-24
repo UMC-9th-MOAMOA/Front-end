@@ -9,10 +9,7 @@ import { PasswordTextField } from "./PasswordTextField";
 function AuthLinksRow() {
   return (
     <div className="flex items-center justify-center gap-16 text-gray-600 text-sm">
-      <Link to="/find-id" className="hover:underline">
-        아이디
-      </Link>
-      <Link to="/reset-password" className="hover:underline">
+      <Link to="/password" className="hover:underline">
         비밀번호 찾기
       </Link>
       <span className="text-gray-900">|</span>
