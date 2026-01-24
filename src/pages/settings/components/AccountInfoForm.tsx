@@ -23,121 +23,157 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
   };
 
   return (
-    <section className="mt-6">
-      {/* 이름 */}
-      <div className="mb-5">
-        <label className="block font-semibold text-gray-700 text-sm">
-          이름
-        </label>
+    <section className="flex w-[325px] flex-col items-start gap-[20px]">
+      {/* 이름(닉네임) */}
+      <div className="flex w-[325px] flex-col items-start gap-[10px] self-stretch">
+        <span className="body-2 whitespace-nowrap text-[var(--color-black)]">
+          이름(닉네임)
+        </span>
+
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="mt-2 w-full rounded-xl bg-gray-50 px-4 py-3 text-sm outline-none"
+          className="h-[46px] w-full rounded-[12px] bg-[var(--color-gray-100)] px-[15px] py-[8px] text-[var(--color-black)] outline-none"
           placeholder="이름"
         />
       </div>
 
-      {/* 아이디(이메일) - 변경 불가 */}
-      <div className="mb-5">
-        <label className="block font-semibold text-gray-700 text-sm">
-          아이디 (이메일)
-        </label>
+      {/* 아이디(이메일) */}
+      <div className="flex h-[77px] w-[325px] flex-col items-start gap-[10px] self-stretch">
+        <span className="body-2 whitespace-nowrap text-[var(--color-black)]">
+          아이디(이메일)
+        </span>
+
         <input
           value={initial.email}
           disabled
-          className="mt-2 w-full rounded-xl bg-gray-200 px-4 py-3 text-gray-500 text-sm outline-none"
+          className="h-[46px] w-full rounded-[12px] bg-[var(--color-gray-300)] px-[15px] py-[8px] text-[var(--color-gray-700)] outline-none"
         />
       </div>
 
       {/* 생년월일 */}
-      <div className="mb-5">
-        <label className="block font-semibold text-gray-700 text-sm">
+      <div className="flex h-[77px] w-[325px] flex-col items-start gap-[10px] self-stretch">
+        <span className="body-2 whitespace-nowrap text-[var(--color-black)]">
           생년월일
-        </label>
+        </span>
+
         <input
           value={birthDate}
           onChange={(e) => setBirthDate(e.target.value)}
-          className="mt-2 w-full rounded-xl bg-gray-50 px-4 py-3 text-sm outline-none"
+          className="h-[46px] w-full rounded-[12px] bg-[var(--color-gray-100)] px-[15px] py-[8px] text-[var(--color-black)] outline-none"
           placeholder="YYYY.MM.DD"
         />
       </div>
 
       {/* 성별 */}
-      <div className="mb-5">
-        <label className="block font-semibold text-gray-700 text-sm">
+      <div className="flex h-[77px] w-[325px] flex-col items-start gap-[10px] self-stretch">
+        <span className="body-2 whitespace-nowrap text-[var(--color-black)]">
           성별
-        </label>
-        <div className="mt-2 grid grid-cols-2 gap-3">
-          <button
-            type="button"
-            onClick={() => setGender("남자")}
+        </span>
+
+        {/* 성별 선택 컨테이너 */}
+        <div className="relative flex h-[46px] w-[325px] items-center justify-end rounded-[12px] bg-[var(--color-moamoa-50)] px-0 py-[8px]">
+          {/* 선택 배경 */}
+          <div
             className={[
-              "rounded-xl py-3 font-semibold text-sm",
-              gender === "남자"
-                ? "bg-blue-300 text-white"
-                : "bg-gray-100 text-gray-500",
+              "absolute top-0 h-[46px] w-[162px] rounded-[12px] bg-[var(--color-moamoa-200)] transition-transform",
+              gender === "남자" ? "left-0" : "right-0",
             ].join(" ")}
-          >
-            남자
-          </button>
-          <button
-            type="button"
-            onClick={() => setGender("여자")}
-            className={[
-              "rounded-xl py-3 font-semibold text-sm",
-              gender === "여자"
-                ? "bg-blue-300 text-white"
-                : "bg-gray-100 text-gray-500",
-            ].join(" ")}
-          >
-            여자
-          </button>
+          />
+
+          {/* 버튼 영역 */}
+          <div className="relative z-10 flex w-full">
+            <button
+              type="button"
+              onClick={() => setGender("남자")}
+              className={[
+                "body-2 flex h-[46px] w-[162px] items-center justify-center whitespace-nowrap px-[15px] text-center",
+                gender === "남자"
+                  ? "text-[#FFF]"
+                  : "text-[var(--color-moamoa-400)]",
+              ].join(" ")}
+            >
+              남자
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setGender("여자")}
+              className={[
+                "body-2 flex h-[46px] w-[162px] items-center justify-center whitespace-nowrap px-[15px] text-center",
+                gender === "여자"
+                  ? "text-[#FFF]"
+                  : "text-[var(--color-moamoa-400)]",
+              ].join(" ")}
+            >
+              여자
+            </button>
+          </div>
         </div>
       </div>
 
       {/* 휴대폰 */}
-      <div className="mb-5">
-        <label className="block font-semibold text-gray-700 text-sm">
+      <div className="flex h-[77px] w-[325px] flex-col items-start gap-[10px] self-stretch">
+        <span className="body-2 whitespace-nowrap text-[var(--color-black)]">
           휴대폰
-        </label>
+        </span>
 
-        <div className="mt-2 flex items-center gap-3">
-          <input
-            value={phone}
-            disabled
-            className="flex-1 rounded-xl bg-gray-50 px-4 py-3 text-gray-700 text-sm outline-none"
-          />
-          <button
-            type="button"
-            onClick={startPhoneEdit}
-            className="rounded-xl bg-blue-50 px-4 py-3 font-semibold text-blue-600 text-sm active:bg-blue-100"
-          >
-            변경
-          </button>
-        </div>
-
-        {isPhoneEditing && (
-          <div className="mt-4 space-y-3 rounded-2xl bg-gray-50 p-4">
+        {!isPhoneEditing ? (
+          <div className="flex w-full items-center gap-[10px]">
             <input
-              value={newPhone}
-              onChange={(e) => setNewPhone(e.target.value)}
-              className="w-full rounded-xl bg-white px-4 py-3 text-sm outline-none"
-              placeholder="새 휴대폰 번호 입력"
-            />
-            <input
-              value={verifyCode}
-              onChange={(e) => setVerifyCode(e.target.value)}
-              className="w-full rounded-xl bg-white px-4 py-3 text-sm outline-none"
-              placeholder="인증번호 입력"
+              value={phone}
+              disabled
+              className="h-[46px] w-[235px] rounded-[12px] bg-[var(--color-gray-100)] px-[15px] py-[8px] text-[var(--color-black)] outline-none"
             />
 
             <button
               type="button"
-              onClick={confirmPhone}
-              className="w-full rounded-xl bg-blue-500 py-3 font-semibold text-white active:bg-blue-600"
+              onClick={startPhoneEdit}
+              className="flex h-[46px] w-[78px] items-center justify-center rounded-[12px] bg-[var(--color-moamoa-50)] px-[15px] py-[8px]"
             >
-              확인
+              <span className="body-2 whitespace-nowrap text-[var(--color-moamoa-400)]">
+                {"변경"}
+              </span>
             </button>
+          </div>
+        ) : (
+          <div className="flex w-full flex-col gap-[10px]">
+            <div className="flex w-full items-center gap-[10px]">
+              <input
+                value={newPhone}
+                onChange={(e) => setNewPhone(e.target.value)}
+                className="h-[46px] w-[235px] rounded-[12px] bg-[var(--color-gray-100)] px-[15px] py-[8px] text-[var(--color-black)] outline-none"
+                placeholder="-구분없이 입력"
+              />
+
+              <button
+                type="button"
+                className="flex h-[46px] w-[78px] items-center justify-center rounded-[12px] bg-[var(--color-moamoa-50)] px-[15px] py-[8px]"
+              >
+                <span className="body-2 whitespace-nowrap text-[var(--color-moamoa-400)]">
+                  {"인증번호"}
+                </span>
+              </button>
+            </div>
+
+            <div className="flex w-full items-center gap-[10px]">
+              <input
+                value={verifyCode}
+                onChange={(e) => setVerifyCode(e.target.value)}
+                className="h-[46px] w-[235px] rounded-[12px] bg-[var(--color-gray-100)] px-[15px] py-[8px] text-[var(--color-black)] outline-none"
+                placeholder="인증번호 입력"
+              />
+
+              <button
+                type="button"
+                onClick={confirmPhone}
+                className="flex h-[46px] w-[78px] items-center justify-center rounded-[12px] bg-[var(--color-moamoa-50)] px-[15px] py-[8px]"
+              >
+                <span className="body-2 whitespace-nowrap text-[var(--color-moamoa-400)]">
+                  {"확인"}
+                </span>
+              </button>
+            </div>
           </div>
         )}
       </div>

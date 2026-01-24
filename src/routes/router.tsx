@@ -5,7 +5,8 @@ import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
 import Search from "@/pages/search/Search";
-import AccountSettingsPage from "@/pages/settings/AccountSettingsPage";
+import AccountInfoPage from "@/pages/settings/AccountInfoPage";
+import PasswordChangePage from "@/pages/settings/PasswordChangePage";
 import Interests from "@/pages/settings/components/Interests";
 import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
 import SettingsPage from "@/pages/settings/SettingsPage";
@@ -74,6 +75,14 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "/settings/target-mission-count",
         element: <TargetMissionCount />,
+      },
+      {
+        path: "/settings/account-info",
+        element: <AccountInfoPage />,
+      },
+      {
+        path: "/settings/password-change",
+        element: <PasswordChangePage />,
       },
     ],
   },

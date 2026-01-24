@@ -1,5 +1,7 @@
 import { useId, useMemo, useState } from "react";
-import IcLeft from "@/assets/icons/ic_left.svg?react";
+import IcMinus from "@/assets/icons/ic_minus.svg?react";
+import IcPlus from "@/assets/icons/ic_plus.svg?react";
+import { Button } from "@/components/common/button/Button";
 import Header from "@/components/common/header/Header";
 import MoaToggle from "@/pages/settings/components/common/Moatoggle";
 
@@ -7,26 +9,23 @@ type GoalToggle = "on" | "off";
 type DurationKey = "keep" | "1w" | "2w" | "1m";
 
 const DURATION_OPTIONS: Array<{ key: DurationKey; label: string }> = [
-  { key: "keep", label: "계속유지" },
+  { key: "keep", label: "계속 유지" },
   { key: "1w", label: "1주" },
   { key: "2w", label: "2주" },
-  { key: "1m", label: "한달" },
+  { key: "1m", label: "한 달" },
 ];
 
 export default function TargetMissionCount() {
   const labelId = useId();
   const [isOn, setIsOn] = useState(true);
-  const [goalToggle, setGoalToggle] = useState<GoalToggle>("on");
   const [dailyCount, setDailyCount] = useState<number>(1);
   const [duration, setDuration] = useState<DurationKey>("keep");
 
   const panelBg = useMemo(
-    () =>
-      goalToggle === "on"
-        ? "bg-[var(--color-moamoa-50)]"
-        : "bg-[var(--color-gray-200)]",
-    [goalToggle]
+    () => (isOn ? "bg-[var(--color-moamoa-50)]" : "bg-[var(--color-gray-200)]"),
+    [isOn]
   );
+  const panelText = isOn ? "" : "text-[var(--color-black)]";
 
   const handleMinus = () => setDailyCount((prev) => Math.max(0, prev - 1));
   const handlePlus = () => setDailyCount((prev) => prev + 1);
@@ -34,7 +33,7 @@ export default function TargetMissionCount() {
   return (
     <div className="min-h-screen bg-white">
       {/* TODO: 타이틀은 Figma 기준으로 변경 (예: '목표 미션 개수') */}
-      <Header title="목표 미션 개수" property="common" />
+      <Header title="목표 미션 개수 설정" property="common" />
 
       <div className="flex flex-col items-center">
         {/* Header 아래 간격 14 */}
@@ -47,8 +46,8 @@ export default function TargetMissionCount() {
         <div className="h-28" />
 
         {/* 문구 */}
-        <p className="heading-4 whitespace-nowrap text-[var(--color-moamoa-400)]">
-          나에게 맞는 속도로 조절해보세요
+        <p className="heading-3 whitespace-nowrap text-[var(--color-moamoa-400)]">
+          나에게 맞는 속도로 조절해보세요.
         </p>
 
         {/* 문구 아래 간격 20 */}
@@ -64,7 +63,7 @@ export default function TargetMissionCount() {
             >
               <span
                 id={labelId}
-                className="heading-5 whitespace-nowrap text-[var(--color-black)]"
+                className="body-4 whitespace-nowrap text-[var(--color-black)]"
               >
                 목표 설정
               </span>
@@ -95,7 +94,10 @@ export default function TargetMissionCount() {
               }}
             >
               <div
-                className="heading-5 whitespace-nowrap text-center text-[var(--color-black)]"
+                className={[
+                  "heading-5 whitespace-nowrap text-center text-[var(--color-black)]",
+                  panelText,
+                ].join(" ")}
                 style={{ height: 25, width: 66 }}
               >
                 일간 미션
@@ -103,7 +105,7 @@ export default function TargetMissionCount() {
 
               <div
                 className="flex items-center"
-                style={{ height: 28, width: 81.4, gap: 16 }}
+                style={{ height: 28, gap: 16 }}
               >
                 <button
                   type="button"
@@ -112,10 +114,23 @@ export default function TargetMissionCount() {
                   style={{ height: 28 }}
                   aria-label="일간 미션 감소"
                 >
-                  -
+                  <IcMinus
+                    className={[
+                      "h-24 w-24",
+                      isOn
+                        ? "text-[var(--color-warning)]"
+                        : "text-[var(--color-black)]",
+                    ].join(" ")}
+                    aria-hidden
+                  />
                 </button>
 
-                <span className="body-2-1 whitespace-nowrap text-[var(--color-black)]">
+                <span
+                  className={[
+                    "heading-3 whitespace-nowrap text-[var(--color-black)]",
+                    panelText,
+                  ].join(" ")}
+                >
                   {dailyCount}
                 </span>
 
@@ -126,7 +141,15 @@ export default function TargetMissionCount() {
                   style={{ height: 28 }}
                   aria-label="일간 미션 증가"
                 >
-                  +
+                  <IcPlus
+                    className={[
+                      "h-24 w-24",
+                      isOn
+                        ? "text-[var(--color-positive)]"
+                        : "text-[var(--color-black)]",
+                    ].join(" ")}
+                    aria-hidden
+                  />
                 </button>
               </div>
             </section>
@@ -136,7 +159,10 @@ export default function TargetMissionCount() {
 
             {/* 안내 문구 */}
             <p
-              className="body-4 whitespace-nowrap text-[var(--color-gray-900)]"
+              className={[
+                "body-4 whitespace-nowrap text-[var(--color-gray-900)]",
+                panelText,
+              ].join(" ")}
               style={{ height: 18, width: 265 }}
             >
               주간 목표는 &quot;평일 5일&quot; 기준으로 자동 설정됩니다
@@ -171,7 +197,14 @@ export default function TargetMissionCount() {
                 paddingBottom: 19,
               }}
             >
-              <p className="heading-3 whitespace-nowrap text-[var(--color-moamoa-400)]">
+              <p
+                className={[
+                  "heading-3 whitespace-nowrap",
+                  isOn
+                    ? "text-[var(--color-moamoa-400)]"
+                    : "text-[var(--color-black)]",
+                ].join(" ")}
+              >
                 이 목표를 언제까지 유지할까요?
               </p>
 
@@ -183,38 +216,62 @@ export default function TargetMissionCount() {
                   const selected = opt.key === duration;
 
                   return (
-                    <button
+                    <Button
                       key={opt.key}
                       type="button"
                       onClick={() => setDuration(opt.key)}
                       className={[
-                        "body-4 whitespace-nowrap",
-                        selected
-                          ? "text-[var(--color-moamoa-400)]"
-                          : "text-[var(--color-gray-700)]",
+                        "heading-5 whitespace-nowrap text-[var(--color-black)]",
+                        isOn
+                          ? selected
+                            ? "text-[var(--color-moamoa-400)]"
+                            : "text-[var(--color-gray-700)]"
+                          : "text-[var(--color-black)]",
                       ].join(" ")}
                     >
                       <span
                         className="inline-flex items-center"
                         style={{ gap: 8 }}
                       >
-                        <IcLeft
-                          className={[
-                            "rotate-180",
-                            selected
-                              ? "text-[var(--color-moamoa-400)]"
-                              : "text-[var(--color-gray-400)]",
-                          ].join(" ")}
-                          style={{ height: 16, width: 16 }}
+                        <span
+                          className="flex items-center justify-center border bg-white"
+                          style={{
+                            width: 24,
+                            height: 24,
+                            padding: 1.5,
+                            gap: 6,
+                            borderRadius: 22.5,
+                            borderColor: "#2664ED",
+                          }}
                           aria-hidden
-                        />
+                        >
+                          <span
+                            className="shrink-0"
+                            style={{
+                              width: 11,
+                              height: 11,
+                              borderRadius: 100,
+                              backgroundColor: "#E3EBFD",
+                            }}
+                          />
+                        </span>
                         {opt.label}
                       </span>
-                    </button>
+                    </Button>
                   );
                 })}
               </div>
             </section>
+
+            <div style={{ height: 31 }} />
+
+            <p
+              className="body-4 text-center text-[var(--color-gray-700)]"
+              style={{ width: 144, height: 36 }}
+            >
+              주중에 변경한 목표는
+              <br />그 다음주부터 적용됩니다.
+            </p>
           </div>
         </div>
       </div>
