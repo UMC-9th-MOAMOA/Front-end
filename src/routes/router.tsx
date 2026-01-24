@@ -5,6 +5,10 @@ import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
 import Search from "@/pages/search/Search";
+import AccountSettingsPage from "@/pages/settings/AccountSettingsPage";
+import Interests from "@/pages/settings/components/Interests";
+import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
+import SettingsPage from "@/pages/settings/SettingsPage";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
@@ -60,8 +64,16 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "settings",
-        element: <div>설정</div>,
+        element: <SettingsPage />,
         handle: { bgColor: "bg-gray-50" },
+      },
+      {
+        path: "/settings/interests",
+        element: <Interests />,
+      },
+      {
+        path: "/settings/target-mission-count",
+        element: <TargetMissionCount />,
       },
     ],
   },
