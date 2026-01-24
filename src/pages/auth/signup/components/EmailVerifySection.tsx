@@ -72,7 +72,7 @@ export default function EmailVerifySection({
           value={emailDomain}
           onChange={onChangeEmailDomain}
           options={domainOptions}
-          className="w-82"
+          className="w-90"
           disabled={isVerified}
         />
         <div className="ml-8">
