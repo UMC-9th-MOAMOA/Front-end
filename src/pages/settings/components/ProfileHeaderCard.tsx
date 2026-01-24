@@ -1,3 +1,5 @@
+import IcProfile1 from "@/assets/icons/profile/ic_profile1.svg?react";
+
 type Props = {
   name: string;
   email: string;
@@ -5,15 +7,6 @@ type Props = {
   onClickProfile: () => void;
   onClickEdit: () => void;
 };
-
-function AvatarFallback({ label }: { label: string }) {
-  // TODO: 나중에 SVG 프로필로 교체
-  return (
-    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-blue-100 font-bold text-blue-600">
-      {label.slice(0, 2)}
-    </div>
-  );
-}
 
 export default function ProfileHeaderCard({
   name,
@@ -23,26 +16,17 @@ export default function ProfileHeaderCard({
   onClickEdit,
 }: Props) {
   return (
-    <section className="mt-4 rounded-2xl bg-white p-5 shadow-sm">
-      <div className="flex items-center gap-4">
+    <section className="-ml-25 flex h-117 w-375 items-center justify-center bg-white px-31 pt-17 pb-18">
+      <div className="flex w-full items-center gap-18">
         <button type="button" onClick={onClickProfile} aria-label="프로필 변경">
-          <AvatarFallback label={profileLabel} />
+          <IcProfile1 className="h-82 w-82" aria-hidden />
         </button>
 
         <div className="flex-1">
           <div className="flex items-center gap-2">
-            <h2 className="font-bold text-base text-black">{name}</h2>
-            <button
-              type="button"
-              onClick={onClickEdit}
-              aria-label="회원정보 수정"
-              className="text-gray-500 text-sm"
-              title="회원정보 수정"
-            >
-              ✎
-            </button>
+            <h2 className="heading-3 text-[var(--color-black)]">{name}</h2>
           </div>
-          <p className="mt-1 text-gray-400 text-sm">{email}</p>
+          <p className="body-4 mt-10 text-[var(--color-gray-500)]">{email}</p>
         </div>
       </div>
     </section>

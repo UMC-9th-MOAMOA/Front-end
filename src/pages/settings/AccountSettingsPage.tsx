@@ -28,7 +28,7 @@ export default function AccountSettingsPage() {
   };
 
   return (
-    <div className="px-4">
+    <div>
       <Header title="회원정보수정" property="common" />
 
       <AccountTabs activeTab={tab} onChange={setTab} />
