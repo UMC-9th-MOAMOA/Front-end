@@ -74,7 +74,7 @@ export default function Password() {
 
     try {
       setLoading("SEND");
-      await sendEmail(email, "SUCCESS");
+      await sendEmail(email, "USER_NOT_FOUND");
       setStep("CODE");
     } catch (e: unknown) {
       const serverCode = getServerCode(e);
@@ -121,7 +121,7 @@ export default function Password() {
   return (
     <div className="flex flex-col">
       {/* 공통 헤더 */}
-      <AuthHeader title="비밀번호 재설정" />
+      <AuthHeader title="비밀번호 재설정" iconType="arrow" />
       <img
         src={Logo}
         alt="모아모아 로고"
