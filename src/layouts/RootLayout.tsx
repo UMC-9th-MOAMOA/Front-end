@@ -16,12 +16,12 @@ const RootLayout = () => {
     <div className="flex h-dvh justify-center bg-gray-100">
       <main
         className={cn(
-          "relative flex h-dvh w-full max-w-(--width-app) flex-col overflow-y-auto overflow-x-hidden",
+          "relative flex h-dvh w-full flex-col overflow-y-auto overflow-x-hidden",
           "pt-safe-top pr-safe-right pb-safe-bottom pl-safe-left",
           bgColor
         )}
       >
-        <div className="mx-auto flex w-full max-w-(--width-design-base) flex-1 flex-col px-layout-side pb-96">
+        <div className="flex w-full flex-1 flex-col px-layout-side pb-96">
           <Outlet />
         </div>
 
