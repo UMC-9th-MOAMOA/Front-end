@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked.svg";
 import IcRight from "@/assets/icons/ic_right.svg";
@@ -17,6 +18,12 @@ const AGREEMENTS: AgreementItem[] = [
 ];
 
 export default function AgreementList() {
+  const navigate = useNavigate();
+
+  const openDetailPage = () => {
+    navigate(`/Terms`);
+  };
+
   const [checked, setChecked] = useState<Record<AgreementKey, boolean>>({
     terms: false,
     privacy: false,
@@ -34,16 +41,14 @@ export default function AgreementList() {
     setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
-  const openDetailModal = (key: AgreementKey) => {
-    console.log(`${key} 상세 모달 열기`);
-  };
-
   return (
     <div>
       <AgreementRow
         label="모두 동의합니다."
         checked={allChecked}
         onToggle={toggleAll}
+        showArrow
+        onClickArrow={() => openDetailPage()}
       />
 
       <div className="h-30" />
@@ -55,8 +60,6 @@ export default function AgreementList() {
             label={item.label}
             checked={checked[item.key]}
             onToggle={() => toggleItem(item.key)}
-            onClickArrow={() => openDetailModal(item.key)}
-            showArrow
           />
         ))}
       </div>

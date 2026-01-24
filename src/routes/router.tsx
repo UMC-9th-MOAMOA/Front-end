@@ -3,6 +3,7 @@ import FindId from "@/pages/auth/find-id/FindId";
 import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
+import Terms from "@/pages/auth/signup/Terms";
 import HomePage from "@/pages/home/Home";
 import RootLayout from "../layouts/RootLayout";
 
@@ -35,6 +36,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "reset-password",
         element: <ResetPassword />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
+        path: "terms",
+        element: <Terms />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
