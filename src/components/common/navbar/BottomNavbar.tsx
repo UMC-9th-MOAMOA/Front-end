@@ -37,7 +37,7 @@ function NavItem({ to, label, Icon }: NavItemProps) {
   return (
     <NavLink
       to={to}
-      className="flex flex-1 flex-col items-center justify-center gap-6 px-23.5 pt-10 pb-22"
+      className="flex flex-1 flex-col items-center justify-center pt-10 pb-22"
     >
       {({ isActive }) => (
         <>
@@ -47,7 +47,7 @@ function NavItem({ to, label, Icon }: NavItemProps) {
             />
           </div>
           <span
-            className={`body-4 ${isActive ? "text-black" : "text-gray-600"}`}
+            className={`mt-6 font-normal text-[14px] leading-[130%] ${isActive ? "text-black" : "text-gray-600"}`}
           >
             {label}
           </span>
@@ -60,12 +60,12 @@ function NavItem({ to, label, Icon }: NavItemProps) {
 export default function BottomNavigation() {
   return (
     <nav
-      className="fixed right-0 bottom-0 left-0 z-20 mx-auto w-full max-w-(--width-app) bg-white pb-safe-bottom"
+      className="fixed right-0 bottom-0 left-0 z-20 mx-auto w-full bg-white pb-safe-bottom"
       style={{
         boxShadow: "0px -8px 50px 3px rgba(0, 0, 0, 0.1)",
       }}
     >
-      <div className="flex h-96 w-full items-center justify-center">
+      <div className="flex w-full">
         {NAV_ITEMS.map((item) => (
           <NavItem key={item.to} {...item} />
         ))}

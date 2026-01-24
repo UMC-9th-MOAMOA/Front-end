@@ -29,11 +29,12 @@ export default function Header({
   };
 
   return (
-    <header className="grid grid-cols-[1.5rem_1fr_1.5rem] items-center pt-28">
+    <header className="mt-28 grid w-full grid-cols-[24px_1fr_24px] items-center">
       <IcLeft className="size-24 cursor-pointer" onClick={handleBack} />
 
-      <h1 className="heading-2 text-center text-black">{title}</h1>
-
+      <h1 className="heading-2 min-w-0 truncate text-center text-black">
+        {title}
+      </h1>
       <div className="flex justify-end">
         {property === "search" && (
           <IcSearch
