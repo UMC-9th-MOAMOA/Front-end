@@ -1,7 +1,7 @@
 
 @theme {
   --font-sans: 'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
-  
+
   --spacing: 1px;
 
   --radius-sm: 8px;
@@ -12,8 +12,6 @@
   --radius-3xl: 30px;
 
   --width-app: 480px;
-  
-  --width-design-base: 375px;
 
   --spacing-layout-side: 25px;
   
