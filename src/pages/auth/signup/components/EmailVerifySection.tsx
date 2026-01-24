@@ -59,7 +59,7 @@ export default function EmailVerifySection({
             placeholder="이메일을 입력해주세요"
             value={emailLocal}
             onChange={onChangeEmailLocal}
-            width="md"
+            width="full"
             height="sm"
             variant="ghost"
             disabled={isVerified}
@@ -77,11 +77,9 @@ export default function EmailVerifySection({
         />
         <div className="ml-8">
           <Button
-            variant="tertiary"
-            size="md"
             onClick={onRequestCode}
             disabled={isVerified || disabledRequest}
-            className="body-3 w-57"
+            className="body-3 h-42 w-57 bg-moamoa-50 text-moamoa-400 active:bg-moamoa-300 active:text-white"
           >
             인증
           </Button>
@@ -97,21 +95,21 @@ export default function EmailVerifySection({
             value={code}
             onChange={onChangeCode}
             variant="ghost"
-            width="lg"
+            width="full"
             height="sm"
             disabled={isVerified}
           />
         </div>
-        <Button
-          type="button"
-          variant="tertiary"
-          size="md"
-          onClick={onConfirmCode}
-          disabled={isVerified || disabledConfirm}
-          className="body-3 w-103"
-        >
-          인증번호 확인
-        </Button>
+        <div className="ml-12">
+          <Button
+            type="button"
+            onClick={onConfirmCode}
+            disabled={isVerified || disabledConfirm}
+            className="body-3 h-42 w-103 bg-moamoa-50 text-moamoa-400 active:bg-moamoa-300 active:text-white"
+          >
+            인증번호 확인
+          </Button>
+        </div>
       </div>
     </section>
   );
