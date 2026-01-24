@@ -125,7 +125,7 @@ export default function Password() {
       <img
         src={Logo}
         alt="모아모아 로고"
-        className="mx-auto mt-43 block h-auto w-193"
+        className="mx-auto mt-129 mb-50 block h-auto w-193"
       />
 
       {/* 가입 안 된 이메일 안내 모달 */}
@@ -166,32 +166,37 @@ export default function Password() {
       {/* 이메일 주소 입력 스텝 */}
       {step === "EMAIL" && (
         <>
-          <h1 className="heading-3 mt-116 text-center text-black">
-            가입하신 이메일 주소를 입력해주세요
+          <h1 className="heading-3 text-center text-black">
+            가입하신 이메일 주소를 입력해주세요.
           </h1>
-          <div className="mt-16">
-            <AuthTextField
-              name="email"
-              placeholder="이메일 주소를 입력해주세요"
-              type="email"
-              value={email}
-              onChange={(e) => {
-                setEmail(e.target.value);
-                setEmailError(undefined);
-              }}
-              width="full"
-              variant="outlined"
-              errorMessage={emailError}
-            />
+          <p className="body-4 mt-6 text-center text-gray-600">
+            입력하신 이메일은 안전하게 보호됩니다.
+          </p>
+          <div className="flex flex-col gap-8">
+            <div className="mt-16">
+              <AuthTextField
+                name="email"
+                placeholder="이메일 주소를 입력해주세요"
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setEmailError(undefined);
+                }}
+                width="full"
+                variant="outlined"
+                errorMessage={emailError}
+              />
+            </div>
+            {errorText && (
+              <p className="body-5 text-right text-red-500">{errorText}</p>
+            )}
           </div>
-          {errorText && (
-            <p className="body-5 mt-6 text-left text-red-500">{errorText}</p>
-          )}
           <Button
             type="button"
             onClick={handleSendEmail}
             disabled={loading === "SEND"}
-            className="mt-74 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+            className="mt-46 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
           >
             {loading === "SEND" ? "전송 중..." : "인증 메일 보내기"}
           </Button>
@@ -207,40 +212,59 @@ export default function Password() {
       {/* 인증 코드 입력 스텝 */}
       {step === "CODE" && (
         <>
-          <h1 className="heading-3 mt-116 text-center text-black">
-            인증번호를 입력해주세요
+          <h1 className="heading-3 text-center text-black">
+            인증번호를 입력해주세요.
           </h1>
+          <p className="body-4 mt-6 text-center text-gray-600">
+            제공하신 이메일 주소로 인증번호를 보내드렸습니다.
+          </p>
+          <div className="flex flex-col gap-8">
+            <div className="mt-8">
+              <AuthTextField
+                name="code"
+                placeholder="인증번호 입력"
+                type="text"
+                value={code}
+                onChange={(e) => setCode(e.target.value)}
+                width="full"
+                variant="outlined"
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleSendEmail}
+              className="body-4 flex justify-start text-gray-600 underline disabled:text-gray-400"
+              disabled={loading === "SEND"}
+            >
+              인증 메일 재발송
+            </button>
 
-          <div className="mt-16">
-            <AuthTextField
-              name="code"
-              placeholder="인증번호 입력"
-              type="text"
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              width="full"
-              variant="outlined"
-            />
+            {errorText && (
+              <p className="body-5 text-left text-red-500">{errorText}</p>
+            )}
           </div>
-          {errorText && (
-            <p className="body-5 mt-6 text-left text-red-500">{errorText}</p>
-          )}
 
           <Button
             type="button"
             onClick={handleVerifyCode}
             disabled={loading === "VERIFY"}
-            className="mt-74 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+            className="mt-46 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
           >
             {loading === "VERIFY" ? "확인 중..." : "인증번호 확인"}
           </Button>
+          <p className="body-4 mt-20 text-center text-gray-500">
+            <span>인증 메일이 오지 않나요?</span>
+            <span className="block">
+              스팸함을 확인하거나 재발송을 요청하세요.
+            </span>
+          </p>
         </>
       )}
 
       {/* 새 비밀번호 설정 스텝 */}
       {step === "NEW_PASSWORD" && (
         <>
-          <h1 className="heading-3 mt-116 text-center text-black">
+          <h1 className="heading-3 text-center text-black">
             새로운 비밀번호 입력해주세요
           </h1>
           <Button
