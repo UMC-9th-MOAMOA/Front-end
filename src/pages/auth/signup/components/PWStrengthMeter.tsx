@@ -7,7 +7,7 @@ type Props = {
 };
 
 export function PasswordStrengthMeter({ password, helperText }: Props) {
-  const { score, label, barClass, percent } = getPasswordStrength(password);
+  const { label, barClass, percent } = getPasswordStrength(password);
 
   if (!password) {
     return helperText ? (
