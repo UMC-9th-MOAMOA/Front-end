@@ -65,9 +65,7 @@ export default function LoginForm() {
       </label>
       <Button
         type="submit"
-        variant="primary"
-        size="full"
-        className="mt-12 mb-4"
+        className="heading-5 mt-12 mb-4 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
       >
         로그인
       </Button>
