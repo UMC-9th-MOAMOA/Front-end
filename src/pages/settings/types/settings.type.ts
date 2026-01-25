@@ -1,9 +1,9 @@
-export type Gender = "남자" | "여자";
+﻿export type Gender = "남자" | "여자";
 
 export type ProfileOption = {
   id: string;
   label: string;
-  // 나중에 SVG/이미지 URL로 교체 가능
+  // 선택된 SVG/이미지 URL로 교체 가능
 };
 
 export type UserProfile = {

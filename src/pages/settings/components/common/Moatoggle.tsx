@@ -3,7 +3,7 @@ import type { ButtonHTMLAttributes } from "react";
 type Props = {
   checked: boolean;
   onCheckedChange: (next: boolean) => void;
-  labelId?: string; // "?? ??" ???? ???
+  labelId?: string;
 } & Omit<ButtonHTMLAttributes<HTMLButtonElement>, "onClick">;
 
 export default function MoaToggle({
@@ -22,7 +22,7 @@ export default function MoaToggle({
       aria-labelledby={labelId}
       onClick={() => onCheckedChange(!on)}
       className={[
-        "flex shrink-0 items-center justify-center rounded-[15px]",
+        "flex shrink-0 items-center justify-center rounded-xl",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--color-moamoa-400)] focus-visible:ring-offset-2",
       ].join(" ")}
       style={{

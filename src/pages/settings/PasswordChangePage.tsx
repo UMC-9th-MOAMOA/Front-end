@@ -1,7 +1,9 @@
-import { useState } from "react";
+﻿import { useState } from "react";
+import { Button } from "@/components/common/button/Button";
 import Header from "@/components/common/header/Header";
-import PasswordChangeForm from "./components/PasswordChangeForm";
-import PasswordChangeSuccessModal from "./components/PasswordChangeSuccessModal";
+import PasswordChangeForm from "./components/Password/PasswordChangeForm";
+import PasswordChangeIntro from "./components/Password/PasswordChangeIntro";
+import PasswordChangeSuccessModal from "./components/Password/PasswordChangeSuccessModal";
 
 export default function PasswordChangePage() {
   const [saving, setSaving] = useState(false);
@@ -27,51 +29,32 @@ export default function PasswordChangePage() {
   };
 
   return (
-    <div className="w-full">
+    <div className="flex min-h-screen w-full flex-col">
       <Header title="비밀번호 변경" property="common" />
 
-      <div className="flex w-full flex-col items-center">
-        {/* 헤더 아래 14 */}
-        <div className="h-[14px]" />
-
-        {/* 구분선 393 x 2 */}
-        <div className="h-[2px] w-[393px] bg-[var(--color-gray-200)]" />
-
-        {/* 구분선 아래 95 */}
-        <div className="h-[95px]" />
-
-        {/* 안내 문구 */}
-        <div className="flex w-[325px] flex-col items-center gap-[34px]">
-          <p className="heading-3 whitespace-nowrap text-[var(--color-warning)]">
-            새로운 비밀번호를 입력해주세요
-          </p>
-        </div>
-
-        {/* 문구 아래 47 */}
-        <div className="h-[47px]" />
-
-        {/* 비밀번호 입력 폼 */}
+      <div className="flex w-full flex-1 flex-col items-center">
+        <PasswordChangeIntro />
         <PasswordChangeForm />
 
         {/* helper 문구 아래 217 */}
-        <div className="h-[217px]" />
+        <div className="h-217" />
 
         {/* 변경 버튼 */}
-        <button
+        <Button
           type="button"
           disabled={saving}
           onClick={onSubmit}
           className={[
-            "flex h-[46px] w-[325px] items-center justify-center",
-            "rounded-[12px]",
+            "flex h-46 w-full items-center justify-center",
+            "rounded-lg",
             "bg-[var(--color-moamoa-300)]",
             "heading-5 whitespace-nowrap text-[var(--color-white)]",
             "active:bg-[var(--color-moamoa-500)]",
-            "disabled:pointer-events-none disabled:opacity-50",
+            "disabled:pointer-events-none disabled:bg-[var(--color-moamoa-300)] disabled:text-[var(--color-white)] disabled:opacity-50",
           ].join(" ")}
         >
           비밀번호 변경하기
-        </button>
+        </Button>
       </div>
 
       {/* 성공 모달 */}

@@ -6,9 +6,12 @@ import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
 import Search from "@/pages/search/Search";
 import AccountInfoPage from "@/pages/settings/AccountInfoPage";
-import PasswordChangePage from "@/pages/settings/PasswordChangePage";
+import FaqPage from "@/pages/settings/components/FaqPage";
+import InquiryDetailPage from "@/pages/settings/components/inquiry/InquiryDetailPage";
+import InquiryPage from "@/pages/settings/components/inquiry/InquiryPage";
 import Interests from "@/pages/settings/components/Interests";
 import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
+import PasswordChangePage from "@/pages/settings/PasswordChangePage";
 import SettingsPage from "@/pages/settings/SettingsPage";
 import RootLayout from "../layouts/RootLayout";
 
@@ -83,6 +86,18 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "/settings/password-change",
         element: <PasswordChangePage />,
+      },
+      {
+        path: "/settings/faq",
+        element: <FaqPage />,
+      },
+      {
+        path: "/settings/inquiry",
+        element: <InquiryPage />,
+      },
+      {
+        path: "/settings/inquiry/:inquiryId",
+        element: <InquiryDetailPage />,
       },
     ],
   },
