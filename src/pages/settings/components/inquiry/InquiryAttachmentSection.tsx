@@ -33,9 +33,9 @@ export default function InquiryAttachmentSection({
           />
         </label>
 
-        {images.slice(0, 4).map((file) => (
+        {images.slice(0, 4).map((file, index) => (
           <div
-            key={file.name}
+            key={`${file.name}-${file.size}-${index}`}
             className="flex h-76 w-76 items-center justify-center rounded-sm border border-[var(--color-gray-400)]"
             title={file.name}
           >
@@ -45,7 +45,8 @@ export default function InquiryAttachmentSection({
           </div>
         ))}
 
-        {["a", "b", "c", "d"].map((key) => (
+        {Array.from({ length: Math.max(0, 5 - images.length) }, (_, i) => i).map(
+          (key) => (
           <label
             key={key}
             htmlFor={fileInputId}
@@ -53,7 +54,8 @@ export default function InquiryAttachmentSection({
           >
             <IcCamera className="h-24 w-24 text-[var(--color-gray-400)]" />
           </label>
-        ))}
+          )
+        )}
       </div>
 
       <p className="body-5 mt-12 whitespace-pre-line text-[var(--color-gray-700)]">

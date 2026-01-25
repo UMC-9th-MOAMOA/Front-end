@@ -37,9 +37,16 @@ const MOCK_MY_INQUIRIES: MyInquiryItem[] = [
   },
 ];
 
-const CATEGORY_OPTIONS = ["보상", "미션/퀴즈", "상점/꾸미기", "계정", "기타"];
-const PERIOD_OPTIONS = ["1개월", "3개월", "6개월"];
-const STATUS_OPTIONS = ["전체 문의", "답변 완료", "답변 대기"];
+const CATEGORY_OPTIONS = [
+  { value: "보상", label: "보상" },
+  { value: "미션 및 퀴즈", label: "미션/퀴즈" },
+  { value: "상점 및 꾸미기", label: "상점/꾸미기" },
+  { value: "계정", label: "계정" },
+  { value: "기타", label: "기타" },
+] as const;
+
+const PERIOD_OPTIONS = ["1개월", "3개월", "6개월"] as const;
+const STATUS_OPTIONS = ["전체 문의", "답변 완료", "답변 대기"] as const;
 
 type FilterMenu = "category" | "period" | "status" | null;
 
@@ -48,15 +55,15 @@ type Props = {
 };
 
 type MenuProps = {
-  options: string[];
-  selectedLabel: string;
-  onSelect: (label: string) => void;
+  options: { value: string; label: string }[];
+  selectedValue: string;
+  onSelect: (value: string) => void;
   className: string;
 };
 
 function FilterMenuBox({
   options,
-  selectedLabel,
+  selectedValue,
   onSelect,
   className,
 }: MenuProps) {
@@ -68,20 +75,20 @@ function FilterMenuBox({
       ].join(" ")}
       style={{ boxShadow: "3px 9px 20.1px 3px rgba(0, 0, 0, 0.10)" }}
     >
-      {options.map((label) => (
+      {options.map((option) => (
         <button
-          key={label}
+          key={option.value}
           type="button"
-          onClick={() => onSelect(label)}
+          onClick={() => onSelect(option.value)}
           className="flex h-17 items-center gap-4"
         >
           <span className="flex h-16 w-16 items-center justify-center">
-            {selectedLabel === label && (
+            {selectedValue === option.value && (
               <IcCheck className="h-16 w-16 text-[var(--color-moamoa-400)]" />
             )}
           </span>
           <span className="body-5 whitespace-nowrap text-center text-[var(--color-gray-800)]">
-            {label}
+            {option.label}
           </span>
         </button>
       ))}
@@ -91,13 +98,19 @@ function FilterMenuBox({
 
 export default function InquiryList({ onSelect }: Props) {
   const [openMenu, setOpenMenu] = useState<FilterMenu>(null);
-  const [selectedCategory, setSelectedCategory] = useState("미션/퀴즈");
-  const [selectedPeriod, setSelectedPeriod] = useState("1개월");
-  const [selectedStatus, setSelectedStatus] = useState("전체 문의");
+  const [selectedCategory, setSelectedCategory] = useState(
+    CATEGORY_OPTIONS[1].value
+  );
+  const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
+  const [selectedStatus, setSelectedStatus] = useState(STATUS_OPTIONS[0]);
 
   const toggleMenu = (menu: FilterMenu) => {
     setOpenMenu((prev) => (prev === menu ? null : menu));
   };
+
+  const selectedCategoryLabel =
+    CATEGORY_OPTIONS.find((option) => option.value === selectedCategory)?.label ??
+    selectedCategory;
 
   return (
     <div className="flex w-full flex-col items-center">
@@ -121,12 +134,12 @@ export default function InquiryList({ onSelect }: Props) {
               className="flex items-center gap-2"
             >
               <span className="body-5 whitespace-nowrap text-[var(--color-gray-800)]">
-                {selectedCategory}
+                {selectedCategoryLabel}
               </span>
               <IcLeft
                 className={[
                   "h-16 w-16 text-[var(--color-gray-800)]",
-                  openMenu === "category" ? "rotate-90" : "rotate-270",
+                  openMenu === "category" ? "rotate-90" : "-rotate-90",
                 ].join(" ")}
               />
             </button>
@@ -134,9 +147,9 @@ export default function InquiryList({ onSelect }: Props) {
             {openMenu === "category" && (
               <FilterMenuBox
                 options={CATEGORY_OPTIONS}
-                selectedLabel={selectedCategory}
-                onSelect={(label) => {
-                  setSelectedCategory(label);
+                selectedValue={selectedCategory}
+                onSelect={(value) => {
+                  setSelectedCategory(value);
                   setOpenMenu(null);
                 }}
                 className="w-84 px-4 py-8"
@@ -156,17 +169,17 @@ export default function InquiryList({ onSelect }: Props) {
               <IcLeft
                 className={[
                   "h-16 w-16 text-[var(--color-gray-800)]",
-                  openMenu === "period" ? "rotate-90" : "rotate-270",
+                  openMenu === "period" ? "rotate-90" : "-rotate-90",
                 ].join(" ")}
               />
             </button>
 
             {openMenu === "period" && (
               <FilterMenuBox
-                options={PERIOD_OPTIONS}
-                selectedLabel={selectedPeriod}
-                onSelect={(label) => {
-                  setSelectedPeriod(label);
+                options={PERIOD_OPTIONS.map((value) => ({ value, label: value }))}
+                selectedValue={selectedPeriod}
+                onSelect={(value) => {
+                  setSelectedPeriod(value);
                   setOpenMenu(null);
                 }}
                 className="w-54 pt-4 pb-4 pl-2 pr-0"
@@ -186,17 +199,17 @@ export default function InquiryList({ onSelect }: Props) {
               <IcLeft
                 className={[
                   "h-16 w-16 text-[var(--color-gray-800)]",
-                  openMenu === "status" ? "rotate-90" : "rotate-270",
+                  openMenu === "status" ? "rotate-90" : "-rotate-90",
                 ].join(" ")}
               />
             </button>
 
             {openMenu === "status" && (
               <FilterMenuBox
-                options={STATUS_OPTIONS}
-                selectedLabel={selectedStatus}
-                onSelect={(label) => {
-                  setSelectedStatus(label);
+                options={STATUS_OPTIONS.map((value) => ({ value, label: value }))}
+                selectedValue={selectedStatus}
+                onSelect={(value) => {
+                  setSelectedStatus(value);
                   setOpenMenu(null);
                 }}
                 className="w-72 px-2 py-4"

@@ -3,12 +3,14 @@
 type Props = {
   name: string;
   email: string;
+  profileLabel: string;
   onClickProfile: () => void;
 };
 
 export default function ProfileHeaderCard({
   name,
   email,
+  profileLabel,
   onClickProfile,
 }: Props) {
   return (
@@ -19,8 +21,11 @@ export default function ProfileHeaderCard({
         </button>
 
         <div className="flex-1">
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-8">
             <h2 className="heading-3 text-[var(--color-black)]">{name}</h2>
+            <span className="body-5 text-[var(--color-gray-600)]">
+              {profileLabel}
+            </span>
           </div>
           <p className="body-4 mt-10 text-[var(--color-gray-500)]">{email}</p>
         </div>

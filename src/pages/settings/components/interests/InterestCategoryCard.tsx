@@ -51,11 +51,10 @@ export default function InterestCategoryCard({
   onToggle,
   onToggleSub,
 }: InterestCategoryCardProps) {
-  const [sub0, sub1, sub2, sub3, sub4] = category.subs;
   const rows = [
-    [sub0, sub1, sub2],
-    [sub3, sub4],
-  ];
+    category.subs.slice(0, 3),
+    category.subs.slice(3),
+  ].filter((row) => row.length > 0);
 
   return (
     <div
@@ -84,7 +83,7 @@ export default function InterestCategoryCard({
         <IcLeft
           className={[
             "h-24 w-24 text-[var(--color-black)]",
-            isOpen ? "rotate-270" : "rotate-90",
+            isOpen ? "-rotate-90" : "rotate-90",
           ].join(" ")}
           aria-hidden
         />

@@ -18,11 +18,14 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
 
   const confirmPhone = () => {
     // TODO(API 연결 시): 인증번호 검증 후 phone 업데이트
-    console.log("confirm phone:", newPhone, verifyCode);
     setPhone(newPhone || phone);
     setIsPhoneEditing(false);
     setNewPhone("");
     setVerifyCode("");
+  };
+
+  const requestVerification = () => {
+    // TODO(API 연결 시): 인증번호 요청
   };
 
   return (
@@ -66,6 +69,7 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
           onStartEdit={startPhoneEdit}
           onChangeNewValue={setNewPhone}
           onChangeVerifyCode={setVerifyCode}
+          onRequestVerification={requestVerification}
           onConfirm={confirmPhone}
         />
       </FormField>

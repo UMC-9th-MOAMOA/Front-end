@@ -8,6 +8,7 @@ type Props = {
   onStartEdit: () => void;
   onChangeNewValue: (value: string) => void;
   onChangeVerifyCode: (value: string) => void;
+  onRequestVerification: () => void;
   onConfirm: () => void;
 };
 
@@ -19,6 +20,7 @@ export default function PhoneField({
   onStartEdit,
   onChangeNewValue,
   onChangeVerifyCode,
+  onRequestVerification,
   onConfirm,
 }: Props) {
   if (!isEditing) {
@@ -55,6 +57,7 @@ export default function PhoneField({
 
         <Button
           type="button"
+          onClick={onRequestVerification}
           className="flex h-46 w-78 items-center justify-center rounded-lg bg-[var(--color-moamoa-50)] px-15 py-8"
         >
           <span className="body-2 whitespace-nowrap text-[var(--color-moamoa-400)]">

@@ -1,6 +1,10 @@
-import IcCheck from "@/assets/icons/ic_check.svg?react";
+﻿import IcCheck from "@/assets/icons/ic_check.svg?react";
 
-export default function InquiryConsentRow() {
+type Props = {
+  onViewPolicy?: () => void;
+};
+
+export default function InquiryConsentRow({ onViewPolicy }: Props) {
   return (
     <div className="flex w-full items-center justify-between">
       <div className="flex items-center gap-8">
@@ -14,6 +18,7 @@ export default function InquiryConsentRow() {
       <button
         type="button"
         className="body-4 whitespace-nowrap text-[var(--color-gray-800)] underline"
+        onClick={onViewPolicy}
       >
         전문보기
       </button>

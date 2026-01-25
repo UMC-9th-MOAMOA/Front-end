@@ -1,4 +1,4 @@
-import { Button } from "@/components/common/button/Button";
+﻿import { Button } from "@/components/common/button/Button";
 import type { Gender } from "../../types/settings.type";
 
 type Props = {
@@ -16,10 +16,15 @@ export default function GenderToggleField({ value, onChange }: Props) {
         ].join(" ")}
       />
 
-      <div className="relative z-10 flex w-full">
+      <div
+        className="relative z-10 flex w-full"
+        role="group"
+        aria-label="성별 선택"
+      >
         <Button
           type="button"
           onClick={() => onChange("남자")}
+          aria-pressed={value === "남자"}
           className={[
             "body-2 flex h-46 w-1/2 items-center justify-center whitespace-nowrap px-15 text-center",
             value === "남자"
@@ -33,6 +38,7 @@ export default function GenderToggleField({ value, onChange }: Props) {
         <Button
           type="button"
           onClick={() => onChange("여자")}
+          aria-pressed={value === "여자"}
           className={[
             "body-2 flex h-46 w-1/2 items-center justify-center whitespace-nowrap px-15 text-center",
             value === "여자"

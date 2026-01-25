@@ -1,4 +1,5 @@
-﻿import { Button } from "@/components/common/button/Button";
+﻿import { useId } from "react";
+import { Button } from "@/components/common/button/Button";
 
 type Props = {
   open: boolean;
@@ -6,6 +7,7 @@ type Props = {
 };
 
 export default function PasswordChangeSuccessModal({ open, onConfirm }: Props) {
+  const titleId = useId();
   if (!open) return null;
 
   return (
@@ -14,9 +16,17 @@ export default function PasswordChangeSuccessModal({ open, onConfirm }: Props) {
       <div className="absolute inset-0 bg-[rgba(36,44,61,0.40)]" />
 
       {/* modal box */}
-      <div className="relative flex h-245 w-300 flex-col items-center gap-20 rounded-xl bg-[var(--color-white)] px-20 pt-28 pb-20">
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        className="relative flex h-245 w-300 flex-col items-center gap-20 rounded-xl bg-[var(--color-white)] px-20 pt-28 pb-20"
+      >
         {/* title */}
-        <p className="heading-3 text-center text-[var(--color-moamoa-400)]">
+        <p
+          id={titleId}
+          className="heading-3 text-center text-[var(--color-moamoa-400)]"
+        >
           비밀번호 변경완료
         </p>
 

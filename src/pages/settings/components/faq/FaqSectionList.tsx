@@ -40,7 +40,7 @@ const FAQ_SECTIONS: FaqSection[] = [
 ];
 
 export default function FaqSectionList() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<string | null>(null);
 
   return (
     <div className="flex w-full flex-col items-center gap-12">
@@ -55,8 +55,8 @@ export default function FaqSectionList() {
 
           <div className="flex w-full flex-col">
             {section.items.map((item, itemIndex) => {
-              const numericKey = idx * 100 + itemIndex;
-              const isOpen = openIndex === numericKey;
+              const itemKey = `${idx}-${itemIndex}`;
+              const isOpen = openIndex === itemKey;
 
               return (
                 <div
@@ -77,14 +77,14 @@ export default function FaqSectionList() {
                     </span>
                     <button
                       type="button"
-                      onClick={() => setOpenIndex(isOpen ? null : numericKey)}
+                      onClick={() => setOpenIndex(isOpen ? null : itemKey)}
                       className="flex h-24 w-24 items-center justify-center"
                       aria-label={isOpen ? "닫기" : "열기"}
                     >
                       <IcLeft
                         className={[
                           "h-16 w-16 text-[var(--color-gray-700)]",
-                          isOpen ? "rotate-90" : "rotate-270",
+                          isOpen ? "rotate-90" : "-rotate-90",
                         ].join(" ")}
                         aria-hidden
                       />
