@@ -6,7 +6,7 @@ type Props = {
   onConfirm: () => void;
 };
 
-export default function WithdrawConfirmModal({
+export default function LogoutConfirmModal({
   open,
   onCancel,
   onConfirm,
@@ -20,23 +20,12 @@ export default function WithdrawConfirmModal({
       <div className="relative w-full px-35">
         <div className="flex w-full flex-col items-center gap-23 rounded-xl bg-[var(--color-white)] px-20 pt-28 pb-20">
           <p className="heading-3 text-center text-[var(--color-warning)]">
-            탈퇴하기
+            로그아웃 하시겠습니까?
           </p>
 
-          <div className="flex w-full flex-col items-center justify-center">
-            <p className="body-2 text-center text-[var(--color-gray-700)]">
-              모아모아 계정 정보와
-            </p>
-            <p className="body-2 text-center text-[var(--color-gray-700)]">
-              포인트와 캐릭터는
-            </p>
-            <p className="body-2 whitespace-nowrap text-center text-[var(--color-gray-700)]">
-              30일 동안 삭제 후 복구할 수 없어요
-            </p>
-          </div>
-
-          <p className="heading-5 text-center text-[var(--color-black)]">
-            정말 탈퇴하시겠어요?
+          <p className="body-2 whitespace-pre-line text-center text-[var(--color-gray-600)]">
+            로그아웃 후 다시 로그인해야{"\n"}
+            서비스를 이용할 수 있어요.
           </p>
 
           <div className="flex w-full items-center gap-12">
@@ -46,7 +35,7 @@ export default function WithdrawConfirmModal({
               className="flex h-50 flex-1 items-center justify-center rounded-lg bg-[var(--color-moamoa-50)]"
             >
               <span className="heading-5 whitespace-nowrap text-[var(--color-moamoa-400)]">
-                취소
+                아니요
               </span>
             </Button>
 
@@ -56,7 +45,7 @@ export default function WithdrawConfirmModal({
               className="flex h-50 flex-1 items-center justify-center rounded-lg bg-[var(--color-moamoa-300)]"
             >
               <span className="heading-5 whitespace-nowrap text-[var(--color-white)]">
-                탈퇴
+                예
               </span>
             </Button>
           </div>
