@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   MAIN_CATEGORIES,
@@ -27,6 +27,14 @@ export default function CategoryDetailView() {
     "";
 
   const [subCategory, setSubCategory] = useState(initialSub);
+
+  useEffect(() => {
+    const newSub =
+      searchParams.get("sub") ||
+      MOCK_SUB_CATEGORIES[validMainCategory]?.[0]?.name ||
+      "";
+    setSubCategory(newSub);
+  }, [searchParams, validMainCategory]);
 
   const { selectedCategory, setSelectedCategory, swipeHandlers } =
     useCategorySwipe(validMainCategory, (category) => {
