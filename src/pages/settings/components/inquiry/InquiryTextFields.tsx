@@ -31,6 +31,7 @@ export default function InquiryTextFields({
             value={title}
             onChange={(e) => onChangeTitle(e.target.value)}
             placeholder="제목을 입력해 주세요 (20자 이내)"
+            maxLength={20}
             className="body-4 w-full bg-transparent text-[var(--color-black)] outline-none placeholder:text-[var(--color-gray-400)]"
           />
           <span className="body-4 ml-10 whitespace-nowrap text-center text-[var(--color-positive)]">
@@ -51,6 +52,7 @@ export default function InquiryTextFields({
           value={content}
           onChange={(e) => onChangeContent(e.target.value)}
           placeholder="내용을 입력해 주세요."
+          maxLength={2000}
           className="body-4 h-221 w-full resize-none rounded-sm border border-[var(--color-gray-400)] bg-transparent p-10 text-[var(--color-black)] outline-none placeholder:text-[var(--color-gray-400)]"
         />
 

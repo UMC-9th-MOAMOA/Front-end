@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import ProfileHeaderCard from "./components/ProfileHeaderCard";
@@ -18,6 +18,11 @@ export default function SettingsPage() {
   // TODO(API 연결 시): user / profiles를 query로 교체
   const user = mockUser;
   const profiles = mockProfiles;
+  const [selectedProfileId, setSelectedProfileId] = useState(user.profileId);
+
+  const selectedProfileLabel = useMemo(() => {
+    return profiles.find((p) => p.id === selectedProfileId)?.label ?? "프로필";
+  }, [profiles, selectedProfileId]);
 
   const onClickProfile = () => setIsProfilePickerOpen(true);
 
@@ -27,7 +32,7 @@ export default function SettingsPage() {
 
   const onSelectProfile = (profileId: string) => {
     // TODO(API 연결 시): PATCH /users/profile 같은 API 호출 후 invalidate
-    console.log("select profile:", profileId);
+    setSelectedProfileId(profileId);
     setIsProfilePickerOpen(false);
   };
 
@@ -49,6 +54,7 @@ export default function SettingsPage() {
       <ProfileHeaderCard
         name={user.name}
         email={user.email}
+        profileLabel={selectedProfileLabel}
         onClickProfile={onClickProfile}
       />
 
@@ -80,7 +86,7 @@ export default function SettingsPage() {
       <ProfilePickerModal
         open={isProfilePickerOpen}
         profiles={profiles}
-        selectedId={user.profileId}
+        selectedId={selectedProfileId}
         onClose={() => setIsProfilePickerOpen(false)}
         onSelect={onSelectProfile}
       />

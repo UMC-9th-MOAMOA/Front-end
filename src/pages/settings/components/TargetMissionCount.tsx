@@ -15,7 +15,8 @@ const DURATION_OPTIONS: DurationOption[] = [
 export default function TargetMissionCount() {
   const labelId = useId();
   const [isOn, setIsOn] = useState(true);
-  const [dailyCount, setDailyCount] = useState<number>(1);
+  const [dailyCount, setDailyCount] = useState<number>(5);
+  const MIN_COUNT = 5;
   const [duration, setDuration] = useState<DurationKey>("keep");
 
   const panelBg = useMemo(
@@ -24,7 +25,8 @@ export default function TargetMissionCount() {
   );
   const panelText = isOn ? "" : "text-[var(--color-black)]";
 
-  const handleMinus = () => setDailyCount((prev) => Math.max(0, prev - 1));
+  const handleMinus = () =>
+    setDailyCount((prev) => Math.max(MIN_COUNT, prev - 1));
   const handlePlus = () => setDailyCount((prev) => prev + 1);
 
   return (
