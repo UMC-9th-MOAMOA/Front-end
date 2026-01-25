@@ -48,25 +48,39 @@ const CATEGORY_OPTIONS = [
 const PERIOD_OPTIONS = ["1개월", "3개월", "6개월"] as const;
 const STATUS_OPTIONS = ["전체 문의", "답변 완료", "답변 대기"] as const;
 
+type CategoryValue = (typeof CATEGORY_OPTIONS)[number]["value"];
+type PeriodValue = (typeof PERIOD_OPTIONS)[number];
+type StatusValue = (typeof STATUS_OPTIONS)[number];
+
+const PERIOD_OPTION_ITEMS: ReadonlyArray<{
+  value: PeriodValue;
+  label: PeriodValue;
+}> = PERIOD_OPTIONS.map((value) => ({ value, label: value }));
+
+const STATUS_OPTION_ITEMS: ReadonlyArray<{
+  value: StatusValue;
+  label: StatusValue;
+}> = STATUS_OPTIONS.map((value) => ({ value, label: value }));
+
 type FilterMenu = "category" | "period" | "status" | null;
 
 type Props = {
   onSelect: (id: number) => void;
 };
 
-type MenuProps = {
-  options: { value: string; label: string }[];
-  selectedValue: string;
-  onSelect: (value: string) => void;
+type MenuProps<T extends string> = {
+  options: ReadonlyArray<{ value: T; label: string }>;
+  selectedValue: T;
+  onSelect: (value: T) => void;
   className: string;
 };
 
-function FilterMenuBox({
+function FilterMenuBox<T extends string>({
   options,
   selectedValue,
   onSelect,
   className,
-}: MenuProps) {
+}: MenuProps<T>) {
   return (
     <div
       className={[
@@ -98,11 +112,15 @@ function FilterMenuBox({
 
 export default function InquiryList({ onSelect }: Props) {
   const [openMenu, setOpenMenu] = useState<FilterMenu>(null);
-  const [selectedCategory, setSelectedCategory] = useState(
+  const [selectedCategory, setSelectedCategory] = useState<CategoryValue>(
     CATEGORY_OPTIONS[1].value
   );
-  const [selectedPeriod, setSelectedPeriod] = useState(PERIOD_OPTIONS[0]);
-  const [selectedStatus, setSelectedStatus] = useState(STATUS_OPTIONS[0]);
+  const [selectedPeriod, setSelectedPeriod] = useState<PeriodValue>(
+    PERIOD_OPTIONS[0]
+  );
+  const [selectedStatus, setSelectedStatus] = useState<StatusValue>(
+    STATUS_OPTIONS[0]
+  );
 
   const toggleMenu = (menu: FilterMenu) => {
     setOpenMenu((prev) => (prev === menu ? null : menu));
@@ -176,7 +194,7 @@ export default function InquiryList({ onSelect }: Props) {
 
             {openMenu === "period" && (
               <FilterMenuBox
-                options={PERIOD_OPTIONS.map((value) => ({ value, label: value }))}
+                options={PERIOD_OPTION_ITEMS}
                 selectedValue={selectedPeriod}
                 onSelect={(value) => {
                   setSelectedPeriod(value);
@@ -206,7 +224,7 @@ export default function InquiryList({ onSelect }: Props) {
 
             {openMenu === "status" && (
               <FilterMenuBox
-                options={STATUS_OPTIONS.map((value) => ({ value, label: value }))}
+                options={STATUS_OPTION_ITEMS}
                 selectedValue={selectedStatus}
                 onSelect={(value) => {
                   setSelectedStatus(value);
