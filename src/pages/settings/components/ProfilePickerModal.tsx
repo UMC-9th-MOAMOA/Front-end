@@ -1,3 +1,6 @@
+﻿import IcProfile1 from "@/assets/icons/profile/ic_profile1.svg?react";
+import IcProfile2 from "@/assets/icons/profile/ic_profile2.svg?react";
+import IcProfile3 from "@/assets/icons/profile/ic_profile3.svg?react";
 import type { ProfileOption } from "../types/settings.type";
 
 type Props = {
@@ -8,24 +11,7 @@ type Props = {
   onSelect: (id: string) => void;
 };
 
-function ProfileCircle({
-  label,
-  selected,
-}: {
-  label: string;
-  selected: boolean;
-}) {
-  return (
-    <div
-      className={[
-        "flex h-16 w-16 items-center justify-center rounded-full font-bold",
-        selected ? "bg-blue-200 text-blue-700" : "bg-gray-100 text-gray-500",
-      ].join(" ")}
-    >
-      {label.slice(0, 2)}
-    </div>
-  );
-}
+const PROFILE_ICONS = [IcProfile1, IcProfile2, IcProfile3];
 
 export default function ProfilePickerModal({
   open,
@@ -38,7 +24,6 @@ export default function ProfilePickerModal({
 
   return (
     <div className="fixed inset-0 z-50">
-      {/* overlay */}
       <button
         type="button"
         className="absolute inset-0 bg-black/30"
@@ -46,15 +31,16 @@ export default function ProfilePickerModal({
         onClick={onClose}
       />
 
-      {/* sheet */}
-      <div className="absolute right-0 bottom-0 left-0 rounded-t-2xl bg-white p-5 shadow-lg">
-        <div className="font-semibold text-gray-800 text-sm">
-          프로필 예시(더미)
+      <div className="absolute right-0 bottom-0 left-0 rounded-t-2xl bg-[var(--color-white)] p-20 shadow-lg">
+        <div className="heading-5 text-[var(--color-gray-800)]">
+          프로필 선택(캐릭터)
         </div>
 
         <div className="mt-4 flex items-center justify-between gap-4">
-          {profiles.map((p) => {
+          {profiles.map((p, index) => {
             const selected = p.id === selectedId;
+            const Icon = PROFILE_ICONS[index % PROFILE_ICONS.length];
+
             return (
               <button
                 key={p.id}
@@ -62,11 +48,19 @@ export default function ProfilePickerModal({
                 onClick={() => onSelect(p.id)}
                 className="flex flex-1 flex-col items-center gap-2"
               >
-                <ProfileCircle label={p.label} selected={selected} />
+                <Icon
+                  className={[
+                    "h-64 w-64",
+                    selected ? "opacity-100" : "opacity-50",
+                  ].join(" ")}
+                  aria-hidden
+                />
                 <span
                   className={[
-                    "text-xs",
-                    selected ? "font-semibold text-blue-700" : "text-gray-500",
+                    "body-5",
+                    selected
+                      ? "text-[var(--color-moamoa-400)]"
+                      : "text-[var(--color-gray-500)]",
                   ].join(" ")}
                 >
                   {p.label}
@@ -79,7 +73,7 @@ export default function ProfilePickerModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-5 w-full rounded-xl bg-gray-100 py-3 font-semibold text-gray-700 text-sm"
+          className="mt-5 w-full rounded-xl bg-[var(--color-gray-100)] py-12 text-[var(--color-gray-700)]"
         >
           닫기
         </button>
