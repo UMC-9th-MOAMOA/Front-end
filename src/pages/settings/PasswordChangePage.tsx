@@ -15,7 +15,6 @@ export default function PasswordChangePage() {
     try {
       console.log("submit password change");
 
-      // 임시: 성공 처리
       setSuccessOpen(true);
     } finally {
       setSaving(false);
@@ -36,10 +35,8 @@ export default function PasswordChangePage() {
         <PasswordChangeIntro />
         <PasswordChangeForm />
 
-        {/* helper 문구 아래 217 */}
         <div className="h-217" />
 
-        {/* 변경 버튼 */}
         <Button
           type="button"
           disabled={saving}
@@ -57,7 +54,6 @@ export default function PasswordChangePage() {
         </Button>
       </div>
 
-      {/* 성공 모달 */}
       <PasswordChangeSuccessModal
         open={successOpen}
         onConfirm={onConfirmSuccess}
