@@ -1,6 +1,6 @@
 ﻿import { useState } from "react";
 import Header from "@/components/common/header/Header";
-import type { InterestCategoryKey } from "../constants/interests";
+import type { InterestCategoryKey, InterestSubKey } from "../constants/interests";
 import {
   EMPTY_SELECTED_INTERESTS,
   INTEREST_CATEGORIES,
@@ -18,7 +18,7 @@ export default function InterestPage() {
 
   const handleToggleSub = (
     categoryKey: InterestCategoryKey,
-    subKey: string
+    subKey: InterestSubKey
   ) => {
     setSelected((prev) => toggleSubSelection(prev, categoryKey, subKey));
   };

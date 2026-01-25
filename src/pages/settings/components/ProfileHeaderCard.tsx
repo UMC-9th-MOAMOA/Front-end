@@ -1,19 +1,15 @@
-import IcProfile1 from "@/assets/icons/profile/ic_profile1.svg?react";
+﻿import IcProfile1 from "@/assets/icons/profile/ic_profile1.svg?react";
 
 type Props = {
   name: string;
   email: string;
-  profileLabel: string;
   onClickProfile: () => void;
-  onClickEdit: () => void;
 };
 
 export default function ProfileHeaderCard({
   name,
   email,
-  profileLabel,
   onClickProfile,
-  onClickEdit,
 }: Props) {
   return (
     <section className="flex h-117 w-full items-center justify-center bg-white px-31 pt-17 pb-18">
