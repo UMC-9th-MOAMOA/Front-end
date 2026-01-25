@@ -1,4 +1,4 @@
-﻿import { useMemo, useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import ProfileHeaderCard from "./components/ProfileHeaderCard";
@@ -19,10 +19,6 @@ export default function SettingsPage() {
   const user = mockUser;
   const profiles = mockProfiles;
 
-  const selectedProfileLabel = useMemo(() => {
-    return profiles.find((p) => p.id === user.profileId)?.label ?? "프로필";
-  }, [profiles, user.profileId]);
-
   const onClickProfile = () => setIsProfilePickerOpen(true);
 
   const onNavigate = (path: string) => {
@@ -35,7 +31,6 @@ export default function SettingsPage() {
     setIsProfilePickerOpen(false);
   };
 
-  const onClickEdit = () => onNavigate("/settings/account");
   const onLogout = () => setIsLogoutOpen(true);
   const onWithdraw = () => setIsWithdrawOpen(true);
 
@@ -54,9 +49,7 @@ export default function SettingsPage() {
       <ProfileHeaderCard
         name={user.name}
         email={user.email}
-        profileLabel={selectedProfileLabel}
         onClickProfile={onClickProfile}
-        onClickEdit={onClickEdit}
       />
 
       <div className="mt-10 flex h-977 w-full flex-1 flex-col bg-[var(--color-white)] pt-28">

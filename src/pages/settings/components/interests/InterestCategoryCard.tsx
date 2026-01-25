@@ -1,6 +1,9 @@
 import IcDash from "@/assets/icons/ic.dottedline.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
-import type { InterestCategoryKey } from "../../constants/interests";
+import type {
+  InterestCategoryKey,
+  InterestSubKey,
+} from "../../constants/interests";
 import {
   EMPTY_SELECTED_INTERESTS,
   getSelectedCount,
@@ -21,7 +24,7 @@ type InterestCategoryCardProps = {
   isOpen: boolean;
   selected: typeof EMPTY_SELECTED_INTERESTS;
   onToggle: () => void;
-  onToggleSub: (categoryKey: InterestCategoryKey, subKey: string) => void;
+  onToggleSub: (categoryKey: InterestCategoryKey, subKey: InterestSubKey) => void;
 };
 
 function InterestSubButton({ label, selected, onClick }: InterestSubButtonProps) {
