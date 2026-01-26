@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { login } from "@/apis/auth";
+import { login, recoverAccount } from "@/apis/auth";
 import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import { Button } from "@/components/common/button/Button";
@@ -35,6 +35,10 @@ export default function LoginForm() {
   const [blockedCode, setBlockedCode] = useState<
     "" | "AUTH403_2" | "AUTH403_3"
   >("");
+  const [isRecoverSuccessModalOpen, setIsRecoverSuccessModalOpen] =
+    useState(false);
+  const [isRecovering, setIsRecovering] = useState(false);
+  const [recoverError, setRecoverError] = useState<string | null>(null);
   const isFormValid = email.trim().length > 0 && password.trim().length > 0;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -63,6 +67,7 @@ export default function LoginForm() {
       if (code === "AUTH403_2" || code === "AUTH403_3") {
         setBlockedCode(code as "AUTH403_2" | "AUTH403_3");
         setIsBlockedModalOpen(true);
+        setRecoverError(null);
         setSubmitError(null);
       } else {
         if (code === "AUTH401_1") {
@@ -75,6 +80,47 @@ export default function LoginForm() {
       }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleRecover = async () => {
+    if (isRecovering) return;
+    if (!email.trim() || !password.trim()) {
+      setRecoverError("이메일과 비밀번호를 입력해주세요.");
+      return;
+    }
+
+    setIsRecovering(true);
+    setRecoverError(null);
+
+    try {
+      const response = await recoverAccount(email.trim(), password.trim());
+      if (!response.isSuccess || !response.result) {
+        setRecoverError("계정 복구에 실패했습니다.");
+        return;
+      }
+      const { accessToken, grantType } = response.result;
+      const storage = autoLogin ? localStorage : sessionStorage;
+      storage.setItem("accessToken", accessToken);
+      storage.setItem("grantType", grantType);
+      setIsBlockedModalOpen(false);
+      setIsRecoverSuccessModalOpen(true);
+    } catch (error) {
+      const isErrorObject = typeof error === "object" && error !== null;
+      const code =
+        isErrorObject &&
+        "code" in error &&
+        typeof (error as { code?: string }).code === "string"
+          ? (error as { code: string }).code
+          : "";
+
+      if (code === "COMMON500_1") {
+        setRecoverError("서버 에러가 발생했습니다. 다시 시도해주세요");
+      } else {
+        setRecoverError("계정 복구에 실패했습니다.");
+      }
+    } finally {
+      setIsRecovering(false);
     }
   };
 
@@ -122,7 +168,11 @@ export default function LoginForm() {
       <AuthLinksRow />
       <Modal
         open={isBlockedModalOpen}
-        onClose={() => setIsBlockedModalOpen(false)}
+        onClose={() => {
+          setIsBlockedModalOpen(false);
+          setRecoverError(null);
+          setIsRecovering(false);
+        }}
       >
         <div className="flex flex-col items-center text-center">
           {blockedCode === "AUTH403_2" ? (
@@ -133,20 +183,31 @@ export default function LoginForm() {
               <p className="body-2 mt-20 text-gray-600">
                 기존 계정을 복구 하시겠어요?
               </p>
+              {recoverError && (
+                <p className="body-5 mt-12 text-center text-red-500">
+                  {recoverError}
+                </p>
+              )}
               <div className="mt-32 flex w-full gap-12">
                 <Button
                   type="button"
                   className="body-2 h-50 w-full rounded-lg bg-moamoa-50 text-moamoa-600 active:bg-moamoa-100"
-                  onClick={() => setIsBlockedModalOpen(false)}
+                  onClick={() => {
+                    setIsBlockedModalOpen(false);
+                    setRecoverError(null);
+                    setIsRecovering(false);
+                  }}
+                  disabled={isRecovering}
                 >
                   닫기
                 </Button>
                 <Button
                   type="button"
                   className="body-2 h-50 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
-                  onClick={() => setIsBlockedModalOpen(false)}
+                  onClick={handleRecover}
+                  disabled={isRecovering}
                 >
-                  복구하기
+                  {isRecovering ? "복구 중..." : "복구하기"}
                 </Button>
               </div>
             </>
@@ -166,6 +227,22 @@ export default function LoginForm() {
               </Button>
             </>
           )}
+        </div>
+      </Modal>
+      <Modal
+        open={isRecoverSuccessModalOpen}
+        onClose={() => setIsRecoverSuccessModalOpen(false)}
+      >
+        <div className="flex flex-col items-center text-center">
+          <p className="heading-3 text-moamoa-400">계정이 복구 되었습니다</p>
+          <p className="body-2 mt-20 text-gray-600">반가워요 !</p>
+          <Button
+            type="button"
+            className="body-2 mt-32 h-50 w-154 rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+            onClick={() => setIsRecoverSuccessModalOpen(false)}
+          >
+            확인
+          </Button>
         </div>
       </Modal>
     </form>
