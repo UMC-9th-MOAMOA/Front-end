@@ -33,29 +33,29 @@ export function PWTextField({
       <p className="detail text-gray-700">비밀번호</p>
 
       <div className="flex flex-col gap-8">
-        <PasswordTextField
-          placeholder="비밀번호를 입력해주세요"
-          value={password}
-          onChange={onPasswordChange}
-          width="full"
-          variant="ghost"
-          disabled={disabled}
-          errorMessage={passwordErrorMessage}
-          name="password"
-        />
         <div className="flex flex-col gap-6">
           <PasswordTextField
-            placeholder="비밀번호를 다시 입력해주세요"
-            value={passwordConfirm}
-            onChange={onPasswordConfirmChange}
+            placeholder="비밀번호"
+            value={password}
+            onChange={onPasswordChange}
             width="full"
             variant="ghost"
             disabled={disabled}
-            errorMessage={passwordConfirmErrorMessage}
-            name="passwordConfirm"
+            errorMessage={passwordErrorMessage}
+            name="password"
           />
           <PasswordStrengthMeter password={password} helperText={helperText} />
         </div>
+        <PasswordTextField
+          placeholder="비밀번호 확인"
+          value={passwordConfirm}
+          onChange={onPasswordConfirmChange}
+          width="full"
+          variant="ghost"
+          disabled={disabled}
+          errorMessage={passwordConfirmErrorMessage}
+          name="passwordConfirm"
+        />
       </div>
     </section>
   );
