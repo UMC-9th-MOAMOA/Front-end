@@ -1,36 +1,51 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import {
   MAIN_CATEGORIES,
   MOCK_DETAIL_MISSIONS,
   MOCK_SUB_CATEGORIES,
+  type MainCategory,
 } from "@/mocks/search/mission";
 import CategoryButton from "../components/CategoryButton";
 import MissionCard from "../components/common/MissionCard";
 import SubCategoryButton from "../components/SubCategoryButton";
+import { useCategorySwipe } from "../hooks/useCategorySwipe";
 
 export default function CategoryDetailView() {
   const [searchParams] = useSearchParams();
-  const initialMain = searchParams.get("main") || "경제와 금융";
+  const mainParam = searchParams.get("main") || "";
+
+  const validMainCategory: MainCategory = MAIN_CATEGORIES.includes(
+    mainParam as MainCategory
+  )
+    ? (mainParam as MainCategory)
+    : "경제와 금융";
+
   const initialSub =
     searchParams.get("sub") ||
-    MOCK_SUB_CATEGORIES[initialMain]?.[0]?.name ||
+    MOCK_SUB_CATEGORIES[validMainCategory]?.[0]?.name ||
     "";
 
-  const [selectedMainCategory, setSelectedMainCategory] = useState(initialMain);
+  const [subCategory, setSubCategory] = useState(initialSub);
 
-  const subCategories = MOCK_SUB_CATEGORIES[selectedMainCategory] ?? [];
+  useEffect(() => {
+    const newSub =
+      searchParams.get("sub") ||
+      MOCK_SUB_CATEGORIES[validMainCategory]?.[0]?.name ||
+      "";
+    setSubCategory(newSub);
+  }, [searchParams, validMainCategory]);
 
-  const [selectedSubCategory, setSelectedSubCategory] = useState(initialSub);
+  const { selectedCategory, setSelectedCategory, swipeHandlers } =
+    useCategorySwipe(validMainCategory, (category) => {
+      setSubCategory(MOCK_SUB_CATEGORIES[category]?.[0]?.name ?? "");
+    });
 
-  const handleMainCategoryChange = (category: string) => {
-    setSelectedMainCategory(category);
-    const firstSub = MOCK_SUB_CATEGORIES[category]?.[0]?.name ?? "";
-    setSelectedSubCategory(firstSub);
-  };
+  const subCategories = MOCK_SUB_CATEGORIES[selectedCategory] ?? [];
 
-  const allMissions = (MOCK_DETAIL_MISSIONS[selectedMainCategory] ?? []).map(
-    (m) => ({
+  const missions = (MOCK_DETAIL_MISSIONS[selectedCategory] ?? [])
+    .filter((m) => m.categoryName === subCategory)
+    .map((m) => ({
       id: m.missionId,
       title: m.title,
       keywords: m.keywords,
@@ -38,23 +53,18 @@ export default function CategoryDetailView() {
       category: m.categoryName,
       quizCount: m.quizCount,
       isLiked: m.isLiked,
-    })
-  );
-
-  const missions = allMissions.filter(
-    (m) => m.category === selectedSubCategory
-  );
+    }));
 
   return (
     <>
-      <div className="mt-30 overflow-x-auto px-15.5">
-        <div className="flex gap-26">
-          {MAIN_CATEGORIES.map((category) => (
+      <div className="-mx-layout-side mt-30 overflow-x-auto">
+        <div className="flex min-w-full gap-26 px-layout-side">
+          {MAIN_CATEGORIES.map((cat) => (
             <CategoryButton
-              key={category}
-              category={category}
-              isSelected={selectedMainCategory === category}
-              onClick={handleMainCategoryChange}
+              key={cat}
+              category={cat}
+              isSelected={selectedCategory === cat}
+              onClick={setSelectedCategory}
             />
           ))}
         </div>
@@ -63,35 +73,25 @@ export default function CategoryDetailView() {
       <div className="-mx-layout-side mt-1 h-2 bg-gray-200" />
 
       <div className="-mx-layout-side mt-18 overflow-x-auto">
-        <div className="flex gap-10">
-          {subCategories.map((sub, index) => (
-            <div
+        <div className="flex min-w-full gap-10 px-layout-side">
+          {subCategories.map((sub) => (
+            <SubCategoryButton
               key={sub.categoryId}
-              className={index === 0 ? "ml-layout-side" : ""}
-            >
-              <SubCategoryButton
-                category={sub}
-                isSelected={selectedSubCategory === sub.name}
-                onClick={setSelectedSubCategory}
-              />
-            </div>
+              category={sub}
+              isSelected={subCategory === sub.name}
+              onClick={setSubCategory}
+            />
           ))}
-          <div className="w-15 shrink-0" />
+          <div className="w-15 shrink-0 min-[400px]:hidden" />
         </div>
       </div>
 
-      <div className="mt-19 flex flex-col gap-16 pb-38">
-        {missions.map((mission) => (
-          <MissionCard
-            key={mission.id}
-            title={mission.title}
-            keywords={mission.keywords}
-            minute={mission.minute}
-            category={mission.category}
-            quizCount={mission.quizCount}
-            isLiked={mission.isLiked}
-          />
-        ))}
+      <div className="min-h-[50vh] flex-1" {...swipeHandlers}>
+        <div className="mt-19 flex flex-col gap-16 pb-38">
+          {missions.map((m) => (
+            <MissionCard key={m.id} {...m} />
+          ))}
+        </div>
       </div>
     </>
   );

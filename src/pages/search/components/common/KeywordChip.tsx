@@ -1,3 +1,5 @@
+import { Button } from "@/components/common/button/Button";
+
 interface KeywordChipProps {
   keyword: string;
   isSelected?: boolean;
@@ -17,12 +19,11 @@ export default function KeywordChip({
     : "border-gray-400 bg-white text-black";
 
   return (
-    <button
-      type="button"
+    <Button
       onClick={onClick}
       className={`body-4 shrink-0 rounded-full border px-16 ${sizeStyles} ${colorStyles}`}
     >
       # {keyword}
-    </button>
+    </Button>
   );
 }

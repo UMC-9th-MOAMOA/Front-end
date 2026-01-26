@@ -1,3 +1,4 @@
+import { Button } from "@/components/common/button/Button";
 import type { MainCategory } from "@/mocks/search/mission";
 
 interface CategoryButtonProps {
@@ -12,14 +13,14 @@ export default function CategoryButton({
   onClick,
 }: CategoryButtonProps) {
   return (
-    <button
-      type="button"
+    <Button
+      data-category={category}
       onClick={() => onClick(category)}
-      className={`heading-5 shrink-0 ${
+      className={`heading-5 shrink-0 grow whitespace-nowrap ${
         isSelected ? "border-black border-b text-black" : "text-gray-500"
       }`}
     >
       {category}
-    </button>
+    </Button>
   );
 }

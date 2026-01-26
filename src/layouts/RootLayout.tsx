@@ -1,10 +1,15 @@
+import { useRef } from "react";
 import { Outlet, useMatches } from "react-router-dom";
 import BottomNavigation from "@/components/common/navbar/BottomNavbar";
+import { useScrollToTop } from "@/hooks/useScrollToTop";
 import type { RouteHandle } from "@/routes/router";
 import { cn } from "@/utils/cn/cn";
 
 const RootLayout = () => {
   const matches = useMatches();
+  const mainRef = useRef<HTMLElement>(null);
+
+  useScrollToTop(mainRef);
 
   const currentMatch = matches[matches.length - 1];
   const handle = currentMatch?.handle as RouteHandle | undefined;
@@ -15,6 +20,7 @@ const RootLayout = () => {
   return (
     <div className="flex h-dvh justify-center bg-gray-100">
       <main
+        ref={mainRef}
         className={cn(
           "relative flex h-dvh w-full flex-col overflow-y-auto overflow-x-hidden",
           "pt-safe-top pr-safe-right pb-safe-bottom pl-safe-left",
