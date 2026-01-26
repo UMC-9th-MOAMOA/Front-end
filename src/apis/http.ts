@@ -11,12 +11,31 @@ const DEFAULT_HEADERS: HeadersInit = {
 };
 
 // 응답을 JSON으로 파싱하는 헬퍼 함수
-async function parseJson<T>(response: Response): Promise<T> {
-  const text = await response.text();
-  if (!text) {
-    return {} as T;
+async function parseBody<T>(response: Response): Promise<T | string | null> {
+  // 1. 본문이 없는 상태 코드 처리
+  if (response.status === 204 || response.status === 205) return null;
+
+  try {
+    const text = await response.text();
+    if (!text) return null;
+
+    const contentType = response.headers.get("content-type") ?? "";
+
+    // 2. JSON 파싱 시도
+    if (contentType.includes("application/json")) {
+      try {
+        return JSON.parse(text) as T;
+      } catch {
+        return text;
+      }
+    }
+
+    // 3. 그 외
+    return text;
+  } catch (error) {
+    console.error("Parsing error:", error);
+    return null;
   }
-  return JSON.parse(text) as T;
 }
 
 // fetch 실행, 헤더 합치기, 에러 처리
@@ -30,7 +49,7 @@ async function request<T>(input: string, init: RequestInit = {}): Promise<T> {
     credentials: "include",
   });
 
-  const data = await parseJson<T>(response);
+  const data = await parseBody<T>(response);
 
   if (!response.ok) {
     const error: ApiError = {
@@ -48,7 +67,7 @@ async function request<T>(input: string, init: RequestInit = {}): Promise<T> {
     throw error;
   }
 
-  return data;
+  return data as T;
 }
 
 // 인증이 필요 없는 요청
