@@ -29,6 +29,7 @@ export default function LoginForm() {
   const [autoLogin, setAutoLogin] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const [emailError, setEmailError] = useState<string | null>(null);
   const [isBlockedModalOpen, setIsBlockedModalOpen] = useState(false);
   const [blockedCode, setBlockedCode] = useState<
     "" | "AUTH403_2" | "AUTH403_3"
@@ -38,13 +39,20 @@ export default function LoginForm() {
   const [isRecovering, setIsRecovering] = useState(false);
   const [recoverError, setRecoverError] = useState<string | null>(null);
   const isFormValid = email.trim().length > 0 && password.trim().length > 0;
+  const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!isFormValid || isLoading) return;
 
+    if (!isEmailValid) {
+      setEmailError("이메일 형식을 확인해 주세요.");
+      return;
+    }
+
     setIsLoading(true);
     setSubmitError(null);
+    setEmailError(null);
 
     try {
       const response = await login(email.trim(), password.trim());
@@ -123,13 +131,16 @@ export default function LoginForm() {
   };
 
   return (
-    <form className="flex flex-col gap-20" onSubmit={handleSubmit}>
+    <form className="flex flex-col gap-20" onSubmit={handleSubmit} noValidate>
       <AuthTextField
         name="email"
         placeholder="이메일 주소를 입력해주세요"
         type="email"
         value={email}
-        onChange={(e) => setEmail(e.target.value)}
+        onChange={(e) => {
+          setEmail(e.target.value);
+          if (emailError) setEmailError(null);
+        }}
         width="full"
         variant="outlined"
       />
@@ -162,6 +173,9 @@ export default function LoginForm() {
       </Button>
       {submitError && (
         <p className="body-5 -mt-8 text-center text-red-500">{submitError}</p>
+      )}
+      {emailError && (
+        <p className="body-5 -mt-8 text-center text-red-500">{emailError}</p>
       )}
       <AuthLinksRow />
       <Modal
