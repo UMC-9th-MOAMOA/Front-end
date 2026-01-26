@@ -39,5 +39,12 @@ export default defineConfig({
   },
   server: {
     host: true,
+    proxy: {
+      "/api": {
+        target: "https://api.moamoa.io.kr",
+        changeOrigin: true,
+        secure: true,
+      },
+    },
   },
 });
