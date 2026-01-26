@@ -2,20 +2,18 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
+import DividerIcon from "@/assets/icons/ic_divider.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
 import { PasswordTextField } from "../../components/PasswordTextField";
 
 function AuthLinksRow() {
   return (
-    <div className="flex items-center justify-center gap-16 text-gray-600 text-sm">
-      <Link to="/find-id" className="hover:underline">
-        아이디
-      </Link>
+    <div className="flex items-center justify-center gap-24 text-gray-600 text-sm">
       <Link to="/reset-password" className="hover:underline">
         비밀번호 찾기
       </Link>
-      <span className="text-gray-900">|</span>
+      <DividerIcon className="h-18 w-1" aria-hidden="true" />
       <Link to="/signup" className="text-black">
         회원가입
       </Link>
@@ -65,7 +63,7 @@ export default function LoginForm() {
       </label>
       <Button
         type="submit"
-        className="heading-5 mt-12 mb-4 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+        className="heading-5 mt-23 mb-4 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-800"
       >
         로그인
       </Button>
