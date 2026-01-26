@@ -9,6 +9,9 @@ import {
 import AuthHeader from "../components/AuthHeader";
 import { AuthTextField } from "../components/AuthTextField";
 import { Modal } from "../components/Modal";
+import { PasswordTextField } from "../components/PasswordTextField";
+import { PasswordStrengthMeter } from "../signup/components/PWStrengthMeter";
+import { getPasswordStrength } from "../signup/utils/PWStrength";
 
 type Step = "EMAIL" | "CODE" | "NEW_PASSWORD";
 type Loading = null | "SEND" | "VERIFY" | "RESET";
@@ -45,6 +48,17 @@ export default function Password() {
   const [noAccountModalOpen, setNoAccountModalOpen] = useState(false);
   const [emailError, setEmailError] = useState<string | undefined>(undefined);
 
+  const [resetToken, setResetToken] = useState<string>("");
+
+  const [password, setPassword] = useState("");
+  const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const [passwordErrorMessage, setPasswordErrorMessage] = useState<
+    string | undefined
+  >(undefined);
+  const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] =
+    useState<string | undefined>(undefined);
+
   const { sendEmail, verifyCode } = useMemo(() => {
     if (USE_MOCK) {
       return {
@@ -62,6 +76,44 @@ export default function Password() {
       },
     };
   }, []);
+
+  const pw = useMemo(() => getPasswordStrength(password), [password]);
+  const disabled = loading === "RESET";
+  const canUsePassword = pw.canSubmit;
+
+  const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    setPassword(v);
+    setErrorText("");
+
+    if (!v) {
+      setPasswordErrorMessage(undefined);
+    } else if (!getPasswordStrength(v).canSubmit) {
+      setPasswordErrorMessage("");
+    } else {
+      setPasswordErrorMessage(undefined);
+    }
+
+    if (passwordConfirm && v !== passwordConfirm) {
+      setPasswordConfirmErrorMessage("비밀번호가 일치하지 않아요.");
+    } else {
+      setPasswordConfirmErrorMessage(undefined);
+    }
+  };
+
+  const onPasswordConfirmChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const v = e.target.value;
+    setPasswordConfirm(v);
+    setErrorText("");
+
+    if (!v) {
+      setPasswordConfirmErrorMessage(undefined);
+    } else if (v !== password) {
+      setPasswordConfirmErrorMessage("비밀번호가 일치하지 않아요.");
+    } else {
+      setPasswordConfirmErrorMessage(undefined);
+    }
+  };
 
   const handleSendEmail = async () => {
     setErrorText("");
@@ -101,6 +153,7 @@ export default function Password() {
     try {
       setLoading("VERIFY");
       const data = await verifyCode(email, code, "SUCCESS");
+      setResetToken(data.resetToken);
       setStep("NEW_PASSWORD");
       if (USE_MOCK) console.log("mock resetToken:", data.resetToken);
     } catch (e: unknown) {
@@ -125,7 +178,7 @@ export default function Password() {
       <img
         src={Logo}
         alt="모아모아 로고"
-        className="mx-auto mt-129 mb-50 block h-auto w-193"
+        className="mx-auto mt-129 block h-auto w-193"
       />
 
       {/* 가입 안 된 이메일 안내 모달 */}
@@ -166,7 +219,7 @@ export default function Password() {
       {/* 이메일 주소 입력 스텝 */}
       {step === "EMAIL" && (
         <>
-          <h1 className="heading-3 text-center text-black">
+          <h1 className="heading-3 mt-50 text-center text-black">
             가입하신 이메일 주소를 입력해주세요.
           </h1>
           <p className="body-4 mt-6 text-center text-gray-600">
@@ -212,7 +265,7 @@ export default function Password() {
       {/* 인증 코드 입력 스텝 */}
       {step === "CODE" && (
         <>
-          <h1 className="heading-3 text-center text-black">
+          <h1 className="heading-3 mt-50 text-center text-black">
             인증번호를 입력해주세요.
           </h1>
           <p className="body-4 mt-6 text-center text-gray-600">
@@ -248,7 +301,7 @@ export default function Password() {
             type="button"
             onClick={handleVerifyCode}
             disabled={loading === "VERIFY"}
-            className="mt-46 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+            className="mt-20 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
           >
             {loading === "VERIFY" ? "확인 중..." : "인증번호 확인"}
           </Button>
@@ -264,12 +317,45 @@ export default function Password() {
       {/* 새 비밀번호 설정 스텝 */}
       {step === "NEW_PASSWORD" && (
         <>
-          <h1 className="heading-3 text-center text-black">
+          <h1 className="heading-3 mt-40 text-center text-black">
             새로운 비밀번호 입력해주세요
           </h1>
+          <div className="flex flex-col">
+            <div className="mb-20 flex flex-col gap-6">
+              <p className="body-2 mt-22 mb-10 text-black">새 비밀번호</p>
+              <PasswordTextField
+                placeholder="비밀번호"
+                value={password}
+                onChange={onPasswordChange}
+                width="full"
+                variant="ghost"
+                disabled={disabled}
+                error={!canUsePassword && password.length > 0}
+                errorMessage={passwordErrorMessage}
+                name="password"
+              />
+            </div>
+            <div className="flex flex-col gap-6">
+              <p className="body-2 mb-10 text-black">새 비밀번호 확인</p>
+              <PasswordTextField
+                placeholder="비밀번호 확인"
+                value={passwordConfirm}
+                onChange={onPasswordConfirmChange}
+                width="full"
+                variant="ghost"
+                disabled={disabled}
+                errorMessage={passwordConfirmErrorMessage}
+                name="passwordConfirm"
+              />
+              <PasswordStrengthMeter
+                password={password}
+                helperText="영문 숫자 특수문자를 포함한 8자 이상 입력해주세요"
+              />
+            </div>
+          </div>
           <Button
             type="button"
-            className="mt-74 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+            className="mt-30 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
           >
             비밀번호 변경하기
           </Button>
