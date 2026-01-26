@@ -74,7 +74,7 @@ export default function Password() {
 
     try {
       setLoading("SEND");
-      await sendEmail(email, "USER_NOT_FOUND");
+      await sendEmail(email, "SUCCESS");
       setStep("CODE");
     } catch (e: unknown) {
       const serverCode = getServerCode(e);
