@@ -16,10 +16,10 @@ export const textFieldVariants = cva(
       },
       variant: {
         outlined: "border border-gray-500 bg-gray-100",
-        ghost: "border-none bg-gray-100",
+        ghost: "border border-transparent bg-gray-100",
       },
       error: {
-        true: "border-red-400 focus:border-red-400",
+        true: ["!border-red-500 focus:outline-red-500"].join(" "),
       },
     },
     defaultVariants: {
