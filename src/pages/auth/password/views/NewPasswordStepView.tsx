@@ -1,7 +1,8 @@
 import type { ChangeEvent } from "react";
 import { Button } from "@/components/common/button/Button";
-import { PasswordTextField } from "../../components/PasswordTextField";
 import { PasswordStrengthMeter } from "../../components/PasswordStrengthMeter";
+import { PasswordTextField } from "../../components/PasswordTextField";
+import { PASSWORD_ALLOWED_HELPER_TEXT } from "../../utils/passwordStrength";
 
 type NewPasswordStepViewProps = {
   password: string;
@@ -58,7 +59,7 @@ export function NewPasswordStepView({
           />
           <PasswordStrengthMeter
             password={password}
-            helperText="영문 숫자 특수문자를 포함한 8자 이상 입력해주세요"
+            helperText={PASSWORD_ALLOWED_HELPER_TEXT}
           />
         </div>
       </div>

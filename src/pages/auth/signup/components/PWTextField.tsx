@@ -1,7 +1,8 @@
 // signup/components/PWTextField.tsx
 import type React from "react";
-import { PasswordTextField } from "../../components/PasswordTextField";
 import { PasswordStrengthMeter } from "../../components/PasswordStrengthMeter";
+import { PasswordTextField } from "../../components/PasswordTextField";
+import { PASSWORD_ALLOWED_HELPER_TEXT } from "../../utils/passwordStrength";
 
 export type PWTextFieldProps = {
   password: string;
@@ -26,7 +27,7 @@ export function PWTextField({
   disabled = false,
   passwordErrorMessage,
   passwordConfirmErrorMessage,
-  helperText = "영문, 숫자, 특수문자 포함하여 8자 이상 입력해주세요",
+  helperText = PASSWORD_ALLOWED_HELPER_TEXT,
 }: PWTextFieldProps) {
   return (
     <section className="flex flex-col gap-8">

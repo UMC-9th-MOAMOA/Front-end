@@ -6,7 +6,10 @@ import {
   mockVerifyResetCode,
 } from "@/mocks/auth/passwordReset.mock";
 import AuthHeader from "../components/AuthHeader";
-import { getPasswordStrength } from "../utils/passwordStrength";
+import {
+  getPasswordStrength,
+  PASSWORD_INVALID_MESSAGE,
+} from "../utils/passwordStrength";
 import {
   getServerCode,
   isValidEmail,
@@ -64,10 +67,15 @@ export default function Password() {
 
     if (!v) {
       setPasswordErrorMessage(undefined);
-    } else if (!getPasswordStrength(v).canSubmit) {
-      setPasswordErrorMessage("");
     } else {
-      setPasswordErrorMessage(undefined);
+      const strength = getPasswordStrength(v);
+      if (strength.hasInvalidChar) {
+        setPasswordErrorMessage(PASSWORD_INVALID_MESSAGE);
+      } else if (!strength.canSubmit) {
+        setPasswordErrorMessage("");
+      } else {
+        setPasswordErrorMessage(undefined);
+      }
     }
 
     if (passwordConfirm && v !== passwordConfirm) {
