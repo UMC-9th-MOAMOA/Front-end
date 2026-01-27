@@ -5,6 +5,7 @@ import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
 import Search from "@/pages/search/Search";
+import { AuthProvider } from "@/auth/AuthProvider";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
@@ -15,7 +16,11 @@ export interface RouteHandle {
 const routes: (RouteObject & { handle?: RouteHandle })[] = [
   {
     path: "/",
-    element: <RootLayout />,
+    element: (
+      <AuthProvider>
+        <RootLayout />
+      </AuthProvider>
+    ),
     children: [
       { path: "", element: <HomePage />, handle: { bgColor: "bg-moamoa-50" } },
       {
