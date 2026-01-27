@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { login, recoverAccount } from "@/apis/auth";
 import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
@@ -24,6 +24,7 @@ function AuthLinksRow() {
 }
 
 export default function LoginForm() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
@@ -60,7 +61,7 @@ export default function LoginForm() {
       const storage = autoLogin ? localStorage : sessionStorage;
       storage.setItem("accessToken", accessToken);
       storage.setItem("grantType", grantType);
-      // TODO: 로그인 성공 후 이동 처리 (예: navigate("/"))
+      navigate("/", { replace: true });
     } catch (error) {
       const isErrorObject = typeof error === "object" && error !== null;
       const code =
@@ -251,7 +252,10 @@ export default function LoginForm() {
           <Button
             type="button"
             className="body-2 mt-32 h-50 w-154 rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
-            onClick={() => setIsRecoverSuccessModalOpen(false)}
+            onClick={() => {
+              setIsRecoverSuccessModalOpen(false);
+              navigate("/", { replace: true });
+            }}
           >
             확인
           </Button>
