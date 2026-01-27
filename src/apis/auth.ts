@@ -46,9 +46,3 @@ export async function recoverAccount(email: string, password: string) {
     body: JSON.stringify({ email, password }),
   });
 }
-
-export async function refreshAccessToken() {
-  return publicFetch<RefreshResponse>("/api/v1/auth/refresh", {
-    method: "POST",
-  });
-}

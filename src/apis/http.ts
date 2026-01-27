@@ -10,6 +10,21 @@ const DEFAULT_HEADERS: HeadersInit = {
   "Content-Type": "application/json",
 };
 
+// HeadersInit을 안전하게 병합 (Headers 인스턴스도 지원)
+function mergeHeaders(
+  base?: HeadersInit,
+  extra?: HeadersInit,
+): Headers {
+  const merged = new Headers(base);
+  if (!extra) return merged;
+
+  new Headers(extra).forEach((value, key) => {
+    merged.set(key, value);
+  });
+
+  return merged;
+}
+
 // 응답을 JSON으로 파싱하는 헬퍼 함수
 async function parseBody<T>(response: Response): Promise<T | string | null> {
   // 1. 본문이 없는 상태 코드 처리
@@ -42,10 +57,7 @@ async function parseBody<T>(response: Response): Promise<T | string | null> {
 async function request<T>(input: string, init: RequestInit = {}): Promise<T> {
   const response = await fetch(input, {
     ...init,
-    headers: {
-      ...DEFAULT_HEADERS,
-      ...(init.headers ?? {}),
-    },
+    headers: mergeHeaders(DEFAULT_HEADERS, init.headers),
     credentials: "include",
   });
 
