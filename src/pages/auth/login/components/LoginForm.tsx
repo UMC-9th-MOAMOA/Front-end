@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login, recoverAccount } from "@/apis/auth";
+import { setStoredAuth } from "@/apis/authStorage";
 import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import DividerIcon from "@/assets/icons/ic_divider.svg?react";
-import { Button } from "@/components/common/button/Button";
 import { useAuth } from "@/auth/AuthProvider";
+import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
 import { Modal } from "../../components/Modal";
 import { PasswordTextField } from "../../components/PasswordTextField";
@@ -60,9 +61,7 @@ export default function LoginForm() {
     try {
       const response = await login(email.trim(), password.trim());
       const { accessToken, grantType } = response.result;
-      const storage = autoLogin ? localStorage : sessionStorage;
-      storage.setItem("accessToken", accessToken);
-      storage.setItem("grantType", grantType);
+      setStoredAuth(accessToken, grantType, { autoLogin });
       syncAuth();
       navigate("/", { replace: true });
     } catch (error) {
@@ -110,9 +109,7 @@ export default function LoginForm() {
         return;
       }
       const { accessToken, grantType } = response.result;
-      const storage = autoLogin ? localStorage : sessionStorage;
-      storage.setItem("accessToken", accessToken);
-      storage.setItem("grantType", grantType);
+      setStoredAuth(accessToken, grantType, { autoLogin });
       syncAuth();
       setIsBlockedModalOpen(false);
       setIsRecoverSuccessModalOpen(true);
