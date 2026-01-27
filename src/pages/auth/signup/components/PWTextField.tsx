@@ -1,7 +1,7 @@
 // signup/components/PWTextField.tsx
 import type React from "react";
 import { PasswordTextField } from "../../components/PasswordTextField";
-import { PasswordStrengthMeter } from "./PWStrengthMeter";
+import { PasswordStrengthMeter } from "../../components/PasswordStrengthMeter";
 
 export type PWTextFieldProps = {
   password: string;

@@ -1,7 +1,7 @@
 import type { ChangeEvent } from "react";
 import { Button } from "@/components/common/button/Button";
 import { PasswordTextField } from "../../components/PasswordTextField";
-import { PasswordStrengthMeter } from "../../signup/components/PWStrengthMeter";
+import { PasswordStrengthMeter } from "../../components/PasswordStrengthMeter";
 
 type NewPasswordStepViewProps = {
   password: string;

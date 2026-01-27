@@ -6,7 +6,7 @@ import {
   mockVerifyResetCode,
 } from "@/mocks/auth/passwordReset.mock";
 import AuthHeader from "../components/AuthHeader";
-import { getPasswordStrength } from "../signup/utils/PWStrength";
+import { getPasswordStrength } from "../utils/passwordStrength";
 import {
   getServerCode,
   isValidEmail,
