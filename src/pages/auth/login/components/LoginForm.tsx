@@ -5,6 +5,7 @@ import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import DividerIcon from "@/assets/icons/ic_divider.svg?react";
 import { Button } from "@/components/common/button/Button";
+import { useAuth } from "@/auth/AuthProvider";
 import { AuthTextField } from "../../components/AuthTextField";
 import { Modal } from "../../components/Modal";
 import { PasswordTextField } from "../../components/PasswordTextField";
@@ -25,6 +26,7 @@ function AuthLinksRow() {
 
 export default function LoginForm() {
   const navigate = useNavigate();
+  const { syncAuth } = useAuth();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
@@ -61,6 +63,7 @@ export default function LoginForm() {
       const storage = autoLogin ? localStorage : sessionStorage;
       storage.setItem("accessToken", accessToken);
       storage.setItem("grantType", grantType);
+      syncAuth();
       navigate("/", { replace: true });
     } catch (error) {
       const isErrorObject = typeof error === "object" && error !== null;
@@ -110,6 +113,7 @@ export default function LoginForm() {
       const storage = autoLogin ? localStorage : sessionStorage;
       storage.setItem("accessToken", accessToken);
       storage.setItem("grantType", grantType);
+      syncAuth();
       setIsBlockedModalOpen(false);
       setIsRecoverSuccessModalOpen(true);
     } catch (error) {

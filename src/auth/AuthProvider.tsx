@@ -1,6 +1,7 @@
 import {
   createContext,
   type PropsWithChildren,
+  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -13,11 +14,13 @@ import { refreshTokens } from "@/apis/refresh";
 type AuthContextValue = {
   isAuthenticated: boolean;
   isRestoring: boolean;
+  syncAuth: () => void;
 };
 
 export const AuthContext = createContext<AuthContextValue>({
   isAuthenticated: false,
   isRestoring: true,
+  syncAuth: () => {},
 });
 
 export function useAuth() {
@@ -31,6 +34,9 @@ export function AuthProvider({ children }: PropsWithChildren) {
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!getStoredAuth().accessToken
   );
+  const syncAuth = useCallback(() => {
+    setIsAuthenticated(!!getStoredAuth().accessToken);
+  }, []);
 
   // 앱 시작 시 저장된 인증 정보 복원 시도
   useEffect(() => {
@@ -49,7 +55,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
 
       if (cancelled) return;
 
-      setIsAuthenticated(!!getStoredAuth().accessToken);
+      syncAuth();
       setIsRestoring(false);
     };
 
@@ -58,7 +64,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     return () => {
       cancelled = true;
     };
-  }, []);
+  }, [syncAuth]);
 
   // 로그인 페이지에서 이미 인증된 상태일 경우 홈으로 이동
   useEffect(() => {
@@ -68,8 +74,8 @@ export function AuthProvider({ children }: PropsWithChildren) {
   }, [isAuthenticated, location.pathname, navigate]);
 
   const value = useMemo(
-    () => ({ isAuthenticated, isRestoring }),
-    [isAuthenticated, isRestoring]
+    () => ({ isAuthenticated, isRestoring, syncAuth }),
+    [isAuthenticated, isRestoring, syncAuth]
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
