@@ -1,6 +1,7 @@
 import {
   createContext,
   type PropsWithChildren,
+  useContext,
   useEffect,
   useMemo,
   useState,
@@ -18,6 +19,10 @@ export const AuthContext = createContext<AuthContextValue>({
   isAuthenticated: false,
   isRestoring: true,
 });
+
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
 export function AuthProvider({ children }: PropsWithChildren) {
   const location = useLocation();

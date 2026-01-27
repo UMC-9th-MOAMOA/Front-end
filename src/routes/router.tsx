@@ -6,6 +6,7 @@ import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
 import Search from "@/pages/search/Search";
 import { AuthProvider } from "@/auth/AuthProvider";
+import { RequireAuth, RequireGuest } from "@/auth/AuthGuards";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
@@ -22,50 +23,94 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       </AuthProvider>
     ),
     children: [
-      { path: "", element: <HomePage />, handle: { bgColor: "bg-moamoa-50" } },
+      {
+        path: "",
+        element: (
+          <RequireAuth redirectTo="/login">
+            <HomePage />
+          </RequireAuth>
+        ),
+        handle: { bgColor: "bg-moamoa-50" },
+      },
       {
         path: "login",
-        element: <LoginPage />,
+        element: (
+          <RequireGuest redirectTo="/">
+            <LoginPage />
+          </RequireGuest>
+        ),
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "signup",
-        element: <SignUpPage />,
+        element: (
+          <RequireGuest redirectTo="/">
+            <SignUpPage />
+          </RequireGuest>
+        ),
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "find-id",
-        element: <FindId />,
+        element: (
+          <RequireGuest redirectTo="/">
+            <FindId />
+          </RequireGuest>
+        ),
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "reset-password",
-        element: <ResetPassword />,
+        element: (
+          <RequireGuest redirectTo="/">
+            <ResetPassword />
+          </RequireGuest>
+        ),
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "onboarding",
-        element: <div>온보딩</div>,
+        element: (
+          <RequireAuth redirectTo="/login">
+            <div>온보딩</div>
+          </RequireAuth>
+        ),
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
         path: "mission",
-        element: <div>미션</div>,
+        element: (
+          <RequireAuth redirectTo="/login">
+            <div>미션</div>
+          </RequireAuth>
+        ),
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
         path: "search",
-        element: <Search />,
+        element: (
+          <RequireAuth redirectTo="/login">
+            <Search />
+          </RequireAuth>
+        ),
         handle: { bgColor: "bg-gray-50" },
       },
       {
         path: "mypage",
-        element: <div>마이페이지</div>,
+        element: (
+          <RequireAuth redirectTo="/login">
+            <div>마이페이지</div>
+          </RequireAuth>
+        ),
         handle: { bgColor: "bg-gray-100" },
       },
       {
         path: "settings",
-        element: <div>설정</div>,
+        element: (
+          <RequireAuth redirectTo="/login">
+            <div>설정</div>
+          </RequireAuth>
+        ),
         handle: { bgColor: "bg-gray-50" },
       },
     ],
