@@ -5,6 +5,7 @@ import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
 import Search from "@/pages/search/Search";
+import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
@@ -52,6 +53,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         path: "search",
         element: <Search />,
         handle: { bgColor: "bg-gray-50" },
+      },
+      {
+        path: "today-mission",
+        element: <TodayMission />,
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
         path: "mypage",
