@@ -70,35 +70,9 @@ async function request<T>(input: string, init: RequestInit = {}): Promise<T> {
   return data as T;
 }
 
+export { request };
+
 // 인증이 필요 없는 요청
 export function publicFetch<T>(input: string, init: RequestInit = {}) {
   return request<T>(input, init);
-}
-
-// 저장된 인증 정보 가져오기
-function getStoredAuth() {
-  const accessToken =
-    localStorage.getItem("accessToken") ||
-    sessionStorage.getItem("accessToken") ||
-    "";
-  const grantType =
-    localStorage.getItem("grantType") ||
-    sessionStorage.getItem("grantType") ||
-    "Bearer";
-
-  return { accessToken, grantType };
-}
-
-// 인증이 필요한 요청
-export function authFetch<T>(input: string, init: RequestInit = {}) {
-  const { accessToken, grantType } = getStoredAuth();
-  const authHeader = accessToken ? `${grantType} ${accessToken}` : "";
-
-  return request<T>(input, {
-    ...init,
-    headers: {
-      ...(init.headers ?? {}),
-      ...(authHeader ? { Authorization: authHeader } : {}),
-    },
-  });
 }
