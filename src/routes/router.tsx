@@ -6,6 +6,7 @@ import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
+import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
@@ -57,7 +58,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "pocket",
         element: <Pocket />,
-        handle: { bgColor: "bg-white", hideBottomNav: true },
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
+
+        path: "today-mission",
+        element: <TodayMission />,
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
         path: "mypage",

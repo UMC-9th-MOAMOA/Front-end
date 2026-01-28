@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import MissionCard from "@/components/MissionCard";
 import {
   MAIN_CATEGORIES,
+  type MainCategory,
   MOCK_DETAIL_MISSIONS,
   MOCK_SUB_CATEGORIES,
-  type MainCategory,
 } from "@/mocks/search/mission";
 import CategoryButton from "../components/CategoryButton";
-import MissionCard from "../components/common/MissionCard";
 import SubCategoryButton from "../components/SubCategoryButton";
 import { useCategorySwipe } from "../hooks/useCategorySwipe";
 
