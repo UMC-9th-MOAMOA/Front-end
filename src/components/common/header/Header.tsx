@@ -1,22 +1,28 @@
 import { useNavigate } from "react-router-dom";
+import IcCart from "@/assets/icons/ic_cart.svg?react";
+import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcMenu from "@/assets/icons/ic_menu.svg?react";
+import IcQuit from "@/assets/icons/ic_quit.svg?react";
 import IcSearch from "@/assets/icons/ic_search.svg?react";
+import { cn } from "@/utils/cn/cn";
 
 interface HeaderProps {
   title: string;
-  property: "common" | "search" | "menu";
+  property: "common" | "search" | "menu" | "cart" | "heart";
+  leftIcon?: "left" | "quit";
+  className?: string;
   onBack?: () => void;
-  onSearch?: () => void;
-  onMenu?: () => void;
+  onRightIconClick?: () => void;
 }
 
 export default function Header({
   title,
   property,
+  leftIcon = "left",
+  className,
   onBack,
-  onSearch,
-  onMenu,
+  onRightIconClick,
 }: HeaderProps) {
   const navigate = useNavigate();
 
@@ -28,22 +34,43 @@ export default function Header({
     }
   };
 
+  const LeftIcon = leftIcon === "quit" ? IcQuit : IcLeft;
+
   return (
-    <header className="grid grid-cols-[1.5rem_1fr_1.5rem] items-center pt-7">
-      <button type="button" aria-label="뒤로가기" onClick={handleBack}>
-        <IcLeft className="size-6" />
-      </button>
-      <h1 className="heading-2 text-center text-black">{title}</h1>
+    <header
+      className={cn(
+        "mt-28 grid w-full grid-cols-[24px_1fr_24px] items-center",
+        className
+      )}
+    >
+      <LeftIcon className="size-24 cursor-pointer" onClick={handleBack} />
+      <h1 className="heading-2 min-w-0 truncate text-center text-black">
+        {title}
+      </h1>
       <div className="flex justify-end">
         {property === "search" && (
-          <button type="button" aria-label="검색" onClick={onSearch}>
-            <IcSearch className="size-6" />
-          </button>
+          <IcSearch
+            className="size-24 cursor-pointer"
+            onClick={onRightIconClick}
+          />
         )}
         {property === "menu" && (
-          <button type="button" aria-label="메뉴" onClick={onMenu}>
-            <IcMenu className="size-6" />
-          </button>
+          <IcMenu
+            className="size-24 cursor-pointer"
+            onClick={onRightIconClick}
+          />
+        )}
+        {property === "cart" && (
+          <IcCart
+            className="size-24 cursor-pointer"
+            onClick={onRightIconClick}
+          />
+        )}
+        {property === "heart" && (
+          <IcHeart
+            className="size-24 cursor-pointer"
+            onClick={onRightIconClick}
+          />
         )}
       </div>
     </header>

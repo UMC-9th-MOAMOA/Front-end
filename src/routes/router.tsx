@@ -4,6 +4,9 @@ import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
+import Pocket from "@/pages/pocket/Pocket";
+import Search from "@/pages/search/Search";
+import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
@@ -49,8 +52,18 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "search",
-        element: <div>검색</div>,
+        element: <Search />,
         handle: { bgColor: "bg-gray-50" },
+      },
+      {
+        path: "pocket",
+        element: <Pocket />,
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
+      },
+      {
+        path: "today-mission",
+        element: <TodayMission />,
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
         path: "mypage",

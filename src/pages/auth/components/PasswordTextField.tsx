@@ -1,8 +1,8 @@
 import { useState } from "react";
 import EyeOffIcon from "@/assets/icons/auth/ic_eye-off.svg?react";
 import EyeOnIcon from "@/assets/icons/auth/ic_eye-on.svg?react";
-import type { AuthTextFieldProps } from "../../components/AuthTextField";
-import { AuthTextField } from "../../components/AuthTextField";
+import type { AuthTextFieldProps } from "../components/AuthTextField";
+import { AuthTextField } from "../components/AuthTextField";
 
 type PasswordTextFieldProps = Omit<AuthTextFieldProps, "type" | "endAdornment">;
 
