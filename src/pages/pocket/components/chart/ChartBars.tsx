@@ -13,12 +13,14 @@ interface ChartBarsProps {
 }
 
 export default function ChartBars({ weekData, yAxisMax }: ChartBarsProps) {
+  const safeYAxisMax = yAxisMax || 1;
+
   return (
     <div className="absolute inset-0 z-0 flex items-end justify-around gap-14 px-10">
       {weekData.map((count, index) => {
-        const day = DAYS[index];
+        const day = DAYS[index] ?? `day-${index}`;
         const { bg, text } = getBarColor(count);
-        const height = (count / yAxisMax) * 100;
+        const height = (count / safeYAxisMax) * 100;
 
         return (
           <div
