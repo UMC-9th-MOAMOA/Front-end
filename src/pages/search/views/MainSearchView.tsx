@@ -2,13 +2,13 @@ import { useNavigate } from "react-router-dom";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 import IcSearch from "@/assets/icons/ic_search.svg?react";
 import { Button } from "@/components/common/button/Button";
+import MissionCard from "@/components/MissionCard";
 import {
   MOCK_CATEGORY_MISSIONS,
   MOCK_MAIN_DATA,
   MOCK_SUB_CATEGORIES,
 } from "@/mocks/search/mission";
 import CategorySection from "../components/CategorySection";
-import MissionCard from "../components/common/MissionCard";
 import TodayMissionSection from "../components/TodayMissionSection";
 import { useCategorySwipe } from "../hooks/useCategorySwipe";
 

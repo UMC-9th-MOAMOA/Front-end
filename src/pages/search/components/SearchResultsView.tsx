@@ -1,7 +1,7 @@
+import MissionCard from "@/components/MissionCard";
 import { MOCK_SEARCH_RESULT_KEYWORDS } from "@/mocks/search/mission";
 import type { Mission } from "@/types/search/mission";
 import KeywordChip from "./common/KeywordChip";
-import MissionCard from "./common/MissionCard";
 
 interface SearchResultsViewProps {
   selectedKeywords: string[];
