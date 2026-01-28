@@ -1,6 +1,5 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Logo from "@/assets/LOGO.svg";
 import {
   mockSendResetEmail,
   mockVerifyResetCode,
@@ -156,12 +155,7 @@ export default function Password() {
   return (
     <div className="flex flex-col">
       {/* 공통 헤더 */}
-      <AuthHeader title="비밀번호 재설정" iconType="arrow" />
-      <img
-        src={Logo}
-        alt="모아모아 로고"
-        className="mx-auto mt-129 block h-auto w-193"
-      />
+      <AuthHeader title="비밀번호 재설정" iconType="close" />
 
       {/* 가입 안 된 이메일 안내 모달 */}
       <NoAccountModalView
