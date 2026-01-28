@@ -1,6 +1,7 @@
 import { useState } from "react";
 import type { OnboardingPayload } from "@/types/onboarding";
 import OnboardingHeader from "./components/OnboardingHeader";
+import OnboardingLoadingView from "./views/OnboardingLoadingView";
 import OnboardingStep1View from "./views/OnboardingStep1View";
 import OnboardingStep2View from "./views/OnboardingStep2View";
 import OnboardingStep3View from "./views/OnboardingStep3View";
@@ -46,19 +47,23 @@ export default function Onboarding() {
           <OnboardingStep4View
             payload={payload}
             onChange={setPayload}
-            onNext={() => setCurrentStep((prev) => Math.min(4, prev + 1))}
+            onNext={() => setCurrentStep((prev) => Math.min(5, prev + 1))}
           />
         );
+      case 5:
+        return <OnboardingLoadingView />;
     }
   };
 
   return (
     <main className="flex flex-1 flex-col">
-      <OnboardingHeader
-        currentStep={currentStep}
-        totalSteps={4}
-        onBack={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
-      />
+      {currentStep !== 5 && (
+        <OnboardingHeader
+          currentStep={currentStep}
+          totalSteps={4}
+          onBack={() => setCurrentStep((prev) => Math.max(1, prev - 1))}
+        />
+      )}
       {renderStep()}
     </main>
   );
