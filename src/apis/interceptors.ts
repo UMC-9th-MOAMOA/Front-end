@@ -1,4 +1,8 @@
-import axios, { type AxiosError, type AxiosInstance, type InternalAxiosRequestConfig } from "axios";
+import axios, {
+  type AxiosError,
+  type AxiosInstance,
+  type InternalAxiosRequestConfig,
+} from "axios";
 import { storage } from "./storage";
 
 interface RetryableConfig extends InternalAxiosRequestConfig {
@@ -8,7 +12,6 @@ interface RetryableConfig extends InternalAxiosRequestConfig {
 let isRefreshing = false;
 let refreshPromise: Promise<string> | null = null;
 
-// 리프레시 요청은 직접 axios로 발신 → interceptor 우회, 무한루프 방지
 const refreshAccessToken = async (): Promise<string> => {
   const { data } = await axios.post<{ accessToken: string }>(
     `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
@@ -29,9 +32,13 @@ export const attachInterceptors = (instance: AxiosInstance) => {
   });
 
   instance.interceptors.response.use(undefined, async (error: AxiosError) => {
-    const originalConfig = error.config as RetryableConfig;
+    const originalConfig = error.config as RetryableConfig | undefined;
 
-    if (error.response?.status !== 401 || originalConfig._retry) {
+    if (
+      error.response?.status !== 401 ||
+      !originalConfig ||
+      originalConfig._retry
+    ) {
       throw error;
     }
 
