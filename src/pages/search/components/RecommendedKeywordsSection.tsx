@@ -1,8 +1,11 @@
+import { Button } from "@/components/common/button/Button";
 import {
   KEYWORD_FILTER_TABS,
   MOCK_RECOMMENDED_KEYWORDS,
 } from "@/mocks/search/mission";
 import KeywordChip from "./common/KeywordChip";
+
+const FLAT_KEYWORDS = MOCK_RECOMMENDED_KEYWORDS.flat();
 
 interface RecommendedKeywordsSectionProps {
   selectedFilter: string;
@@ -21,25 +24,23 @@ export default function RecommendedKeywordsSection({
     <div className="mt-37">
       <h3 className="body-2">추천 검색어</h3>
 
-      <div className="-mx-0.5 mt-12 flex w-full rounded-full bg-moamoa-50">
+      <div className="mt-12 flex w-full rounded-full bg-moamoa-50">
         {KEYWORD_FILTER_TABS.map((tab) => (
-          <button
+          <Button
             key={tab}
-            type="button"
             onClick={() => onFilterChange(tab)}
-            className={`body-4 w-81 rounded-full py-10 ${
+            className={`body-4 flex-1 rounded-full py-10 ${
               selectedFilter === tab
                 ? "bg-moamoa-300 text-white"
                 : "text-moamoa-300"
             }`}
           >
             {tab}
-          </button>
+          </Button>
         ))}
       </div>
 
-      {/* 추천 검색어 그룹 - 3줄 가로 스크롤 (gap-8 + w-17 spacer = 25px) */}
-      <div className="-mx-layout-side mt-23 overflow-x-auto">
+      <div className="-mx-layout-side mt-23 overflow-x-auto md:hidden">
         <div className="flex flex-col gap-12">
           {MOCK_RECOMMENDED_KEYWORDS.map((row, rowIndex) => (
             <div key={`row-${rowIndex}`} className="flex gap-8">
@@ -60,6 +61,18 @@ export default function RecommendedKeywordsSection({
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="mt-23 mb-20 hidden flex-wrap gap-8 md:flex">
+        {FLAT_KEYWORDS.map((keyword) => (
+          <KeywordChip
+            key={keyword}
+            keyword={keyword}
+            isSelected={selectedKeywords.includes(keyword)}
+            onClick={() => onKeywordClick(keyword)}
+            size="lg"
+          />
+        ))}
       </div>
     </div>
   );
