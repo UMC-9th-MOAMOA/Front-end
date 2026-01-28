@@ -30,8 +30,9 @@ export default function WeeklyGoalSection({
           {totalGoal}개 중 {completed}개의 미션을 성공했어요!
         </p>
         <p className="body-4 text-center text-gray-600">
-          지난주보다 {lastWeekGap > 0 ? `+${lastWeekGap}` : lastWeekGap}개
-          성장중
+          {lastWeekGap === 0
+            ? "지난주와 동일해요"
+            : `지난주보다 ${lastWeekGap > 0 ? `+${lastWeekGap}` : lastWeekGap}개 성장중`}
         </p>
       </div>
     </div>
