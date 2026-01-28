@@ -1,4 +1,5 @@
 import IcLock from "@/assets/icons/ic_lock.svg?react";
+import IcAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
 
 interface MissionInfoCardProps {
   organization: string;
@@ -23,7 +24,7 @@ export default function MissionInfoCard({
 }: MissionInfoCardProps) {
   const handleContentClick = () => {
     // 콘텐츠 링크로 이동
-    window.open(contentUrl, "_blank");
+    window.open(contentUrl, "_blank", "noopener,noreferrer");
     onContentClick?.();
   };
 
@@ -109,11 +110,17 @@ export default function MissionInfoCard({
           }`}
         >
           {isContentWatched ? (
-            <>
-              지금 퀴즈 도전하고 <span className="mx-4">🌰</span> 도토리 받기
-            </>
+            <div className="flex items-center justify-center">
+              <span className="heading-6 px-4 text-moamoa-500">
+                지금 퀴즈 도전하고
+              </span>
+              <IcAcorn className="h-30 w-30" />
+              <span className="heading-6 text-moamoa-500">도토리 받기</span>
+            </div>
           ) : (
-            "콘텐츠를 시청해야 퀴즈가 열려요 !"
+            <span className="heading-6 flex h-24 w-208 items-center justify-center text-red-400">
+              콘텐츠를 시청해야 퀴즈가 열려요 !
+            </span>
           )}
         </span>
         {/* 퀴즈 도전 버튼 - 상태에 따라 변경 */}
@@ -130,7 +137,7 @@ export default function MissionInfoCard({
           </button>
         ) : (
           // 회색 박스 (시청 전)
-          <div className="flex h-64 w-238 items-center justify-center gap-4 rounded-xl bg-gray-300 px-76 py-26">
+          <div className="relative flex h-64 w-238 items-center justify-center gap-4 rounded-xl bg-gray-300 px-76 py-26">
             <span className="heading-3 h-28 w-83 text-center text-gray-400">
               퀴즈 도전 !
             </span>
