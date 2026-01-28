@@ -47,10 +47,10 @@ export function AuthTextField({
   const inputClassName = `${baseClassName} ${endAdornment ? "pr-44" : ""}`;
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-10">
       {/* Label */}
       {label && (
-        <label htmlFor={inputId} className="detail text-gray-700">
+        <label htmlFor={inputId} className="body-2 text-gray-700">
           {label}
         </label>
       )}
@@ -78,9 +78,9 @@ export function AuthTextField({
 
       {/* Helper / Error message */}
       {hasError ? (
-        <p className="detail-sm text-warning-500">{errorMessage}</p>
+        <p className="body-5 text-red-500">{errorMessage}</p>
       ) : (
-        helperText && <p className="detail-sm text-gray-500">{helperText}</p>
+        helperText && <p className="body-5 text-gray-500">{helperText}</p>
       )}
     </div>
   );

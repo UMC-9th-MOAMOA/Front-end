@@ -4,7 +4,7 @@ import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
-import { PasswordTextField } from "./PasswordTextField";
+import { PasswordTextField } from "../../components/PasswordTextField";
 
 function AuthLinksRow() {
   return (
@@ -65,9 +65,7 @@ export default function LoginForm() {
       </label>
       <Button
         type="submit"
-        variant="primary"
-        size="full"
-        className="mt-12 mb-4"
+        className="heading-5 mt-12 mb-4 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
       >
         로그인
       </Button>
