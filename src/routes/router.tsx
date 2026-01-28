@@ -4,6 +4,7 @@ import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
+import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
 import RootLayout from "../layouts/RootLayout";
 
@@ -52,6 +53,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         path: "search",
         element: <Search />,
         handle: { bgColor: "bg-gray-50" },
+      },
+      {
+        path: "pocket",
+        element: <Pocket />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "mypage",
