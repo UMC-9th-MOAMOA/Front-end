@@ -58,6 +58,8 @@ export default function Password() {
   const pw = useMemo(() => getPasswordStrength(password), [password]);
   const disabled = loading !== null;
   const canUsePassword = pw.canSubmit;
+  const isPasswordFormValid =
+    canUsePassword && passwordConfirm.length > 0 && !passwordConfirmErrorMessage;
 
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
@@ -152,6 +154,9 @@ export default function Password() {
     }
   };
 
+  const handleResetPassword = () => {
+  };
+
   return (
     <div className="flex flex-col">
       {/* 공통 헤더 */}
@@ -203,10 +208,12 @@ export default function Password() {
           passwordConfirm={passwordConfirm}
           disabled={disabled}
           canUsePassword={canUsePassword}
+          isFormValid={isPasswordFormValid}
           passwordErrorMessage={passwordErrorMessage}
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
           onPasswordChange={onPasswordChange}
           onPasswordConfirmChange={onPasswordConfirmChange}
+          onSubmit={handleResetPassword}
         />
       )}
     </div>

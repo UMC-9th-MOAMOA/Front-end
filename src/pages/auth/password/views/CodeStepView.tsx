@@ -44,7 +44,7 @@ export function CodeStepView({
           type="button"
           onClick={onResendEmail}
           className="body-4 flex justify-start text-gray-600 underline disabled:text-gray-400"
-          disabled={isSending}
+          disabled={isSending || isVerifying}
         >
           인증 메일 재발송
         </button>

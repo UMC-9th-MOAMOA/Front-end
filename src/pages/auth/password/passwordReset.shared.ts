@@ -9,7 +9,9 @@ type ApiError = {
   };
 };
 
-export const USE_MOCK = true;
+const rawUseMock = import.meta.env.VITE_USE_MOCK;
+export const USE_MOCK =
+  !import.meta.env.PROD && (rawUseMock === "true" || rawUseMock === "1");
 
 export const isValidEmail = (value: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);

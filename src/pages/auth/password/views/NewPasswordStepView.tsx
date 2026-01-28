@@ -9,10 +9,13 @@ type NewPasswordStepViewProps = {
   passwordConfirm: string;
   disabled: boolean;
   canUsePassword: boolean;
+  isSubmitting?: boolean;
+  isFormValid?: boolean;
   passwordErrorMessage?: string;
   passwordConfirmErrorMessage?: string;
   onPasswordChange: (e: ChangeEvent<HTMLInputElement>) => void;
   onPasswordConfirmChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: () => void;
 };
 
 export function NewPasswordStepView({
@@ -20,11 +23,17 @@ export function NewPasswordStepView({
   passwordConfirm,
   disabled,
   canUsePassword,
+  isSubmitting,
+  isFormValid,
   passwordErrorMessage,
   passwordConfirmErrorMessage,
   onPasswordChange,
   onPasswordConfirmChange,
+  onSubmit,
 }: NewPasswordStepViewProps) {
+  const canSubmit = isFormValid ?? true;
+  const isSubmitDisabled = disabled || isSubmitting || !canSubmit;
+
   return (
     <>
       <h1 className="heading-3 mt-113 text-center text-black">
@@ -65,6 +74,8 @@ export function NewPasswordStepView({
       </div>
       <Button
         type="button"
+        onClick={onSubmit}
+        disabled={isSubmitDisabled}
         className="mt-60 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
       >
         비밀번호 변경하기
