@@ -3,6 +3,8 @@ interface ChartAxisProps {
 }
 
 export default function ChartAxis({ yAxisMax }: ChartAxisProps) {
+  const safeYAxisMax = Math.max(1, yAxisMax);
+
   return (
     <>
       <div className="absolute top-0 left-0 z-10 h-full w-1.5 bg-gray-600" />
@@ -26,12 +28,12 @@ export default function ChartAxis({ yAxisMax }: ChartAxisProps) {
         />
       </svg>
 
-      {Array.from({ length: yAxisMax + 1 }).map((_, i) => (
+      {Array.from({ length: safeYAxisMax + 1 }).map((_, i) => (
         <div
-          key={`tick-${yAxisMax - i}`}
+          key={`tick-${safeYAxisMax - i}`}
           className="absolute z-10 h-1 w-4 bg-gray-600"
           style={{
-            top: `${(i / yAxisMax) * 100}%`,
+            top: `${(i / safeYAxisMax) * 100}%`,
             left: "0.75px",
             transform: "translate(-50%, -50%)",
           }}
