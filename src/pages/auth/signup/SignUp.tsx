@@ -147,7 +147,7 @@ export default function SignUp() {
                 className="body-2 h-50 w-full bg-moamoa-50 text-moamoa-600"
                 onClick={() => setVerifyModalType(null)}
               >
-                재입력
+                다시 입력
               </Button>
               <Button
                 type="button"

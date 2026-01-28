@@ -12,9 +12,9 @@ interface AgreementItem {
 }
 
 const AGREEMENTS: AgreementItem[] = [
-  { key: "terms", label: "이용약관 동의" },
-  { key: "privacy", label: "개인정보 취급방침 동의" },
-  { key: "marketing", label: "마케팅 정보 수신 동의" },
+  { key: "terms", label: "이용약관 동의(필수)" },
+  { key: "privacy", label: "개인정보 취급방침 동의(필수)" },
+  { key: "marketing", label: "마케팅 정보 수신 동의(선택)" },
 ];
 
 export default function AgreementList() {

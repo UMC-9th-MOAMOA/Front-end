@@ -66,7 +66,7 @@ export default function EmailVerifySection({
           />
         </div>
 
-        <span className="body-2 mx-4 text-gray-700">@</span>
+        <span className="body-2 mr-2 ml-4 text-gray-700">@</span>
 
         <EmailDomainSelect
           value={emailDomain}
