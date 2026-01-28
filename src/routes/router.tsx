@@ -59,7 +59,8 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         path: "pocket",
         element: <Pocket />,
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
-
+      },
+      {
         path: "today-mission",
         element: <TodayMission />,
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
