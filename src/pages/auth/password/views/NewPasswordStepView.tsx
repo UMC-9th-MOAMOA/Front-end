@@ -27,12 +27,12 @@ export function NewPasswordStepView({
 }: NewPasswordStepViewProps) {
   return (
     <>
-      <h1 className="heading-3 mt-40 text-center text-black">
-        새로운 비밀번호 입력해주세요
+      <h1 className="heading-3 mt-113 text-center text-black">
+        새로운 비밀번호를 입력해주세요
       </h1>
-      <div className="flex flex-col">
-        <div className="mb-20 flex flex-col gap-6">
-          <p className="body-2 mt-22 mb-10 text-black">새 비밀번호</p>
+      <div className="mt-40 flex flex-col gap-10">
+        <div className="flex flex-col gap-10">
+          <p className="body-2 text-black">새 비밀번호</p>
           <PasswordTextField
             placeholder="비밀번호"
             value={password}
@@ -45,8 +45,8 @@ export function NewPasswordStepView({
             name="password"
           />
         </div>
-        <div className="flex flex-col gap-6">
-          <p className="body-2 mb-10 text-black">새 비밀번호 확인</p>
+        <div className="flex flex-col gap-10">
+          <p className="body-2 text-black">새 비밀번호 확인</p>
           <PasswordTextField
             placeholder="비밀번호 확인"
             value={passwordConfirm}
@@ -65,7 +65,7 @@ export function NewPasswordStepView({
       </div>
       <Button
         type="button"
-        className="mt-30 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+        className="mt-60 w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
       >
         비밀번호 변경하기
       </Button>

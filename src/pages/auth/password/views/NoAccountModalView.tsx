@@ -29,7 +29,7 @@ export function NoAccountModalView({
         <Button
           type="button"
           onClick={onRetry}
-          className="w-full bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+          className="w-full bg-moamoa-50 py-12 text-moamoa-600 active:bg-moamoa-100"
         >
           다시 입력
         </Button>
