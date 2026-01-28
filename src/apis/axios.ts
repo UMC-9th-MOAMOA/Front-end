@@ -12,9 +12,7 @@ const createInstance = () =>
     withCredentials: true,
   });
 
-// 인증 불필요한 요청 (로그인, 회원가입 등)
 export const publicAPI = createInstance();
 
-// 인증 필요한 요청 (토큰 자동 부여 + 리프레시 자동 재시도)
 export const authAPI = createInstance();
 attachInterceptors(authAPI);
