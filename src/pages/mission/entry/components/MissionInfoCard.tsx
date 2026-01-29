@@ -51,15 +51,15 @@ export default function MissionInfoCard({
         <span>{category}</span>
       </div>
 
-      <div className="aspect-video w-full overflow-hidden rounded-xl bg-gray-200">
+      <div className="flex h-152 w-full items-center justify-center overflow-hidden rounded-xl bg-black">
         {thumbnailUrl ? (
           <img
             src={thumbnailUrl}
             alt="콘텐츠 썸네일"
-            className="h-full w-full rounded-xl object-cover"
+            className="h-full w-full rounded-xl object-contain"
           />
         ) : (
-          <div className="flex h-full items-center justify-center">
+          <div className="flex h-full w-full items-center justify-center bg-gray-200">
             <span className="body-2 text-gray-500">콘텐츠 썸네일</span>
           </div>
         )}
@@ -69,15 +69,15 @@ export default function MissionInfoCard({
         <Button
           onClick={handleContentClick}
           className={buttonVariants({ variant: "tertiary", size: "full" })}
-          rightIcon={<IcPolygon className="text-[#84A8F5]" />}
+          rightIcon={<IcPolygon className="text-moamoa-200" />}
         >
           콘텐츠 보러가기
         </Button>
       </div>
 
       <div className="relative flex w-full items-center justify-center pt-42">
-        <div className="inline-flex w-full gap-4 px-36">
-          {Array.from({ length: 10 }).map((_, index) => (
+        <div className="inline-flex w-full gap-4 px-12">
+          {Array.from({ length: 12 }).map((_, index) => (
             <div
               key={index}
               className="h-4 flex-1 items-start rounded-md bg-moamoa-50 px-4 py-4"
