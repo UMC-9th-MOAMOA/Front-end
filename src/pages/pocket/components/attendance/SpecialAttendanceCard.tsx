@@ -15,7 +15,7 @@ export default function SpecialAttendanceCard({
 
   return (
     <div
-      className={`relative flex w-full items-center justify-between rounded-xl px-12 py-8 ${
+      className={`relative flex w-full items-center justify-between rounded-xl border-2 border-moamoa-400 px-12 py-8 ${
         isActive ? "bg-moamoa-50" : "bg-gray-200"
       }`}
     >
