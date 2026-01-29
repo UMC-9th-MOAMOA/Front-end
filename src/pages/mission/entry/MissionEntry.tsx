@@ -14,7 +14,8 @@ export default function MissionEntry() {
     organization: "00분",
     category: "카테고리",
     keywords: ["키워드", "키워드", "키워드"],
-    thumbnailUrl: "",
+    thumbnailUrl:
+      "https://i.ytimg.com/vi/7iXx2YMetq0/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCp3FACKdCGZJ4WpxnE3h1EHRftlw",
     contentUrl:
       "https://www.youtube.com/watch?v=sgxwL8V39Lc&list=RDnA4Ixnc7c34&index=26",
   };
