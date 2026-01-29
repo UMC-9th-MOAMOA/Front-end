@@ -12,14 +12,15 @@ export default function PocketView() {
 
   return (
     <div className="min-h-screen bg-white">
-      <Header
-        title="주머니"
-        property="common"
-        leftIcon="quit"
-        className="mt-24"
-      />
-
-      <div className="-mx-layout-side mt-14 h-2 bg-gray-200" />
+      <div className="sticky top-0 z-50 -mx-layout-side bg-white px-layout-side">
+        <Header
+          title="주머니"
+          property="common"
+          leftIcon="quit"
+          className="mt-0! pt-28"
+        />
+        <div className="-mx-layout-side mt-14 h-2 bg-gray-200" />
+      </div>
 
       <div className="mt-43 flex gap-18">
         <TimeCard
