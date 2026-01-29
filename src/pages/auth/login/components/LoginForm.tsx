@@ -1,5 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { login } from "@/apis/auth";
+import { storage } from "@/apis/storage";
 import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import DividerIcon from "@/assets/icons/ic_divider.svg?react";
@@ -25,9 +27,33 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [autoLogin, setAutoLogin] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    setErrorMessage("");
+    setIsSubmitting(true);
+
+    try {
+      const result = await login({ email, password });
+      storage.setToken(result.accessToken);
+
+      if (autoLogin) {
+        // Access token is already persisted; refresh flow is cookie-based.
+      }
+
+      navigate("/onboarding");
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : "로그인에 실패했습니다.";
+      setErrorMessage(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -61,11 +87,15 @@ export default function LoginForm() {
         </span>
         <span className="body-4 text-gray-900">자동 로그인</span>
       </label>
+      {errorMessage ? (
+        <p className="body-4 text-red-500">{errorMessage}</p>
+      ) : null}
       <Button
         type="submit"
         className="heading-5 mt-23 mb-4 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-800"
+        disabled={isSubmitting}
       >
-        로그인
+        {isSubmitting ? "로그인 중..." : "로그인"}
       </Button>
       <AuthLinksRow />
     </form>
