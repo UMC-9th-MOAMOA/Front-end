@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import type { CustomizationType } from "../types";
+import type { CustomizationType } from "../types/types";
 
 export const useBottomSheet = () => {
   const [activeCustomization, setActiveCustomization] =

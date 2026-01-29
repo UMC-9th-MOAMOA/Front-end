@@ -1,8 +1,8 @@
-import { cn } from "@/utils/cn/cn";
 import LockIcon from "@/assets/icons/home/ic_lock.svg?react";
 import BigAcornIcon from "@/assets/icons/ic_big_acorn.svg?react";
 import CheckCircleIcon from "@/assets/icons/ic_check_circle.svg?react";
-import type { ItemStatus, ShopItem } from "../types";
+import { cn } from "@/utils/cn/cn";
+import type { ItemStatus, ShopItem } from "../../types/types";
 
 interface ItemCardProps {
   item: ShopItem;
@@ -22,13 +22,13 @@ const ItemCard = ({ item, isBackground, status, onSelect }: ItemCardProps) => {
       onClick={onSelect}
       className={cn(
         "relative h-102 w-87 overflow-hidden rounded-lg border border-moamoa-300",
-        isSelected ? "border-3" : "border",
+        isSelected ? "border-3" : "border"
       )}
     >
       <div
         className={cn(
           "flex h-full w-full items-center justify-center",
-          !isBackground && "bg-white",
+          !isBackground && "bg-white"
         )}
       >
         {isBackground && item.image ? (

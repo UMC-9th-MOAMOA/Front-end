@@ -34,7 +34,7 @@ import ExpressionIcon from "@/assets/icons/ic_expression.svg?react";
 import HaberdasheryIcon from "@/assets/icons/ic_haberdashery.svg?react";
 import TopIcon from "@/assets/icons/ic_top.svg?react";
 
-import type { CustomizationType, ShopItem, ToolbarItem } from "../types";
+import type { CustomizationType, ShopItem, ToolbarItem } from "../types/types";
 
 export const CUSTOMIZATION_ITEMS: ToolbarItem[] = [
   { type: "background", icon: BackgroundIcon, label: "배경" },

@@ -1,8 +1,8 @@
-import { useState } from "react";
 import { motion } from "motion/react";
-import { SHOP_ITEMS } from "../constants/constants";
-import { useSheetAnimation } from "../hooks/useSheetAnimation";
-import type { BottomSheetProps, ItemStatus } from "../types";
+import { useState } from "react";
+import { SHOP_ITEMS } from "../../constants/constants";
+import { useSheetAnimation } from "../../hooks/useSheetAnimation";
+import type { BottomSheetProps, ItemStatus } from "../../types/types";
 import ItemCard from "./ItemCard";
 
 const BottomSheet = ({
@@ -11,8 +11,10 @@ const BottomSheet = ({
   isExpanded,
   onExpandChange,
 }: BottomSheetProps) => {
-  const { y, expandedTop, handlePan, handlePanEnd } =
-    useSheetAnimation(isExpanded, onExpandChange);
+  const { y, expandedTop, handlePan, handlePanEnd } = useSheetAnimation(
+    isExpanded,
+    onExpandChange
+  );
   const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const selectedItem = items.find((item) => item.type === type);
