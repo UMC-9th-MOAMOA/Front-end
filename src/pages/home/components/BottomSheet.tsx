@@ -1,85 +1,71 @@
 import { useState } from "react";
-
-export type CustomizationType =
-  | "expression"
-  | "top"
-  | "bottom"
-  | "haberdashery";
-
-interface BottomSheetProps {
-  type: CustomizationType;
-  items: {
-    type: CustomizationType;
-    icon: React.ComponentType<{ className?: string }>;
-    label: string;
-  }[];
-  sheetTop: number;
-  setSheetTop: (top: number) => void;
-}
+import { motion } from "motion/react";
+import { SHOP_ITEMS } from "../constants/constants";
+import { useSheetAnimation } from "../hooks/useSheetAnimation";
+import type { BottomSheetProps, ItemStatus } from "../types";
+import ItemCard from "./ItemCard";
 
 const BottomSheet = ({
   type,
   items,
-  sheetTop,
-  setSheetTop,
+  isExpanded,
+  onExpandChange,
 }: BottomSheetProps) => {
-  const [isDragging, setIsDragging] = useState(false);
-  const [startY, setStartY] = useState(0);
-  const [startTop, setStartTop] = useState(533);
+  const { y, expandedTop, handlePan, handlePanEnd } =
+    useSheetAnimation(isExpanded, onExpandChange);
+  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
   const selectedItem = items.find((item) => item.type === type);
   const Icon = selectedItem?.icon;
+  const shopItems = SHOP_ITEMS[type] || [];
+  const isBackground = type === "background";
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    setIsDragging(true);
-    setStartY(e.touches[0].clientY);
-    setStartTop(sheetTop);
+  const getItemStatus = (itemId: string): ItemStatus => {
+    if (selectedItemId === itemId) return "selected";
+    return "owned";
   };
 
-  const handleTouchMove = (e: React.TouchEvent) => {
-    if (!isDragging) return;
-    const deltaY = e.touches[0].clientY - startY;
-    const newTop = Math.max(412, Math.min(533, startTop + deltaY));
-    setSheetTop(newTop);
-  };
-
-  const handleTouchEnd = () => {
-    setIsDragging(false);
-    if (sheetTop < 472.5) {
-      setSheetTop(412);
-    } else {
-      setSheetTop(533);
-    }
+  const handleItemSelect = (itemId: string) => {
+    setSelectedItemId(selectedItemId === itemId ? null : itemId);
   };
 
   return (
-    <div
-      className="fixed right-0 left-0 z-15 mx-auto flex max-w-(--width-app) flex-col rounded-t-xl bg-white pb-96 transition-all duration-300"
-      style={{
-        top: `${sheetTop}px`,
-        bottom: 0,
-        ...(isDragging && { transition: "none" }),
-      }}
-      onTouchStart={handleTouchStart}
-      onTouchMove={handleTouchMove}
-      onTouchEnd={handleTouchEnd}
+    <motion.div
+      className="fixed inset-x-0 bottom-0 z-15 flex w-full flex-col rounded-t-xl bg-white"
+      style={{ top: expandedTop, y }}
     >
-      <div className="flex justify-center pt-12">
-        <div className="h-4 w-65 rounded-md bg-gray-300" />
-      </div>
-
-      <div className="px-37">
-        <div className="flex h-41 items-center gap-2 py-15">
-          {Icon && <Icon className="h-40 w-40 text-moamoa-200" />}
-          <span className="body-2 text-black">{selectedItem?.label}</span>
+      <motion.div
+        className="cursor-grab touch-none"
+        onPan={handlePan}
+        onPanEnd={handlePanEnd}
+      >
+        <div className="flex justify-center pt-12">
+          <div className="h-4 w-65 rounded-md bg-gray-300" />
         </div>
-        <div className="h-1 w-full bg-moamoa-200" />
+
+        <div className="px-37">
+          <div className="flex h-41 items-center gap-2 py-15">
+            {Icon && <Icon className="h-40 w-40 text-moamoa-200" />}
+            <span className="body-2 text-black">{selectedItem?.label}</span>
+          </div>
+          <div className="h-1 w-full bg-moamoa-200" />
+        </div>
+      </motion.div>
+
+      <div className="mt-15 mb-10 flex-1 overflow-y-auto px-37 pb-96">
+        <div className="flex flex-wrap gap-16">
+          {shopItems.map((item) => (
+            <ItemCard
+              key={item.id}
+              item={item}
+              isBackground={isBackground}
+              status={getItemStatus(item.id)}
+              onSelect={() => handleItemSelect(item.id)}
+            />
+          ))}
+        </div>
       </div>
-      {/* 추후 추가 예정 */}
-      <div className="mt-15 flex-1 overflow-y-auto px-37">
-        <p className="text-gray-500">커스터마이징 아이템 목록</p>
-      </div>
-    </div>
+    </motion.div>
   );
 };
 
