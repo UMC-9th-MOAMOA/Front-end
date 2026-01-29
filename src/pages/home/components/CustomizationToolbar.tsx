@@ -1,12 +1,8 @@
 import { cn } from "@/utils/cn/cn";
-import type { CustomizationType } from "./BottomSheet";
+import type { CustomizationType, ToolbarItem } from "../types";
 
 interface CustomizationToolbarProps {
-  items: {
-    type: CustomizationType;
-    icon: React.ComponentType<{ className?: string }>;
-    label: string;
-  }[];
+  items: ToolbarItem[];
   activeCustomization: CustomizationType | null;
   onItemClick: (type: CustomizationType) => void;
 }
@@ -17,9 +13,10 @@ const CustomizationToolbar = ({
   onItemClick,
 }: CustomizationToolbarProps) => {
   return (
-    <div className="absolute top-135 right-0 z-10 flex flex-col rounded-lg bg-white">
+    <div className="flex flex-col rounded-lg bg-white">
       {items.map((item) => {
         const Icon = item.icon;
+        const isActive = activeCustomization === item.type;
         return (
           <button
             key={item.type}
@@ -28,12 +25,7 @@ const CustomizationToolbar = ({
             className="flex items-center justify-center px-7 py-8 transition-colors"
           >
             <Icon
-              className={cn(
-                "h-40 w-40",
-                activeCustomization === item.type
-                  ? "text-positive"
-                  : "text-gray-500"
-              )}
+              className={cn("h-40 w-40", isActive ? "text-positive" : "text-gray-500")}
             />
           </button>
         );
