@@ -8,9 +8,10 @@ import OnboardingStep3View from "./views/OnboardingStep3View";
 import OnboardingStep4View from "./views/OnboardingStep4View";
 
 export default function Onboarding() {
-  const [currentStep, setCurrentStep] = useState(4);
+  const [currentStep, setCurrentStep] = useState(1);
   const [payload, setPayload] = useState<OnboardingPayload>({
     selections: [],
+    dailyMissionTime: null,
     dailyMissionGoal: null,
     goalRetention: "ONE_WEEK",
   });
@@ -42,7 +43,6 @@ export default function Onboarding() {
           />
         );
       case 4:
-      default:
         return (
           <OnboardingStep4View
             payload={payload}
@@ -50,7 +50,7 @@ export default function Onboarding() {
             onNext={() => setCurrentStep((prev) => Math.min(5, prev + 1))}
           />
         );
-      case 5:
+      default:
         return <OnboardingLoadingView />;
     }
   };

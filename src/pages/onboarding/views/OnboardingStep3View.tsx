@@ -14,11 +14,11 @@ export default function OnboardingStep3View({
   onChange,
   onNext,
 }: OnboardingStep3ViewProps) {
-  const handleSelectPanel = (panelId: string, index: number) => {
+  const handleSelectPanel = (index: number) => {
     onChange({
       ...payload,
-      dailyMissionGoal:
-        payload.dailyMissionGoal === index + 1 ? null : index + 1,
+      dailyMissionTime:
+        payload.dailyMissionTime === index + 1 ? null : index + 1,
     });
   };
 
@@ -34,7 +34,7 @@ export default function OnboardingStep3View({
             key={panel.id}
             type="button"
             className="text-left"
-            onClick={() => handleSelectPanel(panel.id, index)}
+            onClick={() => handleSelectPanel(index)}
           >
             <OnboardingCard
               variant="panel"
@@ -42,7 +42,7 @@ export default function OnboardingStep3View({
               titleClassName={panel.titleClassName}
               description={panel.description}
               descriptionClassName={panel.descriptionClassName}
-              selected={payload.dailyMissionGoal === index + 1}
+              selected={payload.dailyMissionTime === index + 1}
             />
           </button>
         ))}
@@ -53,7 +53,7 @@ export default function OnboardingStep3View({
       <Button
         type="button"
         className="heading-5 mt-27 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-600"
-        disabled={payload.dailyMissionGoal === null}
+        disabled={payload.dailyMissionTime === null}
         onClick={() => {
           onChange(payload);
           onNext();
