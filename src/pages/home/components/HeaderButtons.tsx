@@ -1,4 +1,6 @@
+import { useNavigate } from "react-router-dom";
 import BigAcornIcon from "@/assets/icons/ic_big_acorn.svg?react";
+import BoomerangIcon from "@/assets/icons/ic_boomerang.svg?react";
 import PocketIcon from "@/assets/icons/ic_pocket.svg?react";
 
 interface HeaderButtonsProps {
@@ -6,26 +8,31 @@ interface HeaderButtonsProps {
 }
 
 const HeaderButtons = ({ acornCount }: HeaderButtonsProps) => {
-  return (
-    <>
-      {/* 왼쪽 상단: 주머니 버튼 */}
-      <button
-        type="button"
-        className="absolute top-42 left-7 z-10 flex flex-col items-center gap-2 rounded-xl bg-white px-22 py-12"
-      >
-        <PocketIcon className="h-40 w-40" />
-        <span className="body-4 text-black">주머니</span>
-      </button>
+  const navigate = useNavigate();
 
-      {/* 오른쪽 상단: 도토리 버튼 */}
-      <button
-        type="button"
-        className="absolute top-42 right-7 z-10 flex items-center gap-2 rounded-xl bg-white px-18 py-3"
-      >
-        <BigAcornIcon className="h-40 w-29" />
-        <span className="body-2 text-black">{acornCount}</span>
-      </button>
-    </>
+  return (
+    <div className="flex items-start justify-between px-7 pt-42">
+      <div className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-15.5 py-4">
+        <BigAcornIcon className="h-24 w-24" />
+        <span className="body-4 text-black">{acornCount}</span>
+      </div>
+
+      <div className="flex items-center gap-10">
+        <button
+          type="button"
+          className="flex items-center justify-center rounded-lg border border-gray-300 bg-white p-11"
+          onClick={() => navigate("/pocket")}
+        >
+          <PocketIcon className="h-40 w-40" />
+        </button>
+        <button
+          type="button"
+          className="flex items-center justify-center rounded-lg border border-gray-300 bg-white p-11"
+        >
+          <BoomerangIcon className="h-40 w-40" />
+        </button>
+      </div>
+    </div>
   );
 };
 
