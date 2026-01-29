@@ -1,45 +1,48 @@
 import { useEffect, useState } from "react";
-import type { CustomizationType } from "../components/BottomSheet";
+import type { CustomizationType } from "../types";
 
 export const useBottomSheet = () => {
   const [activeCustomization, setActiveCustomization] =
     useState<CustomizationType | null>(null);
-  const [sheetTop, setSheetTop] = useState(533);
-
-  const handleToolbarClick = (type: CustomizationType) => {
-    if (activeCustomization === type) {
-      if (sheetTop === 412) {
-        setSheetTop(533);
-      } else {
-        setActiveCustomization(null);
-      }
-    } else {
-      setActiveCustomization(type);
-      setSheetTop(533);
-    }
-  };
-
-  const handleOutsideClick = () => {
-    if (sheetTop === 412) {
-      setSheetTop(533);
-    }
-  };
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    if (activeCustomization) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+    document.body.style.overflow = activeCustomization ? "hidden" : "";
     return () => {
       document.body.style.overflow = "";
     };
   }, [activeCustomization]);
 
+  const close = () => {
+    setActiveCustomization(null);
+    setIsExpanded(false);
+  };
+
+  const handleToolbarClick = (type: CustomizationType) => {
+    if (activeCustomization === type) {
+      if (isExpanded) {
+        setIsExpanded(false);
+      } else {
+        close();
+      }
+    } else {
+      setActiveCustomization(type);
+      setIsExpanded(false);
+    }
+  };
+
+  const handleOutsideClick = () => {
+    if (isExpanded) {
+      setIsExpanded(false);
+    } else {
+      close();
+    }
+  };
+
   return {
     activeCustomization,
-    sheetTop,
-    setSheetTop,
+    isExpanded,
+    setIsExpanded,
     handleToolbarClick,
     handleOutsideClick,
   };
