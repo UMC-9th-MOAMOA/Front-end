@@ -1,4 +1,4 @@
-import IcCheckOnboarding from "@/assets/icons/ic_check_onboarding.svg?react";
+import IcCheckOnboarding from "@/assets/icons/ic_check_active.svg?react";
 import { cn } from "@/utils/cn/cn";
 
 type OnboardingCardVariant = "chip" | "panel";

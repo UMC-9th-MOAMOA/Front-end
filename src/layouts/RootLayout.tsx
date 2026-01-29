@@ -27,7 +27,11 @@ const RootLayout = () => {
           bgColor
         )}
       >
-        <div className="flex w-full flex-1 flex-col px-layout-side pb-96">
+        <div
+          className={`flex w-full flex-1 flex-col px-layout-side ${
+            hideBottomNav ? "" : "pb-96"
+          }`}
+        >
           <Outlet />
         </div>
 
