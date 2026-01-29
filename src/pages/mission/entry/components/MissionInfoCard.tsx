@@ -87,7 +87,7 @@ export default function MissionInfoCard({
         {/* 양옆 동그라미 추가 */}
       </div>
 
-      <div className="flex w-full flex-col items-center gap-16 self-center px-48 pt-35 pb-80">
+      <div className="flex w-full flex-col items-center gap-16 self-center px-48 pt-35 pb-32">
         <span
           className={`heading-6 flex text-center ${
             isContentWatched ? "text-moamoa-500" : "w-208 text-red-400"
