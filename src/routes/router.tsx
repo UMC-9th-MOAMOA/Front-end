@@ -5,6 +5,8 @@ import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
 import Onboarding from "@/pages/onboarding/Onboarding";
+import MissionEntry from "@/pages/mission/entry/MissionEntry";
+import QuizPage from "@/pages/mission/quiz/QuizPage";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
 import TodayMission from "@/pages/today-mission/TodayMission";
@@ -48,8 +50,13 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "mission",
-        element: <div>미션</div>,
-        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
+        element: <MissionEntry />,
+        handle: { bgColor: "bg-gray-100", hideBottomNav: true },
+      },
+      {
+        path: "mission/quiz/:missionId",
+        element: <QuizPage />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "search",
