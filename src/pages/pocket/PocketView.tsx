@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Header from "@/components/common/header/Header";
+import { cn } from "@/utils/cn/cn";
 import AcornSection from "./components/AcornSection";
 import TimeCard from "./components/TimeCard";
 import WeeklyAttendanceSection from "./components/WeeklyAttendanceSection";
@@ -37,7 +38,7 @@ export default function PocketView() {
 
       <AcornSection acornCount={userData.acornCount} />
 
-      <div className={userData.hasGoal ? "" : "-mb-59"}>
+      <div className={cn(!userData.hasGoal && "-mb-59")}>
         <WeeklyAttendanceSection
           currentDay={userData.weekAttendance.currentDay}
           attendance={userData.weekAttendance.attendance}
