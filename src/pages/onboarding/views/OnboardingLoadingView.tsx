@@ -28,7 +28,7 @@ export default function OnboardingLoadingView() {
         {LOADING_ITEMS.map((item) => (
           <div key={item} className="flex items-center gap-12">
             <span className="flex h-22 w-22 items-center justify-center rounded-full bg-moamoa-50">
-              <IcCheckOnboarding className="h-22 w-22" />
+              <IcCheckOnboarding className="h-22 w-22" aria-hidden />
             </span>
             <span className="body-2 text-black">{item}</span>
           </div>
