@@ -1,4 +1,5 @@
 import IcReload from "@/assets/icons/ic_reload.svg?react";
+import { cn } from "@/utils/cn/cn";
 import RecommendedMissionCard from "./common/RecommendedMissionCard";
 
 interface Mission {
@@ -38,7 +39,7 @@ export default function TodayMissionSection({
           {missions.map((mission, index) => (
             <div
               key={mission.id}
-              className={`shrink-0 ${index === 0 ? "ml-layout-side" : ""}`}
+              className={cn("shrink-0", index === 0 && "ml-layout-side")}
             >
               <RecommendedMissionCard
                 title={mission.title}
