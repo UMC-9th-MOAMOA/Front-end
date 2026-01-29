@@ -1,5 +1,5 @@
 import { cn } from "@/utils/cn/cn";
-import type { CustomizationType, ToolbarItem } from "../types";
+import type { CustomizationType, ToolbarItem } from "../types/types";
 
 interface CustomizationToolbarProps {
   items: ToolbarItem[];
@@ -25,7 +25,10 @@ const CustomizationToolbar = ({
             className="flex items-center justify-center px-7 py-8 transition-colors"
           >
             <Icon
-              className={cn("h-40 w-40", isActive ? "text-positive" : "text-gray-500")}
+              className={cn(
+                "h-40 w-40",
+                isActive ? "text-positive" : "text-gray-500"
+              )}
             />
           </button>
         );
