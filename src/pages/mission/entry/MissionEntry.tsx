@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import MissionInfoCard from "./components/MissionInfoCard";
 
 export default function MissionEntry() {
+  const navigate = useNavigate();
   const [isContentWatched, setIsContentWatched] = useState(false);
   const watchTimeoutRef = useRef<number | null>(null);
 
   const missionInfo = {
     // 임시 데이터 (서버 연동 전까지 사용)
+    missionId: "1",
     organization: "00분",
     category: "카테고리",
     keywords: ["키워드", "키워드", "키워드"],
@@ -26,7 +29,6 @@ export default function MissionEntry() {
 
   useEffect(() => {
     return () => {
-      // 컴포넌트 언마운트 시 타임아웃 정리
       if (watchTimeoutRef.current) {
         window.clearTimeout(watchTimeoutRef.current);
       }
@@ -35,14 +37,14 @@ export default function MissionEntry() {
 
   const handleStartQuiz = () => {
     console.log("퀴즈 시작");
-    // TODO: 퀴즈 페이지로 이동
+    navigate(`/mission/quiz/${missionInfo.missionId}`);
   };
 
   return (
-    <div className="flex flex-col items-center pt-21">
+    <div className="flex min-h-screen flex-col">
       <Header title="미션 수행하기" property="common" />
 
-      <div className="mx-auto mt-30 flex w-full max-w-[375px] flex-col items-center px-21">
+      <div className="flex w-full flex-col items-center py-31">
         <MissionInfoCard
           {...missionInfo}
           isContentWatched={isContentWatched}
