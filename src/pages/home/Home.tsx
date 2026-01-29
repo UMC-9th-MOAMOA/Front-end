@@ -1,14 +1,16 @@
-import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
+import { useState } from "react";
 import squirrelDefault from "@/assets/icons/home/character/squirrel_default.svg";
-import BottomSheet from "./components/BottomSheet";
 import CustomizationToolbar from "./components/CustomizationToolbar";
 import HeaderButtons from "./components/HeaderButtons";
 import QuestionBox from "./components/QuestionBox";
+import BottomSheet from "./components/shop/BottomSheet";
 import { CUSTOMIZATION_ITEMS } from "./constants/constants";
+import useBgm from "./hooks/useBgm";
 import { useBottomSheet } from "./hooks/useBottomSheet";
 
 const HomePage = () => {
+  useBgm("/audio/bgm.mp3");
   const [acornCount] = useState(13);
   const [, setSelectedTime] = useState<number | null>(null);
   const nickname = "사용자";
