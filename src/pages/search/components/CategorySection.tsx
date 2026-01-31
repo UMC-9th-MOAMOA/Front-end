@@ -1,5 +1,6 @@
 import { Button } from "@/components/common/button/Button";
 import { MAIN_CATEGORIES, type MainCategory } from "@/mocks/search/mission";
+import { cn } from "@/utils/cn/cn";
 
 interface CategorySectionProps {
   selectedCategory: MainCategory;
@@ -20,11 +21,12 @@ export default function CategorySection({
             <Button
               key={category}
               onClick={() => onCategoryChange(category)}
-              className={`body-4 shrink-0 grow rounded-sm px-16 py-8 ${
+              className={cn(
+                "body-4 shrink-0 grow rounded-sm px-16 py-8",
                 selectedCategory === category
                   ? "bg-moamoa-300 text-white"
-                  : "bg-moamoa-50 text-moamoa-300"
-              }`}
+                  : "bg-moamoa-50 text-moamoa-300",
+              )}
             >
               {category}
             </Button>

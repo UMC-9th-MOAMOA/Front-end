@@ -9,9 +9,9 @@ export default function Login() {
         <img
           src={Logo}
           alt="모아모아 로고"
-          className="mx-auto mt-77 block h-auto w-193"
+          className="mx-auto mt-85 block h-auto w-193"
         />
-        <h1 className="heading-1 mt-29 text-center text-black">
+        <h1 className="heading-1 mt-34 text-center text-black">
           <span>반가워요!</span>
           <span className="block">모아모아를 시작해볼까요?</span>
         </h1>
@@ -19,7 +19,7 @@ export default function Login() {
           함께 숨겨진 시간을 찾아 생산적인 하루를 보내보세요.
         </p>
       </header>
-      <section className="mt-61">
+      <section className="mt-37">
         <LoginForm />
       </section>
       <section className="mt-51">
