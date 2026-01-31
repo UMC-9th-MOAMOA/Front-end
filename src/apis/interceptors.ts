@@ -66,7 +66,7 @@ export const attachInterceptors = (instance: AxiosInstance) => {
   instance.interceptors.response.use(
     (response: AxiosResponse) => response,
     async (error: AxiosError) => {
-      const errorData = error.response?.data as ApiResponse;
+      const errorData = error.response?.data as ApiResponse<null>;
 
       if (errorData) {
         if (error.response?.status === 401) {
