@@ -1,4 +1,5 @@
 import IcHeart from "@/assets/icons/ic_heart.svg?react";
+import { cn } from "@/utils/cn/cn";
 
 interface RecommendedMissionCardProps {
   title: string;
@@ -24,7 +25,7 @@ export default function RecommendedMissionCard({
       <div className="flex items-center justify-between gap-8">
         <h3 className="body-2 truncate text-black">{title}</h3>
         <IcHeart
-          className={`size-24 shrink-0 cursor-pointer text-moamoa-100 ${isLiked ? "fill-moamoa-100" : ""}`}
+          className={cn("size-24 shrink-0 cursor-pointer text-moamoa-100", isLiked && "fill-moamoa-100")}
           onClick={onHeartClick}
         />
       </div>
