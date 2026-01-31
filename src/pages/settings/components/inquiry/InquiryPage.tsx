@@ -12,16 +12,20 @@ export default function InquiryPage() {
   const [tab, setTab] = useState<TabKey>("write");
 
   return (
-    <div className="min-h-screen w-full bg-[var(--color-white)] pb-98">
+    <div className="min-h-screen w-full bg-white pb-98">
       <Header title="문의하기" property="common" />
 
-      <div className="flex min-h-dvh w-full flex-col items-center">
-        <div className="mt-14 h-2 w-full bg-[var(--color-gray-200)]" />
+      <div className="-mx-25 mt-14 h-2 bg-gray-200" />
 
+      <div className="flex w-full flex-col items-center">
         <div className="mt-24">
           <InquiryTabs tab={tab} onChange={setTab} />
         </div>
-        <div className="h-2 w-full bg-[var(--color-gray-200)]" />
+      </div>
+
+      <div className="-mx-25 h-2 bg-gray-200" />
+
+      <div className="flex w-full flex-col items-center">
 
         {tab === "write" ? (
           <InquiryWriteForm />

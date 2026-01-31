@@ -53,7 +53,7 @@ function FilterMenuBox<T extends string>({
   return (
     <div
       className={[
-        "absolute left-0 top-full mt-3 flex flex-col items-start space-y-4 rounded-sm border border-[var(--color-gray-400)] bg-[var(--color-gray-300)]",
+        "absolute left-0 top-full mt-3 flex flex-col items-start space-y-4 rounded-sm border border-gray-400 bg-gray-300",
         className,
       ].join(" ")}
       style={{ boxShadow: "3px 9px 20.1px 3px rgba(0, 0, 0, 0.10)" }}
@@ -215,7 +215,7 @@ export default function InquiryList({ onSelect }: Props) {
               key={item.inquiryId}
               type="button"
               onClick={() => onSelect(item.inquiryId)}
-              className="flex h-164 w-full items-center rounded-lg bg-[var(--color-white)] px-16 py-10 pr-27 pb-17 text-left shadow-[0_0_16.9px_0_rgba(0,0,0,0.10)]"
+              className="flex h-164 w-full items-center rounded-lg bg-white px-16 py-10 pr-27 pb-17 text-left shadow-[0_0_16.9px_0_rgba(0,0,0,0.10)]"
             >
               <div className="flex w-full flex-col items-start gap-16 text-left">
                 <div className="flex items-center gap-12">

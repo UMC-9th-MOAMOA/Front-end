@@ -21,7 +21,7 @@ export default function TargetMissionCount() {
   const [duration, setDuration] = useState<DurationKey>("keep");
 
   const panelBg = useMemo(
-    () => (isOn ? "bg-[var(--color-moamoa-50)]" : "bg-[var(--color-gray-200)]"),
+    () => (isOn ? "bg-moamoa-50" : "bg-gray-200"),
     [isOn]
   );
   const panelText = isOn ? "" : "text-black";
@@ -31,12 +31,11 @@ export default function TargetMissionCount() {
   const handlePlus = () => setDailyCount((prev) => prev + 1);
 
   return (
-    <div className="min-h-screen w-full bg-[var(--color-white)] pb-98">
+    <div className="w-full bg-white pb-98">
       <Header title="목표 미션 개수 설정" property="common" />
 
-      <div className="flex w-full flex-1 flex-col items-center">
-        <div className="mt-14 h-2 w-full bg-[var(--color-gray-200)]" />
-
+      <div className="-mx-25 mt-14 h-2 bg-gray-200" />
+      <div className="flex w-full flex-col items-center">
         <p className="heading-3 mt-28 whitespace-nowrap text-moamoa-400">
           나에게 맞는 속도로 조절해보세요.
         </p>
@@ -77,25 +76,27 @@ export default function TargetMissionCount() {
             >
               주간 목표는 “평일 5일” 기준으로 자동 설정됩니다
             </p>
-
-            <div className="mt-16 h-2 w-full bg-[var(--color-gray-200)]" />
-
-            <div className="mt-20 w-full">
-              <DurationPanel
-                panelBg={panelBg}
-                isOn={isOn}
-                duration={duration}
-                options={DURATION_OPTIONS}
-                onChange={setDuration}
-              />
-            </div>
-
-            <p className="body-4 mt-31 w-full text-center text-gray-700">
-              주중에 변경한 목표는
-              <br />그 다음주 부터 적용됩니다.
-            </p>
           </div>
         </div>
+      </div>
+
+      <div className="-mx-25 mt-16 h-2 bg-gray-200" />
+
+      <div className="mt-20 flex w-full flex-1 flex-col items-center">
+        <div className="w-full">
+          <DurationPanel
+            panelBg={panelBg}
+            isOn={isOn}
+            duration={duration}
+            options={DURATION_OPTIONS}
+            onChange={setDuration}
+          />
+        </div>
+
+        <p className="body-4 mt-31 w-full text-center text-gray-700">
+          주중에 변경한 목표는
+          <br />그 다음주 부터 적용됩니다.
+        </p>
       </div>
 
       <BottomActionBar label="설정 저장하기" />

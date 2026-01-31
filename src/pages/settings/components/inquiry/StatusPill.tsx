@@ -11,9 +11,7 @@ export default function StatusPill({ status }: Props) {
     <div
       className={[
         "flex h-30 items-center justify-center rounded-sm px-16",
-        isCompleted
-          ? "bg-[var(--color-moamoa-100)]"
-          : "bg-[var(--color-gray-300)]",
+        isCompleted ? "bg-moamoa-100" : "bg-gray-300",
       ].join(" ")}
     >
       <span className="body-4 whitespace-nowrap text-black">

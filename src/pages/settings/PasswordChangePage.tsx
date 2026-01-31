@@ -27,22 +27,25 @@ export default function PasswordChangePage() {
   };
 
   return (
-    <div className="flex h-714 w-full flex-col overflow-hidden pb-98">
+    <>
       <Header title="비밀번호 변경" property="common" />
+      <div className="-mx-25 mt-14 h-2 bg-gray-200" />
 
-      <div className="flex w-full flex-1 flex-col items-center">
-        <PasswordChangeIntro />
-        <div className="mt-47 w-full">
-          <PasswordChangeForm />
+      <div className="flex h-714 w-full flex-col overflow-hidden pb-98">
+        <div className="flex w-full flex-1 flex-col items-center">
+          <PasswordChangeIntro />
+          <div className="w-full">
+            <PasswordChangeForm />
+          </div>
         </div>
+
+        <PasswordChangeSuccessModal
+          open={successOpen}
+          onConfirm={onConfirmSuccess}
+        />
+
+        <BottomActionBar label="비밀번호 변경하기" onClick={onSubmit} />
       </div>
-
-      <PasswordChangeSuccessModal
-        open={successOpen}
-        onConfirm={onConfirmSuccess}
-      />
-
-      <BottomActionBar label="비밀번호 변경하기" onClick={onSubmit} />
-    </div>
+    </>
   );
 }

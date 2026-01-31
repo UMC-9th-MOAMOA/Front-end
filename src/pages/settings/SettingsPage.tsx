@@ -4,8 +4,8 @@ import Header from "@/components/common/header/Header";
 import LogoutConfirmModal from "./components/LogoutConfirmModal";
 import ProfileHeaderCard from "./components/ProfileHeaderCard";
 import ProfilePickerModal from "./components/ProfilePickerModal";
-import SettingsActions from "./components/SettingsActions";
-import SettingsSectionList from "./components/SettingsSectionList";
+import { LogoutAction, WithdrawAction } from "./components/SettingsActions";
+import { SettingsSection, sections } from "./components/SettingsSectionList";
 import WithdrawConfirmModal from "./components/WithdrawConfirmModal";
 import { mockProfiles, mockUser } from "./mocks/account/account.mock";
 
@@ -57,17 +57,23 @@ export default function SettingsPage() {
         onClickProfile={onClickProfile}
       />
 
-      <div className="mt-10 flex w-full flex-1 flex-col bg-[var(--color-white)] pt-28">
-        <SettingsSectionList
-          onNavigate={onNavigate}
-          dividerStyle={dividerStyle}
-        />
+      <div className="mt-10 flex w-full flex-1 flex-col bg-white pt-28">
+        <div className="flex flex-col gap-20">
+          {sections.map((section, index) => (
+            <div key={section.id}>
+              <SettingsSection section={section} onNavigate={onNavigate} />
+              {index < sections.length - 1 && (
+                <div className="-ml-25 h-2 w-screen" style={dividerStyle} />
+              )}
+            </div>
+          ))}
+        </div>
 
-        <SettingsActions
-          dividerStyle={dividerStyle}
-          onLogout={onLogout}
-          onWithdraw={onWithdraw}
-        />
+        <div className="mt-45">
+          <LogoutAction onLogout={onLogout} />
+        </div>
+        <div className="mt-34 -ml-25 h-2 w-screen" style={dividerStyle} />
+        <WithdrawAction onWithdraw={onWithdraw} />
       </div>
 
       <WithdrawConfirmModal

@@ -66,8 +66,8 @@ export default function InterestCategoryCard({
   return (
     <div
       className={[
-        "flex w-full flex-col items-start rounded-xl border-2 bg-[var(--color-white)]",
-        isActive ? "border-[var(--color-moamoa-300)]" : "border-black",
+        "flex w-full flex-col items-start rounded-xl border-2 bg-white",
+        isActive ? "border-moamoa-300" : "border-black",
       ].join(" ")}
     >
       <button
@@ -78,9 +78,7 @@ export default function InterestCategoryCard({
         aria-label={`${category.label} ${isOpen ? "접기" : "펼치기"}`}
       >
         <div className="flex items-center gap-12">
-          <span className="heading-4 text-black">
-            {category.label}
-          </span>
+          <span className="heading-4 text-black">{category.label}</span>
 
           <span className="body-2 text-gray-900">
             {getSelectedCount(selected, category.key)}개 선택중

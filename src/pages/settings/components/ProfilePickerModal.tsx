@@ -31,10 +31,8 @@ export default function ProfilePickerModal({
         onClick={onClose}
       />
 
-      <div className="absolute right-0 bottom-0 left-0 rounded-t-2xl bg-[var(--color-white)] p-20 shadow-lg">
-        <div className="heading-5 text-gray-800">
-          프로필 선택(캐릭터)
-        </div>
+      <div className="absolute right-0 bottom-0 left-0 rounded-t-2xl bg-white p-20 shadow-lg">
+        <div className="heading-5 text-gray-800">프로필 선택(캐릭터)</div>
 
         <div className="mt-4 flex items-center justify-between gap-4">
           {profiles.map((p, index) => {
@@ -58,9 +56,7 @@ export default function ProfilePickerModal({
                 <span
                   className={[
                     "body-5",
-                    selected
-                      ? "text-moamoa-400"
-                      : "text-gray-500",
+                    selected ? "text-moamoa-400" : "text-gray-500",
                   ].join(" ")}
                 >
                   {p.label}
@@ -73,7 +69,7 @@ export default function ProfilePickerModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-5 w-full rounded-xl bg-[var(--color-gray-100)] py-12 text-gray-700"
+          className="mt-5 w-full rounded-xl bg-gray-100 py-12 text-gray-700"
         >
           닫기
         </button>

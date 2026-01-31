@@ -44,8 +44,8 @@ function DurationOptionButton({
             className={[
               "flex items-center justify-center rounded-full border",
               isOn
-                ? "border-[var(--color-moamoa-300)] bg-[var(--color-white)]"
-                : "border-[var(--color-gray-600)] bg-[var(--color-gray-200)]",
+                ? "border-moamoa-300 bg-white"
+                : "border-gray-600 bg-gray-200",
             ].join(" ")}
             style={{ width: 21, height: 21 }}
             aria-hidden
@@ -53,9 +53,7 @@ function DurationOptionButton({
             <span
               className={[
                 "rounded-full",
-                isOn
-                  ? "bg-[var(--color-moamoa-50)]"
-                  : "bg-[var(--color-gray-400)]",
+                isOn ? "bg-moamoa-50" : "bg-gray-400",
               ].join(" ")}
               style={{ width: 12.091, height: 12.091 }}
             />

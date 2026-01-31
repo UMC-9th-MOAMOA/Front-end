@@ -103,13 +103,11 @@ export const INTEREST_CATEGORIES: InterestCategoryItem[] = [
   },
 ] as const;
 
-// API payload에 바로 쓰기 좋은 선택 상태 타입
 export type SelectedInterestsMap = Record<
   InterestCategoryKey,
   InterestSubKey[]
 >;
 
-// 초기값(아무것도 선택 안 한 상태)
 export const EMPTY_SELECTED_INTERESTS: SelectedInterestsMap = {
   finance: [],
   it: [],
@@ -118,7 +116,6 @@ export const EMPTY_SELECTED_INTERESTS: SelectedInterestsMap = {
   humanities: [],
 };
 
-// 유틸: 대분류별 선택 개수
 export function getSelectedCount(
   selected: SelectedInterestsMap,
   category: InterestCategoryKey
@@ -126,7 +123,6 @@ export function getSelectedCount(
   return selected[category].length;
 }
 
-// 유틸: 특정 소분류가 선택되었는지
 export function isSubSelected(
   selected: SelectedInterestsMap,
   category: InterestCategoryKey,
@@ -135,7 +131,6 @@ export function isSubSelected(
   return selected[category].includes(subKey);
 }
 
-// 유틸: 선택 토글 (immutable)
 export function toggleSubSelection(
   selected: SelectedInterestsMap,
   category: InterestCategoryKey,

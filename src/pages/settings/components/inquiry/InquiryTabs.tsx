@@ -19,7 +19,7 @@ export default function InquiryTabs({ tab, onChange }: Props) {
             문의작성
           </span>
           {tab === "write" && (
-            <span className="absolute bottom-0 h-1 w-full bg-[var(--color-black)]" />
+            <span className="absolute bottom-0 h-1 w-full bg-black" />
           )}
         </Button>
         <Button
@@ -31,7 +31,7 @@ export default function InquiryTabs({ tab, onChange }: Props) {
             나의 문의
           </span>
           {tab === "mine" && (
-            <span className="absolute bottom-0 h-1 w-full bg-[var(--color-black)]" />
+            <span className="absolute bottom-0 h-1 w-full bg-black" />
           )}
         </Button>
       </div>
