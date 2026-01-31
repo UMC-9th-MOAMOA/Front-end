@@ -5,7 +5,7 @@ interface QuestionBoxProps {
 
 const QuestionBox = ({ nickname, onTimeSelect }: QuestionBoxProps) => {
   return (
-    <div className="absolute top-511 w-full">
+    <div className="w-325">
       <div className="rounded-lg bg-white px-38 py-23">
         <div className="flex flex-col items-center">
           <span className="body-2 text-black">안녕하세요, {nickname}님 !</span>

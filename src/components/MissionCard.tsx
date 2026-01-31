@@ -1,5 +1,6 @@
 import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import { Button } from "@/components/common/button/Button";
+import { cn } from "@/utils/cn/cn";
 
 interface MissionCardProps {
   title: string;
@@ -23,14 +24,15 @@ export default function MissionCard({
   onStartClick,
 }: MissionCardProps) {
   return (
-    <div className="relative rounded-xl border border-moamoa-200 bg-white px-20 py-24 shadow-[0_0_16.9px_0_rgba(0,0,0,0.10)]">
+    <div className="relative rounded-xl border border-moamoa-50 bg-white px-20 py-24 shadow-[0_0_16.9px_0_rgba(0,0,0,0.10)]">
       <div className="flex items-start gap-26">
         <h3 className="heading-3 w-full truncate">{title}</h3>
         <button type="button" onClick={onHeartClick} className="shrink-0">
           <IcHeart
-            className={`size-24 shrink-0 cursor-pointer text-moamoa-100 ${
-              isLiked ? "fill-moamoa-100" : ""
-            }`}
+            className={cn(
+              "size-24 shrink-0 cursor-pointer text-moamoa-100",
+              isLiked && "fill-moamoa-100"
+            )}
           />
         </button>
       </div>
