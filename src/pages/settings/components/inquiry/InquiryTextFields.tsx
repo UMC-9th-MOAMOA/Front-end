@@ -17,16 +17,12 @@ export default function InquiryTextFields({
 }: Props) {
   return (
     <div className="flex w-full flex-col items-start gap-17">
-      <p className="heading-5 whitespace-nowrap text-black">
-        글 작성
-      </p>
+      <p className="heading-5 whitespace-nowrap text-black">글 작성</p>
 
       <div className="flex w-full flex-col items-start gap-8">
-        <p className="body-2-1 whitespace-nowrap text-black">
-          문의 제목
-        </p>
+        <p className="body-2-1 whitespace-nowrap text-black">문의 제목</p>
 
-        <div className="flex w-full items-center rounded-sm border border-[var(--color-gray-400)] px-15 py-12">
+        <div className="flex w-full items-center rounded-sm border border-gray-400 px-15 py-12">
           <input
             value={title}
             onChange={(e) => onChangeTitle(e.target.value)}
@@ -44,16 +40,14 @@ export default function InquiryTextFields({
       </div>
 
       <div className="flex w-full flex-col items-start gap-8">
-        <p className="body-2-1 whitespace-nowrap text-black">
-          문의 내용
-        </p>
+        <p className="body-2-1 whitespace-nowrap text-black">문의 내용</p>
 
         <textarea
           value={content}
           onChange={(e) => onChangeContent(e.target.value)}
           placeholder="내용을 입력해 주세요."
           maxLength={2000}
-          className="body-4 h-221 w-full resize-none rounded-sm border border-[var(--color-gray-400)] bg-transparent p-10 text-black outline-none placeholder:text-gray-400"
+          className="body-4 h-221 w-full resize-none rounded-sm border border-gray-400 bg-transparent p-10 text-black outline-none placeholder:text-gray-400"
         />
 
         <div className="mt-6 flex w-full justify-end">

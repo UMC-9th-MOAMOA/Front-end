@@ -1,17 +1,17 @@
+﻿import IcPencil from "@/assets/icons/ic_pencil.svg?react";
 import Header from "@/components/common/header/Header";
-import IcPencil from "@/assets/icons/ic_pencil.svg?react";
 import BottomActionBar from "./common/BottomActionBar";
 import FaqSectionList from "./faq/FaqSectionList";
 
 export default function FaqPage() {
   return (
-    <div className="min-h-screen w-full bg-[var(--color-gray-50)] pb-98">
+    <div className="w-full bg-gray-50 pb-98">
       <Header title="FAQ" property="common" />
 
-      <div className="flex w-full flex-col items-center">
-        <div className="mt-14 h-2 w-full bg-[var(--color-gray-200)]" />
+      <div className="-mx-25 mt-14 h-2 bg-gray-200" />
 
-        <p className="mt-17 heading-3 whitespace-nowrap text-center text-moamoa-300">
+      <div className="flex w-full flex-col items-center">
+        <p className="heading-3 mt-17 whitespace-nowrap text-center text-moamoa-300">
           자주 묻는 질문
         </p>
 

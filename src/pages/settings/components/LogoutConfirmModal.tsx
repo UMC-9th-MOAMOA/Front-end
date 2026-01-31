@@ -18,7 +18,7 @@ export default function LogoutConfirmModal({
       <div className="absolute inset-0 bg-[rgba(36,44,61,0.40)]" />
 
       <div className="relative w-full px-35">
-        <div className="flex w-full flex-col items-center gap-23 rounded-xl bg-[var(--color-white)] px-20 pt-28 pb-20">
+        <div className="flex w-full flex-col items-center gap-23 rounded-xl bg-white px-20 pt-28 pb-20">
           <p className="heading-3 text-center text-warning">
             로그아웃 하시겠습니까?
           </p>
@@ -32,7 +32,7 @@ export default function LogoutConfirmModal({
             <Button
               type="button"
               onClick={onCancel}
-              className="flex h-50 flex-1 items-center justify-center rounded-lg bg-[var(--color-moamoa-50)]"
+              className="flex h-50 flex-1 items-center justify-center rounded-lg bg-moamoa-50"
             >
               <span className="heading-5 whitespace-nowrap text-moamoa-400">
                 아니요
@@ -42,11 +42,9 @@ export default function LogoutConfirmModal({
             <Button
               type="button"
               onClick={onConfirm}
-              className="flex h-50 flex-1 items-center justify-center rounded-lg bg-[var(--color-moamoa-300)]"
+              className="flex h-50 flex-1 items-center justify-center rounded-lg bg-moamoa-300"
             >
-              <span className="heading-5 whitespace-nowrap text-white">
-                예
-              </span>
+              <span className="heading-5 whitespace-nowrap text-white">예</span>
             </Button>
           </div>
         </div>

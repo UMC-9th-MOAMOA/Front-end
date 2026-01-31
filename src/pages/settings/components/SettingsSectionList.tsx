@@ -1,4 +1,3 @@
-import type { CSSProperties } from "react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 
 type SectionItem = {
@@ -6,7 +5,7 @@ type SectionItem = {
   path: string;
 };
 
-type Section = {
+export type Section = {
   id: string;
   title: string;
   wrapperClass: string;
@@ -19,10 +18,9 @@ type Section = {
 
 type Props = {
   onNavigate: (path: string) => void;
-  dividerStyle: CSSProperties;
 };
 
-const sections: Section[] = [
+export const sections: Section[] = [
   {
     id: "account",
     title: "계정 설정",
@@ -70,48 +68,49 @@ const sections: Section[] = [
   },
 ];
 
-export default function SettingsSectionList({
+export function SettingsSection({
+  section,
   onNavigate,
-  dividerStyle,
-}: Props) {
-  const dividerClass = "h-2 w-full";
+}: {
+  section: Section;
+  onNavigate: (path: string) => void;
+}) {
+  return (
+    <div className={section.wrapperClass}>
+      <div className={section.innerClass}>
+        <div className={section.titleClass}>
+          <span className="heading-5 text-black">{section.title}</span>
+        </div>
 
+        <div className={section.listClass}>
+          {section.items.map((item) => (
+            <button
+              key={item.path}
+              type="button"
+              onClick={() => onNavigate(item.path)}
+              className={section.buttonClass}
+            >
+              <span className="body-2 font-medium text-black">
+                {item.label}
+              </span>
+              <IcLeft className="h-24 w-24 rotate-180 text-black" aria-hidden />
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function SettingsSectionList({ onNavigate }: Props) {
   return (
     <div className="flex flex-col gap-20">
-      {sections.map((section, index) => (
-        <div key={section.id}>
-          <div className={section.wrapperClass}>
-            <div className={section.innerClass}>
-              <div className={section.titleClass}>
-                <span className="heading-5 text-black">
-                  {section.title}
-                </span>
-              </div>
-
-              <div className={section.listClass}>
-                {section.items.map((item) => (
-                  <button
-                    key={item.path}
-                    type="button"
-                    onClick={() => onNavigate(item.path)}
-                    className={section.buttonClass}
-                  >
-                    <span className="body-2 font-medium text-black">
-                      {item.label}
-                    </span>
-                    <IcLeft
-                      className="h-24 w-24 rotate-180 text-black"
-                      aria-hidden
-                    />
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-          {index < sections.length - 1 && (
-            <div className={`-mt-20 ${dividerClass}`} style={dividerStyle} />
-          )}
-        </div>
+      {sections.map((section) => (
+        <SettingsSection
+          key={section.id}
+          section={section}
+          onNavigate={onNavigate}
+        />
       ))}
     </div>
   );

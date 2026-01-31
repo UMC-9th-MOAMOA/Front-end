@@ -16,12 +16,12 @@ export default function InquiryDetailPage() {
   }, [inquiryId]);
 
   return (
-    <div className="min-h-screen w-full bg-[var(--color-white)]">
+    <div className="min-h-screen w-full bg-white">
       <Header title="문의하기" property="common" />
 
-      <div className="flex w-full flex-col items-center">
-        <div className="mt-14 h-2 w-full bg-[var(--color-gray-200)]" />
+      <div className="-mx-25 mt-14 h-2 bg-gray-200" />
 
+      <div className="flex w-full flex-col items-center">
         <div className="mt-28 flex w-full flex-col items-start gap-0">
           <div className="flex items-center gap-12">
             <StatusPill status={data.answerStatus} />

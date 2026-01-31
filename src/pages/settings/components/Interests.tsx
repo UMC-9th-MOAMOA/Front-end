@@ -1,6 +1,9 @@
 ﻿import { useState } from "react";
 import Header from "@/components/common/header/Header";
-import type { InterestCategoryKey, InterestSubKey } from "../constants/interests";
+import type {
+  InterestCategoryKey,
+  InterestSubKey,
+} from "../constants/interests";
 import {
   EMPTY_SELECTED_INTERESTS,
   INTEREST_CATEGORIES,
@@ -25,10 +28,10 @@ export default function InterestPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-[var(--color-white)] pb-98">
+    <div className="flex w-full flex-col bg-white pb-98">
       <Header title="관심사 변경" property="common" />
 
-      <div className="h-2 w-full bg-[var(--color-gray-200)]" />
+      <div className="-mx-25 mt-14 h-2 bg-gray-200" />
 
       <div className="mt-24 w-full px-25 text-center">
         <p className="body-4 whitespace-nowrap text-moamoa-300">

@@ -15,7 +15,7 @@ export default function BottomActionBar({ label, leftIcon, onClick }: Props) {
           type="button"
           onClick={onClick}
           leftIcon={leftIcon}
-          className="heading-5 flex h-48 w-full items-center justify-center rounded-lg bg-[var(--color-moamoa-300)] text-white"
+          className="heading-5 flex h-48 w-full items-center justify-center rounded-lg bg-moamoa-300 text-white"
         >
           {label}
         </Button>
