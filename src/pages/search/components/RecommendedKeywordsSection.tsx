@@ -3,6 +3,7 @@ import {
   KEYWORD_FILTER_TABS,
   MOCK_RECOMMENDED_KEYWORDS,
 } from "@/mocks/search/mission";
+import { cn } from "@/utils/cn/cn";
 import KeywordChip from "./common/KeywordChip";
 
 const FLAT_KEYWORDS = MOCK_RECOMMENDED_KEYWORDS.flat();
@@ -29,11 +30,12 @@ export default function RecommendedKeywordsSection({
           <Button
             key={tab}
             onClick={() => onFilterChange(tab)}
-            className={`body-4 flex-1 rounded-full py-10 ${
+            className={cn(
+              "body-4 flex-1 rounded-full py-10",
               selectedFilter === tab
                 ? "bg-moamoa-300 text-white"
-                : "text-moamoa-300"
-            }`}
+                : "text-moamoa-300",
+            )}
           >
             {tab}
           </Button>
@@ -47,7 +49,7 @@ export default function RecommendedKeywordsSection({
               {row.map((keyword, index) => (
                 <div
                   key={keyword}
-                  className={`shrink-0 ${index === 0 ? "ml-layout-side" : ""}`}
+                  className={cn("shrink-0", index === 0 && "ml-layout-side")}
                 >
                   <KeywordChip
                     keyword={keyword}

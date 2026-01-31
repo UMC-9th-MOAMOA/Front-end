@@ -1,3 +1,5 @@
+import { cn } from "@/utils/cn/cn";
+
 const DAYS = ["월", "화", "수", "목", "금", "토", "일"];
 
 const getBarColor = (count: number): { bg: string; text: string } => {
@@ -29,7 +31,7 @@ export default function ChartBars({ weekData, yAxisMax }: ChartBarsProps) {
           >
             {count > 0 && (
               <div
-                className={`flex w-full items-end justify-center rounded-t pb-6 transition-all duration-500 ${bg} ${text}`}
+                className={cn("flex w-full items-end justify-center rounded-t pb-6 transition-all duration-500", bg, text)}
                 style={{ height: `${height}%` }}
               >
                 <span className="body-5">{count}</span>
