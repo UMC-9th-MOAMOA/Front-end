@@ -1,58 +1,71 @@
+import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
-
-import squirrelDefault from "@/assets/images/squirrel_default.png";
-import BottomSheet from "./components/BottomSheet";
+import squirrelDefault from "@/assets/icons/home/character/squirrel_default.svg";
 import CustomizationToolbar from "./components/CustomizationToolbar";
 import HeaderButtons from "./components/HeaderButtons";
 import QuestionBox from "./components/QuestionBox";
+import BottomSheet from "./components/shop/BottomSheet";
 import { CUSTOMIZATION_ITEMS } from "./constants/constants";
+import useBgm from "./hooks/useBgm";
 import { useBottomSheet } from "./hooks/useBottomSheet";
 
 const HomePage = () => {
-  const [acornCount] = useState(13); // 서버에서 받아올 예정
+  useBgm("/audio/bgm.mp3");
+  const [acornCount] = useState(13);
   const [, setSelectedTime] = useState<number | null>(null);
-  const nickname = "사용자"; // 서버에서 받아올 예정
+  const nickname = "사용자";
 
   const {
     activeCustomization,
-    sheetTop,
-    setSheetTop,
+    isExpanded,
+    setIsExpanded,
     handleToolbarClick,
     handleOutsideClick,
   } = useBottomSheet();
 
   return (
-    <div className="relative min-h-674">
+    <div className="relative flex flex-col">
       <HeaderButtons acornCount={acornCount} />
 
-      <CustomizationToolbar
-        items={CUSTOMIZATION_ITEMS}
-        activeCustomization={activeCustomization}
-        onItemClick={handleToolbarClick}
-      />
+      <div className="absolute top-152 right-0 z-20">
+        <CustomizationToolbar
+          items={CUSTOMIZATION_ITEMS}
+          activeCustomization={activeCustomization}
+          onItemClick={handleToolbarClick}
+        />
+      </div>
 
-      <img
-        src={squirrelDefault}
-        alt="다람쥐 캐릭터"
-        className="absolute top-221 left-28 z-5"
-      />
+      <div className="mt-134 flex justify-center">
+        <img src={squirrelDefault} alt="다람쥐 캐릭터" className="z-10" />
+      </div>
 
       {!activeCustomization && (
-        <QuestionBox nickname={nickname} onTimeSelect={setSelectedTime} />
+        <div className="mt-17 mb-21 flex justify-center">
+          <QuestionBox nickname={nickname} onTimeSelect={setSelectedTime} />
+        </div>
       )}
 
-      {activeCustomization && sheetTop === 412 && (
-        <div className="fixed inset-0 z-14" onClick={handleOutsideClick} />
-      )}
-
-      {activeCustomization && (
-        <BottomSheet
-          type={activeCustomization}
-          items={CUSTOMIZATION_ITEMS}
-          sheetTop={sheetTop}
-          setSheetTop={setSheetTop}
-        />
-      )}
+      <AnimatePresence>
+        {activeCustomization && (
+          <motion.div
+            key="overlay"
+            className="fixed inset-0 z-14"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={handleOutsideClick}
+          />
+        )}
+        {activeCustomization && (
+          <BottomSheet
+            key="bottom-sheet"
+            type={activeCustomization}
+            items={CUSTOMIZATION_ITEMS}
+            isExpanded={isExpanded}
+            onExpandChange={setIsExpanded}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
