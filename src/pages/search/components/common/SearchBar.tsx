@@ -1,5 +1,6 @@
 import type { ChangeEvent, KeyboardEvent } from "react";
 import IcSearch from "@/assets/icons/ic_search.svg?react";
+import { cn } from "@/utils/cn/cn";
 
 interface SearchBarProps {
   value: string;
@@ -46,7 +47,7 @@ export default function SearchBar({
       />
       <button type="button" onClick={handleSearchClick}>
         <IcSearch
-          className={`size-24 shrink-0 ${isSearchable ? "text-black" : "text-gray-500"}`}
+          className={cn("size-24 shrink-0", isSearchable ? "text-black" : "text-gray-500")}
         />
       </button>
     </div>
