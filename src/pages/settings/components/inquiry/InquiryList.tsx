@@ -2,40 +2,9 @@
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcReply from "@/assets/icons/ic_reply.svg?react";
-import type { AnswerStatus, MyInquiryItem } from "../../types/inquiry.type";
+import type { AnswerStatus } from "../../types/inquiry.type";
 import StatusPill from "./StatusPill";
-
-const MOCK_MY_INQUIRIES: MyInquiryItem[] = [
-  {
-    inquiryId: 101,
-    createdAt: "2026.01.24",
-    answered: true,
-    title: "문의 제목입니다. 문의 제목이 길어질 수 있어요.",
-    contentPreview: "문의 내용 미리보기입니다. 내용이 길어질 수 있어요.",
-    answerPreview: {
-      managerLabel: "담당자 000 님",
-      preview: "답변 미리보기입니다. 답변이 길어질 수 있어요.",
-    },
-  },
-  {
-    inquiryId: 102,
-    createdAt: "2026.01.20",
-    answered: false,
-    title: "문의 제목입니다. 문의 제목이 길어질 수 있어요.",
-    contentPreview: "문의 내용 미리보기입니다. 내용이 길어질 수 있어요.",
-  },
-  {
-    inquiryId: 103,
-    createdAt: "2026.01.12",
-    answered: true,
-    title: "문의 제목입니다. 문의 제목이 길어질 수 있어요.",
-    contentPreview: "문의 내용 미리보기입니다. 내용이 길어질 수 있어요.",
-    answerPreview: {
-      managerLabel: "담당자 000 님",
-      preview: "답변 미리보기입니다. 답변이 길어질 수 있어요.",
-    },
-  },
-];
+import { mockMyInquiries } from "../../mocks/inquiry/inquiry.mock";
 
 const CATEGORY_OPTIONS = [
   { value: "보상", label: "보상" },
@@ -98,10 +67,10 @@ function FilterMenuBox<T extends string>({
         >
           <span className="flex h-16 w-16 items-center justify-center">
             {selectedValue === option.value && (
-              <IcCheck className="h-16 w-16 text-[var(--color-moamoa-400)]" />
+              <IcCheck className="h-16 w-16 text-moamoa-400" />
             )}
           </span>
-          <span className="body-5 whitespace-nowrap text-center text-[var(--color-gray-800)]">
+          <span className="body-5 whitespace-nowrap text-center text-gray-800">
             {option.label}
           </span>
         </button>
@@ -131,16 +100,15 @@ export default function InquiryList({ onSelect }: Props) {
     selectedCategory;
 
   return (
-    <div className="flex w-full flex-col items-center">
-      <div className="h-36" />
+    <div className="flex w-full flex-col items-center pt-36">
 
       <div className="flex w-full items-start justify-between">
         <div className="flex items-center gap-10">
-          <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
+          <span className="body-4 whitespace-nowrap text-black">
             문의 내역
           </span>
-          <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
-            {MOCK_MY_INQUIRIES.length}
+          <span className="body-4 whitespace-nowrap text-black">
+            {mockMyInquiries.length}
           </span>
         </div>
 
@@ -151,12 +119,12 @@ export default function InquiryList({ onSelect }: Props) {
               onClick={() => toggleMenu("category")}
               className="flex items-center gap-2"
             >
-              <span className="body-5 whitespace-nowrap text-[var(--color-gray-800)]">
+              <span className="body-5 whitespace-nowrap text-gray-800">
                 {selectedCategoryLabel}
               </span>
               <IcLeft
                 className={[
-                  "h-16 w-16 text-[var(--color-gray-800)]",
+                  "h-16 w-16 text-gray-800",
                   openMenu === "category" ? "rotate-90" : "-rotate-90",
                 ].join(" ")}
               />
@@ -181,12 +149,12 @@ export default function InquiryList({ onSelect }: Props) {
               onClick={() => toggleMenu("period")}
               className="flex items-center gap-4"
             >
-              <span className="body-5 whitespace-nowrap text-[var(--color-gray-800)]">
+              <span className="body-5 whitespace-nowrap text-gray-800">
                 {selectedPeriod}
               </span>
               <IcLeft
                 className={[
-                  "h-16 w-16 text-[var(--color-gray-800)]",
+                  "h-16 w-16 text-gray-800",
                   openMenu === "period" ? "rotate-90" : "-rotate-90",
                 ].join(" ")}
               />
@@ -211,12 +179,12 @@ export default function InquiryList({ onSelect }: Props) {
               onClick={() => toggleMenu("status")}
               className="flex items-center gap-4"
             >
-              <span className="body-5 whitespace-nowrap text-[var(--color-gray-800)]">
+              <span className="body-5 whitespace-nowrap text-gray-800">
                 {selectedStatus}
               </span>
               <IcLeft
                 className={[
-                  "h-16 w-16 text-[var(--color-gray-800)]",
+                  "h-16 w-16 text-gray-800",
                   openMenu === "status" ? "rotate-90" : "-rotate-90",
                 ].join(" ")}
               />
@@ -237,11 +205,9 @@ export default function InquiryList({ onSelect }: Props) {
         </div>
       </div>
 
-      <div className="h-10" />
-
-      <div className="flex w-full flex-col gap-12">
+      <div className="mt-10 flex w-full flex-col gap-12">
         {/* TODO: shadow token 적용 필요 */}
-        {MOCK_MY_INQUIRIES.map((item) => {
+        {mockMyInquiries.map((item) => {
           const status: AnswerStatus = item.answered ? "COMPLETED" : "PENDING";
 
           return (
@@ -249,21 +215,21 @@ export default function InquiryList({ onSelect }: Props) {
               key={item.inquiryId}
               type="button"
               onClick={() => onSelect(item.inquiryId)}
-              className="flex h-164 w-full items-center rounded-lg bg-[var(--color-white)] px-16 py-10 pr-27 pb-17 shadow-[0_0_16.9px_0_rgba(0,0,0,0.10)]"
+              className="flex h-164 w-full items-center rounded-lg bg-[var(--color-white)] px-16 py-10 pr-27 pb-17 text-left shadow-[0_0_16.9px_0_rgba(0,0,0,0.10)]"
             >
-              <div className="flex w-full flex-col items-start gap-16">
+              <div className="flex w-full flex-col items-start gap-16 text-left">
                 <div className="flex items-center gap-12">
-                  <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
+                  <span className="body-4 whitespace-nowrap text-black">
                     {item.createdAt}
                   </span>
                   <StatusPill status={status} />
                 </div>
 
-                <div className="flex w-full flex-col items-start gap-12">
-                  <p className="heading-5 w-full truncate text-[var(--color-black)]">
+                <div className="flex w-full flex-col items-start gap-12 text-left">
+                  <p className="heading-5 w-full truncate text-black">
                     {item.title}
                   </p>
-                  <p className="body-4 w-full truncate text-[var(--color-black)]">
+                  <p className="body-4 w-full truncate text-black">
                     {item.contentPreview}
                   </p>
 
@@ -271,13 +237,13 @@ export default function InquiryList({ onSelect }: Props) {
                     <div className="flex w-full items-center">
                       <IcReply className="h-24 w-24" aria-hidden />
                       <div className="ml-3 flex min-w-0 items-center">
-                        <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
+                        <span className="body-4 whitespace-nowrap text-black">
                           {item.answerPreview.managerLabel}
                         </span>
-                        <span className="body-4 mx-2 whitespace-nowrap text-[var(--color-black)]">
+                        <span className="body-4 mx-2 whitespace-nowrap text-black">
                           :
                         </span>
-                        <span className="body-4 min-w-0 flex-1 truncate text-[var(--color-black)]">
+                        <span className="body-4 min-w-0 flex-1 truncate text-black">
                           {item.answerPreview.preview}
                         </span>
                       </div>

@@ -27,7 +27,7 @@ export default function MissionCountPanel({
     >
       <div
         className={[
-          "heading-5 h-25 w-full whitespace-nowrap text-center text-[var(--color-black)]",
+          "heading-5 h-25 w-full whitespace-nowrap text-center text-black",
           panelText,
         ].join(" ")}
       >
@@ -38,15 +38,15 @@ export default function MissionCountPanel({
         <button
           type="button"
           onClick={onMinus}
-          className="inline-flex h-28 items-center justify-center whitespace-nowrap text-[var(--color-black)]"
+          className="inline-flex h-28 items-center justify-center whitespace-nowrap text-black"
           aria-label="일간 미션 감소"
         >
           <IcMinus
             className={[
               "h-24 w-24",
               isOn
-                ? "text-[var(--color-warning)]"
-                : "text-[var(--color-black)]",
+                ? "text-warning"
+                : "text-black",
             ].join(" ")}
             aria-hidden
           />
@@ -54,7 +54,7 @@ export default function MissionCountPanel({
 
         <span
           className={[
-            "heading-3 whitespace-nowrap text-[var(--color-black)]",
+            "heading-3 whitespace-nowrap text-black",
             panelText,
           ].join(" ")}
         >
@@ -64,15 +64,15 @@ export default function MissionCountPanel({
         <button
           type="button"
           onClick={onPlus}
-          className="inline-flex h-28 items-center justify-center whitespace-nowrap text-[var(--color-black)]"
+          className="inline-flex h-28 items-center justify-center whitespace-nowrap text-black"
           aria-label="일간 미션 증가"
         >
           <IcPlus
             className={[
               "h-24 w-24",
               isOn
-                ? "text-[var(--color-positive)]"
-                : "text-[var(--color-black)]",
+                ? "text-positive"
+                : "text-black",
             ].join(" ")}
             aria-hidden
           />

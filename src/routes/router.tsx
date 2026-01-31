@@ -74,26 +74,32 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "/settings/interests",
         element: <Interests />,
+        handle: { hideBottomNav: true },
       },
       {
         path: "/settings/target-mission-count",
         element: <TargetMissionCount />,
+        handle: { hideBottomNav: true },
       },
       {
         path: "/settings/account-info",
         element: <AccountInfoPage />,
+        handle: { hideBottomNav: true },
       },
       {
         path: "/settings/password-change",
         element: <PasswordChangePage />,
+        handle: { hideBottomNav: true },
       },
       {
         path: "/settings/faq",
         element: <FaqPage />,
+        handle: { hideBottomNav: true },
       },
       {
         path: "/settings/inquiry",
         element: <InquiryPage />,
+        handle: { hideBottomNav: true },
       },
       {
         path: "/settings/inquiry/:inquiryId",

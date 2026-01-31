@@ -32,7 +32,7 @@ export default function ProfilePickerModal({
       />
 
       <div className="absolute right-0 bottom-0 left-0 rounded-t-2xl bg-[var(--color-white)] p-20 shadow-lg">
-        <div className="heading-5 text-[var(--color-gray-800)]">
+        <div className="heading-5 text-gray-800">
           프로필 선택(캐릭터)
         </div>
 
@@ -59,8 +59,8 @@ export default function ProfilePickerModal({
                   className={[
                     "body-5",
                     selected
-                      ? "text-[var(--color-moamoa-400)]"
-                      : "text-[var(--color-gray-500)]",
+                      ? "text-moamoa-400"
+                      : "text-gray-500",
                   ].join(" ")}
                 >
                   {p.label}
@@ -73,7 +73,7 @@ export default function ProfilePickerModal({
         <button
           type="button"
           onClick={onClose}
-          className="mt-5 w-full rounded-xl bg-[var(--color-gray-100)] py-12 text-[var(--color-gray-700)]"
+          className="mt-5 w-full rounded-xl bg-[var(--color-gray-100)] py-12 text-gray-700"
         >
           닫기
         </button>
