@@ -34,7 +34,7 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="h-46 w-full rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-[var(--color-black)] outline-none"
+          className="h-46 w-full rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-black outline-none"
           placeholder="이름"
         />
       </FormField>
@@ -43,7 +43,7 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
         <input
           value={initial.email}
           disabled
-          className="h-46 w-full rounded-lg bg-[var(--color-gray-300)] px-15 py-8 text-[var(--color-gray-700)] outline-none"
+          className="h-46 w-full rounded-lg bg-[var(--color-gray-300)] px-15 py-8 text-gray-700 outline-none"
         />
       </FormField>
 
@@ -51,7 +51,7 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
         <input
           value={birthDate}
           onChange={(e) => setBirthDate(e.target.value)}
-          className="h-46 w-full rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-[var(--color-black)] outline-none"
+          className="h-46 w-full rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-black outline-none"
           placeholder="YYYY.MM.DD"
         />
       </FormField>

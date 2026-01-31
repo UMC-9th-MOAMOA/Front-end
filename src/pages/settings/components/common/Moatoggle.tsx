@@ -61,7 +61,7 @@ export default function MoaToggle({
               className="shrink-0 rounded-full bg-white"
               style={{ width: 16, height: 16 }}
             />
-            <span className="detail-1 text-[var(--color-gray-600)]">OFF</span>
+            <span className="detail-1 text-gray-600">OFF</span>
           </>
         )}
       </span>

@@ -14,7 +14,7 @@ export default function PasswordChangeForm() {
           value={pw}
           onChange={(e) => setPw(e.target.value)}
           placeholder="비밀번호"
-          className="h-46 w-full rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-[var(--color-gray-500)] outline-none"
+          className="h-46 w-full rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-gray-500 outline-none"
         />
       </FormField>
 
@@ -25,11 +25,11 @@ export default function PasswordChangeForm() {
           value={pw2}
           onChange={(e) => setPw2(e.target.value)}
           placeholder="비밀번호를 입력해주세요"
-          className="h-46 w-full rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-[var(--color-gray-500)] outline-none"
+          className="h-46 w-full rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-gray-500 outline-none"
         />
 
         {/* 입력 박스 아래 6 */}
-        <p className="body-5 mt-6 whitespace-nowrap text-[var(--color-gray-600)]">
+        <p className="body-5 mt-6 whitespace-nowrap text-gray-600">
           영문 숫자 특수문자 포함 8자리 이상 입력해주세요
         </p>
 

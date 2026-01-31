@@ -28,8 +28,8 @@ export default function GenderToggleField({ value, onChange }: Props) {
           className={[
             "body-2 flex h-46 w-1/2 items-center justify-center whitespace-nowrap px-15 text-center",
             value === "남자"
-              ? "text-[var(--color-white)]"
-              : "text-[var(--color-moamoa-400)]",
+              ? "text-white"
+              : "text-moamoa-400",
           ].join(" ")}
         >
           남자
@@ -42,8 +42,8 @@ export default function GenderToggleField({ value, onChange }: Props) {
           className={[
             "body-2 flex h-46 w-1/2 items-center justify-center whitespace-nowrap px-15 text-center",
             value === "여자"
-              ? "text-[var(--color-white)]"
-              : "text-[var(--color-moamoa-400)]",
+              ? "text-white"
+              : "text-moamoa-400",
           ].join(" ")}
         >
           여자

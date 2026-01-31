@@ -1,13 +1,13 @@
 ﻿import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
+import LogoutConfirmModal from "./components/LogoutConfirmModal";
 import ProfileHeaderCard from "./components/ProfileHeaderCard";
 import ProfilePickerModal from "./components/ProfilePickerModal";
 import SettingsActions from "./components/SettingsActions";
 import SettingsSectionList from "./components/SettingsSectionList";
-import LogoutConfirmModal from "./components/LogoutConfirmModal";
 import WithdrawConfirmModal from "./components/WithdrawConfirmModal";
-import { mockProfiles, mockUser } from "./mocks/settings.mock";
+import { mockProfiles, mockUser } from "./mocks/account/account.mock";
 
 export default function SettingsPage() {
   const navigate = useNavigate();
@@ -42,12 +42,11 @@ export default function SettingsPage() {
   const dividerStyle = { background: "var(--MOAMOA-G-200, #EEE)" };
 
   return (
-    // TODO(design-token): replace bg-[#FAFAFA] with a color token when available.
-    <div className="flex w-full flex-col bg-[#FAFAFA]">
+    <div className="flex w-full flex-col">
       <Header title="설정" property="common" />
 
       <div
-        className="mt-14 mb-10 h-2 w-screen -ml-25"
+        className="mt-14 mb-10 -ml-25 h-2 w-screen"
         style={{ background: "var(--MOAMOA-G-200, #EEE)" }}
       />
 
@@ -58,7 +57,7 @@ export default function SettingsPage() {
         onClickProfile={onClickProfile}
       />
 
-      <div className="mt-10 flex h-977 w-full flex-1 flex-col bg-[var(--color-white)] pt-28">
+      <div className="mt-10 flex w-full flex-1 flex-col bg-[var(--color-white)] pt-28">
         <SettingsSectionList
           onNavigate={onNavigate}
           dividerStyle={dividerStyle}

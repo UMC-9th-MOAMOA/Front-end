@@ -52,23 +52,23 @@ export default function InquiryWriteForm() {
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="h-28" />
+      <div className="mt-28 w-full">
+        <InquiryCategorySection
+          selected={draft.category}
+          onSelect={(category) => setCategory(category)}
+        />
+      </div>
 
-      <InquiryCategorySection
-        selected={draft.category}
-        onSelect={(category) => setCategory(category)}
-      />
-
-      <div className="h-40" />
-
-      <InquiryTextFields
-        title={draft.title}
-        content={draft.content}
-        titleCount={clamp(titleCount, MAX_TITLE)}
-        contentCount={clamp(contentCount, MAX_CONTENT)}
-        onChangeTitle={onChangeTitle}
-        onChangeContent={onChangeContent}
-      />
+      <div className="mt-40 w-full">
+        <InquiryTextFields
+          title={draft.title}
+          content={draft.content}
+          titleCount={clamp(titleCount, MAX_TITLE)}
+          contentCount={clamp(contentCount, MAX_CONTENT)}
+          onChangeTitle={onChangeTitle}
+          onChangeContent={onChangeContent}
+        />
+      </div>
 
       <InquiryAttachmentSection
         fileInputId={fileInputId}
@@ -76,8 +76,9 @@ export default function InquiryWriteForm() {
         onAddImages={onAddImages}
       />
 
-      <div className="h-67" />
-      <InquiryConsentRow onViewPolicy={() => {}} />
+      <div className="mt-67 w-full">
+        <InquiryConsentRow onViewPolicy={() => {}} />
+      </div>
     </div>
   );
 }

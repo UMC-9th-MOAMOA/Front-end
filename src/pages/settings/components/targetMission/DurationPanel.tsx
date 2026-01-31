@@ -34,7 +34,7 @@ function DurationOptionButton({
     <Button
       type="button"
       onClick={handleClick}
-      className="heading-5 self-start whitespace-nowrap text-center text-[var(--color-black)]"
+      className="heading-5 self-start whitespace-nowrap text-center text-black"
     >
       <span className="inline-flex items-center gap-8">
         {isActive ? (
@@ -84,7 +84,7 @@ export default function DurationPanel({
       <p
         className={[
           "heading-3 w-full whitespace-nowrap text-center",
-          isOn ? "text-[var(--color-moamoa-400)]" : "text-[var(--color-black)]",
+          isOn ? "text-moamoa-400" : "text-black",
         ].join(" ")}
       >
         이 목표를 언제까지 유지할까요?

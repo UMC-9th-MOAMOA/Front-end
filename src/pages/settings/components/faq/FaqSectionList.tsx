@@ -49,7 +49,7 @@ export default function FaqSectionList() {
           key={section.title}
           className="flex w-full flex-col items-start justify-center gap-20"
         >
-          <p className="heading-3 whitespace-nowrap text-[var(--color-black)]">
+          <p className="heading-3 whitespace-nowrap text-black">
             {section.title}
           </p>
 
@@ -69,10 +69,10 @@ export default function FaqSectionList() {
                   ].join(" ")}
                 >
                   <div className="flex w-full items-center gap-5">
-                    <span className="body-2 h-21 w-15 text-[var(--color-black)]">
+                    <span className="body-2 h-21 w-15 text-black">
                       Q.
                     </span>
-                    <span className="body-2 flex-1 text-[var(--color-black)]">
+                    <span className="body-2 flex-1 text-black">
                       {item.question}
                     </span>
                     <button
@@ -83,7 +83,7 @@ export default function FaqSectionList() {
                     >
                       <IcLeft
                         className={[
-                          "h-16 w-16 text-[var(--color-gray-700)]",
+                          "h-16 w-16 text-gray-700",
                           isOpen ? "rotate-90" : "-rotate-90",
                         ].join(" ")}
                         aria-hidden
@@ -104,13 +104,13 @@ export default function FaqSectionList() {
                         <>
                           <div className="h-96 w-100 rounded-md bg-[var(--color-gray-300)]" />
                           <div className="h-105 flex-1">
-                            <span className="body-4 block truncate text-[var(--color-gray-500)]">
+                            <span className="body-4 block truncate text-gray-500">
                               {item.answer}
                             </span>
                           </div>
                         </>
                       ) : (
-                        <span className="body-4 truncate text-[var(--color-gray-500)]">
+                        <span className="body-4 truncate text-gray-500">
                           {item.answer}
                         </span>
                       )}

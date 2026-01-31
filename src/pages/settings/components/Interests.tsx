@@ -6,6 +6,7 @@ import {
   INTEREST_CATEGORIES,
   toggleSubSelection,
 } from "../constants/interests";
+import BottomActionBar from "./common/BottomActionBar";
 import InterestCategoryCard from "./interests/InterestCategoryCard";
 
 export default function InterestPage() {
@@ -24,13 +25,13 @@ export default function InterestPage() {
   };
 
   return (
-    <div className="flex min-h-screen w-full flex-col bg-[var(--color-white)]">
+    <div className="flex min-h-screen w-full flex-col bg-[var(--color-white)] pb-98">
       <Header title="관심사 변경" property="common" />
 
       <div className="h-2 w-full bg-[var(--color-gray-200)]" />
 
       <div className="mt-24 w-full px-25 text-center">
-        <p className="body-4 whitespace-nowrap text-[var(--color-moamoa-300)]">
+        <p className="body-4 whitespace-nowrap text-moamoa-300">
           관심사를 변경하실 수 있습니다
         </p>
       </div>
@@ -47,6 +48,8 @@ export default function InterestPage() {
           />
         ))}
       </div>
+
+      <BottomActionBar label="설정 저장하기" />
     </div>
   );
 }

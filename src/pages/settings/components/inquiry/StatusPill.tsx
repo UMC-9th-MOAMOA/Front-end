@@ -16,7 +16,7 @@ export default function StatusPill({ status }: Props) {
           : "bg-[var(--color-gray-300)]",
       ].join(" ")}
     >
-      <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
+      <span className="body-4 whitespace-nowrap text-black">
         {isCompleted ? "답변 완료" : "답변 대기"}
       </span>
     </div>

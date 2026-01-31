@@ -5,9 +5,9 @@ import type {
   InterestSubKey,
 } from "../../constants/interests";
 import {
-  EMPTY_SELECTED_INTERESTS,
+  type EMPTY_SELECTED_INTERESTS,
   getSelectedCount,
-  INTEREST_CATEGORIES,
+  type INTEREST_CATEGORIES,
   isSubSelected,
 } from "../../constants/interests";
 
@@ -24,10 +24,17 @@ type InterestCategoryCardProps = {
   isOpen: boolean;
   selected: typeof EMPTY_SELECTED_INTERESTS;
   onToggle: () => void;
-  onToggleSub: (categoryKey: InterestCategoryKey, subKey: InterestSubKey) => void;
+  onToggleSub: (
+    categoryKey: InterestCategoryKey,
+    subKey: InterestSubKey
+  ) => void;
 };
 
-function InterestSubButton({ label, selected, onClick }: InterestSubButtonProps) {
+function InterestSubButton({
+  label,
+  selected,
+  onClick,
+}: InterestSubButtonProps) {
   return (
     <button
       type="button"
@@ -35,8 +42,8 @@ function InterestSubButton({ label, selected, onClick }: InterestSubButtonProps)
       className={[
         "body-4 flex h-34 flex-1 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
         selected
-          ? "bg-[var(--color-moamoa-300)] text-[var(--color-white)]"
-          : "bg-[var(--color-moamoa-50)] text-[var(--color-moamoa-300)]",
+          ? "bg-[var(--color-moamoa-300)] text-white"
+          : "bg-[var(--color-moamoa-50)] text-moamoa-300",
       ].join(" ")}
     >
       {label}
@@ -51,16 +58,16 @@ export default function InterestCategoryCard({
   onToggle,
   onToggleSub,
 }: InterestCategoryCardProps) {
-  const rows = [
-    category.subs.slice(0, 3),
-    category.subs.slice(3),
-  ].filter((row) => row.length > 0);
+  const rows = [category.subs.slice(0, 3), category.subs.slice(3)].filter(
+    (row) => row.length > 0
+  );
+  const isActive = getSelectedCount(selected, category.key) > 0;
 
   return (
     <div
       className={[
         "flex w-full flex-col items-start rounded-xl border-2 bg-[var(--color-white)]",
-        "border-[var(--color-moamoa-100)]",
+        isActive ? "border-[var(--color-moamoa-300)]" : "border-black",
       ].join(" ")}
     >
       <button
@@ -71,19 +78,19 @@ export default function InterestCategoryCard({
         aria-label={`${category.label} ${isOpen ? "접기" : "펼치기"}`}
       >
         <div className="flex items-center gap-12">
-          <span className="heading-4 text-[var(--color-black)]">
+          <span className="heading-4 text-black">
             {category.label}
           </span>
 
-          <span className="body-2 text-[var(--color-gray-900)]">
+          <span className="body-2 text-gray-900">
             {getSelectedCount(selected, category.key)}개 선택중
           </span>
         </div>
 
         <IcLeft
           className={[
-            "h-24 w-24 text-[var(--color-black)]",
-            isOpen ? "-rotate-90" : "rotate-90",
+            "h-24 w-24 text-black",
+            isOpen ? "rotate-90" : "-rotate-90",
           ].join(" ")}
           aria-hidden
         />
@@ -94,10 +101,8 @@ export default function InterestCategoryCard({
           <div className="w-full px-12">
             <IcDash className="block w-full" aria-hidden />
           </div>
-          <div className="w-full pb-21 pl-27 pr-27">
-            <div className="h-21" />
-
-            <div className="flex w-full flex-col gap-15">
+          <div className="w-full pr-27 pb-21 pl-27">
+            <div className="mt-21 flex w-full flex-col gap-15">
               {rows.map((row, index) => (
                 <div
                   key={row[0]?.key ?? index}
