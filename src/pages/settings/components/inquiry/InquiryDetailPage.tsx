@@ -1,7 +1,6 @@
 ﻿import { useMemo } from "react";
 import { useParams } from "react-router-dom";
 import Header from "@/components/common/header/Header";
-import type { AnswerStatus } from "../../types/inquiry.type";
 import StatusPill from "./StatusPill";
 import { mockInquiryDetail } from "../../mocks/inquiry/inquiry.mock";
 

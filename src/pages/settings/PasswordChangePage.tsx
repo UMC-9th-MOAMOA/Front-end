@@ -6,18 +6,15 @@ import PasswordChangeIntro from "./components/Password/PasswordChangeIntro";
 import PasswordChangeSuccessModal from "./components/Password/PasswordChangeSuccessModal";
 
 export default function PasswordChangePage() {
-  const [saving, setSaving] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
 
   const onSubmit = async () => {
     // TODO(API 연결 시): PATCH /users/password
-    setSaving(true);
     try {
       console.log("submit password change");
 
       setSuccessOpen(true);
     } finally {
-      setSaving(false);
     }
   };
 
