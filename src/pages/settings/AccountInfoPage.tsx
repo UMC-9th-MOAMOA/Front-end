@@ -9,16 +9,19 @@ export default function AccountInfoPage() {
   // TODO(API 연결 시): user를 query로 교체
   const user = mockUser;
   const initial = useMemo(() => user, [user]);
+  const handleSubmit = () => {
+    // TODO(API 연결 시): 프로필 변경 요청
+  };
   return (
     <div>
-      <Header title="프로필 수정" property="common" />
+      <Header title="프로필 설정" property="common" />
       <div className="-mx-25 mt-14 h-2 bg-gray-200" />
       <div className="flex min-h-dvh w-full flex-col overflow-y-auto">
         <div className="flex w-full flex-1 flex-col items-center pb-40">
           <AccountInfoHeader />
           <AccountInfoForm initial={initial} />
         </div>
-        <BottomActionBar label="변경하기" />
+        <BottomActionBar label="변경하기" onClick={handleSubmit} />
       </div>
     </div>
   );

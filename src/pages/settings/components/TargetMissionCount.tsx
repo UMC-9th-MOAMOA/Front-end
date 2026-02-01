@@ -1,4 +1,4 @@
-﻿import { useId, useMemo, useState } from "react";
+import { useId, useMemo, useState } from "react";
 import Header from "@/components/common/header/Header";
 import MoaToggle from "@/pages/settings/components/common/Moatoggle";
 import BottomActionBar from "./common/BottomActionBar";
