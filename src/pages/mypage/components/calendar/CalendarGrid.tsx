@@ -28,7 +28,7 @@ export default function CalendarGrid({
 }: Props) {
   return (
     <>
-      <div className="detail-calendar mx-auto mt-34 grid w-280 grid-cols-7 text-center text-gray-500">
+      <div className="detail-calendar mt-34 grid w-full grid-cols-7 text-center text-gray-500">
         {WEEKDAYS.map((w) => (
           <div key={w} className="py-2">
             {w}
@@ -36,9 +36,9 @@ export default function CalendarGrid({
         ))}
       </div>
 
-      <div className="mt-17 flex flex-col items-center gap-8">
+      <div className="mt-17 flex w-full flex-col gap-8">
         {weeks.map((week, wi) => (
-          <div key={wi} className="flex h-61 w-280">
+          <div key={wi} className="flex w-full">
             {week.map((d) => {
               const ymd = toYMD(d);
               const isSelected = ymd === selectedYMD;
@@ -81,7 +81,7 @@ export default function CalendarGrid({
                 <div
                   key={ymd}
                   className={[
-                    "flex h-61 w-40 flex-col items-center",
+                    "flex w-full flex-1 flex-col items-center",
                     isCurrentMonth ? "cursor-pointer" : "",
                   ].join(" ")}
                   onClick={() => {
@@ -90,12 +90,12 @@ export default function CalendarGrid({
                 >
                   {isCurrentMonth && (
                     <>
-                      <div className="flex h-22 items-center justify-center">
+                      <div className="flex h-22 w-full items-center justify-center">
                         <button
                           type="button"
                           onClick={() => onSelectYMD(ymd)}
                           className={[
-                            "detail-calendar flex h-22 w-36 items-center justify-center",
+                            "detail-calendar flex h-22 w-full items-center justify-center",
                             isSelected
                               ? "rounded-xl bg-[#5586F1] text-white"
                               : "rounded-none text-[var(--color-gray-700)]",

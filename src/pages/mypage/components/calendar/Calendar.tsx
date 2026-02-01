@@ -81,7 +81,7 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
   const currentMonth = month.getMonth();
 
   return (
-    <section className="h-auto w-342 rounded-xl bg-white pt-16 pr-21 pb-16 pl-22 shadow-sm">
+    <section className="w-full rounded-xl bg-white pt-16 pr-21 pb-16 pl-22 shadow-sm">
       <CalendarHeader month={month} onPrev={goPrevMonth} onNext={goNextMonth} />
       <CalendarGrid
         weeks={weeks}
