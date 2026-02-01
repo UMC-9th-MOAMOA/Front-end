@@ -35,7 +35,7 @@ export default function TargetMissionCount() {
   };
 
   return (
-    <div className="w-full bg-white pb-98">
+    <div className="w-full bg-white">
       <Header title="목표 미션 개수 설정" property="common" />
 
       <div className="-mx-25 mt-14 h-2 bg-gray-200" />

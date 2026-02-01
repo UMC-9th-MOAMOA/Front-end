@@ -28,7 +28,7 @@ export default function InterestPage() {
   };
 
   return (
-    <div className="flex w-full flex-col bg-white pb-98">
+    <div className="flex w-full flex-col bg-white">
       <Header title="관심사 변경" property="common" />
 
       <div className="-mx-25 mt-14 h-2 bg-gray-200" />

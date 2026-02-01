@@ -1,6 +1,6 @@
-﻿import IcPencil from "@/assets/icons/ic_pencil.svg?react";
+﻿import { useNavigate } from "react-router-dom";
+import IcPencil from "@/assets/icons/ic_pencil.svg?react";
 import Header from "@/components/common/header/Header";
-import { useNavigate } from "react-router-dom";
 import BottomActionBar from "./common/BottomActionBar";
 import FaqSectionList from "./faq/FaqSectionList";
 
@@ -8,7 +8,7 @@ export default function FaqPage() {
   const navigate = useNavigate();
   const handleInquiry = () => navigate("/settings/inquiry");
   return (
-    <div className="w-full bg-gray-50 pb-98">
+    <div className="w-full bg-gray-50">
       <Header title="FAQ" property="common" />
 
       <div className="-mx-25 mt-14 h-2 bg-gray-200" />
