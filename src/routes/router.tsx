@@ -123,6 +123,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "/settings/inquiry/:inquiryId",
         element: <InquiryDetailPage />,
+        handle: { hideBottomNav: true },
       },
     ],
   },
