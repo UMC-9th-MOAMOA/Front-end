@@ -50,12 +50,14 @@ export default function SettingsPage() {
         style={{ background: "var(--MOAMOA-G-200, #EEE)" }}
       />
 
-      <ProfileHeaderCard
-        name={user.name}
-        email={user.email}
-        profileLabel={selectedProfileLabel}
-        onClickProfile={onClickProfile}
-      />
+      <div className="-mx-25 w-screen bg-setting">
+        <ProfileHeaderCard
+          name={user.name}
+          email={user.email}
+          profileLabel={selectedProfileLabel}
+          onClickProfile={onClickProfile}
+        />
+      </div>
 
       <div className="-mx-25 mt-10 w-screen">
         <div className="flex w-full flex-1 flex-col bg-white pt-28">

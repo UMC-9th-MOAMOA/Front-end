@@ -41,9 +41,7 @@ function InterestSubButton({
       onClick={onClick}
       className={[
         "body-4 flex h-34 flex-1 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
-        selected
-          ? "bg-[var(--color-moamoa-300)] text-white"
-          : "bg-[var(--color-moamoa-50)] text-moamoa-300",
+        selected ? "bg-moamoa-300 text-white" : "bg-moamoa-50 text-moamoa-300",
       ].join(" ")}
     >
       {label}
