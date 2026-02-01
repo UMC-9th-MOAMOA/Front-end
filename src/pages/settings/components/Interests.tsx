@@ -52,7 +52,12 @@ export default function InterestPage() {
         ))}
       </div>
 
-      <BottomActionBar label="설정 저장하기" />
+      <BottomActionBar
+        label="설정 저장하기"
+        onClick={() => {
+          // TODO: 관심사 저장 API 호출 로직 구현
+        }}
+      />
     </div>
   );
 }

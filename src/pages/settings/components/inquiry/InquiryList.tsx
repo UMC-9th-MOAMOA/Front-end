@@ -1,4 +1,4 @@
-﻿import { useState } from "react";
+﻿import { useMemo, useState } from "react";
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcReply from "@/assets/icons/ic_reply.svg?react";
@@ -99,6 +99,32 @@ export default function InquiryList({ onSelect }: Props) {
     CATEGORY_OPTIONS.find((option) => option.value === selectedCategory)?.label ??
     selectedCategory;
 
+  const filteredInquiries = useMemo(() => {
+    const now = new Date();
+    const periodMonths =
+      selectedPeriod === PERIOD_OPTIONS[0]
+        ? 1
+        : selectedPeriod === PERIOD_OPTIONS[1]
+          ? 3
+          : 6;
+    const cutoff = new Date(now);
+    cutoff.setMonth(cutoff.getMonth() - periodMonths);
+
+    return mockMyInquiries.filter((item) => {
+      if (item.category !== selectedCategory) return false;
+
+      if (selectedStatus === STATUS_OPTIONS[1] && !item.answered) return false;
+      if (selectedStatus === STATUS_OPTIONS[2] && item.answered) return false;
+
+      const parts = item.createdAt.split(".").map(Number);
+      if (parts.length < 3) return true;
+      const [year, month, day] = parts;
+      if (!year || !month || !day) return true;
+      const createdAt = new Date(year, month - 1, day);
+      return createdAt >= cutoff;
+    });
+  }, [selectedCategory, selectedPeriod, selectedStatus]);
+
   return (
     <div className="flex w-full flex-col items-center pt-36">
 
@@ -108,7 +134,7 @@ export default function InquiryList({ onSelect }: Props) {
             문의 내역
           </span>
           <span className="body-4 whitespace-nowrap text-black">
-            {mockMyInquiries.length}
+            {filteredInquiries.length}
           </span>
         </div>
 
@@ -207,7 +233,7 @@ export default function InquiryList({ onSelect }: Props) {
 
       <div className="mt-10 flex w-full flex-col gap-12">
         {/* TODO: shadow token 적용 필요 */}
-        {mockMyInquiries.map((item) => {
+        {filteredInquiries.map((item) => {
           const status: AnswerStatus = item.answered ? "COMPLETED" : "PENDING";
 
           return (

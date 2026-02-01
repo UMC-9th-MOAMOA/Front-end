@@ -17,11 +17,22 @@ export default function WithdrawConfirmModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-[rgba(36,44,61,0.40)]" />
 
-      <div className="relative w-full px-35">
+      <div
+        className="relative w-full px-35"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="withdraw-title"
+        aria-describedby="withdraw-desc"
+      >
         <div className="flex w-full flex-col items-center gap-23 rounded-xl bg-white px-20 pt-28 pb-20">
-          <p className="heading-3 text-center text-warning">탈퇴하기</p>
+          <p id="withdraw-title" className="heading-3 text-center text-warning">
+            탈퇴하기
+          </p>
 
-          <div className="flex w-full flex-col items-center justify-center">
+          <div
+            id="withdraw-desc"
+            className="flex w-full flex-col items-center justify-center"
+          >
             <p className="body-2 text-center text-gray-700">
               모아모아 계정 정보와
             </p>

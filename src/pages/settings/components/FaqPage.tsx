@@ -1,9 +1,12 @@
 ﻿import IcPencil from "@/assets/icons/ic_pencil.svg?react";
 import Header from "@/components/common/header/Header";
+import { useNavigate } from "react-router-dom";
 import BottomActionBar from "./common/BottomActionBar";
 import FaqSectionList from "./faq/FaqSectionList";
 
 export default function FaqPage() {
+  const navigate = useNavigate();
+  const handleInquiry = () => navigate("/settings/inquiry");
   return (
     <div className="w-full bg-gray-50 pb-98">
       <Header title="FAQ" property="common" />
@@ -23,6 +26,7 @@ export default function FaqPage() {
       <BottomActionBar
         label="문의하기"
         leftIcon={<IcPencil className="h-16 w-16" aria-hidden />}
+        onClick={handleInquiry}
       />
     </div>
   );

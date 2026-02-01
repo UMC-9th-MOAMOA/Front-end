@@ -34,7 +34,14 @@ export default function InquiryPage() {
         )}
       </div>
 
-      <BottomActionBar label="문의 접수" />
+      {tab === "write" && (
+        <BottomActionBar
+          label="문의 접수"
+          onClick={() => {
+            // TODO: 문의 접수 API 호출 로직 구현
+          }}
+        />
+      )}
     </div>
   );
 }

@@ -75,7 +75,7 @@ export default function FaqSectionList() {
                         type="button"
                         onClick={() => setOpenIndex(isOpen ? null : itemKey)}
                         className="flex h-24 w-24 items-center justify-center"
-                        aria-label={isOpen ? "Close" : "Open"}
+                        aria-label={isOpen ? "접기" : "펼치기"}
                       >
                         <IcLeft
                           className={[

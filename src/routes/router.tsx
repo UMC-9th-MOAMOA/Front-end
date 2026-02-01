@@ -20,7 +20,7 @@ import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
-  bgColor?: "bg-white" | "bg-moamoa-50" | "bg-gray-100" | "bg-gray-50";
+  bgColor?: "bg-white" | "bg-moamoa-50" | "bg-gray-100" | "bg-gray-50" | "bg-setting";
   hideBottomNav?: boolean;
 }
 
@@ -88,7 +88,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "settings",
         element: <SettingsPage />,
-        handle: { bgColor: "bg-gray-50" },
+        handle: { bgColor: "bg-setting" },
       },
       {
         path: "/settings/interests",

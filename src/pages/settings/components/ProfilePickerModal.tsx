@@ -31,8 +31,15 @@ export default function ProfilePickerModal({
         onClick={onClose}
       />
 
-      <div className="absolute right-0 bottom-0 left-0 rounded-t-2xl bg-white p-20 shadow-lg">
-        <div className="heading-5 text-gray-800">프로필 선택(캐릭터)</div>
+      <div
+        className="absolute right-0 bottom-0 left-0 rounded-t-2xl bg-white p-20 shadow-lg"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="profile-picker-title"
+      >
+        <div id="profile-picker-title" className="heading-5 text-gray-800">
+          프로필 선택(캐릭터)
+        </div>
 
         <div className="mt-4 flex items-center justify-between gap-4">
           {profiles.map((p, index) => {

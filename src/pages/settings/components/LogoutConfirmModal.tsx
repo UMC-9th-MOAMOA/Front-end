@@ -17,13 +17,22 @@ export default function LogoutConfirmModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center">
       <div className="absolute inset-0 bg-[rgba(36,44,61,0.40)]" />
 
-      <div className="relative w-full px-35">
+      <div
+        className="relative w-full px-35"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="logout-title"
+        aria-describedby="logout-desc"
+      >
         <div className="flex w-full flex-col items-center gap-23 rounded-xl bg-white px-20 pt-28 pb-20">
-          <p className="heading-3 text-center text-warning">
+          <p id="logout-title" className="heading-3 text-center text-warning">
             로그아웃 하시겠습니까?
           </p>
 
-          <p className="body-2 whitespace-pre-line text-center text-gray-600">
+          <p
+            id="logout-desc"
+            className="body-2 whitespace-pre-line text-center text-gray-600"
+          >
             로그아웃 후 다시 로그인해야{"\n"}
             서비스를 이용할 수 있어요.
           </p>

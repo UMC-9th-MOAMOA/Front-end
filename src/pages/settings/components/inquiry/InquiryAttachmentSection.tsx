@@ -16,7 +16,7 @@ export default function InquiryAttachmentSection({
       <p className="heading-5 whitespace-nowrap text-black">파일 첨부</p>
 
       <div className="flex w-full items-center gap-7 overflow-x-auto">
-        {images.slice(0, 4).map((file, index) => (
+        {images.slice(0, 5).map((file, index) => (
           <div
             key={`${file.name}-${file.size}-${index}`}
             className="flex aspect-square w-76 flex-shrink-0 items-center justify-center rounded-sm border border-gray-400"
@@ -40,7 +40,10 @@ export default function InquiryAttachmentSection({
               accept="image/jpeg,image/png"
               multiple
               className="hidden"
-              onChange={(e) => onAddImages(e.target.files)}
+            onChange={(e) => {
+              onAddImages(e.currentTarget.files);
+              e.currentTarget.value = "";
+            }}
             />
           </label>
         )}

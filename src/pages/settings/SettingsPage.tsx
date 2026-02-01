@@ -22,7 +22,7 @@ export default function SettingsPage() {
 
   const selectedProfileLabel = useMemo(() => {
     return profiles.find((p) => p.id === selectedProfileId)?.label ?? "프로필";
-  }, [profiles, selectedProfileId]);
+  }, [selectedProfileId]);
 
   const onClickProfile = () => setIsProfilePickerOpen(true);
 
@@ -57,23 +57,27 @@ export default function SettingsPage() {
         onClickProfile={onClickProfile}
       />
 
-      <div className="mt-10 flex w-full flex-1 flex-col bg-white pt-28">
-        <div className="flex flex-col gap-20">
-          {sections.map((section, index) => (
-            <div key={section.id}>
-              <SettingsSection section={section} onNavigate={onNavigate} />
-              {index < sections.length - 1 && (
-                <div className="-ml-25 h-2 w-screen" style={dividerStyle} />
-              )}
-            </div>
-          ))}
-        </div>
+      <div className="-mx-25 mt-10 w-screen">
+        <div className="flex w-full flex-1 flex-col bg-white pt-28">
+          <div className="px-25 flex flex-col gap-20">
+            {sections.map((section, index) => (
+              <div key={section.id}>
+                <SettingsSection section={section} onNavigate={onNavigate} />
+                {index < sections.length - 1 && (
+                  <div className="-mx-25 h-2 w-screen" style={dividerStyle} />
+                )}
+              </div>
+            ))}
+          </div>
 
-        <div className="mt-45">
-          <LogoutAction onLogout={onLogout} />
+          <div className="mt-45 px-25">
+            <LogoutAction onLogout={onLogout} />
+          </div>
+          <div className="mt-34 -mx-25 h-2 w-screen" style={dividerStyle} />
+          <div className="px-25">
+            <WithdrawAction onWithdraw={onWithdraw} />
+          </div>
         </div>
-        <div className="mt-34 -ml-25 h-2 w-screen" style={dividerStyle} />
-        <WithdrawAction onWithdraw={onWithdraw} />
       </div>
 
       <WithdrawConfirmModal
