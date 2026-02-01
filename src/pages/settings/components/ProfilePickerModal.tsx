@@ -51,6 +51,7 @@ export default function ProfilePickerModal({
                 key={p.id}
                 type="button"
                 onClick={() => onSelect(p.id)}
+                aria-pressed={selected}
                 className="flex flex-1 flex-col items-center gap-2"
               >
                 <Icon
