@@ -29,6 +29,10 @@ export default function TargetMissionCount() {
   const handleMinus = () =>
     setDailyCount((prev) => Math.max(MIN_COUNT, prev - 1));
   const handlePlus = () => setDailyCount((prev) => prev + 1);
+  const handleSave = () => {
+    // TODO(API 연결 시): 저장 로직 추가
+    console.log({ isOn, dailyCount, duration });
+  };
 
   return (
     <div className="w-full bg-white pb-98">
@@ -99,7 +103,7 @@ export default function TargetMissionCount() {
         </p>
       </div>
 
-      <BottomActionBar label="설정 저장하기" />
+      <BottomActionBar label="설정 저장하기" onClick={handleSave} />
     </div>
   );
 }

@@ -2,8 +2,8 @@ import type { ProfileOption, UserProfile } from "../../types/settings.type";
 
 export const mockProfiles: ProfileOption[] = [
   { id: "p1", label: "프로필1" },
-  { id: "p2", label: "프로필4" },
-  { id: "p3", label: "프로필5" },
+  { id: "p2", label: "프로필2" },
+  { id: "p3", label: "프로필3" },
 ];
 
 export const mockUser: UserProfile = {

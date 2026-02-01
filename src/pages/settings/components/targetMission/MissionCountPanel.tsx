@@ -40,6 +40,7 @@ export default function MissionCountPanel({
           onClick={onMinus}
           className="inline-flex h-28 items-center justify-center whitespace-nowrap text-black"
           aria-label="일간 미션 감소"
+          disabled={!isOn}
         >
           <IcMinus
             className={[
@@ -66,6 +67,7 @@ export default function MissionCountPanel({
           onClick={onPlus}
           className="inline-flex h-28 items-center justify-center whitespace-nowrap text-black"
           aria-label="일간 미션 증가"
+          disabled={!isOn}
         >
           <IcPlus
             className={[

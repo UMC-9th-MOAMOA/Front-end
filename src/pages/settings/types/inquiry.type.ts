@@ -17,6 +17,7 @@ export type InquiryDraft = {
 export type MyInquiryItem = {
   inquiryId: number;
   createdAt: string;
+  category: InquiryCategory;
   answered: boolean;
   title: string;
   contentPreview: string;
