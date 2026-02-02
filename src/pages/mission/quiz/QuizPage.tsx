@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import QuizCard from "./components/QuizCard";
 import QuizProgress from "./components/QuizProgressBar";
