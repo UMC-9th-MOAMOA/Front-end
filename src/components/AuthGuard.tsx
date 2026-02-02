@@ -6,24 +6,29 @@ interface AuthGuardProps {
   children: ReactNode;
 }
 
+const PUBLIC_PATHS = ["/login", "/signup", "/find-id", "/reset-password"];
+
 const AuthGuard = ({ children }: AuthGuardProps) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const publicPaths = ["/login", "/signup", "/find-id", "/reset-password"];
-  const isPublicPath = publicPaths.includes(location.pathname);
+  const isPublicPath = PUBLIC_PATHS.includes(location.pathname);
+  const accessToken = storage.getToken();
 
   useEffect(() => {
-    const accessToken = storage.getToken();
-
     if (!isPublicPath && !accessToken) {
       navigate("/login", { replace: true });
+      return;
     }
 
     if (location.pathname === "/login" && accessToken) {
       navigate("/", { replace: true });
     }
-  }, [location.pathname, navigate, isPublicPath]);
+  }, [location.pathname, navigate, isPublicPath, accessToken]);
+
+  if (!isPublicPath && !accessToken) {
+    return null;
+  }
 
   return <>{children}</>;
 };
