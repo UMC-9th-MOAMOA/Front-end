@@ -161,7 +161,6 @@ export default function QuizPage() {
           userInput={userInput}
           selectedOption={selectedOption}
           showFeedback={showFeedback}
-          isCorrect={isCorrect}
           onInputChange={setUserInput}
           onOptionSelect={setSelectedOption}
         />

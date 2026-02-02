@@ -1,5 +1,4 @@
 import QuizAnswer from "./QuizAnswer";
-import QuizResult from "./QuizResult";
 
 interface Question {
   questionId: string;
@@ -15,7 +14,6 @@ interface QuizCardProps {
   userInput: string;
   selectedOption: string | null;
   showFeedback: boolean;
-  isCorrect: boolean | null;
   onInputChange: (value: string) => void;
   onOptionSelect: (option: string) => void;
 }
@@ -25,7 +23,6 @@ export default function QuizCard({
   userInput,
   selectedOption,
   showFeedback,
-  isCorrect,
   onInputChange,
   onOptionSelect,
 }: QuizCardProps) {
@@ -49,10 +46,6 @@ export default function QuizCard({
         {/* 양옆 동그라미 추가 */}
       </div>
 
-      {question.questionType === "ox" && showFeedback && (
-        <QuizResult isCorrect={isCorrect} />
-      )}
-      {/* 답안 입력 영역 */}
       {!showFeedback && (
         <QuizAnswer
           questionType={question.questionType}
