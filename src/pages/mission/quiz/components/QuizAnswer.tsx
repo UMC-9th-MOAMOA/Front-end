@@ -18,7 +18,6 @@ export default function QuizAnswer({
   onInputChange,
   onOptionSelect,
 }: QuizAnswerProps) {
-  // 주관식
   if (questionType === "subjective") {
     return (
       <div className="pt-39">
@@ -38,7 +37,6 @@ export default function QuizAnswer({
     );
   }
 
-  // OX 퀴즈
   if (questionType === "ox") {
     return (
       <div className="flex gap-20 pt-38 pb-53">
@@ -78,7 +76,6 @@ export default function QuizAnswer({
     );
   }
 
-  // 객관식
   if (questionType === "multiple" && options) {
     return (
       <div className="pt-29">

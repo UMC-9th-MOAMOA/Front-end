@@ -25,14 +25,11 @@ export default function QuizRetryFailResult({
         <IcRetryFailHands />
       </div>
 
-      {/* 결과 카드 */}
       <div className="z-20 mt-234 w-full rounded-[20px] bg-white px-25 pb-38">
         <h1 className="heading-0 pt-25 text-center text-black">FAIL..</h1>
         <p className="heading-3 mt-15 text-center text-black">
           아쉽게도 오답이에요
         </p>
-
-        {/* 답안 표시 */}
         {questionType === "subjective" && (
           <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-90 py-9">
             <span className="heading-5 text-black">{userAnswer}</span>
@@ -50,8 +47,6 @@ export default function QuizRetryFailResult({
             <span className="heading-5 text-black">{userAnswer}</span>
           </div>
         )}
-
-        {/* 격려 텍스트 */}
         <p
           className={`body-2 whitespace-pre-line text-center text-black ${questionType === "ox" ? "mt-56" : "mt-77"}`}
         >
@@ -59,7 +54,6 @@ export default function QuizRetryFailResult({
         </p>
       </div>
 
-      {/* 다음 문제 영역 */}
       <div className="mt-auto flex w-full flex-col items-center px-25 pt-34 pb-42">
         <p className="body-2 text-gray-600">다시 한 번 도전해볼까요?</p>
         <button
