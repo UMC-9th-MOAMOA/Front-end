@@ -6,7 +6,7 @@ export const getRecommendedMissions = async (time: number | null) => {
   const { data } = await authAPI.get<ApiResponse<MissionApiResponse[]>>(
     "/missions/recommend",
     {
-      params: { time },
+      params: time !== null ? { time } : undefined,
     }
   );
 
