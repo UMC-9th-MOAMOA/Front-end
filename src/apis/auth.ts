@@ -20,7 +20,7 @@ interface ApiResponse<T> {
 
 export const login = async (payload: LoginRequest) => {
   const { data } = await publicAPI.post<ApiResponse<LoginResult>>(
-    "/api/v1/auth/login",
+    "/auth/login",
     payload
   );
 
