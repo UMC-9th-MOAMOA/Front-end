@@ -1,60 +1,22 @@
-import { useEffect, useState } from "react";
-import { useSearchParams } from "react-router-dom";
-import MissionCard from "@/components/MissionCard";
-import {
-  MAIN_CATEGORIES,
-  type MainCategory,
-  MOCK_DETAIL_MISSIONS,
-  MOCK_SUB_CATEGORIES,
-} from "@/mocks/search/mission";
+import { Suspense } from "react";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { MAIN_CATEGORIES } from "@/constants/missions/categories";
 import CategoryButton from "../components/CategoryButton";
+import CategoryMissionInfiniteList from "../components/CategoryMissionInfiniteList";
 import SubCategoryButton from "../components/SubCategoryButton";
-import { useCategorySwipe } from "../hooks/useCategorySwipe";
+import { useCategoryDetailState } from "../hooks/useCategoryDetailState";
 
 export default function CategoryDetailView() {
-  const [searchParams] = useSearchParams();
-  const mainParam = searchParams.get("main") || "";
-
-  const validMainCategory: MainCategory = MAIN_CATEGORIES.includes(
-    mainParam as MainCategory
-  )
-    ? (mainParam as MainCategory)
-    : "경제와 금융";
-
-  const initialSub =
-    searchParams.get("sub") ||
-    MOCK_SUB_CATEGORIES[validMainCategory]?.[0]?.name ||
-    "";
-
-  const [subCategory, setSubCategory] = useState(initialSub);
-
-  useEffect(() => {
-    const newSub =
-      searchParams.get("sub") ||
-      MOCK_SUB_CATEGORIES[validMainCategory]?.[0]?.name ||
-      "";
-    setSubCategory(newSub);
-  }, [searchParams, validMainCategory]);
-
-  const { selectedCategory, setSelectedCategory, swipeHandlers } =
-    useCategorySwipe(validMainCategory, (category) => {
-      setSubCategory(MOCK_SUB_CATEGORIES[category]?.[0]?.name ?? "");
-    });
-
-  const subCategories = MOCK_SUB_CATEGORIES[selectedCategory] ?? [];
-
-  // TODO: 카테고리별 미션 조회 API 연결 시 수정
-  const missions = (MOCK_DETAIL_MISSIONS[selectedCategory] ?? [])
-    .filter((m) => m.category === subCategory)
-    .map((m) => ({
-      id: m.missionId,
-      title: m.title,
-      keywords: m.keywords,
-      minute: m.durationMinutes,
-      category: m.category,
-      quizCount: m.quizCount,
-      isLiked: m.isScrapped,
-    }));
+  const {
+    selectedCategory,
+    setSelectedCategory,
+    selectedSubCategory,
+    subCategories,
+    categoryId,
+    seed,
+    swipeHandlers,
+    handleSubCategoryClick,
+  } = useCategoryDetailState();
 
   return (
     <>
@@ -79,21 +41,31 @@ export default function CategoryDetailView() {
             <SubCategoryButton
               key={sub.categoryId}
               category={sub}
-              isSelected={subCategory === sub.name}
-              onClick={setSubCategory}
+              isSelected={selectedSubCategory.categoryId === sub.categoryId}
+              onClick={handleSubCategoryClick}
             />
           ))}
           <div className="w-15 shrink-0 min-[400px]:hidden" />
         </div>
       </div>
 
-      <div className="min-h-[50vh] flex-1" {...swipeHandlers}>
-        <div className="mt-19 flex flex-col gap-16 pb-38">
-          {missions.map((m) => (
-            <MissionCard key={m.id} {...m} />
-          ))}
-        </div>
-      </div>
+      {selectedSubCategory.categoryId !== 0 && (
+        <Suspense
+          fallback={
+            <div className="mt-30 flex items-center justify-center">
+              <LoadingSpinner className="size-60" />
+            </div>
+          }
+        >
+          <CategoryMissionInfiniteList
+            key={`${categoryId}-${selectedSubCategory.categoryId}`}
+            categoryId={categoryId}
+            subcategoryId={selectedSubCategory.categoryId}
+            seed={seed}
+            swipeHandlers={swipeHandlers}
+          />
+        </Suspense>
+      )}
     </>
   );
 }
