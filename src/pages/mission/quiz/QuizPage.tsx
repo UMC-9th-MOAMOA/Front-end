@@ -54,8 +54,6 @@ const MOCK_QUIZ_DATA = {
 };
 
 export default function QuizPage() {
-  const { missionId } = useParams<{ missionId: string }>();
-
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
