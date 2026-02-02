@@ -1,7 +1,17 @@
 import MissionCard from "@/components/MissionCard";
 import { MOCK_SEARCH_RESULT_KEYWORDS } from "@/mocks/search/mission";
-import type { Mission } from "@/types/search/mission";
 import KeywordChip from "./common/KeywordChip";
+
+// TODO: 키워드 검색 API 연결 시 타입 수정 필요
+interface Mission {
+  id: number;
+  title: string;
+  keywords: string[];
+  minute: number;
+  category: string;
+  quizCount: number;
+  isLiked: boolean;
+}
 
 interface SearchResultsViewProps {
   selectedKeywords: string[];
@@ -40,15 +50,7 @@ export default function SearchResultsView({
 
       <div className="mt-12 flex flex-col gap-16 pb-38">
         {missions.map((mission) => (
-          <MissionCard
-            key={mission.id}
-            title={mission.title}
-            keywords={mission.keywords}
-            minute={mission.minute}
-            category={mission.category}
-            quizCount={mission.quizCount}
-            isLiked={mission.isLiked}
-          />
+          <MissionCard key={mission.id} {...mission} />
         ))}
       </div>
     </>

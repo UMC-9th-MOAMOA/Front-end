@@ -43,16 +43,17 @@ export default function CategoryDetailView() {
 
   const subCategories = MOCK_SUB_CATEGORIES[selectedCategory] ?? [];
 
+  // TODO: 카테고리별 미션 조회 API 연결 시 수정
   const missions = (MOCK_DETAIL_MISSIONS[selectedCategory] ?? [])
-    .filter((m) => m.categoryName === subCategory)
+    .filter((m) => m.category === subCategory)
     .map((m) => ({
       id: m.missionId,
       title: m.title,
       keywords: m.keywords,
-      minute: m.estimatedTime,
-      category: m.categoryName,
+      minute: m.durationMinutes,
+      category: m.category,
       quizCount: m.quizCount,
-      isLiked: m.isLiked,
+      isLiked: m.isScrapped,
     }));
 
   return (
