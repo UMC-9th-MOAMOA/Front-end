@@ -27,7 +27,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     if (location.pathname === "/login" && isAuthenticated) {
       navigate("/", { replace: true });
     }
-  }, [location.pathname, navigate, isAuthenticated, isLoading]);
+  }, [location.pathname, navigate, isAuthenticated, isLoading, isPublicPath]);
 
   if (isLoading) {
     return (
@@ -35,6 +35,10 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
         <LoadingSpinner className="size-60" />
       </div>
     );
+  }
+
+  if (!isPublicPath && !isAuthenticated) {
+    return null;
   }
 
   return <>{children}</>;
