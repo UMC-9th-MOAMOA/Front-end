@@ -1,8 +1,11 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import squirrelDefault from "@/assets/icons/home/character/squirrel_default.svg";
+import { useAttendanceStore } from "@/store/attendance";
+import { getWeeklyAttendance } from "@/utils/attendance/attendance";
 import CustomizationToolbar from "./components/CustomizationToolbar";
 import HeaderButtons from "./components/HeaderButtons";
+import AttendanceModal from "./components/modal/AttendanceModal";
 import QuestionBox from "./components/QuestionBox";
 import BottomSheet from "./components/shop/BottomSheet";
 import { CUSTOMIZATION_ITEMS } from "./constants/constants";
@@ -22,6 +25,8 @@ const HomePage = () => {
     handleToolbarClick,
     handleOutsideClick,
   } = useBottomSheet();
+
+  const { showModal, setShowModal, attendanceData } = useAttendanceStore();
 
   return (
     <div className="relative flex flex-col">
@@ -66,6 +71,19 @@ const HomePage = () => {
           />
         )}
       </AnimatePresence>
+
+      {attendanceData && (
+        <AttendanceModal
+          isOpen={showModal}
+          onClose={() => setShowModal(false)}
+          onGoToCalendar={() => {
+            setShowModal(false);
+            // TODO: 캘린더 페이지로 이동
+          }}
+          count={attendanceData.streak}
+          attendance={getWeeklyAttendance(attendanceData.streak)}
+        />
+      )}
     </div>
   );
 };
