@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   MAIN_CATEGORIES,
   type MainCategory,
@@ -11,6 +11,12 @@ export function useCategorySwipe(
 ) {
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
   const currentIndex = MAIN_CATEGORIES.indexOf(selectedCategory);
+
+  useEffect(() => {
+    if (initialCategory !== selectedCategory) {
+      setSelectedCategory(initialCategory);
+    }
+  }, [initialCategory, selectedCategory]);
 
   const handleCategoryChange = (category: MainCategory) => {
     setSelectedCategory(category);
