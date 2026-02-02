@@ -155,7 +155,6 @@ export default function QuizPage() {
         />
       </div>
 
-      {/* 문제 카드 */}
       <div className="flex w-full px-21 pt-20">
         <QuizCard
           question={currentQuestion}
@@ -168,7 +167,6 @@ export default function QuizPage() {
         />
       </div>
 
-      {/* 제출 버튼 */}
       <div className="mt-auto flex justify-center pt-44 pb-42">
         <div className="h-48 w-full px-25">
           <QuizSubmitButton
