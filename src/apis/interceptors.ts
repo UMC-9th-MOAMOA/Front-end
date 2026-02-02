@@ -1,10 +1,11 @@
-import axios, {
-  type AxiosError,
-  type AxiosInstance,
-  type AxiosResponse,
-  type InternalAxiosRequestConfig,
+import type {
+  AxiosError,
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
 } from "axios";
 import type { ApiError, ApiResponse } from "@/types/api/api";
+import { refreshAccessToken } from "./auth";
 import { storage } from "./storage";
 
 interface RetryableConfig extends InternalAxiosRequestConfig {
@@ -36,13 +37,7 @@ const handleTokenRefresh = async (
   try {
     if (!isRefreshing) {
       isRefreshing = true;
-      refreshPromise = axios
-        .post<ApiResponse<{ accessToken: string }>>(
-          `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
-          undefined,
-          { withCredentials: true }
-        )
-        .then((res) => res.data.result.accessToken);
+      refreshPromise = refreshAccessToken();
     }
     const newToken = await refreshPromise!;
     storage.setToken(newToken);
