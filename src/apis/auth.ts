@@ -32,6 +32,11 @@ export const refreshAccessToken = async (): Promise<string> => {
     undefined,
     { withCredentials: true }
   );
+
+  if (!data.isSuccess || !data.result?.accessToken) {
+    throw new Error(data.message || "리프레시 실패");
+  }
+
   return data.result.accessToken;
 };
 
