@@ -4,23 +4,25 @@ import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
 import { Button } from "@/components/common/button/Button";
 import MissionCard from "@/components/MissionCard";
-import { MOCK_MAIN_DATA } from "@/mocks/search/mission";
 
 const ITEMS_PER_PAGE = 10;
 
+// TODO: 홈 화면 추천 미션 API 연결 시 수정 필요
+const TEMP_MISSIONS = [
+  {
+    id: 1,
+    title: "임시 미션",
+    keywords: ["임시"],
+    minute: 10,
+    category: "임시",
+    quizCount: 3,
+    isLiked: false,
+  },
+];
+
 export default function TodayMissionListView() {
   const navigate = useNavigate();
-  const [missions] = useState(
-    MOCK_MAIN_DATA.recommendedMissions.map((m) => ({
-      id: m.missionId,
-      title: m.title,
-      keywords: m.keywords,
-      minute: m.estimatedTime,
-      category: m.categoryName,
-      quizCount: m.quizCount,
-      isLiked: m.isLiked,
-    }))
-  );
+  const [missions] = useState(TEMP_MISSIONS);
   const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
   const observerTarget = useRef<HTMLDivElement>(null);
 
