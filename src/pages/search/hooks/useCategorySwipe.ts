@@ -1,6 +1,9 @@
 import { useState } from "react";
+import {
+  MAIN_CATEGORIES,
+  type MainCategory,
+} from "@/constants/missions/categories";
 import { useSwipe } from "@/hooks/useSwipe";
-import { MAIN_CATEGORIES, type MainCategory } from "@/mocks/search/mission";
 
 export function useCategorySwipe(
   initialCategory: MainCategory = "경제와 금융",

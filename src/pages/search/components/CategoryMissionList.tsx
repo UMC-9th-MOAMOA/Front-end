@@ -2,7 +2,10 @@ import { useNavigate } from "react-router-dom";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 import { Button } from "@/components/common/button/Button";
 import MissionCard from "@/components/MissionCard";
-import { CATEGORY_ID_MAP, type MainCategory } from "@/mocks/search/mission";
+import {
+  CATEGORY_ID_MAP,
+  type MainCategory,
+} from "@/constants/missions/categories";
 import { useCategoryMissions } from "../hooks/useQuery/useCategoryMissions";
 
 interface CategoryMissionListProps {
