@@ -32,7 +32,9 @@ export const useAttendanceCheck = () => {
             streak: response.data.result.streak,
             completed7: false,
           });
-        } catch {}
+        } catch (error) {
+          console.error("출석 정보 가져오기 실패: ", error);
+        }
       }
     },
   });
@@ -46,7 +48,9 @@ export const useAttendanceCheck = () => {
           streak: response.data.result.streak,
           completed7: false,
         });
-      } catch {}
+      } catch (error) {
+        console.error("출석 정보 가져오기 실패 (앱 재시작): ", error);
+      }
       return;
     }
 
