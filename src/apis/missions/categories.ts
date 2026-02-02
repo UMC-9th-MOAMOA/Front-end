@@ -15,9 +15,12 @@ export const getCategoryMissions = async ({
   subcategoryId,
   page = 0,
   size = 3,
-  seed = Date.now(),
+  seed,
 }: GetCategoryMissionsParams) => {
-  const params: Record<string, number> = { categoryId, page, size, seed };
+  const params: Record<string, number> = { categoryId, page, size };
+  if (seed !== undefined) {
+    params.seed = seed;
+  }
   if (subcategoryId !== undefined) {
     params.subcategoryId = subcategoryId;
   }
