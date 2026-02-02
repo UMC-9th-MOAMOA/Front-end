@@ -1,3 +1,5 @@
+import axios from "axios";
+import type { ApiResponse } from "@/types/api/api";
 import { publicAPI } from "./axios";
 
 export interface LoginRequest {
@@ -9,13 +11,6 @@ export interface LoginResult {
   grantType: string;
   accessToken: string;
   accessTokenExpiresIn: number;
-}
-
-interface ApiResponse<T> {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-  result: T;
 }
 
 export const login = async (payload: LoginRequest) => {
@@ -30,3 +25,14 @@ export const login = async (payload: LoginRequest) => {
 
   return data.result;
 };
+
+export const refreshAccessToken = async (): Promise<string> => {
+  const { data } = await axios.post<ApiResponse<{ accessToken: string }>>(
+    `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
+    undefined,
+    { withCredentials: true }
+  );
+  return data.result.accessToken;
+};
+
+export const refreshToken = refreshAccessToken;
