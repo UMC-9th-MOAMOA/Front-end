@@ -59,10 +59,8 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
   }, [filtered.length, hasMore, loadSize]);
 
   return (
-    <section className="mt-19">
-      <h3 className="heading-5 h-25 w-190 text-[var(--color-black)]">
-        도토리 히스토리
-      </h3>
+    <section className="mt-19 flex w-full flex-col gap-4 px-2">
+      <h3 className="heading-5 h-25 w-full text-black">도토리 히스토리</h3>
 
       <AcornHistoryFilter
         filter={filter}
@@ -70,23 +68,20 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
         sortKey={sortKey}
         onChangeSort={setSortKey}
       >
-        <div className="flex-1 pr-9 pl-8">
+        <div className="flex w-full flex-1 pr-9 pl-8">
           {filtered.length === 0 ? (
-            <div className="body-4 p-6 text-center text-[var(--color-gray-500)]">
+            <div className="body-4 p-6 text-center text-gray-500">
               도토리 내역이 없어요.
             </div>
           ) : (
-            <ul>
+            <ul className="w-full">
               {visibleList.map((item) => {
                 const [yy, mm, dd] = item.date.split("-");
 
                 return (
-                  <li
-                    key={item.id}
-                    className="border-[var(--color-gray-400)] border-b py-4"
-                  >
-                    <div className="flex h-106 w-307 flex-col items-start justify-center gap-4 self-stretch px-17 py-12">
-                      <div className="body-2 flex items-center gap-4 text-[var(--color-gray-500)]">
+                  <li key={item.id} className="border-gray-400 border-b py-4">
+                    <div className="flex h-106 w-full flex-col items-start justify-center gap-4 self-stretch px-17 py-12">
+                      <div className="body-2 flex items-center gap-4 text-gray-500">
                         {[yy, mm, dd].map((v, i) => (
                           <span key={i}>
                             {i > 0 && "-"}
@@ -95,24 +90,20 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
                         ))}
                       </div>
 
-                      <div className="flex h-40 w-273 items-center">
-                        <div className="heading-5 h-28 w-158 truncate text-[var(--color-black)]">
+                      <div className="flex h-40 w-full items-center">
+                        <div className="heading-5 h-28 flex-1 truncate text-black">
                           {item.missionTitle}
                         </div>
 
-                        <div className="w-42" />
-
                         <div className="flex items-center gap-4">
                           <IcPlus className="h-16 w-16 shrink-0" aria-hidden />
-                          <span className="heading-5 text-[var(--color-black)]">
+                          <span className="heading-5 text-black">
                             {Math.abs(item.acornDelta)}
                           </span>
                           <IcAcorn className="h-40 w-29 shrink-0" aria-hidden />
                         </div>
                       </div>
-                      <div className="body-2 text-[var(--color-moamoa-300)]">
-                        도토리 적립
-                      </div>
+                      <div className="body-2 text-moamoa-300">도토리 적립</div>
                     </div>
                   </li>
                 );
@@ -123,7 +114,6 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
         </div>
       </AcornHistoryFilter>
 
-      {/* 많은 데이터 대비(나중에 API 붙일 때) */}
       <div className="mt-2 text-gray-400 text-xs">
         {/* TODO(API 연결 시): 페이지네이션/무한스크롤로 교체 */}
       </div>

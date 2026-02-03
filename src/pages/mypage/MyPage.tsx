@@ -19,7 +19,7 @@ export default function MyPage() {
 
   return (
     <div>
-      <div className="mt-66">
+      <div>
         <Header title="내 스페이스" property="common" />
       </div>
       <div className="mx-19 mt-26">
@@ -33,7 +33,7 @@ export default function MyPage() {
           </div>
           <div className="mt-[16px] mr-[-10px] ml-[-7px]">
             <PerformanceSection data={mockPerformance} />
-          </div>{" "}
+          </div>
         </>
       )}
 

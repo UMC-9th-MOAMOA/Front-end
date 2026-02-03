@@ -90,7 +90,6 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
         selectedYMD={selectedYMD}
         onSelectYMD={setSelectedYMD}
         toYMD={toYMD}
-        addDays={addDays}
       />
     </section>
   );
