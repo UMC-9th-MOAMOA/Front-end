@@ -1,5 +1,7 @@
 import { type ReactNode, useState } from "react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
+import { Button } from "@/components/common/button/Button";
+
 import type {
   AcornHistoryFilterKey,
   AcornHistorySortKey,
@@ -7,13 +9,11 @@ import type {
 
 type RecentSortOption = "recent" | "oldest" | "3m" | "6m";
 
-type DoneMissionOption = "done" | "retry" | "attendance" | "ad";
+type DoneMissionOption = "mission" | "attendance";
 
 const DONE_MISSION_OPTIONS: Array<{ key: DoneMissionOption; label: string }> = [
-  { key: "done", label: "완료 미션" },
-  { key: "retry", label: "재도전 미션" },
+  { key: "mission", label: "미션" },
   { key: "attendance", label: "출석" },
-  { key: "ad", label: "광고" },
 ];
 const RECENT_SORT_OPTIONS: Array<{ key: RecentSortOption; label: string }> = [
   { key: "recent", label: "최근 순" },
@@ -36,7 +36,9 @@ const FILTER_TABS: Array<{ key: AcornHistoryFilterKey; label: string }> = [
 ];
 
 const filterTabBase =
-  "flex w-56 items-center justify-center gap-4 px-16 py-8 whitespace-nowrap body-4 rounded-sm";
+  "flex h-32 flex-1 items-center justify-center whitespace-nowrap body-4 rounded-sm border border-moamoa-50 px-16 py-8";
+const filterBox =
+  "flex h-32 w-168 items-stretch gap-0 overflow-hidden rounded-sm bg-moamoa-50";
 
 export default function AcornHistoryFilter({
   filter,
@@ -46,19 +48,27 @@ export default function AcornHistoryFilter({
   children,
 }: Props) {
   const [isDoneOpen, setIsDoneOpen] = useState(false);
-  const [doneOption, setDoneOption] = useState<DoneMissionOption>("done");
+  const [doneOption, setDoneOption] = useState<DoneMissionOption>("mission");
 
   const doneLabel =
-    DONE_MISSION_OPTIONS.find((o) => o.key === doneOption)?.label ??
-    "완료 미션";
+    DONE_MISSION_OPTIONS.find((o) => o.key === doneOption)?.label ?? "미션";
   const [isRecentOpen, setIsRecentOpen] = useState(false);
   const [recentOption, setRecentOption] = useState<RecentSortOption>("recent");
   const recentLabel =
     RECENT_SORT_OPTIONS.find((o) => o.key === recentOption)?.label ?? "최근 순";
+  const showDoneFilters = filter === "progress";
+
+  const handleSelectFilter = (key: AcornHistoryFilterKey) => {
+    onChangeFilter(key);
+    setIsRecentOpen(false);
+    if (key !== "progress") {
+      setIsDoneOpen(false);
+    }
+  };
   return (
     <>
       {(isRecentOpen || isDoneOpen) && (
-        <button
+        <Button
           type="button"
           aria-label="close dropdown"
           onClick={() => {
@@ -70,70 +80,69 @@ export default function AcornHistoryFilter({
       )}
 
       <div className="flex flex-col">
-        {/* 필터 탭 */}
-        <div className="mt-12 flex h-34 w-190 gap-8">
-          {FILTER_TABS.map((tab) => {
-            const isActive = filter === tab.key;
-            return (
-              <button
-                key={tab.key}
-                type="button"
-                onClick={() => onChangeFilter(tab.key)}
-                className={[
-                  filterTabBase,
-                  isActive
-                    ? "bg-[var(--color-moamoa-300)] text-[var(--color-white)]"
-                    : "bg-[var(--color-moamoa-50)] text-[var(--color-moamoa-300)]",
-                ].join(" ")}
-              >
-                {tab.label}
-              </button>
-            );
-          })}
+        <div className="mt-12 flex h-34 w-full justify-start">
+          <div className={filterBox}>
+            {FILTER_TABS.map((tab, index) => {
+              const isActive = filter === tab.key;
+              return (
+                <Button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => handleSelectFilter(tab.key)}
+                  className={[
+                    filterTabBase,
+                    index > 0 ? "border-l-0" : "",
+                    "first:rounded-l-sm last:rounded-r-sm",
+                    isActive
+                      ? "bg-moamoa-300 text-white"
+                      : "bg-moamoa-50 text-moamoa-300",
+                  ]
+                    .filter(Boolean)
+                    .join(" ")}
+                >
+                  {tab.label}
+                </Button>
+              );
+            })}
+          </div>
         </div>
 
-        {/* 카드(정렬 버튼 + 리스트(children)) */}
-        <div className="relative mt-14 flex w-324 flex-col rounded-xl bg-white shadow-sm">
+        <div className="relative mt-14 flex w-full flex-col rounded-xl bg-white shadow-sm">
           <div className="flex flex-1 flex-col pt-14">
-            {/* 정렬 버튼 */}
-            <div className="relative z-40 flex h-26 w-200 items-center gap-12 pl-13">
-              <div className="relative h-26 w-88 shrink-0">
-                <button
+            <div className="relative flex h-26 items-center gap-12 px-13">
+              <div className="relative h-26 w-88">
+                <Button
                   type="button"
                   onClick={() => {
                     setIsRecentOpen(true);
                     setIsDoneOpen(false);
                   }}
                   className={[
-                    "flex w-[88px] flex-col items-center justify-center gap-4 rounded-sm bg-[var(--color-gray-200)] px-[8px] py-[4px]",
+                    "flex w-88 flex-col items-center justify-center gap-4 rounded-sm bg-gray-200 px-8 py-4",
                     isRecentOpen ? "invisible" : "visible",
                   ].join(" ")}
                 >
-                  {/* 내부 72 x 18 박스 */}
-                  <div className="flex h-18 w-72 items-center justify-center gap-5 self-stretch">
-                    <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
+                  <div className="flex h-18 items-center justify-center gap-5 self-stretch">
+                    <span className="body-4 whitespace-nowrap text-black">
                       {recentLabel}
                     </span>
                     <IcDropdown className="h-7 w-13" aria-hidden />
                   </div>
-                </button>
+                </Button>
 
                 {isRecentOpen && (
-                  <div className="absolute top-0 left-0 z-50 flex h-124 w-88 flex-col items-center gap-4 rounded-sm bg-[var(--color-gray-200)] px-8 py-4 shadow-sm">
-                    <button
+                  <div className="absolute top-0 left-0 z-50 flex h-124 w-88 flex-col items-center gap-2 rounded-sm bg-gray-200 px-8 py-4 shadow-sm">
+                    <Button
                       type="button"
                       onClick={() => setIsRecentOpen(false)}
                       className="flex w-full items-center justify-center"
                     >
-                      <span className="body-4 text-[var(--color-black)]">
-                        {recentLabel}
-                      </span>
+                      <span className="body-4 text-black">{recentLabel}</span>
                       <span className="w-5" />
                       <IcDropdown className="rotate-180" aria-hidden />
-                    </button>
+                    </Button>
 
-                    {/* 72x1 bar + border 1px */}
-                    <div className="h-1 w-72 border border-[var(--color-gray-400)]" />
+                    <div className="h-1 w-full border border-gray-400" />
 
                     <div className="h-10 w-1" />
 
@@ -141,7 +150,7 @@ export default function AcornHistoryFilter({
                       {RECENT_SORT_OPTIONS.map((opt) => {
                         const selected = recentOption === opt.key;
                         return (
-                          <button
+                          <Button
                             key={opt.key}
                             type="button"
                             onClick={() => {
@@ -150,109 +159,96 @@ export default function AcornHistoryFilter({
                             }}
                             className="flex w-full items-center gap-6"
                           >
-                            <span className="w-12 shrink-0 text-[var(--color-positive)]">
+                            <span className="w-12 shrink-0 text-positive">
                               {selected ? "✓" : ""}
                             </span>
                             <span
                               className={[
                                 "body-4 whitespace-nowrap",
-                                selected
-                                  ? "text-[var(--color-moamoa-700)]"
-                                  : "text-[var(--color-gray-700)]",
+                                selected ? "text-moamoa-700" : "text-gray-700",
                               ].join(" ")}
                             >
                               {opt.label}
                             </span>
-                          </button>
+                          </Button>
                         );
                       })}
                     </div>
                   </div>
                 )}
               </div>
-              <div className="relative h-26 w-100 shrink-0">
-                {/* 닫힌 버튼: 항상 존재(자리 유지), 열리면 invisible */}
-                <button
-                  type="button"
-                  onClick={() => {
-                    setIsDoneOpen(true);
-                    setIsRecentOpen(false);
-                  }}
-                  className={[
-                    "flex w-100 flex-col items-center justify-center gap-4 rounded-sm bg-[var(--color-gray-200)] px-8 py-4",
-                    isDoneOpen ? "invisible" : "visible",
-                  ].join(" ")}
-                >
-                  {/* 내부 84 x 18 박스 */}
-                  <div className="flex h-18 w-84 items-center justify-center gap-5 self-stretch">
-                    <span className="body-4 whitespace-nowrap text-[var(--color-black)]">
-                      {doneLabel}
-                    </span>
-                    <IcDropdown className="h-7 w-13" aria-hidden />
-                  </div>
-                </button>
-
-                {/* 열렸을 때: 88×124 드롭다운 박스(이미지처럼) */}
-                {isDoneOpen && (
-                  <div className="absolute top-0 left-0 z-50 flex h-124 w-100 flex-col items-center gap-4 rounded-sm bg-[var(--color-gray-200)] px-8 py-4 shadow-sm">
-                    {/* 헤더 */}
-                    <button
-                      type="button"
-                      onClick={() => setIsDoneOpen(false)}
-                      className="flex w-full items-center justify-center"
-                    >
-                      <span className="body-4 text-[var(--color-black)]">
+              {showDoneFilters && (
+                <div className="relative h-26 w-60">
+                  <Button
+                    type="button"
+                    onClick={() => {
+                      setIsDoneOpen(true);
+                      setIsRecentOpen(false);
+                    }}
+                    className={[
+                      "flex h-26 w-60 flex-col items-center justify-center gap-4 rounded-sm bg-gray-200 px-8 pt-4 pb-6",
+                      isDoneOpen ? "invisible" : "visible",
+                    ].join(" ")}
+                  >
+                    <div className="flex h-18 items-center justify-center gap-5">
+                      <span className="body-4 whitespace-nowrap text-color-black">
                         {doneLabel}
                       </span>
-                      <span className="w-5" />
-                      <IcDropdown className="rotate-180" aria-hidden />
-                    </button>
-
-                    {/* 바 (72×1 + border 1px) */}
-                    <div className="h-1 w-72 border border-[var(--color-gray-400)]" />
-
-                    {/* 바 아래 10 */}
-                    <div className="h-10 w-1" />
-
-                    {/* 옵션 4개 + 체크 */}
-                    <div className="flex w-full flex-col gap-4">
-                      {DONE_MISSION_OPTIONS.map((opt) => {
-                        const selected = doneOption === opt.key;
-
-                        return (
-                          <button
-                            key={opt.key}
-                            type="button"
-                            onClick={() => {
-                              setDoneOption(opt.key);
-                              setIsDoneOpen(false);
-                              // TODO: 실제 필터/정렬 연결은 나중에 매핑
-                            }}
-                            className="flex w-full items-center gap-6"
-                          >
-                            <span className="w-12 shrink-0 text-[var(--color-positive)]">
-                              {selected ? "✓" : ""}
-                            </span>
-
-                            <span
-                              className={[
-                                "body-4 whitespace-nowrap",
-                                selected
-                                  ? "text-[var(--color-moamoa-700)]"
-                                  : "text-[var(--color-gray-700)]",
-                              ].join(" ")}
-                            >
-                              {opt.label}
-                            </span>
-                          </button>
-                        );
-                      })}
+                      <IcDropdown className="h-7 w-13" aria-hidden />
                     </div>
-                  </div>
-                )}
-              </div>
+                  </Button>
+
+                  {isDoneOpen && (
+                    <div className="absolute top-0 left-0 z-50 flex h-80 w-60 flex-col items-center gap-2 rounded-sm bg-gray-200 px-8 py-4 pb-6 shadow-sm">
+                      <Button
+                        type="button"
+                        onClick={() => setIsDoneOpen(false)}
+                        className="flex w-full items-center justify-center"
+                      >
+                        <span className="body-4 text-black">{doneLabel}</span>
+                        <span className="w-5" />
+                        <IcDropdown className="rotate-180" aria-hidden />
+                      </Button>
+
+                      <div className="h-1 w-full border border-gray-400" />
+
+                      <div className="h-10 w-1" />
+
+                      <div className="flex w-full flex-col gap-4">
+                        {DONE_MISSION_OPTIONS.map((opt) => {
+                          const selected = doneOption === opt.key;
+                          return (
+                            <Button
+                              key={opt.key}
+                              type="button"
+                              onClick={() => {
+                                setDoneOption(opt.key);
+                                setIsDoneOpen(false);
+                              }}
+                              className="flex w-full items-center gap-6"
+                            >
+                              <span className="w-12 shrink-0 text-positive">
+                                {selected ? "✓" : ""}
+                              </span>
+                              <span
+                                className={[
+                                  "body-4 whitespace-nowrap",
+                                  selected
+                                    ? "text-moamoa-700"
+                                    : "text-gray-700",
+                                ].join(" ")}
+                              >
+                                {opt.label}
+                              </span>
+                            </Button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
-            {/* 리스트(children) */}
             <div className="flex-1">{children}</div>
           </div>
         </div>

@@ -1,4 +1,3 @@
-// mypage.mock.ts
 import type { PerformanceSummary } from "../types/mypage.type";
 
 export const mockPerformance: PerformanceSummary = {
@@ -32,22 +31,17 @@ export const mockPerformance: PerformanceSummary = {
   ],
 };
 
-// mypage.mock.ts
 export const mockCalendarData = [
-  // 연속 1일 출석
   { date: "2026-01-01", type: "attendance" as const },
 
-  // 연속 2일 출석 (마지막 날 도토리)
   { date: "2026-01-03", type: "attendance" as const },
   { date: "2026-01-04", type: "acorn" as const },
 
-  // 연속 3일 출석 (마지막 날 도토리)
   { date: "2026-01-06", type: "attendance" as const },
   { date: "2026-01-07", type: "attendance" as const },
   { date: "2026-01-08", type: "acorn" as const },
 ];
 
-// Calendar.tsx가 요구하는 형태로 변환
 export const calendarMarks = mockCalendarData.map((item) => ({
   date: item.date,
   attended: item.type === "attendance" || item.type === "acorn",

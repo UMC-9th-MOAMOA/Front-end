@@ -1,3 +1,4 @@
+import { Button } from "@/components/common/button/Button";
 import type { MissionSubTabKey } from "../../types/mypage.type";
 
 type DoneView = "done" | "retry";
@@ -10,22 +11,20 @@ type Props = {
 
 export default function MissionTabs({ subTab, doneView, onSelect }: Props) {
   const segmentBase =
-    "flex h-40 w-108 items-center justify-center rounded-lg body-2 whitespace-nowrap";
+    "flex flex-1 h-40 items-center justify-center rounded-lg body-2 whitespace-nowrap";
 
-  const segmentActive =
-    "bg-[var(--color-moamoa-300)] text-[var(--color-white)]";
+  const segmentActive = "bg-moamoa-300 text-white";
 
-  const segmentInactive =
-    "bg-[var(--color-moamoa-50)] text-[var(--color-positive)]";
+  const segmentInactive = "bg-moamoa-50 text-positive";
 
   const isLikedTab = subTab === "liked";
   const isDoneTab = subTab === "done";
   const isRetryView = doneView === "retry";
 
   return (
-    <div className="mt-[26px]">
-      <div className="mx-auto flex h-40 w-324 rounded-lg bg-[var(--color-moamoa-50)] p-0">
-        <button
+    <div className="flex w-full justify-center pt-26 pb-16">
+      <div className="flex w-full max-w-full gap-2 rounded-lg bg-moamoa-50 p-0 shadow-[0_0_18px_rgba(0,0,0,0.08)]">
+        <Button
           type="button"
           onClick={() => onSelect("liked", "done")}
           className={[
@@ -35,9 +34,9 @@ export default function MissionTabs({ subTab, doneView, onSelect }: Props) {
           aria-label="찜한 미션"
         >
           찜한 미션
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
           onClick={() => onSelect("done", "done")}
           className={[
@@ -46,9 +45,9 @@ export default function MissionTabs({ subTab, doneView, onSelect }: Props) {
           ].join(" ")}
         >
           완료
-        </button>
+        </Button>
 
-        <button
+        <Button
           type="button"
           onClick={() => onSelect("done", "retry")}
           className={[
@@ -56,8 +55,8 @@ export default function MissionTabs({ subTab, doneView, onSelect }: Props) {
             isRetryView ? segmentActive : segmentInactive,
           ].join(" ")}
         >
-          다시 풀기
-        </button>
+          다시 풀기{" "}
+        </Button>
       </div>
     </div>
   );

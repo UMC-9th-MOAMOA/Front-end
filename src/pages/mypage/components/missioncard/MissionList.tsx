@@ -26,6 +26,7 @@ export default function MissionTab() {
   const sentinelRef = useRef<HTMLDivElement | null>(null);
 
   const baseList = subTab === "liked" ? likedList : doneList;
+  const actionLabel = subTab === "liked" ? "시작하기" : "자세히 보기";
 
   const list = useMemo(() => {
     let copied = [...baseList];
@@ -82,8 +83,7 @@ export default function MissionTab() {
   };
 
   return (
-    <section className="mt-[16px]">
-      {/* (NEW) 3-button segment */}
+    <section className="flex w-full flex-col">
       <MissionTabs
         subTab={subTab}
         doneView={doneView}
@@ -93,41 +93,45 @@ export default function MissionTab() {
         }}
       />
 
-      <div
-        className={[
-          "relative -mx-25 mt-16 inline-flex h-auto w-375 flex-col items-center gap-9 rounded-xl px-25 pt-17 pb-24",
-          list.length === 0 ? "bg-[#E6E6E6]" : "bg-[var(--color-white)]",
-        ].join(" ")}
-      >
-        <div className="w-325">
-          <MissionFilters
-            timeSort={timeSort}
-            category={category}
-            onChangeTime={setTimeSort}
-            onChangeCategory={setCategory}
-          />
+      <div className="-mx-25 w-screen">
+        <div
+          className={[
+            "relative flex w-full flex-col gap-6 rounded-t-xl pt-17 shadow-sm",
+            "min-h-[62.2dvh]",
+            list.length === 0 ? "bg-[#E6E6E6]" : "bg-white",
+          ].join(" ")}
+        >
+          <div className="flex w-full flex-col gap-4 px-25">
+            <MissionFilters
+              timeSort={timeSort}
+              category={category}
+              onChangeTime={setTimeSort}
+              onChangeCategory={setCategory}
+              isEmpty={list.length === 0}
+            />
 
-          <div className="flex flex-col gap-16">
-            {list.length === 0 ? (
-              <div className="flex h-559 w-full flex-col items-center">
-                <p className="heading-5 mt-[105px] text-[var(--color-gray-500)]">
-                  이용 내역이 없어요{" "}
-                </p>
-
-                <IcSadSquirrel className="mt-16 ml-82 self-start" aria-hidden />
-              </div>
-            ) : (
-              visibleList.map((m) => (
-                <MissionCard
-                  key={m.id}
-                  item={m}
-                  keywords={["키워드", "키워드", "키워드"]}
-                  onToggleLike={toggleLike}
-                  onClickDetail={goDetail}
-                />
-              ))
-            )}
-            {hasMore && <div ref={sentinelRef} className="h-1 w-full" />}
+            <div className="flex w-full flex-col gap-16">
+              {list.length === 0 ? (
+                <div className="mt-105 flex w-full flex-col items-center gap-4">
+                  <p className="heading-5 text-gray-500">
+                    이용 내역이 없습니다
+                  </p>
+                  <IcSadSquirrel aria-hidden />
+                </div>
+              ) : (
+                visibleList.map((m) => (
+                  <MissionCard
+                    key={m.id}
+                    item={m}
+                    keywords={["키워드", "키워드", "키워드"]}
+                    onToggleLike={toggleLike}
+                    onClickDetail={goDetail}
+                    actionLabel={actionLabel}
+                  />
+                ))
+              )}
+              {hasMore && <div ref={sentinelRef} className="h-1 w-full" />}
+            </div>
           </div>
         </div>
       </div>
