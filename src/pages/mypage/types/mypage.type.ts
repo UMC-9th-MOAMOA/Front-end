@@ -38,7 +38,12 @@ export type MissionItem = {
 
 export type AcornHistoryFilterKey = "all" | "progress" | "done";
 
-export type AcornHistorySortKey = "recent" | "doneMission";
+export type AcornHistorySortKey =
+  | "recent"
+  | "oldest"
+  | "3m"
+  | "6m"
+  | "doneMission";
 
 export interface AcornHistoryItem {
   id: string;

@@ -20,12 +20,14 @@ export default function MissionCard({
   onToggleLike,
   onClickDetail,
   actionLabel,
+  disableLike = false,
 }: {
   item: MissionItem;
   keywords: string[];
   onToggleLike: (id: string) => void;
   onClickDetail: (id: string) => void;
   actionLabel: string;
+  disableLike?: boolean;
 }) {
   const displayKeywords =
     keywords.length > 0 ? keywords.slice(0, 3) : ["키워드", "키워드", "키워드"];
@@ -47,7 +49,13 @@ export default function MissionCard({
           type="button"
           aria-label="찜 토글"
           onClick={() => onToggleLike(item.id)}
-          className="mr-8 h-24 w-24"
+          disabled={disableLike}
+          className={[
+            "mr-8 h-24 w-24",
+            disableLike ? "cursor-not-allowed opacity-60" : "",
+          ]
+            .filter(Boolean)
+            .join(" ")}
         >
           <HeartIcon filled={item.liked} />
         </Button>

@@ -1,8 +1,22 @@
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
+import IcPlus from "@/assets/icons/ic_plus.svg?react";
 import type { PerformanceSummary } from "../types/mypage.type";
 import PerformanceMissionList, {
   type PerformanceMissionRow,
 } from "./PerformanceMissionList";
+
+function IcMinus({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden
+    >
+      <rect x="2" y="7.5" width="12" height="1" fill="currentColor" />
+    </svg>
+  );
+}
 
 export default function PerformanceSection({
   data,
@@ -42,7 +56,15 @@ export default function PerformanceSection({
             <span className="h-28 w-40">{totalMin}분</span>
             <span className="min-w-[70px] flex-1" aria-hidden />
             <span className="flex h-28 w-48 items-center gap-4">
-              <span className="h-20 w-23">+{totalAcorn}</span>
+              {totalAcorn < 0 ? (
+                <IcMinus className="h-16 w-16" />
+              ) : (
+                <IcPlus className="h-16 w-16" aria-hidden />
+              )}
+              <span className="h-20 w-23">
+                {totalAcorn < 0 ? "-" : "+"}
+                {Math.abs(totalAcorn)}
+              </span>
               <IcAcorn className="h-29 w-21" aria-hidden />
             </span>
           </div>
