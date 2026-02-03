@@ -30,15 +30,18 @@ export default function RecommendedMissionCard({
         />
       </div>
 
-      <div className="mt-18 flex flex-wrap gap-4">
-        {keywords.map((keyword) => (
-          <span
-            key={keyword}
-            className="body-4 rounded-sm bg-moamoa-50 px-17 py-8 text-moamoa-500"
-          >
-            {keyword}
-          </span>
-        ))}
+      <div className="-mx-16 mt-18 overflow-x-auto">
+        <div className="flex gap-4 px-16">
+          {keywords.map((keyword) => (
+            <span
+              key={keyword}
+              className="body-4 shrink-0 rounded-sm bg-moamoa-50 px-17 py-8 text-moamoa-500"
+            >
+              {keyword}
+            </span>
+          ))}
+          <div className="w-16 shrink-0" />
+        </div>
       </div>
 
       <div className="mt-8 flex flex-col gap-4">
