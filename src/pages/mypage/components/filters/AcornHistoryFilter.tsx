@@ -43,8 +43,8 @@ const filterBox =
 export default function AcornHistoryFilter({
   filter,
   onChangeFilter,
-  sortKey: _sortKey,
-  onChangeSort: _onChangeSort,
+  sortKey,
+  onChangeSort,
   children,
 }: Props) {
   const [isDoneOpen, setIsDoneOpen] = useState(false);
@@ -53,10 +53,18 @@ export default function AcornHistoryFilter({
   const doneLabel =
     DONE_MISSION_OPTIONS.find((o) => o.key === doneOption)?.label ?? "미션";
   const [isRecentOpen, setIsRecentOpen] = useState(false);
-  const [recentOption, setRecentOption] = useState<RecentSortOption>("recent");
+  const [recentOption, setRecentOption] = useState<RecentSortOption>(
+    sortKey === "doneMission" ? "recent" : sortKey
+  );
   const recentLabel =
     RECENT_SORT_OPTIONS.find((o) => o.key === recentOption)?.label ?? "최근 순";
   const showDoneFilters = filter === "progress";
+
+  const handleSelectSort = (key: RecentSortOption) => {
+    setRecentOption(key);
+    onChangeSort(key);
+    setIsRecentOpen(false);
+  };
 
   const handleSelectFilter = (key: AcornHistoryFilterKey) => {
     onChangeFilter(key);
@@ -76,7 +84,9 @@ export default function AcornHistoryFilter({
             setIsDoneOpen(false);
           }}
           className="fixed inset-0 z-30 cursor-default"
-        />
+        >
+          <span className="sr-only">드롭다운 닫기</span>
+        </Button>
       )}
 
       <div className="flex flex-col">
@@ -154,8 +164,7 @@ export default function AcornHistoryFilter({
                             key={opt.key}
                             type="button"
                             onClick={() => {
-                              setRecentOption(opt.key);
-                              setIsRecentOpen(false);
+                              handleSelectSort(opt.key);
                             }}
                             className="flex w-full items-center gap-6"
                           >

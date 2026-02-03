@@ -2,6 +2,19 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 
+function IcMinus({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden
+    >
+      <rect x="2" y="7.5" width="12" height="1" fill="currentColor" />
+    </svg>
+  );
+}
+
 import type {
   AcornHistoryFilterKey,
   AcornHistoryItem,
@@ -24,10 +37,29 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
       base = base.filter((x) => x.status === "progress");
     if (filter === "done") base = base.filter((x) => x.status === "done");
 
+    const now = new Date();
+    const monthsToDays = (months: number) => months * 30;
+    const withinDays = (dateStr: string, days: number) => {
+      const date = new Date(dateStr);
+      if (Number.isNaN(date.getTime())) return false;
+      const diffMs = now.getTime() - date.getTime();
+      return diffMs <= days * 24 * 60 * 60 * 1000;
+    };
+
+    if (sortKey === "3m") {
+      base = base.filter((x) => withinDays(x.date, monthsToDays(3)));
+    }
+    if (sortKey === "6m") {
+      base = base.filter((x) => withinDays(x.date, monthsToDays(6)));
+    }
+
     const copied = [...base];
 
     if (sortKey === "recent") {
       copied.sort((a, b) => b.date.localeCompare(a.date));
+    }
+    if (sortKey === "oldest") {
+      copied.sort((a, b) => a.date.localeCompare(b.date));
     }
 
     return copied;
@@ -96,8 +128,13 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
                         </div>
 
                         <div className="flex items-center gap-4">
-                          <IcPlus className="h-16 w-16 shrink-0" aria-hidden />
+                          {item.acornDelta < 0 ? (
+                            <IcMinus className="h-16 w-16 shrink-0" />
+                          ) : (
+                            <IcPlus className="h-16 w-16 shrink-0" aria-hidden />
+                          )}
                           <span className="heading-5 text-black">
+                            {item.acornDelta < 0 ? "-" : "+"}
                             {Math.abs(item.acornDelta)}
                           </span>
                           <IcAcorn className="h-40 w-29 shrink-0" aria-hidden />

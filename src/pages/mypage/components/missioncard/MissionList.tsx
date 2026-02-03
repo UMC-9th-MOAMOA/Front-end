@@ -127,6 +127,7 @@ export default function MissionTab() {
                     onToggleLike={toggleLike}
                     onClickDetail={goDetail}
                     actionLabel={actionLabel}
+                    disableLike={subTab === "done"}
                   />
                 ))
               )}
