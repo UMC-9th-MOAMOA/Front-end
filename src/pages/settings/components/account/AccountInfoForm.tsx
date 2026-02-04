@@ -18,6 +18,7 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
 
   const confirmPhone = () => {
     // TODO(API 연결 시): 인증번호 검증 후 phone 업데이트
+    if (!newPhone || !verifyCode) return;
     setPhone(newPhone || phone);
     setIsPhoneEditing(false);
     setNewPhone("");
