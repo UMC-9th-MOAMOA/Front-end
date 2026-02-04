@@ -1,66 +1,79 @@
-import axios, {
-  type AxiosError,
-  type AxiosInstance,
-  type InternalAxiosRequestConfig,
+import type {
+  AxiosError,
+  AxiosInstance,
+  AxiosResponse,
+  InternalAxiosRequestConfig,
 } from "axios";
+import type { ApiError, ApiResponse } from "@/types/api/api";
+import { refreshAccessToken } from "./auth";
 import { storage } from "./storage";
 
 interface RetryableConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
+const handleRequest = (config: InternalAxiosRequestConfig) => {
+  const token = storage.getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+};
+
 let isRefreshing = false;
 let refreshPromise: Promise<string> | null = null;
 
-const refreshAccessToken = async (): Promise<string> => {
-  const { data } = await axios.post<{ accessToken: string }>(
-    `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
-    undefined,
-    { withCredentials: true }
-  );
-  storage.setToken(data.accessToken);
-  return data.accessToken;
+const handleTokenRefresh = async (
+  instance: AxiosInstance,
+  error: AxiosError
+) => {
+  const originalConfig = error.config as RetryableConfig;
+
+  if (originalConfig._retry) {
+    return Promise.reject(error);
+  }
+
+  originalConfig._retry = true;
+  try {
+    if (!isRefreshing) {
+      isRefreshing = true;
+      refreshPromise = refreshAccessToken();
+    }
+    const newToken = await refreshPromise!;
+    storage.setToken(newToken);
+    originalConfig.headers.Authorization = `Bearer ${newToken}`;
+    return instance(originalConfig);
+  } catch (refreshError) {
+    storage.removeToken();
+    return Promise.reject(error);
+  } finally {
+    isRefreshing = false;
+    refreshPromise = null;
+  }
 };
 
 export const attachInterceptors = (instance: AxiosInstance) => {
-  instance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-    const token = storage.getToken();
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
-    }
-    return config;
-  });
+  instance.interceptors.request.use(handleRequest, (err) =>
+    Promise.reject(err)
+  );
 
-  instance.interceptors.response.use(undefined, async (error: AxiosError) => {
-    const originalConfig = error.config as RetryableConfig | undefined;
+  instance.interceptors.response.use(
+    (response: AxiosResponse) => response,
+    async (error: AxiosError) => {
+      const errorData = error.response?.data as ApiResponse<null>;
 
-    if (
-      error.response?.status !== 401 ||
-      !originalConfig ||
-      originalConfig._retry
-    ) {
-      throw error;
-    }
+      if (errorData) {
+        if (error.response?.status === 401) {
+          return handleTokenRefresh(instance, error);
+        }
 
-    originalConfig._retry = true;
-
-    try {
-      if (!isRefreshing) {
-        isRefreshing = true;
-        refreshPromise = refreshAccessToken();
+        const apiError = new Error(errorData.message) as ApiError;
+        apiError.serverCode = errorData.code;
+        apiError.serverMessage = errorData.message;
+        return Promise.reject(apiError);
       }
 
-      const newToken = await refreshPromise;
-      originalConfig.headers.Authorization = `Bearer ${newToken}`;
-
-      return instance(originalConfig);
-    } catch {
-      storage.removeToken();
-      window.location.href = "/login";
-      throw error;
-    } finally {
-      isRefreshing = false;
-      refreshPromise = null;
+      return Promise.reject(error);
     }
-  });
+  );
 };

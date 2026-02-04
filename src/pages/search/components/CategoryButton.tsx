@@ -1,5 +1,5 @@
 import { Button } from "@/components/common/button/Button";
-import type { MainCategory } from "@/mocks/search/mission";
+import type { MainCategory } from "@/constants/missions/categories";
 import { cn } from "@/utils/cn/cn";
 
 interface CategoryButtonProps {
@@ -19,7 +19,7 @@ export default function CategoryButton({
       onClick={() => onClick(category)}
       className={cn(
         "heading-5 shrink-0 grow whitespace-nowrap",
-        isSelected ? "border-black border-b text-black" : "text-gray-500",
+        isSelected ? "border-black border-b text-black" : "text-gray-500"
       )}
     >
       {category}
