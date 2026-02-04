@@ -43,9 +43,8 @@ const handleTokenRefresh = async (
     storage.setToken(newToken);
     originalConfig.headers.Authorization = `Bearer ${newToken}`;
     return instance(originalConfig);
-  } catch {
+  } catch (refreshError) {
     storage.removeToken();
-    window.location.href = "/login";
     return Promise.reject(error);
   } finally {
     isRefreshing = false;

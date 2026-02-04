@@ -1,6 +1,7 @@
 import { type ReactNode, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { storage } from "@/apis/storage";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { useAuth } from "@/hooks/useAuth";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -11,22 +12,32 @@ const PUBLIC_PATHS = ["/login", "/signup", "/find-id", "/reset-password"];
 const AuthGuard = ({ children }: AuthGuardProps) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { isLoading, isAuthenticated } = useAuth();
 
   const isPublicPath = PUBLIC_PATHS.includes(location.pathname);
-  const accessToken = storage.getToken();
 
   useEffect(() => {
-    if (!isPublicPath && !accessToken) {
+    if (isLoading) return;
+
+    if (!isPublicPath && !isAuthenticated) {
       navigate("/login", { replace: true });
       return;
     }
 
-    if (location.pathname === "/login" && accessToken) {
+    if (location.pathname === "/login" && isAuthenticated) {
       navigate("/", { replace: true });
     }
-  }, [location.pathname, navigate, isPublicPath, accessToken]);
+  }, [location.pathname, navigate, isAuthenticated, isLoading, isPublicPath]);
 
-  if (!isPublicPath && !accessToken) {
+  if (isLoading) {
+    return (
+      <div className="flex h-dvh items-center justify-center">
+        <LoadingSpinner className="size-60" />
+      </div>
+    );
+  }
+
+  if (!isPublicPath && !isAuthenticated) {
     return null;
   }
 
