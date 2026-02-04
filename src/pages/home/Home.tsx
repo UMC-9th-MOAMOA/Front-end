@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
 import squirrelDefault from "@/assets/icons/home/character/squirrel_default.svg";
-import { useAttendanceStore } from "@/store/attendance";
+import { useAttendanceStore } from "@/store/attendance/attendance";
 import { getWeeklyAttendance } from "@/utils/attendance/attendance";
 import CustomizationToolbar from "./components/CustomizationToolbar";
 import HeaderButtons from "./components/HeaderButtons";
