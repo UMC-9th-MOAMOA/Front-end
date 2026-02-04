@@ -6,7 +6,7 @@ type Props = {
 
 export default function InquiryConsentRow({ onViewPolicy }: Props) {
   return (
-    <div className="flex w-full items-center justify-between">
+    <div className="flex w-full items-center justify-between pb-41">
       <div className="flex items-center gap-8">
         <div className="flex h-16 w-16 items-center justify-center rounded-full bg-gray-400 p-1">
           <IcCheck className="h-13 w-13 text-white" />

@@ -29,17 +29,15 @@ export default function PhoneField({
         <input
           value={value}
           disabled
-          className="h-46 flex-1 rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-black outline-none"
+          className="h-46 flex-1 rounded-lg bg-gray-100 px-15 py-8 text-black outline-none"
         />
 
         <Button
           type="button"
           onClick={onStartEdit}
-          className="flex h-46 w-78 items-center justify-center rounded-lg bg-[var(--color-moamoa-50)] px-15 py-8"
+          className="flex h-46 w-78 items-center justify-center rounded-lg bg-moamoa-50 px-15 py-8"
         >
-          <span className="body-2 whitespace-nowrap text-moamoa-400">
-            변경
-          </span>
+          <span className="body-2 whitespace-nowrap text-moamoa-400">변경</span>
         </Button>
       </div>
     );
@@ -51,14 +49,14 @@ export default function PhoneField({
         <input
           value={newValue}
           onChange={(e) => onChangeNewValue(e.target.value)}
-          className="h-46 flex-1 rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-black outline-none"
+          className="h-46 flex-1 rounded-lg bg-gray-100 px-15 py-8 text-black outline-none"
           placeholder="-구분없이 입력"
         />
 
         <Button
           type="button"
           onClick={onRequestVerification}
-          className="flex h-46 w-78 items-center justify-center rounded-lg bg-[var(--color-moamoa-50)] px-15 py-8"
+          className="bgr-moamoa-50 flex h-46 w-78 items-center justify-center rounded-lg px-15 py-8"
         >
           <span className="body-2 whitespace-nowrap text-moamoa-400">
             인증번호
@@ -70,18 +68,16 @@ export default function PhoneField({
         <input
           value={verifyCode}
           onChange={(e) => onChangeVerifyCode(e.target.value)}
-          className="h-46 flex-1 rounded-lg bg-[var(--color-gray-100)] px-15 py-8 text-black outline-none"
+          className="h-46 flex-1 rounded-lg bg-gray-100 px-15 py-8 text-black outline-none"
           placeholder="인증번호 입력"
         />
 
         <Button
           type="button"
           onClick={onConfirm}
-          className="flex h-46 w-78 items-center justify-center rounded-lg bg-[var(--color-moamoa-50)] px-15 py-8"
+          className="flex h-46 w-78 items-center justify-center rounded-lg bg-moamoa-50 px-15 py-8"
         >
-          <span className="body-2 whitespace-nowrap text-moamoa-400">
-            확인
-          </span>
+          <span className="body-2 whitespace-nowrap text-moamoa-400">확인</span>
         </Button>
       </div>
     </div>
