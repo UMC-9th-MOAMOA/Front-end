@@ -1,19 +1,24 @@
 import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
+import { storage } from "./apis/storage";
 import { useAttendanceCheck } from "./hooks/attendance/useAttendanceCheck";
-import { useAuth } from "./hooks/useAuth";
 import router from "./routes/router";
 
 function App() {
-  useAuth();
   const { handleCheckAttendance } = useAttendanceCheck();
 
   useEffect(() => {
+    const token = storage.getToken();
+    if (!token) return;
+
     handleCheckAttendance();
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        handleCheckAttendance();
+        const currentToken = storage.getToken();
+        if (currentToken) {
+          handleCheckAttendance();
+        }
       }
     };
 
