@@ -7,7 +7,7 @@ export default function AccountInfoHeader() {
     <>
       <IcProfile2 className="mt-53 h-164 w-164" aria-hidden />
 
-      <div className="mt-30 mb-43 flex h-115 w-full flex-col items-center justify-center gap-4 rounded-lg bg-[var(--color-gray-100)] p-12">
+      <div className="mt-30 mb-43 flex h-115 w-full flex-col items-center justify-center gap-4 rounded-lg bg-gray-100 p-12">
         <div className="flex w-full items-center justify-center gap-12 self-stretch">
           <IcProfile3 className="h-91 w-91" aria-hidden />
           <IcProfile2 className="h-91 w-91" aria-hidden />

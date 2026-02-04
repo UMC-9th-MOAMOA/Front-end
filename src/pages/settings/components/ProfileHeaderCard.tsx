@@ -15,7 +15,7 @@ export default function ProfileHeaderCard({
 }: Props) {
   return (
     <section className="flex h-117 w-full items-center justify-center bg-white px-6 py-4">
-      <div className="flex w-full items-center gap-8 pl-31">
+      <div className="flex w-full items-center gap-18 pl-31">
         <button type="button" onClick={onClickProfile} aria-label="프로필 변경">
           <IcProfile1 className="h-82 w-82" aria-hidden />
         </button>
