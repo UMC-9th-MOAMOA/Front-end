@@ -21,7 +21,7 @@ export default function SubCategoryButton({
       onClick={() => onClick(category.name)}
       className={cn(
         "body-4 w-92 shrink-0 grow rounded-sm py-8",
-        isSelected ? "bg-moamoa-300 text-white" : "bg-moamoa-50 text-moamoa-300",
+        isSelected ? "bg-moamoa-300 text-white" : "bg-moamoa-50 text-moamoa-300"
       )}
     >
       {category.name}
