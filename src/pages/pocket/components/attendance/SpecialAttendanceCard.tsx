@@ -17,8 +17,8 @@ export default function SpecialAttendanceCard({
   return (
     <div
       className={cn(
-        "relative flex w-full items-center justify-between rounded-xl border-2 border-moamoa-400 px-12 py-8",
-        isActive ? "bg-moamoa-50" : "bg-gray-200",
+        "relative flex w-full items-center justify-between rounded-xl px-12 py-8",
+        isActive ? "border-2 border-moamoa-400 bg-moamoa-50" : "bg-gray-200"
       )}
     >
       <span
@@ -28,14 +28,20 @@ export default function SpecialAttendanceCard({
       </span>
       <div className="flex flex-col items-center">
         <span
-          className={cn("body-5 text-center", isActive ? "text-moamoa-700" : "text-gray-500")}
+          className={cn(
+            "body-5 text-center",
+            isActive ? "text-moamoa-700" : "text-gray-500"
+          )}
         >
           보너스 도토리
         </span>
         <div className="mt-4 flex items-center">
           <GoldAcornIcon className="size-24" />
           <span
-            className={cn("body-3 ml-4", isActive ? "text-moamoa-400" : "text-gray-500")}
+            className={cn(
+              "body-3 ml-4",
+              isActive ? "text-moamoa-400" : "text-gray-500"
+            )}
           >
             +10개
           </span>

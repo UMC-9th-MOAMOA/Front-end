@@ -1,3 +1,5 @@
+import axios from "axios";
+import type { ApiResponse } from "@/types/api/api";
 import { publicAPI } from "./axios";
 
 export interface LoginRequest {
@@ -11,16 +13,9 @@ export interface LoginResult {
   accessTokenExpiresIn: number;
 }
 
-interface ApiResponse<T> {
-  isSuccess: boolean;
-  code: string;
-  message: string;
-  result: T;
-}
-
 export const login = async (payload: LoginRequest) => {
   const { data } = await publicAPI.post<ApiResponse<LoginResult>>(
-    "/api/v1/auth/login",
+    "/auth/login",
     payload
   );
 
@@ -30,3 +25,19 @@ export const login = async (payload: LoginRequest) => {
 
   return data.result;
 };
+
+export const refreshAccessToken = async (): Promise<string> => {
+  const { data } = await axios.post<ApiResponse<{ accessToken: string }>>(
+    `${import.meta.env.VITE_API_BASE_URL}/auth/refresh`,
+    undefined,
+    { withCredentials: true }
+  );
+
+  if (!data.isSuccess || !data.result?.accessToken) {
+    throw new Error(data.message || "리프레시 실패");
+  }
+
+  return data.result.accessToken;
+};
+
+export const refreshToken = refreshAccessToken;

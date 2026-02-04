@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Header from "@/components/common/header/Header";
+import { useAttendanceStore } from "@/store/attendance";
+import { getWeeklyAttendance } from "@/utils/attendance/attendance";
 import { cn } from "@/utils/cn/cn";
 import AcornSection from "./components/AcornSection";
 import TimeCard from "./components/TimeCard";
@@ -9,9 +11,10 @@ import { MOCK_POCKET_DATA } from "./mock/pocketData";
 
 export default function PocketView() {
   const [userData] = useState(MOCK_POCKET_DATA);
+  const { attendanceData } = useAttendanceStore();
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <div className="sticky top-0 z-50 -mx-layout-side bg-white px-layout-side">
         <Header
           title="주머니"
@@ -39,14 +42,15 @@ export default function PocketView() {
 
       <AcornSection acornCount={userData.acornCount} />
 
-      <div className={cn(!userData.hasGoal && "-mb-59")}>
-        <WeeklyAttendanceSection
-          currentDay={userData.weekAttendance.currentDay}
-          attendance={userData.weekAttendance.attendance}
-        />
-      </div>
+      {attendanceData && (
+        <div className={cn(!userData.hasGoal && "-mb-59")}>
+          <WeeklyAttendanceSection
+            currentDay={((attendanceData.streak - 1) % 7) + 1}
+            attendance={getWeeklyAttendance(attendanceData.streak)}
+          />
+        </div>
+      )}
 
-      {/* 목표 설정한 경우에만 표시 */}
       {userData.hasGoal && (
         <div className="mt-20 -mb-59">
           <WeeklyGoalSection
