@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Header from "@/components/common/header/Header";
-import { useAttendanceStore } from "@/store/attendance";
+import { useAttendanceStore } from "@/store/attendance/attendance";
 import { getWeeklyAttendance } from "@/utils/attendance/attendance";
 import { cn } from "@/utils/cn/cn";
 import AcornSection from "./components/AcornSection";
