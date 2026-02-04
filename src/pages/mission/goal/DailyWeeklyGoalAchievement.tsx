@@ -31,7 +31,6 @@ export default function DailyWeeklyGoalAchievement({
   questionResults,
   dailyBonusAcorns = 1,
   weeklyBonusAcorns = 1,
-  onClose,
 }: DailyWeeklyGoalAchievementProps) {
   const navigate = useNavigate();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
