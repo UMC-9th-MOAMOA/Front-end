@@ -4,6 +4,7 @@ import type {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import { useAuthStore } from "@/store/auth";
 import type { ApiError, ApiResponse } from "@/types/api/api";
 import { refreshAccessToken } from "./auth";
 import { storage } from "./storage";
@@ -45,6 +46,7 @@ const handleTokenRefresh = async (
     return instance(originalConfig);
   } catch (refreshError) {
     storage.removeToken();
+    useAuthStore.getState().setAuthenticated(false);
     return Promise.reject(error);
   } finally {
     isRefreshing = false;
