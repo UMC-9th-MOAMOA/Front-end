@@ -3,7 +3,7 @@ import {
   checkAttendance,
   getAttendanceStreak,
 } from "@/apis/attendance/attendance";
-import { useAttendanceStore } from "@/store/attendance";
+import { useAttendanceStore } from "@/store/attendance/attendance";
 import type { ApiError } from "@/types/api/api";
 import { attendanceCache } from "@/utils/attendance/attendance";
 
