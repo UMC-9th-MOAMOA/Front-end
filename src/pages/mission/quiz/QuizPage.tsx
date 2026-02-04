@@ -92,7 +92,6 @@ export default function QuizPage() {
 
     setIsCorrect(correct);
     setShowFeedback(true);
-    setCompletedQuestions((prev) => prev + 1);
   };
 
   const handleNext = () => {
@@ -108,6 +107,10 @@ export default function QuizPage() {
       setSelectedOption(null);
       setShowFeedback(false);
       setIsCorrect(null);
+
+      requestAnimationFrame(() => {
+        setCompletedQuestions((prev) => prev + 1);
+      });
     }
   };
 

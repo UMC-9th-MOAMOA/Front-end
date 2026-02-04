@@ -12,9 +12,11 @@ export default function QuizProgressBar({
   current,
   total,
 }: QuizProgressBarProps) {
-  const currentProgress = (100 / total) * current;
-  const isCompleted = current === total;
-  const isStart = current === 0;
+  const safeTotal = Math.max(total, 1);
+  const rawProgress = (100 * current) / safeTotal;
+  const currentProgress = Math.min(100, Math.max(0, rawProgress));
+  const isCompleted = total > 0 && current >= total;
+  const isStart = current <= 0;
 
   const [showEatingSquirrel, setShowEatingSquirrel] = useState(false);
   const squirrelRef = useRef<HTMLDivElement>(null);
