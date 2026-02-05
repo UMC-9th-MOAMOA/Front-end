@@ -5,6 +5,10 @@ import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { Modal } from "@/pages/auth/components/Modal";
 import AgreementList from "@/pages/auth/signup/components/AgreementList";
 import { PWTextField } from "@/pages/auth/signup/components/PWTextField";
+import {
+  getPasswordStrength,
+  PASSWORD_INVALID_MESSAGE,
+} from "@/pages/auth/utils/passwordStrength";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
 
@@ -66,6 +70,11 @@ export default function SignUp() {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
+  const passwordStrength = getPasswordStrength(password);
+  const passwordErrorMessage = passwordStrength.hasInvalidChar
+    ? PASSWORD_INVALID_MESSAGE
+    : undefined;
+
   const passwordConfirmErrorMessage =
     passwordConfirm.length > 0 && password !== passwordConfirm
       ? "비밀번호가 일치하지 않습니다."
@@ -111,6 +120,7 @@ export default function SignUp() {
           onPasswordChange={(e) => setPassword(e.target.value)}
           passwordConfirm={passwordConfirm}
           onPasswordConfirmChange={(e) => setPasswordConfirm(e.target.value)}
+          passwordErrorMessage={passwordErrorMessage}
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
         <div className="mt-37">
