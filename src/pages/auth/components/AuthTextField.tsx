@@ -15,6 +15,7 @@ export type AuthTextFieldProps = {
 
   helperText?: string;
   errorMessage?: string;
+  error?: boolean;
   disabled?: boolean;
   name?: string;
   endAdornment?: ReactNode;
@@ -32,6 +33,7 @@ export function AuthTextField({
   variant,
   helperText,
   errorMessage,
+  error = false,
   disabled = false,
   name,
   endAdornment,
@@ -39,7 +41,7 @@ export function AuthTextField({
 }: AuthTextFieldProps) {
   const reactId = useId();
 
-  const hasError = Boolean(errorMessage);
+  const hasError = Boolean(errorMessage) || error;
   const inputId = name ?? reactId;
 
   const baseClassName = textFieldVariants({
@@ -86,7 +88,7 @@ export function AuthTextField({
       </div>
 
       {/* Helper / Error message */}
-      {hasError ? (
+      {errorMessage ? (
         <p className="body-5 text-red-500">{errorMessage}</p>
       ) : (
         helperText && <p className="body-5 text-gray-500">{helperText}</p>

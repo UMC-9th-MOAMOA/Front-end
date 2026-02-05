@@ -40,14 +40,15 @@ export default function KeywordSearchView() {
     }
   };
 
+  // TODO: 키워드 검색 API 연결 시 수정
   const missions = MOCK_KEYWORD_SEARCH_MISSIONS.map((m) => ({
     id: m.missionId,
     title: m.title,
     keywords: m.keywords,
-    minute: m.estimatedTime,
-    category: m.categoryName,
+    minute: m.durationMinutes,
+    category: m.category,
     quizCount: m.quizCount,
-    isLiked: m.isLiked,
+    isLiked: m.isScrapped,
   }));
 
   return (
