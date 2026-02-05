@@ -2,6 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { PWTextField } from "@/pages/auth/signup/components/PWTextField";
+import {
+  getPasswordStrength,
+  PASSWORD_INVALID_MESSAGE,
+} from "@/pages/auth/utils/passwordStrength";
 import { AuthTextField } from "../components/AuthTextField";
 
 export default function SignUp() {
@@ -11,6 +15,11 @@ export default function SignUp() {
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+
+  const passwordStrength = getPasswordStrength(password);
+  const passwordErrorMessage = passwordStrength.hasInvalidChar
+    ? PASSWORD_INVALID_MESSAGE
+    : undefined;
 
   const passwordConfirmErrorMessage =
     passwordConfirm.length > 0 && password !== passwordConfirm
@@ -41,6 +50,7 @@ export default function SignUp() {
           onPasswordChange={(e) => setPassword(e.target.value)}
           passwordConfirm={passwordConfirm}
           onPasswordConfirmChange={(e) => setPasswordConfirm(e.target.value)}
+          passwordErrorMessage={passwordErrorMessage}
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
       </div>

@@ -13,8 +13,8 @@ import { PasswordTextField } from "../../components/PasswordTextField";
 
 function AuthLinksRow() {
   return (
-    <div className="flex items-center justify-center gap-24 text-gray-600 text-sm">
-      <Link to="/reset-password" className="hover:underline">
+    <div className="flex items-center justify-center gap-16 text-gray-600 text-sm">
+      <Link to="/password" className="hover:underline">
         비밀번호 찾기
       </Link>
       <DividerIcon className="h-18 w-1" aria-hidden="true" />
