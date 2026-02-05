@@ -11,11 +11,15 @@ const MAX_CONTENT = 2000;
 const MAX_IMAGES = 5;
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
+type Props = {
+  agreed: boolean;
+};
+
 function clamp(n: number, max: number) {
   return Math.min(max, Math.max(0, n));
 }
 
-export default function InquiryWriteForm() {
+export default function InquiryWriteForm({ agreed }: Props) {
   const fileInputId = useId();
   const navigate = useNavigate();
   const [draft, setDraft] = useState<InquiryDraft>({
@@ -81,6 +85,7 @@ export default function InquiryWriteForm() {
       <div className="mt-67 w-full">
         <InquiryConsentRow
           onViewPolicy={() => navigate("/settings/inquiry/consent")}
+          agreed={agreed}
         />
       </div>
     </div>
