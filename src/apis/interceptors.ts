@@ -6,7 +6,7 @@ import type {
 } from "axios";
 import { useAuthStore } from "@/store/auth";
 import type { ApiError, ApiResponse } from "@/types/api/api";
-import { refreshAccessToken } from "./auth";
+import { refreshAccessToken } from "./auth/auth";
 import { storage } from "./storage";
 
 interface RetryableConfig extends InternalAxiosRequestConfig {

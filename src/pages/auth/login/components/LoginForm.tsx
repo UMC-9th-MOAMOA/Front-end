@@ -1,20 +1,20 @@
-import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { login } from "@/apis/auth";
 import { storage } from "@/apis/storage";
 import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
 import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import DividerIcon from "@/assets/icons/ic_divider.svg?react";
 import { Button } from "@/components/common/button/Button";
+import type { ApiError } from "@/types/api/api";
 import { AuthTextField } from "../../components/AuthTextField";
 import { Modal } from "../../components/Modal";
 import { PasswordTextField } from "../../components/PasswordTextField";
+import { useLogin } from "../hooks/useMutation/useLogin";
 
 function AuthLinksRow() {
   return (
-    <div className="flex items-center justify-center gap-24 text-gray-600 text-sm">
-      <Link to="/reset-password" className="hover:underline">
+    <div className="flex items-center justify-center gap-16 text-gray-600 text-sm">
+      <Link to="/password" className="hover:underline">
         비밀번호 찾기
       </Link>
       <DividerIcon className="h-18 w-1" aria-hidden="true" />
@@ -34,11 +34,11 @@ export default function LoginForm() {
     "AUTH403_2" | "AUTH403_3" | ""
   >("");
   const [isBlockedModalOpen, setIsBlockedModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
+  const { mutateAsync: loginMutate, isPending } = useLogin();
 
   const canSubmit =
-    email.trim().length > 0 && password.trim().length > 0 && !isSubmitting;
+    email.trim().length > 0 && password.trim().length > 0 && !isPending;
 
   const resolveLoginErrorMessage = (code?: string, fallback?: string) => {
     switch (code) {
@@ -54,15 +54,14 @@ export default function LoginForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitting) return;
+    if (isPending) return;
 
     setErrorMessage("");
-    setIsSubmitting(true);
     setBlockedCode("");
     setIsBlockedModalOpen(false);
 
     try {
-      const result = await login({ email, password });
+      const result = await loginMutate({ email, password });
       storage.setToken(result.accessToken);
 
       if (autoLogin) {
@@ -71,26 +70,22 @@ export default function LoginForm() {
 
       navigate("/onboarding");
     } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const data = error.response?.data as {
-          code?: string;
-          message?: string;
-        };
-        if (data?.code === "AUTH403_2" || data?.code === "AUTH403_3") {
-          setBlockedCode(data.code);
-          setIsBlockedModalOpen(true);
-          setErrorMessage("");
-        } else {
-          const message = resolveLoginErrorMessage(data?.code, data?.message);
-          setErrorMessage(message);
-        }
+      const apiError = error as ApiError;
+      const code = apiError?.serverCode;
+      const message =
+        apiError?.serverMessage ||
+        (error instanceof Error ? error.message : undefined);
+      if (code === "AUTH403_2" || code === "AUTH403_3") {
+        setBlockedCode(code);
+        setIsBlockedModalOpen(true);
+        setErrorMessage("");
       } else {
-        const message =
-          error instanceof Error ? error.message : "로그인에 실패했습니다.";
-        setErrorMessage(message);
+        const resolved = resolveLoginErrorMessage(
+          code,
+          message ?? "로그인에 실패했습니다."
+        );
+        setErrorMessage(resolved);
       }
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
@@ -137,7 +132,7 @@ export default function LoginForm() {
         className="heading-5 mt-23 mb-4 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-800"
         disabled={!canSubmit}
       >
-        {isSubmitting ? "로그인 중..." : "로그인"}
+        {isPending ? "로그인 중..." : "로그인"}
       </Button>
       <AuthLinksRow />
       <Modal
