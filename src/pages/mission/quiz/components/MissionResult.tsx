@@ -1,11 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import IcAllCorrect from "@/assets/icons/mission/ic_all_correct.svg?react";
 import IcColoredAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
 import IcResultHands from "@/assets/icons/mission/ic_result_fail_hands.svg?react";
 import IcResultSquirrel from "@/assets/icons/mission/ic_result_fail_squirrel.svg?react";
-import IcSuccessSubjective from "@/assets/icons/mission/ic_success_subjective.svg?react";
 import Header from "@/components/common/header/Header";
 import DailyGoalAchievement from "@/pages/mission/goal/DailyGoalAchievement";
+import DailyWeeklyGoalAchievement from "@/pages/mission/goal/DailyWeeklyGoalAchievement";
 import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
@@ -26,6 +27,7 @@ interface MissionResultProps {
   totalQuestions: number;
   isDailyGoalAchieved?: boolean;
   isWeeklyGoalAchieved?: boolean;
+  missionName?: string;
   onClose: () => void;
   onRetryWrong: () => void;
 }
@@ -37,6 +39,7 @@ export default function MissionResult({
   totalQuestions,
   isDailyGoalAchieved = false,
   isWeeklyGoalAchieved = false,
+  missionName = "",
   onClose,
   onRetryWrong,
 }: MissionResultProps) {
@@ -53,6 +56,16 @@ export default function MissionResult({
   };
 
   if (showGoalScreen) {
+    if (isDailyGoalAchieved && isWeeklyGoalAchieved) {
+      return (
+        <DailyWeeklyGoalAchievement
+          totalAcorns={totalAcorns}
+          missionName={missionName}
+          questionResults={questionResults}
+          onClose={() => navigate("/")}
+        />
+      );
+    }
     if (isDailyGoalAchieved) {
       return (
         <DailyGoalAchievement
@@ -79,11 +92,11 @@ export default function MissionResult({
     <div className="relative flex min-h-screen flex-col items-center">
       <Header leftIcon="quit" title="" property="common" onBack={handleExit} />
 
-      <div className="absolute top-14 left-20 z-30 flex w-full justify-center">
+      <div className="absolute top-36 left-20 z-30 flex w-full justify-center">
         {isAllCorrect ? (
-          <IcSuccessSubjective className="h-277 w-275" />
+          <IcAllCorrect className="h-260 w-auto" />
         ) : (
-          <IcResultSquirrel className="h-277 w-275" />
+          <IcResultSquirrel className="h-280.8 w-auto" />
         )}
       </div>
       {!isAllCorrect && (

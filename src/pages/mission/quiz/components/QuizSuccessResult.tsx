@@ -26,13 +26,23 @@ export default function QuizSuccessResult({
 }: QuizSuccessResultProps) {
   return (
     <div className="flex min-h-screen flex-col items-center">
-      <div className="absolute top-35 z-10 flex h-272 items-end justify-center">
-        {questionType === "subjective" && <IcSuccessSubjective />}
-        {questionType === "ox" && <IcSuccessOx />}
-        {questionType === "multiple" && <IcSuccessMultiple />}
-      </div>
+      {questionType === "subjective" && (
+        <div className="absolute top-32 z-10 flex w-full justify-center">
+          <IcSuccessSubjective className="h-267 w-auto" />
+        </div>
+      )}
+      {questionType === "ox" && (
+        <div className="absolute top-23 z-10 flex w-full justify-center">
+          <IcSuccessOx className="h-255 w-auto" />
+        </div>
+      )}
+      {questionType === "multiple" && (
+        <div className="absolute top-33 z-10 flex w-full justify-center">
+          <IcSuccessMultiple className="h-266 w-auto" />
+        </div>
+      )}
 
-      <div className="z-20 mt-272 w-full rounded-[20px] bg-white px-25 pb-19">
+      <div className="z-20 mt-234 w-full rounded-[20px] bg-white px-25 pb-19">
         <h1 className="heading-0 pt-25 text-center text-black">SUCCESS !</h1>
         {questionType === "subjective" && (
           <>
