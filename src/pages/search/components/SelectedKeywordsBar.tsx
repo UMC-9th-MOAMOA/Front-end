@@ -1,3 +1,4 @@
+import { cn } from "@/utils/cn/cn";
 import KeywordChip from "./common/KeywordChip";
 
 interface SelectedKeywordsBarProps {
@@ -17,15 +18,15 @@ export default function SelectedKeywordsBar({
 
   return (
     <div
-      className={`-mx-layout-side mt-layout-side overflow-x-auto py-5 ${!isSearched ? "mb-28" : ""}`}
+      className={cn("-mx-layout-side mt-layout-side overflow-x-auto py-5", !isSearched && "mb-28")}
     >
-      <div className={`flex gap-2 ${!isSearched ? "min-h-30" : ""}`}>
+      <div className={cn("flex gap-2", !isSearched && "min-h-30")}>
         {keywords.length > 0 ? (
           <>
             {keywords.map((keyword, index) => (
               <div
                 key={keyword}
-                className={`shrink-0 ${index === 0 ? "ml-layout-side" : ""}`}
+                className={cn("shrink-0", index === 0 && "ml-layout-side")}
               >
                 <KeywordChip
                   keyword={keyword}
