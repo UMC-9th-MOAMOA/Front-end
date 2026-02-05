@@ -62,7 +62,7 @@ export default function QuizPage() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [completedQuestions, setCompletedQuestions] = useState(0);
-  const [prevCompletedQuestions, setPrevCompletedQuestions] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   const [showQuitPopup, setShowQuitPopup] = useState(false);
   const [showMissionResult, setShowMissionResult] = useState(false);
   const feedbackTimeoutRef = useRef<number | null>(null);
@@ -98,15 +98,15 @@ export default function QuizPage() {
     ]);
 
     setIsCorrect(correct);
-    // store previous completed count so progress bar can animate from it
-    setPrevCompletedQuestions(completedQuestions);
     setCompletedQuestions(completedQuestions + 1);
+    setIsAnimating(true);
 
-    // Fallback: show feedback after animation + extra delay if callback doesn't fire
+    // Fallback: show feedback after animation + extra delay
     if (feedbackTimeoutRef.current)
       window.clearTimeout(feedbackTimeoutRef.current);
     feedbackTimeoutRef.current = window.setTimeout(() => {
       setShowFeedback(true);
+      setIsAnimating(false);
       feedbackTimeoutRef.current = null;
     }, ANIMATION_DURATION + FEEDBACK_DELAY_AFTER_ANIMATION);
   };
@@ -199,19 +199,7 @@ export default function QuizPage() {
       <div className="px-21 pt-24">
         <QuizProgress
           current={completedQuestions}
-          previous={prevCompletedQuestions}
           total={MOCK_QUIZ_DATA.totalQuestions}
-          onAnimationComplete={() => {
-            // when animation finishes, wait a bit more then show feedback
-            if (feedbackTimeoutRef.current) {
-              window.clearTimeout(feedbackTimeoutRef.current);
-              feedbackTimeoutRef.current = null;
-            }
-            feedbackTimeoutRef.current = window.setTimeout(() => {
-              setShowFeedback(true);
-              feedbackTimeoutRef.current = null;
-            }, FEEDBACK_DELAY_AFTER_ANIMATION);
-          }}
         />
       </div>
 
@@ -230,7 +218,7 @@ export default function QuizPage() {
         <div className="h-48 w-full px-25">
           <QuizSubmitButton
             text={showFeedback ? "다음 문제" : "정답 확인하기"}
-            disabled={!showFeedback && isAnswerEmpty()}
+            disabled={isAnimating || (!showFeedback && isAnswerEmpty())}
             onClick={showFeedback ? handleNext : handleSubmit}
           />
         </div>
