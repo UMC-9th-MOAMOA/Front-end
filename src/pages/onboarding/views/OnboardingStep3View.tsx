@@ -47,20 +47,22 @@ export default function OnboardingStep3View({
           </button>
         ))}
       </div>
-      <p className="body-5 mt-77 text-gray-600">
-        자투리 시간 선택은 필수 선택입니다.
-      </p>
-      <Button
-        type="button"
-        className="heading-5 mt-27 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-600"
-        disabled={payload.dailyMissionTime === null}
-        onClick={() => {
-          onChange(payload);
-          onNext();
-        }}
-      >
-        계속하기
-      </Button>
+      <div className="absolute inset-x-24 bottom-42">
+        <p className="body-5 mb-27 text-center text-gray-600">
+          자투리 시간 선택은 필수 선택입니다.
+        </p>
+        <Button
+          type="button"
+          className="heading-5 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-600"
+          disabled={payload.dailyMissionTime === null}
+          onClick={() => {
+            onChange(payload);
+            onNext();
+          }}
+        >
+          계속하기
+        </Button>
+      </div>
     </section>
   );
 }

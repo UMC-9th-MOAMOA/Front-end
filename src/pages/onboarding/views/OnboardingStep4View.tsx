@@ -80,31 +80,32 @@ export default function OnboardingStep4View({
         </div>
       </div>
 
-      <p className="body-5 mt-197 text-gray-600">
-        목표는 설정에서 변경이 가능합니다.
-      </p>
-
-      <div className="mt-27 grid w-full grid-cols-2 gap-12">
-        <Button
-          type="button"
-          className="body-2 h-50 rounded-lg bg-moamoa-50 py-12 text-moamoa-500 active:bg-moamoa-100"
-          onClick={() => {
-            onChange({ ...payload, dailyMissionGoal: value });
-            onNext();
-          }}
-        >
-          계속하기
-        </Button>
-        <Button
-          type="button"
-          className="body-2 h-50 rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
-          onClick={() => {
-            onChange({ ...payload, dailyMissionGoal: null });
-            onNext();
-          }}
-        >
-          나중에 설정
-        </Button>
+      <div className="absolute inset-x-24 bottom-42">
+        <p className="body-5 mb-27 text-center text-gray-600">
+          목표는 설정에서 변경이 가능합니다.
+        </p>
+        <div className="grid w-full grid-cols-2 gap-12">
+          <Button
+            type="button"
+            className="body-2 h-50 rounded-lg bg-moamoa-50 py-12 text-moamoa-500 active:bg-moamoa-100"
+            onClick={() => {
+              onChange({ ...payload, dailyMissionGoal: value });
+              onNext();
+            }}
+          >
+            계속하기
+          </Button>
+          <Button
+            type="button"
+            className="body-2 h-50 rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
+            onClick={() => {
+              onChange({ ...payload, dailyMissionGoal: null });
+              onNext();
+            }}
+          >
+            나중에 설정
+          </Button>
+        </div>
       </div>
     </section>
   );
