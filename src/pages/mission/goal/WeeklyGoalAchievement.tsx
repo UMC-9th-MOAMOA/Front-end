@@ -8,7 +8,7 @@ import IcSimple from "@/assets/icons/mission/ic_simple.svg?react";
 import Header from "@/components/common/header/Header";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
-  subjective: "주관식",
+  subjective: "단답형",
   ox: "OX",
   multiple: "객관식",
 };
