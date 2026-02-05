@@ -1,10 +1,7 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { storage } from "@/apis/storage";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import DividerIcon from "@/assets/icons/ic_divider.svg?react";
 import { Button } from "@/components/common/button/Button";
-import { useAuthStore } from "@/store/auth";
-import type { ApiError } from "@/types/api/api";
 import { AuthTextField } from "../../components/AuthTextField";
 import { Modal } from "../../components/Modal";
 import { PasswordTextField } from "../../components/PasswordTextField";
@@ -32,26 +29,28 @@ export default function LoginForm() {
     "AUTH403_2" | "AUTH403_3" | ""
   >("");
   const [isBlockedModalOpen, setIsBlockedModalOpen] = useState(false);
-  const navigate = useNavigate();
-  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
-  const { mutateAsync: loginMutate, isPending } = useLogin();
+  const [searchParams] = useSearchParams();
+  const { mutate: loginMutate, isPending } = useLogin({
+    onBlocked: (code) => {
+      setBlockedCode(code);
+      setIsBlockedModalOpen(true);
+      setErrorMessage("");
+    },
+    onMessage: (message) => setErrorMessage(message),
+  });
 
   const canSubmit =
     email.trim().length > 0 && password.trim().length > 0 && !isPending;
 
-  const resolveLoginErrorMessage = (code?: string, fallback?: string) => {
-    switch (code) {
-      case "VALIDATION400_2":
-      case "AUTH401_1":
-        return "이메일 또는 비밀번호가 일치하지 않습니다.";
-      case "COMMON500_1":
-        return "서버 에러가 발생했습니다. 다시 시도해주세요.";
-      default:
-        return fallback ?? "로그인에 실패했습니다.";
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error === "ACCOUNT_BANNED") {
+      setBlockedCode("AUTH403_3");
+      setIsBlockedModalOpen(true);
     }
-  };
+  }, [searchParams]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isPending) return;
 
@@ -59,30 +58,7 @@ export default function LoginForm() {
     setBlockedCode("");
     setIsBlockedModalOpen(false);
 
-    try {
-      const result = await loginMutate({ email, password });
-      storage.setToken(result.token.accessToken);
-      setAuthenticated(true);
-
-      navigate(result.onboardingCompleted ? "/" : "/onboarding");
-    } catch (error) {
-      const apiError = error as ApiError;
-      const code = apiError?.serverCode;
-      const message =
-        apiError?.serverMessage ||
-        (error instanceof Error ? error.message : undefined);
-      if (code === "AUTH403_2" || code === "AUTH403_3") {
-        setBlockedCode(code);
-        setIsBlockedModalOpen(true);
-        setErrorMessage("");
-      } else {
-        const resolved = resolveLoginErrorMessage(
-          code,
-          message ?? "로그인에 실패했습니다."
-        );
-        setErrorMessage(resolved);
-      }
-    }
+    loginMutate({ email, password });
   };
 
   return (

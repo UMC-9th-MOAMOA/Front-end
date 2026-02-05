@@ -1,8 +1,10 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import FindId from "@/pages/auth/find-id/FindId";
 import LoginPage from "@/pages/auth/login/Login";
+import OAuthCallback from "@/pages/auth/oauth-callback/OAuthCallback";
 import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
+import TermsPage from "@/pages/auth/terms/Terms";
 import HomePage from "@/pages/home/Home";
 import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
@@ -28,8 +30,18 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
+        path: "oauth/callback",
+        element: <OAuthCallback />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
         path: "signup",
         element: <SignUpPage />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
+        path: "terms",
+        element: <TermsPage />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
