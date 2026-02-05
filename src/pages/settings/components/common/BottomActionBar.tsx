@@ -7,6 +7,7 @@ type Props = {
   leftIcon?: ReactNode;
   onClick?: () => void;
   buttonClassName?: string;
+  disabled?: boolean;
 };
 
 export default function BottomActionBar({
@@ -14,6 +15,7 @@ export default function BottomActionBar({
   leftIcon,
   onClick,
   buttonClassName,
+  disabled = false,
 }: Props) {
   return (
     <div className="fixed right-0 bottom-0 left-0 z-20 bg-[#FAFAFA] shadow-[0_-8px_50px_3px_rgba(0,0,0,0.10)]">
@@ -22,6 +24,7 @@ export default function BottomActionBar({
           type="button"
           onClick={onClick}
           leftIcon={leftIcon}
+          disabled={disabled}
           className={cn(
             "heading-5 flex h-48 w-full items-center justify-center rounded-lg bg-moamoa-300 text-white",
             buttonClassName

@@ -1,4 +1,5 @@
 ﻿import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import { Button } from "@/components/common/button/Button";
 import Header from "@/components/common/header/Header";
@@ -6,10 +7,20 @@ import BottomActionBar from "@/pages/settings/components/common/BottomActionBar"
 
 export default function InquiryConsentPage() {
   const [isAgreed, setIsAgreed] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <div className="flex h-[100dvh] w-full flex-col overflow-hidden bg-white">
-      <Header title="이용 약관 동의" property="common" />
+    <div className="flex h-[calc(100dvh-98px-42px-env(safe-area-inset-bottom))] w-full flex-col overflow-hidden bg-white">
+      <Header
+        title="이용 약관 동의"
+        property="common"
+        onBack={() =>
+          navigate("/settings/inquiry", {
+            state: { consentAgreed: isAgreed },
+            replace: true,
+          })
+        }
+      />
 
       <div className="-mx-[25px] mt-[14px] h-[2px] bg-gray-200" />
 
@@ -38,7 +49,7 @@ export default function InquiryConsentPage() {
           </Button>
         </div>
 
-        <div className="mt-[34px] flex min-h-0 w-full flex-1 flex-col items-start gap-[13px] pb-[140px]">
+        <div className="mt-[34px] flex min-h-0 w-full flex-1 flex-col items-start gap-[13px]">
           <div className="flex items-center">
             <IcCheck
               className="h-[24px] w-[24px]"
@@ -74,7 +85,8 @@ export default function InquiryConsentPage() {
               {"\n"}
               {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}• ※
               기기식별값은 중복 가입 및 보상 부정 수급 방지를 위해 필수적으로
-              수집합니다.
+              {"\n"}
+              {"\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0\u00A0"}수집합니다.
               {"\n\n"}3. 보유 및 이용 기간
               {"\n"}• 회원 탈퇴 시까지
               {"\n"}• 단, 부정 이용 방지를 위해 기기식별값 및 불량 이용 기록은
@@ -91,7 +103,15 @@ export default function InquiryConsentPage() {
 
       <BottomActionBar
         label="동의합니다"
-        onClick={() => setIsAgreed((prev) => !prev)}
+        disabled={!isAgreed}
+        onClick={() => {
+          const next = true;
+          setIsAgreed(true);
+          navigate("/settings/inquiry", {
+            state: { consentAgreed: next },
+            replace: true,
+          });
+        }}
         buttonClassName={isAgreed ? "bg-moamoa-300" : "bg-gray-300"}
       />
     </div>
