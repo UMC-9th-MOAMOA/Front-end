@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import IcColoredAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
 import IcExpand from "@/assets/icons/mission/ic_expand.svg?react";
 import IcSimple from "@/assets/icons/mission/ic_simple.svg?react";
-import IcSuccessOX from "@/assets/icons/mission/ic_success_OX.svg?react";
+import IcSuccessOX from "@/assets/icons/mission/ic_success_ox.svg?react";
 import Header from "@/components/common/header/Header";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
