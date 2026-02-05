@@ -22,6 +22,7 @@ interface DailyWeeklyGoalAchievementProps {
   questionResults: QuestionResult[];
   dailyBonusAcorns?: number;
   weeklyBonusAcorns?: number;
+  onClose: () => void;
 }
 
 export default function DailyWeeklyGoalAchievement({

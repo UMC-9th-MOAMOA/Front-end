@@ -10,7 +10,7 @@ import DailyWeeklyGoalAchievement from "@/pages/mission/goal/DailyWeeklyGoalAchi
 import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
-  subjective: "단답식",
+  subjective: "단답형",
   ox: "OX",
   multiple: "객관식",
 };
@@ -28,6 +28,7 @@ interface MissionResultProps {
   isDailyGoalAchieved?: boolean;
   isWeeklyGoalAchieved?: boolean;
   missionName?: string;
+  onClose: () => void;
   onRetryWrong: () => void;
 }
 
@@ -49,7 +50,7 @@ export default function MissionResult({
     if (isDailyGoalAchieved || isWeeklyGoalAchieved) {
       setShowGoalScreen(true);
     } else {
-      onClose();
+      navigate("/");
     }
   };
 
@@ -186,7 +187,7 @@ export default function MissionResult({
             <>
               <button
                 type="button"
-                onClick={handleExit}
+                onClick={() => navigate("/")}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
               >
                 상점으로
