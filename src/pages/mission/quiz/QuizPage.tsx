@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import MissionResult from "./components/MissionResult";
@@ -62,8 +62,13 @@ export default function QuizPage() {
   const [showFeedback, setShowFeedback] = useState(false);
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [completedQuestions, setCompletedQuestions] = useState(0);
+  const [prevCompletedQuestions, setPrevCompletedQuestions] = useState(0);
   const [showQuitPopup, setShowQuitPopup] = useState(false);
   const [showMissionResult, setShowMissionResult] = useState(false);
+  const feedbackTimeoutRef = useRef<number | null>(null);
+  // timings (should match `QuizProgressBar` animation duration)
+  const ANIMATION_DURATION = 500; // ms (kept in sync with QuizProgressBar)
+  const FEEDBACK_DELAY_AFTER_ANIMATION = 400; // ms pause before showing feedback
 
   const navigate = useNavigate();
 
@@ -93,8 +98,17 @@ export default function QuizPage() {
     ]);
 
     setIsCorrect(correct);
-    setShowFeedback(true);
-    setCompletedQuestions((prev) => prev + 1);
+    // store previous completed count so progress bar can animate from it
+    setPrevCompletedQuestions(completedQuestions);
+    setCompletedQuestions(completedQuestions + 1);
+
+    // Fallback: show feedback after animation + extra delay if callback doesn't fire
+    if (feedbackTimeoutRef.current)
+      window.clearTimeout(feedbackTimeoutRef.current);
+    feedbackTimeoutRef.current = window.setTimeout(() => {
+      setShowFeedback(true);
+      feedbackTimeoutRef.current = null;
+    }, ANIMATION_DURATION + FEEDBACK_DELAY_AFTER_ANIMATION);
   };
 
   const handleNext = () => {
@@ -109,6 +123,15 @@ export default function QuizPage() {
       setIsCorrect(null);
     }
   };
+
+  useEffect(() => {
+    return () => {
+      if (feedbackTimeoutRef.current) {
+        window.clearTimeout(feedbackTimeoutRef.current);
+        feedbackTimeoutRef.current = null;
+      }
+    };
+  }, []);
 
   const isAnswerEmpty = () => {
     if (currentQuestion.questionType === "multiple") {
@@ -176,7 +199,19 @@ export default function QuizPage() {
       <div className="px-21 pt-24">
         <QuizProgress
           current={completedQuestions}
+          previous={prevCompletedQuestions}
           total={MOCK_QUIZ_DATA.totalQuestions}
+          onAnimationComplete={() => {
+            // when animation finishes, wait a bit more then show feedback
+            if (feedbackTimeoutRef.current) {
+              window.clearTimeout(feedbackTimeoutRef.current);
+              feedbackTimeoutRef.current = null;
+            }
+            feedbackTimeoutRef.current = window.setTimeout(() => {
+              setShowFeedback(true);
+              feedbackTimeoutRef.current = null;
+            }, FEEDBACK_DELAY_AFTER_ANIMATION);
+          }}
         />
       </div>
 
