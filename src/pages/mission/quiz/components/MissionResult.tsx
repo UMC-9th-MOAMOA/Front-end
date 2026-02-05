@@ -171,14 +171,14 @@ export default function MissionResult({
             <>
               <button
                 type="button"
-                onClick={handleExit}
+                onClick={() => navigate("/search")}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
               >
                 미션 탐색
               </button>
               <button
                 type="button"
-                onClick={handleExit}
+                onClick={() => navigate("/")}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-300 py-12 text-white"
               >
                 상점으로
