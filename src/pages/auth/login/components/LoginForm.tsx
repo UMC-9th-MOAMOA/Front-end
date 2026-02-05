@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { storage } from "@/apis/storage";
-import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
-import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
 import DividerIcon from "@/assets/icons/ic_divider.svg?react";
 import { Button } from "@/components/common/button/Button";
 import type { ApiError } from "@/types/api/api";
@@ -28,7 +26,6 @@ function AuthLinksRow() {
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [autoLogin, setAutoLogin] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [blockedCode, setBlockedCode] = useState<
     "AUTH403_2" | "AUTH403_3" | ""
@@ -63,10 +60,6 @@ export default function LoginForm() {
     try {
       const result = await loginMutate({ email, password });
       storage.setToken(result.accessToken);
-
-      if (autoLogin) {
-        // TODO: 자동 로그인 기능 구현
-      }
 
       navigate("/onboarding");
     } catch (error) {
@@ -109,27 +102,15 @@ export default function LoginForm() {
           width="full"
           variant="outlined"
         />
-        <label className="inline-flex w-fit items-center gap-8">
-          <input
-            type="checkbox"
-            checked={autoLogin}
-            onChange={(e) => setAutoLogin(e.target.checked)}
-            className="sr-only"
-          />
-          <span className="h-16 w-16">
-            {autoLogin ? <CheckBoxOnIcon /> : <CheckBoxOffIcon />}
-          </span>
-          <span className="body-4 mb-10 text-gray-900">자동 로그인</span>
-        </label>
       </div>
-      <div className="min-h-10 text-center">
+      <div className="text-center">
         {errorMessage ? (
           <p className="body-4 text-red-500">{errorMessage}</p>
         ) : null}
       </div>
       <Button
         type="submit"
-        className="heading-5 mt-23 mb-4 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-800"
+        className="heading-5 mt-58 mb-26 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-800"
         disabled={!canSubmit}
       >
         {isPending ? "로그인 중..." : "로그인"}
