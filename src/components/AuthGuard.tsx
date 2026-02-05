@@ -1,7 +1,7 @@
 import { type ReactNode, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/hooks/auth/useAuth";
 
 interface AuthGuardProps {
   children: ReactNode;

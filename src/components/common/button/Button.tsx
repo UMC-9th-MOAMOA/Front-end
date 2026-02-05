@@ -17,7 +17,7 @@ export function Button({
   return (
     <button
       className={cn(
-        "flex items-center justify-center transition-colors active:scale-[0.98]",
+        "flex items-center justify-center rounded-lg transition-colors active:scale-[0.98]",
         "disabled:pointer-events-none disabled:bg-gray-300 disabled:text-gray-400",
         className
       )}
