@@ -10,7 +10,7 @@ import DailyWeeklyGoalAchievement from "@/pages/mission/goal/DailyWeeklyGoalAchi
 import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
-  subjective: "단답형",
+  subjective: "단답식",
   ox: "OX",
   multiple: "객관식",
 };
@@ -28,7 +28,6 @@ interface MissionResultProps {
   isDailyGoalAchieved?: boolean;
   isWeeklyGoalAchieved?: boolean;
   missionName?: string;
-  onClose: () => void;
   onRetryWrong: () => void;
 }
 
@@ -40,7 +39,6 @@ export default function MissionResult({
   isDailyGoalAchieved = false,
   isWeeklyGoalAchieved = false,
   missionName = "",
-  onClose,
   onRetryWrong,
 }: MissionResultProps) {
   const navigate = useNavigate();
