@@ -45,6 +45,24 @@ export default function InquiryDetailPage() {
             {data.title}
           </p>
 
+          {data.inquiryImageUrls.length > 0 && (
+            <div className="mt-16 grid w-full grid-cols-3 gap-20">
+              {data.inquiryImageUrls.map((url, index) => (
+                <div
+                  key={`${url}-${index}`}
+                  className="h-139 w-139 overflow-hidden rounded-lg bg-gray-100"
+                >
+                  <img
+                    src={url}
+                    alt={`inquiry-attachment-${index + 1}`}
+                    className="h-full w-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
+
           <p className="body-4 mt-16 w-full text-black">{data.content}</p>
           {/* ✅ 답변/이미지는 UI 요구 나오면 여기 아래에 추가하면 됨 (지금은 UI 수정 안 하기로 했으니 미출력) */}
         </div>
