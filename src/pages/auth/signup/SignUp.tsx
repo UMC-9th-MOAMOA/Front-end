@@ -71,6 +71,7 @@ export default function SignUp() {
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
   const passwordStrength = getPasswordStrength(password);
+  const canUsePassword = passwordStrength.canSubmit;
   const passwordErrorMessage = passwordStrength.hasInvalidChar
     ? PASSWORD_INVALID_MESSAGE
     : undefined;
@@ -120,6 +121,7 @@ export default function SignUp() {
           onPasswordChange={(e) => setPassword(e.target.value)}
           passwordConfirm={passwordConfirm}
           onPasswordConfirmChange={(e) => setPasswordConfirm(e.target.value)}
+          canUsePassword={canUsePassword}
           passwordErrorMessage={passwordErrorMessage}
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />

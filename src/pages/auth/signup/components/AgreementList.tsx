@@ -21,7 +21,7 @@ export default function AgreementList() {
   const navigate = useNavigate();
 
   const openDetailPage = () => {
-    navigate(`/Terms`);
+    navigate("/terms");
   };
 
   const [checked, setChecked] = useState<Record<AgreementKey, boolean>>({

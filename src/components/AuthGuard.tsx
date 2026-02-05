@@ -7,7 +7,7 @@ interface AuthGuardProps {
   children: ReactNode;
 }
 
-const PUBLIC_PATHS = ["/login", "/signup", "/find-id", "/reset-password"];
+const PUBLIC_PATHS = ["/login", "/signup", "/find-id", "/password", "/terms"];
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
   const navigate = useNavigate();
