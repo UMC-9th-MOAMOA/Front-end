@@ -146,9 +146,6 @@ export default function OnboardingStep2View({
           })}
         </div>
       )}
-      <p className="body-5 mt-95 text-gray-600">
-        관심사는 추후 변경 및 복수 선택이 가능합니다.
-      </p>
       {showToast && toastStyle && (
         <div
           className="fixed z-50 -translate-x-1/2"
@@ -161,33 +158,38 @@ export default function OnboardingStep2View({
           <OnboardingToast message="세부 관심사를 1개 이상 선택해 주세요" />
         </div>
       )}
-      <div ref={buttonWrapperRef} className="w-full">
-        <Button
-          type="button"
-          aria-disabled={!canContinueCurrent}
-          className={`heading-5 mt-27 w-full rounded-lg py-12 text-white ${
-            canContinueCurrent
-              ? "bg-moamoa-300 active:bg-moamoa-500"
-              : "bg-gray-300 text-gray-600"
-          }`}
-          onClick={() => {
-            onChange(payload);
-            if (!canContinueCurrent) {
-              setShowToast(true);
-              return;
-            }
-            if (topicIndex < selectedTopics.length - 1) {
-              setTopicIndex((prev) => prev + 1);
-              return;
-            }
+      <div className="absolute inset-x-24 bottom-42">
+        <p className="body-5 mb-27 text-center text-gray-600">
+          관심사는 추후 변경 및 복수 선택이 가능합니다.
+        </p>
+        <div ref={buttonWrapperRef} className="w-full">
+          <Button
+            type="button"
+            aria-disabled={!canContinueCurrent}
+            className={`heading-5 w-full rounded-lg py-12 text-white ${
+              canContinueCurrent
+                ? "bg-moamoa-300 active:bg-moamoa-500"
+                : "bg-gray-300 text-gray-600"
+            }`}
+            onClick={() => {
+              onChange(payload);
+              if (!canContinueCurrent) {
+                setShowToast(true);
+                return;
+              }
+              if (topicIndex < selectedTopics.length - 1) {
+                setTopicIndex((prev) => prev + 1);
+                return;
+              }
 
-            if (canContinue) {
-              onNext();
-            }
-          }}
-        >
-          계속하기
-        </Button>
+              if (canContinue) {
+                onNext();
+              }
+            }}
+          >
+            계속하기
+          </Button>
+        </div>
       </div>
     </section>
   );

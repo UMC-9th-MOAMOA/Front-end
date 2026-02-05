@@ -63,20 +63,23 @@ export default function OnboardingStep1View({
           );
         })}
       </div>
-      <p className="body-5 mt-95 text-gray-600">
-        관심사는 추후 변경 및 복수 선택이 가능합니다.
-      </p>
-      <Button
-        type="button"
-        className="heading-5 mt-25 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-600"
-        disabled={payload.selections.length === 0}
-        onClick={() => {
-          onChange(payload);
-          onNext();
-        }}
-      >
-        계속하기
-      </Button>
+      <div className="absolute inset-x-24 bottom-42">
+        <p className="body-5 mb-27 text-center text-gray-600">
+          관심사는 추후 변경 및 복수 선택이 가능합니다.
+        </p>
+
+        <Button
+          type="button"
+          className="heading-5 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-600"
+          disabled={payload.selections.length === 0}
+          onClick={() => {
+            onChange(payload);
+            onNext();
+          }}
+        >
+          계속하기
+        </Button>
+      </div>
     </section>
   );
 }
