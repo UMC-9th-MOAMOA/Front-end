@@ -1,5 +1,4 @@
-// signup/components/PWStrengthMeter.tsx
-import { getPasswordStrength } from "../utils/PWStrength";
+import { getPasswordStrength } from "../utils/passwordStrength";
 
 type Props = {
   password: string;
