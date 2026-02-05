@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { refreshAccessToken } from "@/apis/auth";
+import { refreshAccessToken } from "@/apis/auth/auth";
 import { storage } from "@/apis/storage";
 import { useAuthStore } from "@/store/auth";
 
