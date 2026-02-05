@@ -102,9 +102,9 @@ export default function DailyGoalAchievement({
         {!isDetailOpen && (
           <div className="mt-48 px-23 py-3">
             <p className="heading-6 text-center text-black">
-              획득한 도토리로
+              오늘의 목표 달성!
               <br />
-              다람쥐를 꾸며볼까요?
+              이어서 다른 미션도 도전해보세요
             </p>
           </div>
         )}
