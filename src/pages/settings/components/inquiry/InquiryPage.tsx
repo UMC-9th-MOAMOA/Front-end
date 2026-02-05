@@ -1,15 +1,47 @@
-﻿import { useState } from "react";
+﻿// InquiryPage.tsx
+import { Suspense, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
-import type { TabKey } from "../../types/inquiry.type";
+
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import type { InquiryCategoryServer } from "@/types/inquiry/inquiry";
+import type {
+  InquiryCategory,
+  InquiryDraft,
+  TabKey,
+} from "../../types/inquiry.type";
 import BottomActionBar from "../common/BottomActionBar";
+import { useCreateInquiry } from "./hooks/useCreateInquiry";
 import InquiryList from "./InquiryList";
 import InquiryTabs from "./InquiryTabs";
 import InquiryWriteForm from "./InquiryWriteForm";
 
+const CATEGORY_TO_SERVER: Record<InquiryCategory, InquiryCategoryServer> = {
+  보상: "REWARD",
+  "미션 및 퀴즈": "MISSION_QUIZ",
+  "상점 및 꾸미기": "SHOP_DECORATION",
+  계정: "ACCOUNT",
+  기타: "ETC",
+};
+
 export default function InquiryPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<TabKey>("write");
+
+  // ✅ draft를 여기로 올림
+  const [draft, setDraft] = useState<InquiryDraft>({
+    category: null,
+    title: "",
+    content: "",
+    images: [],
+  });
+
+  const { mutate, isPending } = useCreateInquiry();
+
+  const canSubmit =
+    draft.category !== null &&
+    draft.title.trim().length > 0 &&
+    draft.content.trim().length > 0;
 
   return (
     <div className="min-h-screen w-full bg-white">
@@ -27,17 +59,44 @@ export default function InquiryPage() {
 
       <div className="flex w-full flex-col items-center">
         {tab === "write" ? (
-          <InquiryWriteForm />
+          // ✅ props로 draft와 setDraft 내려줌
+          <InquiryWriteForm draft={draft} setDraft={setDraft} />
         ) : (
-          <InquiryList onSelect={(id) => navigate(`/settings/inquiry/${id}`)} />
+          <Suspense fallback={<LoadingSpinner />}>
+            <InquiryList
+              onSelect={(id) => navigate(`/settings/inquiry/${id}`)}
+            />
+          </Suspense>
         )}
       </div>
 
       {tab === "write" && (
         <BottomActionBar
-          label="문의 접수"
+          label={isPending ? "접수 중..." : "문의 접수"}
           onClick={() => {
-            // TODO: 문의 접수 API 호출 로직 구현
+            if (!canSubmit || isPending) return;
+
+            mutate(
+              {
+                category: CATEGORY_TO_SERVER[draft.category!],
+                title: draft.title.trim(),
+                content: draft.content.trim(),
+                images: draft.images,
+              },
+              {
+                onSuccess: (result) => {
+                  // ✅ 성공 후 행동 택1
+                  // 1) 상세로 이동
+                  navigate(`/settings/inquiry/${result.inquiryId}`);
+
+                  // 2) 또는 탭을 list로 전환
+                  // setTab("list");
+
+                  // (선택) 폼 초기화
+                  // setDraft({ category: null, title: "", content: "", images: [] });
+                },
+              }
+            );
           }}
         />
       )}

@@ -1,18 +1,30 @@
-﻿import { useMemo } from "react";
-import { useParams } from "react-router-dom";
+﻿import { useParams } from "react-router-dom";
 import Header from "@/components/common/header/Header";
+import { useMyInquiryDetail } from "./hooks/useMyInquiryDetail";
 import StatusPill from "./StatusPill";
-import { mockInquiryDetail } from "../../mocks/inquiry/inquiry.mock";
 
 // TODO(API 연결 시): GET /inquiries/{inquiryId} 결과로 교체
+
+function formatIsoToDotDate(iso: string) {
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}.${m}.${day}`;
+}
 
 export default function InquiryDetailPage() {
   const params = useParams();
   const inquiryId = Number(params.inquiryId);
+  const isValidId = Number.isFinite(inquiryId);
 
-  const data = useMemo(() => {
-    return mockInquiryDetail[inquiryId] ?? mockInquiryDetail[101];
-  }, [inquiryId]);
+  // ✅ suspense query
+  const { data } = useMyInquiryDetail(inquiryId);
+
+  if (!isValidId) return null;
+
+  const answerStatus = data.answered ? "COMPLETED" : "PENDING";
 
   return (
     <div className="min-h-screen w-full bg-white">
@@ -23,19 +35,18 @@ export default function InquiryDetailPage() {
       <div className="flex w-full flex-col items-center">
         <div className="mt-28 flex w-full flex-col items-start gap-0">
           <div className="flex items-center gap-12">
-            <StatusPill status={data.answerStatus} />
+            <StatusPill status={answerStatus} />
             <span className="body-4 whitespace-nowrap text-black">
-              {data.createdAt}
+              {formatIsoToDotDate(data.createdAt)}
             </span>
           </div>
 
-          <p className="mt-20 heading-2 w-full truncate text-black">
+          <p className="heading-2 mt-20 w-full truncate text-black">
             {data.title}
           </p>
 
-          <p className="mt-16 body-4 w-full text-black">
-            {data.content}
-          </p>
+          <p className="body-4 mt-16 w-full text-black">{data.content}</p>
+          {/* ✅ 답변/이미지는 UI 요구 나오면 여기 아래에 추가하면 됨 (지금은 UI 수정 안 하기로 했으니 미출력) */}
         </div>
       </div>
     </div>

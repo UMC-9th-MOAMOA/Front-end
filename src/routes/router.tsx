@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import FindId from "@/pages/auth/find-id/FindId";
 import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
@@ -20,7 +22,12 @@ import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
-  bgColor?: "bg-white" | "bg-moamoa-50" | "bg-gray-100" | "bg-gray-50" | "bg-setting";
+  bgColor?:
+    | "bg-white"
+    | "bg-moamoa-50"
+    | "bg-gray-100"
+    | "bg-gray-50"
+    | "bg-setting";
   hideBottomNav?: boolean;
 }
 
@@ -122,7 +129,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "/settings/inquiry/:inquiryId",
-        element: <InquiryDetailPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InquiryDetailPage />
+          </Suspense>
+        ),
         handle: { hideBottomNav: true },
       },
     ],
