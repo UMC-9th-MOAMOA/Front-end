@@ -74,7 +74,14 @@
   /* CTA  */
   --color-cta: #5586F1;
 
+  /* setting 메인 페이지 */
+  --color-setting: #FAFAFA;
+
   /* Base Colors */
   --color-black: #191919;
   --color-white: #FFFFFF;
+}
+
+.bg-setting {
+  background-color: var(--color-setting);
 }
