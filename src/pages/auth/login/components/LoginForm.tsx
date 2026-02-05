@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { storage } from "@/apis/storage";
 import DividerIcon from "@/assets/icons/ic_divider.svg?react";
 import { Button } from "@/components/common/button/Button";
+import { useAuthStore } from "@/store/auth";
 import type { ApiError } from "@/types/api/api";
 import { AuthTextField } from "../../components/AuthTextField";
 import { Modal } from "../../components/Modal";
@@ -32,6 +33,7 @@ export default function LoginForm() {
   >("");
   const [isBlockedModalOpen, setIsBlockedModalOpen] = useState(false);
   const navigate = useNavigate();
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const { mutateAsync: loginMutate, isPending } = useLogin();
 
   const canSubmit =
@@ -59,9 +61,10 @@ export default function LoginForm() {
 
     try {
       const result = await loginMutate({ email, password });
-      storage.setToken(result.accessToken);
+      storage.setToken(result.token.accessToken);
+      setAuthenticated(true);
 
-      navigate("/onboarding");
+      navigate(result.onboardingCompleted ? "/" : "/onboarding");
     } catch (error) {
       const apiError = error as ApiError;
       const code = apiError?.serverCode;
