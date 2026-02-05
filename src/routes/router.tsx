@@ -8,11 +8,19 @@ import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
+import AccountInfoPage from "@/pages/settings/AccountInfoPage";
+import FaqPage from "@/pages/settings/components/FaqPage";
+import Interests from "@/pages/settings/components/Interests";
+import InquiryDetailPage from "@/pages/settings/components/inquiry/InquiryDetailPage";
+import InquiryPage from "@/pages/settings/components/inquiry/InquiryPage";
+import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
+import PasswordChangePage from "@/pages/settings/PasswordChangePage";
+import SettingsPage from "@/pages/settings/SettingsPage";
 import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
-  bgColor?: "bg-white" | "bg-moamoa-50" | "bg-gray-100" | "bg-gray-50";
+  bgColor?: "bg-white" | "bg-moamoa-50" | "bg-gray-100" | "bg-gray-50" | "bg-setting";
   hideBottomNav?: boolean;
 }
 
@@ -79,8 +87,43 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "settings",
-        element: <div>설정</div>,
-        handle: { bgColor: "bg-gray-50" },
+        element: <SettingsPage />,
+        handle: { bgColor: "bg-setting" },
+      },
+      {
+        path: "/settings/interests",
+        element: <Interests />,
+        handle: { hideBottomNav: true },
+      },
+      {
+        path: "/settings/target-mission-count",
+        element: <TargetMissionCount />,
+        handle: { hideBottomNav: true },
+      },
+      {
+        path: "/settings/account-info",
+        element: <AccountInfoPage />,
+        handle: { hideBottomNav: true },
+      },
+      {
+        path: "/settings/password-change",
+        element: <PasswordChangePage />,
+        handle: { hideBottomNav: true },
+      },
+      {
+        path: "/settings/faq",
+        element: <FaqPage />,
+        handle: { hideBottomNav: true },
+      },
+      {
+        path: "/settings/inquiry",
+        element: <InquiryPage />,
+        handle: { hideBottomNav: true },
+      },
+      {
+        path: "/settings/inquiry/:inquiryId",
+        element: <InquiryDetailPage />,
+        handle: { hideBottomNav: true },
       },
     ],
   },
