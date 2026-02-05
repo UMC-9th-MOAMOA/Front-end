@@ -59,7 +59,7 @@ export default function WeeklyGoalAchievement({
         </h1>
 
         <div
-          className={`mt-16 rounded-xl border border-2 ${isDetailOpen ? "border-moamoa-100 bg-white" : "border-moamoa-100 bg-moamoa-50"}`}
+          className={`mt-16 rounded-xl border-2 ${isDetailOpen ? "border-moamoa-100 bg-white" : "border-moamoa-100 bg-moamoa-50"}`}
         >
           <button
             type="button"

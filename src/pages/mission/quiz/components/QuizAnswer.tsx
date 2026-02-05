@@ -31,7 +31,7 @@ export default function QuizAnswer({
             }
           }}
           placeholder="답안을 작성해주세요"
-          className="body-2 h-139 w-full resize-none rounded-xl border-2 border-moamoa-50 bg-white px-14 py-16 text-centertext-black placeholder:text-gray-400 focus:border-moamoa-300 focus:outline-none"
+          className="body-2 h-139 w-full resize-none rounded-xl border-2 border-moamoa-50 bg-white px-14 py-16 text-center text-black placeholder:text-gray-400 focus:border-moamoa-300 focus:outline-none"
         />
       </div>
     );
