@@ -1,10 +1,15 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import type { Gender, UserProfile } from "../../types/settings.type";
 import FormField from "../common/FormField";
 import GenderToggleField from "./GenderToggleField";
 import PhoneField from "./PhoneField";
 
-export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
+type Props = {
+  initial: UserProfile;
+  onChangeDraft: (draft: UserProfile) => void;
+};
+
+export default function AccountInfoForm({ initial, onChangeDraft }: Props) {
   const [name, setName] = useState(initial.name);
   const [birthDate, setBirthDate] = useState(initial.birthDate);
   const [gender, setGender] = useState<Gender>(initial.gender);
@@ -13,6 +18,34 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
   const [isPhoneEditing, setIsPhoneEditing] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [verifyCode, setVerifyCode] = useState("");
+
+  // ✅ query로 initial이 바뀔 수 있으니 동기화
+  useEffect(() => {
+    setName(initial.name);
+    setBirthDate(initial.birthDate);
+    setGender(initial.gender);
+    setPhone(initial.phone);
+  }, [initial]);
+
+  // ✅ draft를 부모로 올려서 submit 가능하게
+  useEffect(() => {
+    onChangeDraft({
+      name,
+      email: initial.email,
+      profileId: initial.profileId,
+      birthDate,
+      gender,
+      phone,
+    });
+  }, [
+    name,
+    birthDate,
+    gender,
+    phone,
+    initial.email,
+    initial.profileId,
+    onChangeDraft,
+  ]);
 
   const startPhoneEdit = () => setIsPhoneEditing(true);
 
