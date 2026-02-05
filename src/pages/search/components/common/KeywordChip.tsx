@@ -1,4 +1,5 @@
 import { Button } from "@/components/common/button/Button";
+import { cn } from "@/utils/cn/cn";
 
 interface KeywordChipProps {
   keyword: string;
@@ -21,7 +22,7 @@ export default function KeywordChip({
   return (
     <Button
       onClick={onClick}
-      className={`body-4 shrink-0 rounded-full border px-16 ${sizeStyles} ${colorStyles}`}
+      className={cn("body-4 shrink-0 rounded-full border px-16", sizeStyles, colorStyles)}
     >
       # {keyword}
     </Button>

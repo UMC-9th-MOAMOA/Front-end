@@ -1,5 +1,6 @@
 import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import { Button } from "@/components/common/button/Button";
+import { cn } from "@/utils/cn/cn";
 
 interface MissionCardProps {
   title: string;
@@ -28,9 +29,10 @@ export default function MissionCard({
         <h3 className="heading-3 w-full truncate">{title}</h3>
         <button type="button" onClick={onHeartClick} className="shrink-0">
           <IcHeart
-            className={`size-24 shrink-0 cursor-pointer text-moamoa-100 ${
-              isLiked ? "fill-moamoa-100" : ""
-            }`}
+            className={cn(
+              "size-24 shrink-0 cursor-pointer text-moamoa-100",
+              isLiked && "fill-moamoa-100"
+            )}
           />
         </button>
       </div>
