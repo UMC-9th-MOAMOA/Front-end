@@ -1,4 +1,5 @@
 ﻿import { useId, useMemo, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import InquiryAttachmentSection from "./InquiryAttachmentSection";
 import InquiryCategorySection from "./InquiryCategorySection";
 import InquiryConsentRow from "./InquiryConsentRow";
@@ -16,6 +17,7 @@ function clamp(n: number, max: number) {
 
 export default function InquiryWriteForm() {
   const fileInputId = useId();
+  const navigate = useNavigate();
   const [draft, setDraft] = useState<InquiryDraft>({
     category: null,
     title: "",
@@ -77,7 +79,9 @@ export default function InquiryWriteForm() {
       />
 
       <div className="mt-67 w-full">
-        <InquiryConsentRow onViewPolicy={() => {}} />
+        <InquiryConsentRow
+          onViewPolicy={() => navigate("/settings/inquiry/consent")}
+        />
       </div>
     </div>
   );

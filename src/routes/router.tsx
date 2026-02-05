@@ -12,6 +12,7 @@ import AccountInfoPage from "@/pages/settings/AccountInfoPage";
 import FaqPage from "@/pages/settings/components/FaqPage";
 import Interests from "@/pages/settings/components/Interests";
 import InquiryDetailPage from "@/pages/settings/components/inquiry/InquiryDetailPage";
+import InquiryConsentPage from "@/pages/settings/components/inquiry/InquiryConsentPage";
 import InquiryPage from "@/pages/settings/components/inquiry/InquiryPage";
 import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
 import PasswordChangePage from "@/pages/settings/PasswordChangePage";
@@ -113,6 +114,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "/settings/inquiry",
         element: <InquiryPage />,
+        handle: { hideBottomNav: true },
+      },
+      {
+        path: "/settings/inquiry/consent",
+        element: <InquiryConsentPage />,
         handle: { hideBottomNav: true },
       },
       {
