@@ -1,5 +1,6 @@
 import axios from "axios";
 import type { ApiResponse } from "@/types/api/api";
+import type { SendVerificationEmailResult } from "@/types/auth/email";
 import { publicAPI } from "./axios";
 
 export interface LoginRequest {
@@ -41,3 +42,21 @@ export const refreshAccessToken = async (): Promise<string> => {
 };
 
 export const refreshToken = refreshAccessToken;
+
+export interface SendVerificationEmailRequest {
+  email: string;
+}
+
+export const sendVerificationEmail = async (
+  payload: SendVerificationEmailRequest
+) => {
+  const { data } = await publicAPI.post<
+    ApiResponse<SendVerificationEmailResult>
+  >("/auth/email/send-verification", payload);
+
+  if (!data.isSuccess) {
+    throw new Error(data.message);
+  }
+
+  return data.result;
+};
