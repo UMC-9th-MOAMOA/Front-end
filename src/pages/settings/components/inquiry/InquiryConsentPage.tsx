@@ -1,13 +1,16 @@
 ﻿import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import { Button } from "@/components/common/button/Button";
 import Header from "@/components/common/header/Header";
 import BottomActionBar from "@/pages/settings/components/common/BottomActionBar";
+import type { InquiryDraft } from "../../types/inquiry.type";
 
 export default function InquiryConsentPage() {
   const [isAgreed, setIsAgreed] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const draft = (location.state as { draft?: InquiryDraft } | null)?.draft;
 
   return (
     <div className="flex h-[calc(100dvh-98px-42px-env(safe-area-inset-bottom))] w-full flex-col overflow-hidden bg-white">
@@ -16,7 +19,7 @@ export default function InquiryConsentPage() {
         property="common"
         onBack={() =>
           navigate("/settings/inquiry", {
-            state: { consentAgreed: isAgreed },
+            state: { consentAgreed: isAgreed, draft },
             replace: true,
           })
         }
@@ -108,7 +111,7 @@ export default function InquiryConsentPage() {
           const next = true;
           setIsAgreed(true);
           navigate("/settings/inquiry", {
-            state: { consentAgreed: next },
+            state: { consentAgreed: next, draft },
             replace: true,
           });
         }}

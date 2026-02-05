@@ -1,7 +1,7 @@
 ﻿import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
-import type { TabKey } from "../../types/inquiry.type";
+import type { InquiryDraft, TabKey } from "../../types/inquiry.type";
 import BottomActionBar from "../common/BottomActionBar";
 import InquiryList from "./InquiryList";
 import InquiryTabs from "./InquiryTabs";
@@ -11,11 +11,24 @@ export default function InquiryPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<TabKey>("write");
   const [agreed, setAgreed] = useState(false);
+  const [draft, setDraft] = useState<InquiryDraft>({
+    category: null,
+    title: "",
+    content: "",
+    images: [],
+  });
   const location = useLocation();
 
   useEffect(() => {
-    const next = (location.state as { consentAgreed?: boolean } | null)?.consentAgreed;
-    if (typeof next === "boolean") setAgreed(next);
+    const state = location.state as
+      | { consentAgreed?: boolean; draft?: InquiryDraft }
+      | null;
+    if (typeof state?.consentAgreed === "boolean") {
+      setAgreed(state.consentAgreed);
+    }
+    if (state?.draft) {
+      setDraft(state.draft);
+    }
   }, [location.state]);
 
   return (
@@ -34,7 +47,7 @@ export default function InquiryPage() {
 
       <div className="flex w-full flex-col items-center">
         {tab === "write" ? (
-          <InquiryWriteForm agreed={agreed} />
+          <InquiryWriteForm agreed={agreed} draft={draft} setDraft={setDraft} />
         ) : (
           <InquiryList onSelect={(id) => navigate(`/settings/inquiry/${id}`)} />
         )}
