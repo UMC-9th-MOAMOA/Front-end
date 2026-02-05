@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/common/button/Button";
-import type { OnboardingPayload } from "@/types/onboarding";
+import type { OnboardingPayload } from "@/types/onboarding/onboarding";
 import OnboardingCard from "../components/OnboardingCard";
 import OnboardingToast from "../components/OnboardingToast";
 import { ONBOARDING_TOPICS } from "../constants/onboardingData";
@@ -19,7 +19,9 @@ export default function OnboardingStep2View({
   const selectedTopics = payload.selections
     .map((selection) => ({
       selection,
-      topic: ONBOARDING_TOPICS[selection.interestId - 1],
+      topic: ONBOARDING_TOPICS.find(
+        (topic) => topic.interestId === selection.interestId
+      ),
     }))
     .filter((item) => item.topic);
 
@@ -123,13 +125,13 @@ export default function OnboardingStep2View({
 
       {selectedTopics.length > 0 && (
         <div className="mt-67 flex w-full flex-col gap-14">
-          {currentTopic?.topic.subtopics.map((subtopic, index) => {
-            const subtopicId = index + 1;
+          {currentTopic?.topic?.subtopics.map((subtopic) => {
+            const subtopicId = subtopic.subInterestId;
             const isSelected =
               currentTopic.selection.subInterestIds.includes(subtopicId);
             return (
               <button
-                key={subtopic}
+                key={subtopic.subInterestId}
                 type="button"
                 className="text-left"
                 onClick={() =>
@@ -138,7 +140,7 @@ export default function OnboardingStep2View({
               >
                 <OnboardingCard
                   variant="chip"
-                  title={subtopic}
+                  title={subtopic.label}
                   selected={isSelected}
                 />
               </button>

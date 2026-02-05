@@ -1,6 +1,6 @@
 import SquirrelOnboarding from "@/assets/images/squirrel_onboarding.svg";
 import { Button } from "@/components/common/button/Button";
-import type { OnboardingPayload } from "@/types/onboarding";
+import type { OnboardingPayload } from "@/types/onboarding/onboarding";
 import OnboardingCard from "../components/OnboardingCard";
 import { ONBOARDING_TOPICS } from "../constants/onboardingData";
 
@@ -41,8 +41,8 @@ export default function OnboardingStep1View({
         당신의 관심사를 골라주세요 !
       </h2>
       <div className="mt-46 flex w-full flex-col gap-14">
-        {topics.map((topic, index) => {
-          const interestId = index + 1;
+        {topics.map((topic) => {
+          const interestId = topic.interestId;
           const isSelected = payload.selections.some(
             (selection) => selection.interestId === interestId
           );
