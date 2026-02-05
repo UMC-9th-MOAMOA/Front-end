@@ -86,7 +86,6 @@ export default function WeeklyGoalAchievement({
                       +{weeklyBonusAcorns}
                     </span>
                     <IcColoredAcorn className="h-24 w-24" />
-                    <span className="body-4 text-moamoa-300">✓</span>
                   </div>
                 </div>
 
@@ -103,7 +102,6 @@ export default function WeeklyGoalAchievement({
                         +{result.isCorrect ? 1 : 0}
                       </span>
                       <IcColoredAcorn className="h-24 w-24" />
-                      <span className="body-4 text-moamoa-300">✓</span>
                     </div>
                   </div>
                 ))}

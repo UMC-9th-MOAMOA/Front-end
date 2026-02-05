@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
+import MissionResult from "./components/MissionResult";
 import QuizCard from "./components/QuizCard";
 import QuizProgress from "./components/QuizProgressBar";
 import QuizQuitPopup from "./components/QuizQuitPopup";
@@ -62,6 +63,7 @@ export default function QuizPage() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [completedQuestions, setCompletedQuestions] = useState(0);
   const [showQuitPopup, setShowQuitPopup] = useState(false);
+  const [showMissionResult, setShowMissionResult] = useState(false);
 
   const navigate = useNavigate();
 
@@ -97,11 +99,8 @@ export default function QuizPage() {
 
   const handleNext = () => {
     if (isLastQuestion) {
-      const correctCount =
-        answers.filter((a) => a.isCorrect).length + (isCorrect ? 1 : 0);
-      console.log("퀴즈 완료!", { correctCount, total: answers.length + 1 });
-      // TODO: 결과 페이지로 이동
-      // navigate(`/mission/quiz/${missionId}/result`);
+      setShowFeedback(false);
+      setShowMissionResult(true);
     } else {
       setCurrentQuestionIndex((prev) => prev + 1);
       setUserInput("");
@@ -117,6 +116,34 @@ export default function QuizPage() {
     }
     return userInput.trim() === "";
   };
+
+  if (showMissionResult) {
+    const correctCount = answers.filter((a) => a.isCorrect).length;
+    const questionResults = answers.map((a) => ({
+      type:
+        MOCK_QUIZ_DATA.questions.find((q) => q.questionId === a.questionId)
+          ?.questionType || "",
+      isCorrect: a.isCorrect,
+    }));
+
+    return (
+      <MissionResult
+        totalAcorns={correctCount}
+        questionResults={questionResults}
+        correctCount={correctCount}
+        totalQuestions={MOCK_QUIZ_DATA.totalQuestions}
+        missionName={MOCK_QUIZ_DATA.category}
+        // TODO: 임시 테스트 — 확인 후 제거
+        isDailyGoalAchieved
+        isWeeklyGoalAchieved
+        onClose={() => navigate("/")}
+        onRetryWrong={() => {
+          // TODO: 오답 풀기 로직
+          navigate("/");
+        }}
+      />
+    );
+  }
 
   if (showFeedback && isCorrect !== null) {
     const userAnswer =

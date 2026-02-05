@@ -1,18 +1,17 @@
-import { useNavigate } from "react-router-dom";
 import IcBlueBook from "@/assets/icons/mission/ic_blue_book.svg?react";
 import IcFirstFailSquirrel from "@/assets/icons/mission/ic_first_fail_squirrel.svg?react";
 
 interface DailyGoalFailureProps {
   completedMissions: number;
   totalMissions: number;
+  onClose: () => void;
 }
 
 export default function DailyGoalFailure({
   completedMissions,
   totalMissions,
+  onClose,
 }: DailyGoalFailureProps) {
-  const navigate = useNavigate();
-
   return (
     <div className="relative flex min-h-screen flex-col items-center">
       <h2 className="heading-2 mt-46 text-center text-black">
@@ -51,14 +50,14 @@ export default function DailyGoalFailure({
         <div className="flex w-full gap-12">
           <button
             type="button"
-            onClick={() => navigate("/")}
+            onClick={onClose}
             className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
           >
             확인
           </button>
           <button
             type="button"
-            onClick={() => navigate("/")}
+            onClick={onClose}
             className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-300 py-12 text-white"
           >
             미션 탐색
