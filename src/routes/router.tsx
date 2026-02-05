@@ -4,6 +4,7 @@ import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import HomePage from "@/pages/home/Home";
+import Onboarding from "@/pages/onboarding/Onboarding";
 import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
 import Pocket from "@/pages/pocket/Pocket";
@@ -52,7 +53,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "onboarding",
-        element: <div>온보딩</div>,
+        element: <Onboarding />,
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
