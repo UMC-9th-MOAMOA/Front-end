@@ -61,7 +61,7 @@ export default function SettingsPage() {
 
       <div className="-mx-25 mt-10 w-screen">
         <div className="flex w-full flex-1 flex-col bg-white pt-28">
-          <div className="px-25 flex flex-col gap-20">
+          <div className="flex flex-col gap-20 px-25">
             {sections.map((section, index) => (
               <div key={section.id}>
                 <SettingsSection section={section} onNavigate={onNavigate} />
@@ -75,7 +75,7 @@ export default function SettingsPage() {
           <div className="mt-45 px-25">
             <LogoutAction onLogout={onLogout} />
           </div>
-          <div className="mt-34 -mx-25 h-2 w-screen" style={dividerStyle} />
+          <div className="-mx-25 mt-34 h-2 w-screen" style={dividerStyle} />
           <div className="px-25">
             <WithdrawAction onWithdraw={onWithdraw} />
           </div>
