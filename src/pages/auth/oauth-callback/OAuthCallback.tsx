@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useSocialLogin } from "./hooks/useMutation/useSocialLogin";
@@ -10,6 +10,7 @@ export default function OAuthCallback() {
     onMessage: (message) => setErrorMessage(message),
   });
   const [errorMessage, setErrorMessage] = useState<string>("");
+  const executedRef = useRef(false);
 
   useEffect(() => {
     const run = () => {
@@ -25,6 +26,10 @@ export default function OAuthCallback() {
         return;
       }
 
+      if (executedRef.current) {
+        return;
+      }
+      executedRef.current = true;
       mutate({ code });
     };
 
