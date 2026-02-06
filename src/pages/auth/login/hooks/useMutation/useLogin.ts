@@ -37,6 +37,10 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
       storage.setToken(result.token.accessToken);
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
+      if (!result.policyAgreed) {
+        navigate("/terms", { replace: true });
+        return;
+      }
       navigate(result.onboardingCompleted ? "/" : "/onboarding");
     },
     onError: (error) => {
