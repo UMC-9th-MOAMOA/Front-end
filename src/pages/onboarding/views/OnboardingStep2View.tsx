@@ -1,9 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/common/button/Button";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import type { OnboardingPayload } from "@/types/onboarding/onboarding";
 import OnboardingCard from "../components/OnboardingCard";
 import OnboardingToast from "../components/OnboardingToast";
-import { ONBOARDING_TOPICS } from "../constants/onboardingData";
+import { useInterestDetails } from "../hooks/useInterestDetails";
+import { useInterests } from "../hooks/useInterests";
 
 interface OnboardingStep2ViewProps {
   payload: OnboardingPayload;
@@ -16,11 +18,16 @@ export default function OnboardingStep2View({
   onChange,
   onNext,
 }: OnboardingStep2ViewProps) {
+  const {
+    data: interests = [],
+    isLoading: isInterestsLoading,
+    isError: isInterestsError,
+  } = useInterests();
   const selectedTopics = payload.selections
     .map((selection) => ({
       selection,
-      topic: ONBOARDING_TOPICS.find(
-        (topic) => topic.interestId === selection.interestId
+      topic: interests.find(
+        (interest) => interest.id === selection.interestId
       ),
     }))
     .filter((item) => item.topic);
@@ -86,6 +93,12 @@ export default function OnboardingStep2View({
   }, [showToast]);
 
   const currentTopic = selectedTopics[topicIndex];
+  const currentInterestId = currentTopic?.selection.interestId;
+  const {
+    data: currentSubtopics = [],
+    isLoading: isDetailsLoading,
+    isError: isDetailsError,
+  } = useInterestDetails(currentInterestId);
 
   const toggleSubtopic = (interestId: number, subtopicId: number) => {
     const nextSelections = payload.selections.map((selection) => {
@@ -113,9 +126,29 @@ export default function OnboardingStep2View({
 
   const canContinueCurrent =
     (currentTopic?.selection.subInterestIds.length ?? 0) > 0;
-  const titleLabel = currentTopic?.topic?.label ?? "관심사";
-  const topicObjectParticle =
-    titleLabel === "경제와 금융" || titleLabel === "인문" ? "을" : "를";
+  const titleLabel = currentTopic?.topic?.name ?? "관심사";
+  const topicObjectParticle = getObjectParticle(titleLabel);
+
+  if (isInterestsLoading || (currentInterestId && isDetailsLoading)) {
+    return (
+      <section className="mt-60 flex flex-1 flex-col items-center justify-center gap-16 pb-24">
+        <div className="scale-125">
+          <LoadingSpinner />
+        </div>
+        <p className="body-2 text-black">관심사를 불러오는 중...</p>
+      </section>
+    );
+  }
+
+  if (isInterestsError || isDetailsError) {
+    return (
+      <section className="mt-60 flex flex-1 items-center justify-center pb-24">
+        <p className="body-2 text-black">
+          관심사를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className="mt-47 flex flex-col items-center pb-24">
@@ -125,13 +158,13 @@ export default function OnboardingStep2View({
 
       {selectedTopics.length > 0 && (
         <div className="mt-67 flex w-full flex-col gap-14">
-          {currentTopic?.topic?.subtopics.map((subtopic) => {
-            const subtopicId = subtopic.subInterestId;
+          {currentSubtopics.map((subtopic) => {
+            const subtopicId = subtopic.id;
             const isSelected =
               currentTopic.selection.subInterestIds.includes(subtopicId);
             return (
               <button
-                key={subtopic.subInterestId}
+                key={subtopic.id}
                 type="button"
                 className="text-left"
                 onClick={() =>
@@ -140,7 +173,7 @@ export default function OnboardingStep2View({
               >
                 <OnboardingCard
                   variant="chip"
-                  title={subtopic.label}
+                  title={subtopic.name}
                   selected={isSelected}
                 />
               </button>
@@ -196,3 +229,15 @@ export default function OnboardingStep2View({
     </section>
   );
 }
+
+const getObjectParticle = (label: string) => {
+  const lastChar = label.trim().slice(-1);
+  if (!lastChar) return "를";
+
+  const code = lastChar.charCodeAt(0);
+  const isHangul = code >= 0xac00 && code <= 0xd7a3;
+  if (!isHangul) return "를";
+
+  const hasJongseong = (code - 0xac00) % 28 !== 0;
+  return hasJongseong ? "을" : "를";
+};
