@@ -6,10 +6,15 @@ import PhoneField from "./PhoneField";
 
 type Props = {
   initial: UserProfile;
+  profileId: string;
   onChangeDraft: (draft: UserProfile) => void;
 };
 
-export default function AccountInfoForm({ initial, onChangeDraft }: Props) {
+export default function AccountInfoForm({
+  initial,
+  profileId,
+  onChangeDraft,
+}: Props) {
   const [name, setName] = useState(initial.name);
   const [birthDate, setBirthDate] = useState(initial.birthDate);
   const [gender, setGender] = useState<Gender>(initial.gender);
@@ -30,7 +35,7 @@ export default function AccountInfoForm({ initial, onChangeDraft }: Props) {
     onChangeDraft({
       name,
       email: initial.email,
-      profileId: initial.profileId,
+      profileId,
       birthDate,
       gender,
       phone,
@@ -41,7 +46,7 @@ export default function AccountInfoForm({ initial, onChangeDraft }: Props) {
     gender,
     phone,
     initial.email,
-    initial.profileId,
+    profileId,
     onChangeDraft,
   ]);
 

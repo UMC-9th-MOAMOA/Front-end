@@ -76,7 +76,11 @@ function AccountInfoPageInner() {
               setDraft((prev) => ({ ...prev, profileId }))
             }
           />
-          <AccountInfoForm initial={initial} onChangeDraft={setDraft} />
+          <AccountInfoForm
+            initial={initial}
+            profileId={draft.profileId}
+            onChangeDraft={setDraft}
+          />
         </div>
 
         <BottomActionBar
