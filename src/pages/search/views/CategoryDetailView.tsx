@@ -60,7 +60,7 @@ export default function CategoryDetailView() {
           <CategoryMissionInfiniteList
             key={`${categoryId}-${selectedSubCategory.categoryId}`}
             categoryId={categoryId}
-            subcategoryId={selectedSubCategory.categoryId}
+            subCategoryId={selectedSubCategory.categoryId}
             seed={seed}
             swipeHandlers={swipeHandlers}
           />
