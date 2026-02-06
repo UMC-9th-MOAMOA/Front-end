@@ -64,7 +64,6 @@ export default function PasswordChangePage() {
 
   const onConfirmSuccess = () => {
     setSuccessOpen(false);
-    // TODO: navigate to login or settings
   };
 
   const handleChangeCurrentPw = (value: string) => {
