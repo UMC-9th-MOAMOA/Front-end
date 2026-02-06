@@ -1,10 +1,9 @@
 import { useQueryClient } from "@tanstack/react-query";
-import { Suspense } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import { Button } from "@/components/common/button/Button";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import TodayMissionList from "./components/TodayMissionList";
 
 export default function TodayMissionListView() {
@@ -44,15 +43,9 @@ export default function TodayMissionListView() {
         </Button>
       </div>
 
-      <Suspense
-        fallback={
-          <div className="flex h-[50vh] items-center justify-center">
-            <LoadingSpinner className="size-100" />
-          </div>
-        }
-      >
+      <AsyncBoundary>
         <TodayMissionList />
-      </Suspense>
+      </AsyncBoundary>
     </div>
   );
 }
