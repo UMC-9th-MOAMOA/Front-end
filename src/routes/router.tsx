@@ -1,20 +1,20 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import LoginPage from "@/pages/auth/login/Login";
 import OAuthCallback from "@/pages/auth/oauth-callback/OAuthCallback";
+import Password from "@/pages/auth/password/Password";
 import SignUpPage from "@/pages/auth/signup/SignUp";
 import TermsPage from "@/pages/auth/terms/Terms";
-import ResetPassword from "@/pages/auth/password/Password";
 import HomePage from "@/pages/home/Home";
-import Onboarding from "@/pages/onboarding/Onboarding";
 import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
+import Onboarding from "@/pages/onboarding/Onboarding";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
 import AccountInfoPage from "@/pages/settings/AccountInfoPage";
 import FaqPage from "@/pages/settings/components/FaqPage";
 import Interests from "@/pages/settings/components/Interests";
-import InquiryDetailPage from "@/pages/settings/components/inquiry/InquiryDetailPage";
 import InquiryConsentPage from "@/pages/settings/components/inquiry/InquiryConsentPage";
+import InquiryDetailPage from "@/pages/settings/components/inquiry/InquiryDetailPage";
 import InquiryPage from "@/pages/settings/components/inquiry/InquiryPage";
 import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
 import PasswordChangePage from "@/pages/settings/PasswordChangePage";
@@ -23,7 +23,12 @@ import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
 export interface RouteHandle {
-  bgColor?: "bg-white" | "bg-moamoa-50" | "bg-gray-100" | "bg-gray-50" | "bg-setting";
+  bgColor?:
+    | "bg-white"
+    | "bg-moamoa-50"
+    | "bg-gray-100"
+    | "bg-gray-50"
+    | "bg-setting";
   hideBottomNav?: boolean;
 }
 
@@ -54,13 +59,8 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
-        path: "find-id",
-        element: <FindId />,
-        handle: { bgColor: "bg-white", hideBottomNav: true },
-      },
-      {
-        path: "reset-password",
-        element: <ResetPassword />,
+        path: "password",
+        element: <Password />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
