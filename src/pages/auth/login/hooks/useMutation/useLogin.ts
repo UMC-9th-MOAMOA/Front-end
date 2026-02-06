@@ -29,12 +29,14 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
   const { handleError } = useApiError();
   const navigate = useNavigate();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+  const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
 
   return useMutation({
     mutationFn: (payload: LoginRequest) => login(payload),
     onSuccess: (result) => {
       storage.setToken(result.token.accessToken);
       setAuthenticated(true);
+      setPolicyAgreed(result.policyAgreed);
       navigate(result.onboardingCompleted ? "/" : "/onboarding");
     },
     onError: (error) => {
