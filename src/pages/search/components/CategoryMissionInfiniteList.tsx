@@ -2,7 +2,7 @@ import { useEffect, useMemo } from "react";
 import { useInView } from "react-intersection-observer";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MissionCard from "@/components/MissionCard";
-import { useCategoryMissionsInfinite } from "../hooks/useQuery/useCategoryMissionsInfinite";
+import { useCategoryMissionsInfinite } from "../hooks/useQuery/category/useCategoryMissionsInfinite";
 
 interface CategoryMissionInfiniteListProps {
   categoryId: number;
