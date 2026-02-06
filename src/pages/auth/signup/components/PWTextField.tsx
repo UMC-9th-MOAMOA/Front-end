@@ -12,6 +12,7 @@ export type PWTextFieldProps = {
   onPasswordConfirmChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
   disabled?: boolean;
+  canUsePassword?: boolean;
 
   passwordErrorMessage?: string;
   passwordConfirmErrorMessage?: string;
@@ -25,6 +26,7 @@ export function PWTextField({
   passwordConfirm,
   onPasswordConfirmChange,
   disabled = false,
+  canUsePassword = true,
   passwordErrorMessage,
   passwordConfirmErrorMessage,
   helperText = PASSWORD_ALLOWED_HELPER_TEXT,
@@ -42,6 +44,7 @@ export function PWTextField({
             width="full"
             variant="ghost"
             disabled={disabled}
+            error={!canUsePassword && password.length > 0}
             errorMessage={passwordErrorMessage}
             name="password"
           />

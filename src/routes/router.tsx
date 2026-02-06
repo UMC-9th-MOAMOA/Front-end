@@ -2,6 +2,7 @@ import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/password/Password";
 import SignUpPage from "@/pages/auth/signup/SignUp";
+import Terms from "@/pages/auth/signup/Terms";
 import HomePage from "@/pages/home/Home";
 import Onboarding from "@/pages/onboarding/Onboarding";
 import MissionEntry from "@/pages/mission/entry/MissionEntry";
@@ -44,6 +45,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "password",
         element: <ResetPassword />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
+        path: "terms",
+        element: <Terms />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
