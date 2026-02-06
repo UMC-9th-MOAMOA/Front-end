@@ -2,7 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
+import AsyncBoundary from "@/components/AsyncBoundary";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { MOCK_KEYWORD_SEARCH_MISSIONS } from "@/mocks/search/mission";
+import type { KeywordFilterTab } from "@/types/keyword/keyword";
 import SearchBar from "../components/common/SearchBar";
 import RecommendedKeywordsSection from "../components/RecommendedKeywordsSection";
 import SearchResultsView from "../components/SearchResultsView";
@@ -12,7 +15,8 @@ export default function KeywordSearchView() {
   const navigate = useNavigate();
 
   const [searchValue, setSearchValue] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("전체");
+  const [selectedFilter, setSelectedFilter] =
+    useState<KeywordFilterTab>("전체");
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [isSearched, setIsSearched] = useState(false);
 
@@ -86,12 +90,14 @@ export default function KeywordSearchView() {
             </p>
           </div>
 
-          <RecommendedKeywordsSection
-            selectedFilter={selectedFilter}
-            onFilterChange={setSelectedFilter}
-            selectedKeywords={selectedKeywords}
-            onKeywordClick={handleKeywordClick}
-          />
+          <AsyncBoundary>
+            <RecommendedKeywordsSection
+              selectedFilter={selectedFilter}
+              onFilterChange={setSelectedFilter}
+              selectedKeywords={selectedKeywords}
+              onKeywordClick={handleKeywordClick}
+            />
+          </AsyncBoundary>
         </>
       )}
     </>
