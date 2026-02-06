@@ -1,7 +1,6 @@
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { type ReactNode, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Button } from "@/components/common/button/Button";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 interface AsyncBoundaryProps {
