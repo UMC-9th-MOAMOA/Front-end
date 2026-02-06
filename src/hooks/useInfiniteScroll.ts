@@ -23,19 +23,15 @@ export const useInfiniteScroll = ({
 
   const lastCall = useRef(0);
 
-  const throttledFetchNextPage = () => {
-    const now = Date.now();
-    if (now - lastCall.current >= throttleDelay) {
-      lastCall.current = now;
-      fetchNextPage();
-    }
-  };
-
   useEffect(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
-      throttledFetchNextPage();
+      const now = Date.now();
+      if (now - lastCall.current >= throttleDelay) {
+        lastCall.current = now;
+        fetchNextPage();
+      }
     }
-  }, [inView, hasNextPage, isFetchingNextPage]);
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, throttleDelay]);
 
   return { ref, isFetchingNextPage };
 };
