@@ -4,18 +4,24 @@ import BottomActionBar from "./components/common/BottomActionBar";
 import PasswordChangeForm from "./components/Password/PasswordChangeForm";
 import PasswordChangeIntro from "./components/Password/PasswordChangeIntro";
 import PasswordChangeSuccessModal from "./components/Password/PasswordChangeSuccessModal";
+import { useChangePassword } from "./components/Password/hooks/useChangePassword";
 
 export default function PasswordChangePage() {
   const [successOpen, setSuccessOpen] = useState(false);
+  const [currentPw, setCurrentPw] = useState("");
+  const [newPw, setNewPw] = useState("");
+  const [newPwCheck, setNewPwCheck] = useState("");
+  const { mutate, isPending } = useChangePassword();
 
-  const onSubmit = async () => {
-    // TODO(API 연결 시): PATCH /users/password
-    try {
-      console.log("submit password change");
-
-      setSuccessOpen(true);
-    } finally {
-    }
+  const onSubmit = () => {
+    mutate(
+      {
+        currentPassword: currentPw,
+        newPassword: newPw,
+        newPasswordCheck: newPwCheck,
+      },
+      { onSuccess: () => setSuccessOpen(true) }
+    );
   };
 
   const onConfirmSuccess = () => {
@@ -30,7 +36,14 @@ export default function PasswordChangePage() {
 
       <div className="w-full bg-white pt-20 pb-28">
         <PasswordChangeIntro />
-        <PasswordChangeForm />
+        <PasswordChangeForm
+          currentPw={currentPw}
+          newPw={newPw}
+          newPwCheck={newPwCheck}
+          onChangeCurrentPw={setCurrentPw}
+          onChangeNewPw={setNewPw}
+          onChangeNewPwCheck={setNewPwCheck}
+        />
 
         <PasswordChangeSuccessModal
           open={successOpen}
@@ -38,7 +51,11 @@ export default function PasswordChangePage() {
         />
       </div>
 
-      <BottomActionBar label="비밀번호 변경하기" onClick={onSubmit} />
+      <BottomActionBar
+        label={isPending ? "변경 중..." : "비밀번호 변경하기"}
+        onClick={onSubmit}
+        disabled={isPending || !currentPw || !newPw || !newPwCheck}
+      />
     </>
   );
 }
