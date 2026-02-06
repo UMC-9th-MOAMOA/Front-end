@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import { updateOnboarding } from "@/apis/onboarding/onboarding";
 import { useApiError } from "@/hooks/api/useApiError";
-import type { OnboardingRequest } from "@/types/onboarding";
+import type { OnboardingRequest } from "@/types/onboarding/onboarding";
 
 export const useUpdateOnboarding = () => {
   const navigate = useNavigate();
