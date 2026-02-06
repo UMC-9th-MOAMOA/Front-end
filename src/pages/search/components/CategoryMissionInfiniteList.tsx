@@ -1,7 +1,7 @@
-import { useEffect, useMemo } from "react";
-import { useInView } from "react-intersection-observer";
+import { useMemo } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MissionCard from "@/components/MissionCard";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useCategoryMissionsInfinite } from "../hooks/useQuery/category/useCategoryMissionsInfinite";
 
 interface CategoryMissionInfiniteListProps {
@@ -24,16 +24,11 @@ export default function CategoryMissionInfiniteList({
       seed,
     });
 
-  const { ref, inView } = useInView({
-    threshold: 0.1,
-    rootMargin: "300px",
+  const { ref } = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
   });
-
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
 
   const missions = useMemo(
     () =>
