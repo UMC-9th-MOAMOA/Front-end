@@ -1,4 +1,4 @@
-import {
+﻿import {
   useMutation,
   useQueryClient,
   useSuspenseQuery,
@@ -10,12 +10,9 @@ import type { UpdateMyProfileRequest } from "@/types/profile/profile";
 export const myProfileQueryKey = ["members", "me", "profile"] as const;
 
 export const useMyProfile = () => {
-  const { handleError } = useApiError();
-
   return useSuspenseQuery({
     queryKey: myProfileQueryKey,
     queryFn: getMyProfile,
-    onError: (error) => handleError(error),
   });
 };
 

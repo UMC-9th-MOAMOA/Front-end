@@ -1,5 +1,7 @@
-﻿import { Suspense, useEffect, useState } from "react";
+﻿import { Component, Suspense, useEffect, useState } from "react";
+import type { ReactNode } from "react";
 import Header from "@/components/common/header/Header";
+import { useApiError } from "@/hooks/api/useApiError";
 import AccountInfoSuccessModal from "./components/AccountInfoSuccessModal";
 import AccountInfoForm from "./components/account/AccountInfoForm";
 import AccountInfoHeader from "./components/account/AccountInfoHeader";
@@ -15,17 +17,33 @@ import {
 import BottomActionBar from "./components/common/BottomActionBar";
 import type { UserProfile } from "./types/settings.type";
 
+class ErrorBoundary extends Component<{ fallback: ReactNode; onError?: (error: unknown) => void; children: ReactNode; }, { hasError: boolean }> {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  componentDidCatch(error: unknown) {
+    this.props.onError?.(error);
+  }
+
+  render() {
+    if (this.state.hasError) return this.props.fallback;
+    return this.props.children;
+  }
+}
+
 function AccountInfoPageInner() {
   const { data: profile } = useMyProfile();
   const { mutate, isPending } = useUpdateMyProfile();
 
   const initial = toUserProfile(profile);
-
   const [draft, setDraft] = useState<UserProfile>(initial);
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   useEffect(() => {
-    setDraft(initial);
-  }, [initial]);
+    setDraft(toUserProfile(profile));
+  }, [profile]);
 
   const handleSubmit = () => {
     const profileImage = Number(draft.profileId);
@@ -76,10 +94,18 @@ function AccountInfoPageInner() {
   );
 }
 
+
 export default function AccountInfoPage() {
+  const { handleError } = useApiError();
+
   return (
-    <Suspense fallback={<div className="p-20">로딩중...</div>}>
-      <AccountInfoPageInner />
-    </Suspense>
+    <ErrorBoundary
+      fallback={<div className="p-20">Error occurred.</div>}
+      onError={handleError}
+    >
+      <Suspense fallback={<div className="p-20">Loading...</div>}>
+        <AccountInfoPageInner />
+      </Suspense>
+    </ErrorBoundary>
   );
 }
