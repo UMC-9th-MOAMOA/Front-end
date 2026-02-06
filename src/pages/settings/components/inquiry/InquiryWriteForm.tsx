@@ -1,4 +1,5 @@
-﻿import { useId, useMemo, useState } from "react";
+﻿import { useId, useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 import InquiryAttachmentSection from "./InquiryAttachmentSection";
 import InquiryCategorySection from "./InquiryCategorySection";
 import InquiryConsentRow from "./InquiryConsentRow";
@@ -10,18 +11,19 @@ const MAX_CONTENT = 2000;
 const MAX_IMAGES = 5;
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
+type Props = {
+  agreed: boolean;
+  draft: InquiryDraft;
+  setDraft: React.Dispatch<React.SetStateAction<InquiryDraft>>;
+};
+
 function clamp(n: number, max: number) {
   return Math.min(max, Math.max(0, n));
 }
 
-export default function InquiryWriteForm() {
+export default function InquiryWriteForm({ agreed, draft, setDraft }: Props) {
   const fileInputId = useId();
-  const [draft, setDraft] = useState<InquiryDraft>({
-    category: null,
-    title: "",
-    content: "",
-    images: [],
-  });
+  const navigate = useNavigate();
 
   const titleCount = useMemo(() => draft.title.length, [draft.title]);
   const contentCount = useMemo(() => draft.content.length, [draft.content]);
@@ -77,7 +79,12 @@ export default function InquiryWriteForm() {
       />
 
       <div className="mt-67 w-full">
-        <InquiryConsentRow onViewPolicy={() => {}} />
+        <InquiryConsentRow
+          onViewPolicy={() =>
+            navigate("/settings/inquiry/consent", { state: { draft } })
+          }
+          agreed={agreed}
+        />
       </div>
     </div>
   );
