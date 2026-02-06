@@ -1,6 +1,10 @@
 import { useState } from "react";
-import type { OnboardingPayload } from "@/types/onboarding";
+import type {
+  OnboardingPayload,
+  OnboardingRequest,
+} from "@/types/onboarding/onboarding";
 import OnboardingHeader from "./components/OnboardingHeader";
+import { useUpdateOnboarding } from "./hooks/useUpdateOnboarding";
 import OnboardingLoadingView from "./views/OnboardingLoadingView";
 import OnboardingStep1View from "./views/OnboardingStep1View";
 import OnboardingStep2View from "./views/OnboardingStep2View";
@@ -15,6 +19,21 @@ export default function Onboarding() {
     dailyMissionGoal: null,
     goalRetention: "ONE_WEEK",
   });
+  const { mutate: updateOnboardingMutation } = useUpdateOnboarding();
+
+  const handleSubmit = (
+    nextPayload: OnboardingPayload,
+    dailyMissionGoal: number
+  ) => {
+    const request: OnboardingRequest = {
+      selections: nextPayload.selections,
+      dailyMissionGoal,
+      goalRetention: nextPayload.goalRetention ?? "ONE_WEEK",
+    };
+
+    updateOnboardingMutation(request);
+    setCurrentStep(5);
+  };
 
   const renderStep = () => {
     switch (currentStep) {
@@ -47,7 +66,7 @@ export default function Onboarding() {
           <OnboardingStep4View
             payload={payload}
             onChange={setPayload}
-            onNext={() => setCurrentStep((prev) => Math.min(5, prev + 1))}
+            onSubmit={handleSubmit}
           />
         );
       default:
