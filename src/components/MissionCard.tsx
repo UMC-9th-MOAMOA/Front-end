@@ -15,7 +15,7 @@ interface MissionCardProps {
 }
 
 export default function MissionCard({
-  id,
+  id: _id,
   title,
   keywords,
   minute,
