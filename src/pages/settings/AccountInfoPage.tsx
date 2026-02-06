@@ -1,18 +1,19 @@
 ﻿import { Suspense, useEffect, useState } from "react";
 import Header from "@/components/common/header/Header";
+import AccountInfoSuccessModal from "./components/AccountInfoSuccessModal";
 import AccountInfoForm from "./components/account/AccountInfoForm";
 import AccountInfoHeader from "./components/account/AccountInfoHeader";
 import {
   useMyProfile,
   useUpdateMyProfile,
 } from "./components/account/hooks/useMyProfile";
-import BottomActionBar from "./components/common/BottomActionBar";
-import type { UserProfile } from "./types/settings.type";
 import {
   toHyphenDate,
   toServerGender,
   toUserProfile,
 } from "./components/account/utils/profileMapper";
+import BottomActionBar from "./components/common/BottomActionBar";
+import type { UserProfile } from "./types/settings.type";
 
 function AccountInfoPageInner() {
   const { data: profile } = useMyProfile();
@@ -20,23 +21,28 @@ function AccountInfoPageInner() {
 
   const initial = toUserProfile(profile);
 
-  // ✅ 초기값 로드 후 draft를 맞춰줌 (Suspense라도 안전하게)
   const [draft, setDraft] = useState<UserProfile>(initial);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   useEffect(() => {
     setDraft(initial);
-  }, [initial]); // profile이 바뀌면 초기화(키는 아무거나 안정적으로 하나)
+  }, [initial]);
 
   const handleSubmit = () => {
     const profileImage = Number(draft.profileId);
 
-    mutate({
-      profileImage: Number.isNaN(profileImage)
-        ? profile.profileImage
-        : profileImage,
-      name: draft.name,
-      birthday: toHyphenDate(draft.birthDate),
-      gender: toServerGender(draft.gender),
-    });
+    mutate(
+      {
+        profileImage: Number.isNaN(profileImage)
+          ? profile.profileImage
+          : profileImage,
+        name: draft.name,
+        birthday: toHyphenDate(draft.birthDate),
+        gender: toServerGender(draft.gender),
+      },
+      {
+        onSuccess: () => setIsSuccessOpen(true),
+      }
+    );
   };
 
   return (
@@ -46,7 +52,12 @@ function AccountInfoPageInner() {
 
       <div className="flex min-h-dvh w-full flex-col overflow-y-auto">
         <div className="flex w-full flex-1 flex-col items-center pb-40">
-          <AccountInfoHeader />
+          <AccountInfoHeader
+            selectedId={draft.profileId}
+            onSelect={(profileId) =>
+              setDraft((prev) => ({ ...prev, profileId }))
+            }
+          />
           <AccountInfoForm initial={initial} onChangeDraft={setDraft} />
         </div>
 
@@ -56,6 +67,11 @@ function AccountInfoPageInner() {
           disabled={isPending}
         />
       </div>
+
+      <AccountInfoSuccessModal
+        open={isSuccessOpen}
+        onConfirm={() => setIsSuccessOpen(false)}
+      />
     </div>
   );
 }
