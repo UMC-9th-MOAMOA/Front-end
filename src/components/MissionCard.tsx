@@ -37,15 +37,18 @@ export default function MissionCard({
         </button>
       </div>
 
-      <div className="mt-12 flex flex-wrap gap-4">
-        {keywords.map((keyword, index) => (
-          <span
-            key={index}
-            className="body-4 rounded-sm bg-moamoa-50 px-17 py-8 text-moamoa-500"
-          >
-            {keyword}
-          </span>
-        ))}
+      <div className="-mx-20 mt-12 overflow-x-auto">
+        <div className="flex gap-4 px-20">
+          {keywords.map((keyword, index) => (
+            <span
+              key={index}
+              className="body-4 shrink-0 rounded-sm bg-moamoa-50 px-17 py-8 text-moamoa-500"
+            >
+              {keyword}
+            </span>
+          ))}
+          <div className="w-20 shrink-0" />
+        </div>
       </div>
 
       <div className="mt-12 flex items-end justify-between">
