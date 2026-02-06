@@ -4,7 +4,7 @@ import { storage } from "@/apis/storage";
 import { useAuthStore } from "@/store/auth";
 
 export const useAuth = () => {
-  const { isLoading, isAuthenticated, setAuthenticated, setLoading } =
+  const { isLoading, isAuthenticated, policyAgreed, setAuthenticated, setLoading } =
     useAuthStore();
 
   useEffect(() => {
@@ -29,5 +29,5 @@ export const useAuth = () => {
     checkAuth();
   }, [setAuthenticated, setLoading]);
 
-  return { isLoading, isAuthenticated };
+  return { isLoading, isAuthenticated, policyAgreed };
 };

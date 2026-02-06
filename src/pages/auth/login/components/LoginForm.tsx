@@ -42,13 +42,14 @@ export default function LoginForm() {
   const canSubmit =
     email.trim().length > 0 && password.trim().length > 0 && !isPending;
 
+  const error = searchParams.get("error");
+
   useEffect(() => {
-    const error = searchParams.get("error");
     if (error === "ACCOUNT_BANNED") {
       setBlockedCode("AUTH403_3");
       setIsBlockedModalOpen(true);
     }
-  }, [searchParams]);
+  }, [error]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();

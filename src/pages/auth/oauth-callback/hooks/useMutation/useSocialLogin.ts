@@ -14,6 +14,7 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
   const { handleError } = useApiError();
   const navigate = useNavigate();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+  const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
 
   return useMutation({
     mutationFn: (payload: SocialLoginTokenRequest) =>
@@ -21,6 +22,7 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
     onSuccess: (result) => {
       storage.setToken(result.token.accessToken);
       setAuthenticated(true);
+      setPolicyAgreed(result.policyAgreed);
 
       if (!result.policyAgreed) {
         navigate("/terms", { replace: true });
