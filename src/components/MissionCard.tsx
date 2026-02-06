@@ -3,6 +3,7 @@ import { Button } from "@/components/common/button/Button";
 import { cn } from "@/utils/cn/cn";
 
 interface MissionCardProps {
+  id: number;
   title: string;
   keywords: string[];
   minute: number;
@@ -14,6 +15,7 @@ interface MissionCardProps {
 }
 
 export default function MissionCard({
+  id,
   title,
   keywords,
   minute,
