@@ -1,10 +1,20 @@
-﻿import { useState } from "react";
+﻿import { useEffect, useState } from "react";
 import type { Gender, UserProfile } from "../../types/settings.type";
 import FormField from "../common/FormField";
 import GenderToggleField from "./GenderToggleField";
 import PhoneField from "./PhoneField";
 
-export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
+type Props = {
+  initial: UserProfile;
+  profileId: string;
+  onChangeDraft: (draft: UserProfile) => void;
+};
+
+export default function AccountInfoForm({
+  initial,
+  profileId,
+  onChangeDraft,
+}: Props) {
   const [name, setName] = useState(initial.name);
   const [birthDate, setBirthDate] = useState(initial.birthDate);
   const [gender, setGender] = useState<Gender>(initial.gender);
@@ -13,6 +23,32 @@ export default function AccountInfoForm({ initial }: { initial: UserProfile }) {
   const [isPhoneEditing, setIsPhoneEditing] = useState(false);
   const [newPhone, setNewPhone] = useState("");
   const [verifyCode, setVerifyCode] = useState("");
+
+  useEffect(() => {
+    setName(initial.name);
+    setBirthDate(initial.birthDate);
+    setGender(initial.gender);
+    setPhone(initial.phone);
+  }, [initial.name, initial.birthDate, initial.gender, initial.phone]);
+
+  useEffect(() => {
+    onChangeDraft({
+      name,
+      email: initial.email,
+      profileId,
+      birthDate,
+      gender,
+      phone,
+    });
+  }, [
+    name,
+    birthDate,
+    gender,
+    phone,
+    initial.email,
+    profileId,
+    onChangeDraft,
+  ]);
 
   const startPhoneEdit = () => setIsPhoneEditing(true);
 
