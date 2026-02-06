@@ -1,5 +1,5 @@
 ﻿import type { MemberGender, MyProfile } from "@/types/profile/profile";
-import type { Gender, UserProfile } from "../../types/settings.type";
+import type { Gender, UserProfile } from "../../../types/settings.type";
 
 export const toUiGender = (g: MemberGender): Gender =>
   g === "MALE" ? "남자" : "여자";

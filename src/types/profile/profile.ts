@@ -5,7 +5,7 @@ export interface MyProfile {
   profileImage: number;
   name: string;
   email: string;
-  birthday: string; // "YYYY-MM-DD"
+  birthday: string;
   gender: MemberGender;
   phoneNumber: string | null;
   provider: MemberProvider;
@@ -14,8 +14,8 @@ export interface MyProfile {
 export interface UpdateMyProfileRequest {
   profileImage: number;
   name: string;
-  birthday: string; // "YYYY-MM-DD"
+  birthday: string;
   gender: MemberGender;
 }
 
-export type UpdateMyProfileResult = string; // swagger result: "string"
+export type UpdateMyProfileResult = string;

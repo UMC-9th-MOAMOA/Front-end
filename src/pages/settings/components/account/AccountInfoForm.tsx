@@ -24,7 +24,7 @@ export default function AccountInfoForm({ initial, onChangeDraft }: Props) {
     setBirthDate(initial.birthDate);
     setGender(initial.gender);
     setPhone(initial.phone);
-  }, [initial]);
+  }, [initial.name, initial.birthDate, initial.gender, initial.phone]);
 
   useEffect(() => {
     onChangeDraft({
