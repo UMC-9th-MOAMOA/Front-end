@@ -19,7 +19,6 @@ export default function AccountInfoForm({ initial, onChangeDraft }: Props) {
   const [newPhone, setNewPhone] = useState("");
   const [verifyCode, setVerifyCode] = useState("");
 
-  // ✅ query로 initial이 바뀔 수 있으니 동기화
   useEffect(() => {
     setName(initial.name);
     setBirthDate(initial.birthDate);
@@ -27,7 +26,6 @@ export default function AccountInfoForm({ initial, onChangeDraft }: Props) {
     setPhone(initial.phone);
   }, [initial]);
 
-  // ✅ draft를 부모로 올려서 submit 가능하게
   useEffect(() => {
     onChangeDraft({
       name,
