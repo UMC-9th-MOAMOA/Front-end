@@ -1,19 +1,30 @@
-﻿import { useState } from "react";
-import FormField from "../common/FormField";
+﻿import FormField from "../common/FormField";
 
-export default function PasswordChangeForm() {
-  const [currentPw, setCurrentPw] = useState("");
-  const [pw, setPw] = useState("");
-  const [pw2, setPw2] = useState("");
+type Props = {
+  currentPw: string;
+  newPw: string;
+  newPwCheck: string;
+  onChangeCurrentPw: (value: string) => void;
+  onChangeNewPw: (value: string) => void;
+  onChangeNewPwCheck: (value: string) => void;
+};
 
+export default function PasswordChangeForm({
+  currentPw,
+  newPw,
+  newPwCheck,
+  onChangeCurrentPw,
+  onChangeNewPw,
+  onChangeNewPwCheck,
+}: Props) {
   return (
     <section className="flex h-224 w-full flex-col items-start gap-40">
       <FormField label="기존 비밀번호" className="h-77">
         <input
           type="password"
           value={currentPw}
-          onChange={(e) => setCurrentPw(e.target.value)}
-          placeholder="비밀번호"
+          onChange={(e) => onChangeCurrentPw(e.target.value)}
+          placeholder="기존 비밀번호를 입력해주세요"
           className="h-46 w-full rounded-lg bg-gray-100 px-15 py-8 text-gray-500 outline-none"
         />
       </FormField>
@@ -22,8 +33,8 @@ export default function PasswordChangeForm() {
         <FormField label="새 비밀번호" className="h-77">
           <input
             type="password"
-            value={pw}
-            onChange={(e) => setPw(e.target.value)}
+            value={newPw}
+            onChange={(e) => onChangeNewPw(e.target.value)}
             placeholder="비밀번호"
             className="h-46 w-full rounded-lg bg-gray-100 px-15 py-8 text-gray-500 outline-none"
           />
@@ -33,8 +44,8 @@ export default function PasswordChangeForm() {
           <div className="flex w-full flex-col gap-6">
             <input
               type="password"
-              value={pw2}
-              onChange={(e) => setPw2(e.target.value)}
+              value={newPwCheck}
+              onChange={(e) => onChangeNewPwCheck(e.target.value)}
               placeholder="비밀번호를 입력해주세요"
               className="h-46 w-full rounded-lg bg-gray-100 px-15 py-8 text-gray-500 outline-none"
             />
