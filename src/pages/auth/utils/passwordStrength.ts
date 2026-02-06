@@ -1,17 +1,25 @@
 export type PasswordStrengthLevel = 0 | 1 | 2 | 3 | 4 | 5;
 
+export const PASSWORD_ALLOWED_HELPER_TEXT =
+  "영문, 숫자, 특수문자 포함하여 8자 이상 입력해주세요";
+
+export const PASSWORD_INVALID_MESSAGE =
+  "영문, 숫자, 특수문자(!@#$%^&*?_.)만 사용해주세요";
+
 export function getPasswordStrength(password: string) {
   const length = password.length;
 
+  const hasInvalidChar = /[^a-zA-Z0-9!@#$%^&*?_.]/.test(password);
   const hasLetter = /[a-zA-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
-  const hasSpecial = /[^a-zA-Z0-9]/.test(password);
+  const hasSpecial = /[!@#$%^&*?_.]/.test(password);
 
-  const meetsBaseRule = hasLetter && hasNumber && hasSpecial;
+  const meetsBaseRule = !hasInvalidChar && hasLetter && hasNumber && hasSpecial;
 
   let score: PasswordStrengthLevel = 0;
 
   if (length === 0) score = 0;
+  else if (hasInvalidChar) score = 1;
   else if (length <= 7) score = 1;
   else if (!meetsBaseRule) score = 1;
   else if (length <= 9) score = 2;
@@ -53,5 +61,6 @@ export function getPasswordStrength(password: string) {
     percent: percentMap[score],
     canSubmit: score >= 2 && meetsBaseRule,
     meetsBaseRule,
+    hasInvalidChar,
   };
 }
