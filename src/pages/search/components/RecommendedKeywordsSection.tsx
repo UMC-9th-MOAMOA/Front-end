@@ -2,7 +2,7 @@ import { Button } from "@/components/common/button/Button";
 import type { Keyword, KeywordFilterTab } from "@/types/keyword/keyword";
 import { KEYWORD_TYPE_MAP } from "@/types/keyword/keyword";
 import { cn } from "@/utils/cn/cn";
-import { useKeywords } from "../hooks/useQuery/useKeywords";
+import { useKeywords } from "../hooks/useQuery/keyword/useKeywords";
 import KeywordChip from "./common/KeywordChip";
 
 const FILTER_TABS = Object.keys(KEYWORD_TYPE_MAP) as KeywordFilterTab[];
