@@ -1,0 +1,44 @@
+import { authAPI } from "@/apis/axios";
+import type { ApiError, ApiResponse } from "@/types/api/api";
+import type {
+  SettingOnboardingRequest,
+  SettingOnboardingResponse,
+} from "@/types/onboarding/onboarding.setting";
+
+const ONBOARDING_ENDPOINT = "/members/me/onboarding";
+
+function toApiError(code: string, message: string): ApiError {
+  const e = new Error(message) as ApiError;
+  e.serverCode = code;
+  e.serverMessage = message;
+  return e;
+}
+
+export const getSettingOnboarding = async () => {
+  const { data } = await authAPI.get<ApiResponse<SettingOnboardingResponse>>(
+    ONBOARDING_ENDPOINT,
+    { params: { scope: "INTERESTS" } }
+  );
+
+  if (!data.isSuccess) {
+    throw toApiError(data.code, data.message);
+  }
+
+  return data.result;
+};
+
+export const updateSettingOnboarding = async (
+  payload: SettingOnboardingRequest
+) => {
+  const { data } = await authAPI.patch<ApiResponse<SettingOnboardingResponse>>(
+    ONBOARDING_ENDPOINT,
+    payload,
+    { params: { scope: "INTERESTS" } }
+  );
+
+  if (!data.isSuccess) {
+    throw toApiError(data.code, data.message);
+  }
+
+  return data.result;
+};
