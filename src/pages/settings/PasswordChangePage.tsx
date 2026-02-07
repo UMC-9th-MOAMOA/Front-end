@@ -42,9 +42,12 @@ export default function PasswordChangePage() {
   }, [newPassword, newPasswordCheck, trigger]);
 
   useEffect(() => {
+    if (!currentPassword) {
+      return;
+    }
     clearErrors("currentPassword");
     setServerCurrentPwError("");
-  }, [currentPassword, clearErrors, serverCurrentPwError]);
+  }, [currentPassword, clearErrors]);
 
   useEffect(() => {
     if (newPassword !== newPasswordCheck) {
