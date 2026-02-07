@@ -2,6 +2,7 @@
 import Header from "@/components/common/header/Header";
 import BottomActionBar from "./common/BottomActionBar";
 import InterestCategoryCard from "./interests/InterestCategoryCard";
+import InterestsSuccessModal from "./InterestsSuccessModal";
 import { useSettingInterests } from "./interests/hooks/useSettingInterests";
 import { useSettingOnboarding, useUpdateSettingOnboarding } from "./interests/hooks/useSettingOnboarding";
 
@@ -14,6 +15,7 @@ export default function InterestPage() {
   const [expanded, setExpanded] = useState<number | null>(null);
   const [selected, setSelected] = useState<SelectedMap>({});
   const didInitRef = useRef(false);
+  const [isSuccessOpen, setIsSuccessOpen] = useState(false);
 
   useEffect(() => {
     if (didInitRef.current) {
@@ -55,7 +57,14 @@ export default function InterestPage() {
         subInterestIds,
       }));
 
-    mutate({ selections });
+    mutate(
+      { selections },
+      {
+        onSuccess: () => {
+          setIsSuccessOpen(true);
+        },
+      }
+    );
   };
 
   return (
@@ -87,6 +96,11 @@ export default function InterestPage() {
         label={isPending ? "저장 중..." : "설정 저장하기"}
         onClick={handleSave}
         disabled={isPending}
+      />
+
+      <InterestsSuccessModal
+        open={isSuccessOpen}
+        onConfirm={() => setIsSuccessOpen(false)}
       />
     </div>
   );
