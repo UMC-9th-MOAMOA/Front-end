@@ -8,8 +8,7 @@ import type { ApiError } from "@/types/api/api";
 import { attendanceCache } from "@/utils/attendance/attendance";
 
 export const useAttendanceCheck = () => {
-  const { setShowModal, setAttendanceData, attendanceData } =
-    useAttendanceStore();
+  const { setShowModal, setAttendanceData } = useAttendanceStore();
 
   const checkMutation = useMutation({
     mutationFn: checkAttendance,
@@ -40,8 +39,10 @@ export const useAttendanceCheck = () => {
   });
 
   const handleCheckAttendance = async () => {
+    const currentAttendanceData = useAttendanceStore.getState().attendanceData;
+
     // 이미 오늘 체크했지만 store에 데이터가 없는 경우 (앱 재시작)
-    if (attendanceCache.hasCheckedToday() && !attendanceData) {
+    if (attendanceCache.hasCheckedToday() && !currentAttendanceData) {
       try {
         const response = await getAttendanceStreak();
         setAttendanceData({

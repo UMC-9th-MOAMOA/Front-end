@@ -6,7 +6,7 @@ import {
   CATEGORY_ID_MAP,
   type MainCategory,
 } from "@/constants/missions/categories";
-import { useCategoryMissions } from "../hooks/useQuery/useCategoryMissions";
+import { useCategoryMissions } from "../hooks/useQuery/category/useCategoryMissions";
 
 interface CategoryMissionListProps {
   selectedCategory: MainCategory;
