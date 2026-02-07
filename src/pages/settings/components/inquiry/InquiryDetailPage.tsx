@@ -21,7 +21,6 @@ export default function InquiryDetailPage() {
   const inquiryId = Number(params.inquiryId);
   const isValidId = Number.isFinite(inquiryId);
 
-  // ✅ suspense query
   const { data } = useMyInquiryDetail(inquiryId);
 
   if (!isValidId) return null;

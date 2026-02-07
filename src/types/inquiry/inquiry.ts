@@ -14,6 +14,18 @@ export interface CreateInquiryPayload {
   category: InquiryCategoryServer;
   title: string;
   content: string;
+  termsAgreed: boolean;
+  images?: File[];
+}
+
+export interface CreateInquiryAnswerResult {
+  inquiryId: number;
+  createdAt: string;
+}
+
+export interface CreateInquiryAnswerPayload {
+  inquiryId: number;
+  answer: string;
   images?: File[];
 }
 
