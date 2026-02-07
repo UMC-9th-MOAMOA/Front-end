@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import PocketContent from "./components/PocketContent";
@@ -16,15 +16,15 @@ export default function PocketView() {
         <div className="-mx-layout-side mt-14 h-2 bg-gray-200" />
       </div>
 
-      <Suspense
-        fallback={
+      <AsyncBoundary
+        loadingFallback={
           <div className="flex h-[calc(100vh-200px)] items-center justify-center">
             <LoadingSpinner className="size-48" />
           </div>
         }
       >
         <PocketContent />
-      </Suspense>
+      </AsyncBoundary>
     </div>
   );
 }
