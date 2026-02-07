@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import LoginPage from "@/pages/auth/login/Login";
 import ResetPassword from "@/pages/auth/password/Password";
@@ -12,6 +13,7 @@ import Search from "@/pages/search/Search";
 import AccountInfoPage from "@/pages/settings/AccountInfoPage";
 import FaqPage from "@/pages/settings/components/FaqPage";
 import Interests from "@/pages/settings/components/Interests";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import InquiryDetailPage from "@/pages/settings/components/inquiry/InquiryDetailPage";
 import InquiryConsentPage from "@/pages/settings/components/inquiry/InquiryConsentPage";
 import InquiryPage from "@/pages/settings/components/inquiry/InquiryPage";
@@ -94,7 +96,17 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "/settings/interests",
-        element: <Interests />,
+        element: (
+          <Suspense
+            fallback={
+              <div className="flex h-[50vh] items-center justify-center">
+                <LoadingSpinner className="size-100" />
+              </div>
+            }
+          >
+            <Interests />
+          </Suspense>
+        ),
         handle: { hideBottomNav: true },
       },
       {
