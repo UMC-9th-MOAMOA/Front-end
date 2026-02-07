@@ -1,38 +1,35 @@
-import { useId, useMemo, useState } from "react";
+﻿import { useId } from "react";
 import Header from "@/components/common/header/Header";
 import MoaToggle from "@/pages/settings/components/common/Moatoggle";
 import BottomActionBar from "./common/BottomActionBar";
 import DurationPanel from "./targetMission/DurationPanel";
 import MissionCountPanel from "./targetMission/MissionCountPanel";
-import type { DurationKey, DurationOption } from "./targetMission/types";
+import type { DurationOption } from "./targetMission/types";
+import { useGoalSettings } from "./targetMission/hooks/useGoalSettings";
 
 const DURATION_OPTIONS: DurationOption[] = [
   { key: "keep", label: "계속 유지" },
   { key: "1w", label: "1주" },
   { key: "2w", label: "2주" },
-  { key: "1m", label: "한 달" },
+  { key: "1m", label: "1개월" },
 ];
 
 export default function TargetMissionCount() {
   const labelId = useId();
-  const [isOn, setIsOn] = useState(true);
-  const [dailyCount, setDailyCount] = useState<number>(5);
-  const MIN_COUNT = 5;
-  const [duration, setDuration] = useState<DurationKey>("keep");
-
-  const panelBg = useMemo(
-    () => (isOn ? "bg-moamoa-50" : "bg-gray-200"),
-    [isOn]
-  );
-  const panelText = isOn ? "" : "text-black";
-
-  const handleMinus = () =>
-    setDailyCount((prev) => Math.max(MIN_COUNT, prev - 1));
-  const handlePlus = () => setDailyCount((prev) => prev + 1);
-  const handleSave = () => {
-    // TODO(API 연결 시): 저장 로직 추가
-    console.log({ isOn, dailyCount, duration });
-  };
+  const {
+    isOn,
+    dailyCount,
+    duration,
+    panelBg,
+    panelText,
+    isDirty,
+    isPending,
+    handleMinus,
+    handlePlus,
+    handleToggle,
+    handleDurationChange,
+    handleSave,
+  } = useGoalSettings();
 
   return (
     <div className="w-full bg-white">
@@ -41,7 +38,7 @@ export default function TargetMissionCount() {
       <div className="-mx-25 mt-14 h-2 bg-gray-200" />
       <div className="flex w-full flex-col items-center">
         <p className="heading-3 mt-28 whitespace-nowrap text-moamoa-400">
-          나에게 맞는 속도로 조절해보세요.
+          취향에 맞는 형태로 조절해보세요.
         </p>
 
         <div className="mt-20 flex w-full flex-col items-center">
@@ -56,7 +53,7 @@ export default function TargetMissionCount() {
 
               <MoaToggle
                 checked={isOn}
-                onCheckedChange={setIsOn}
+                onCheckedChange={handleToggle}
                 labelId={labelId}
               />
             </div>
@@ -78,7 +75,7 @@ export default function TargetMissionCount() {
                 panelText,
               ].join(" ")}
             >
-              주간 목표는 “평일 5일” 기준으로 자동 설정됩니다
+              하루 목표치는 최대 5개로 설정할 수 있습니다.
             </p>
           </div>
         </div>
@@ -93,17 +90,22 @@ export default function TargetMissionCount() {
             isOn={isOn}
             duration={duration}
             options={DURATION_OPTIONS}
-            onChange={setDuration}
+            onChange={handleDurationChange}
           />
         </div>
 
         <p className="body-4 mt-31 w-full text-center text-gray-700">
-          주중에 변경한 목표는
-          <br />그 다음주 부터 적용됩니다.
+          목표 기간은 변경한 다음날부터
+          <br />
+          적용됩니다.
         </p>
       </div>
 
-      <BottomActionBar label="설정 저장하기" onClick={handleSave} />
+      <BottomActionBar
+        label={isPending ? "설정 중..." : "설정 저장하기"}
+        onClick={handleSave}
+        disabled={isPending || !isDirty}
+      />
     </div>
   );
 }
