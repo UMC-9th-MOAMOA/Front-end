@@ -1,4 +1,3 @@
-// src/pages/mypage/MyPage.tsx
 import Header from "@/components/common/header/Header";
 import AcornHistory from "./components/AcornHistory";
 import AcornSummary from "./components/AcornSummary";
