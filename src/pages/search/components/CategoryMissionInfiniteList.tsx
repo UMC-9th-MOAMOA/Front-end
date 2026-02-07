@@ -6,21 +6,21 @@ import { useCategoryMissionsInfinite } from "../hooks/useQuery/category/useCateg
 
 interface CategoryMissionInfiniteListProps {
   categoryId: number;
-  subcategoryId: number;
+  subCategoryId: number;
   seed: number;
   swipeHandlers: Record<string, unknown>;
 }
 
 export default function CategoryMissionInfiniteList({
   categoryId,
-  subcategoryId,
+  subCategoryId,
   seed,
   swipeHandlers,
 }: CategoryMissionInfiniteListProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useCategoryMissionsInfinite({
       categoryId,
-      subcategoryId,
+      subCategoryId,
       seed,
     });
 
