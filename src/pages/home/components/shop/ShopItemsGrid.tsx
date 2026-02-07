@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import type { ItemCategory, ShopItem } from "@/types/home/shop";
 import { useEquipItem } from "../../hooks/useEquipItem";
 import { usePurchaseItem } from "../../hooks/usePurchaseItem";
@@ -17,6 +18,7 @@ interface ShopItemsGridProps {
 }
 
 const ShopItemsGrid = ({ category, isBackground }: ShopItemsGridProps) => {
+  const navigate = useNavigate();
   const { data } = useShopItems(category);
   const purchaseMutation = usePurchaseItem();
   const equipMutation = useEquipItem();
@@ -87,14 +89,14 @@ const ShopItemsGrid = ({ category, isBackground }: ShopItemsGridProps) => {
       <PurchaseCompleteModal
         isOpen={modalType === "complete"}
         onClose={closeModal}
-        onGoToMission={closeModal}
+        onGoToMission={() => navigate("/search")}
         name={purchaseTarget?.name ?? ""}
       />
 
       <InsufficientAcornsModal
         isOpen={modalType === "insufficient"}
         onClose={closeModal}
-        onGoToMission={closeModal}
+        onGoToMission={() => navigate("/search")}
         shortfall={shortfall}
       />
     </>
