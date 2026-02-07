@@ -1,48 +1,62 @@
-﻿import { PasswordStrengthMeter } from "@/pages/auth/components/PasswordStrengthMeter";
+﻿import { Controller, useWatch } from "react-hook-form";
+import type { Control, FieldErrors } from "react-hook-form";
+import { PasswordStrengthMeter } from "@/pages/auth/components/PasswordStrengthMeter";
 import { PasswordTextField } from "@/pages/auth/components/PasswordTextField";
+import type { ChangePasswordRequest } from "@/types/password/password";
 import FormField from "../common/FormField";
 
 type Props = {
-  currentPw: string;
-  newPw: string;
-  newPwCheck: string;
-  currentPwError?: string;
-  newPwCheckError?: string;
-  onChangeCurrentPw: (value: string) => void;
-  onChangeNewPw: (value: string) => void;
-  onChangeNewPwCheck: (value: string) => void;
+  control: Control<ChangePasswordRequest>;
+  errors: FieldErrors<ChangePasswordRequest>;
+  serverCurrentPwError?: string;
+  serverNewPwCheckError?: string;
 };
 
 export default function PasswordChangeForm({
-  currentPw,
-  newPw,
-  newPwCheck,
-  currentPwError,
-  newPwCheckError,
-  onChangeCurrentPw,
-  onChangeNewPw,
-  onChangeNewPwCheck,
+  control,
+  errors,
+  serverCurrentPwError,
+  serverNewPwCheckError,
 }: Props) {
+  const newPw = useWatch({ control, name: "newPassword" });
+
   return (
     <section className="flex h-224 w-full flex-col items-start gap-40">
-      <FormField label="기존 비밀번호" className="h-77">
+      <FormField label="기존 비밀번호" className="min-h-77">
         <div className="w-full">
-          <PasswordTextField
-            value={currentPw}
-            onChange={(e) => onChangeCurrentPw(e.target.value)}
-            placeholder="기존 비밀번호를 입력해주세요"
-            errorMessage={currentPwError}
+          <Controller
+            name="currentPassword"
+            control={control}
+            rules={{ required: "기존 비밀번호를 입력해주세요" }}
+            render={({ field }) => (
+              <PasswordTextField
+                value={field.value}
+                onChange={field.onChange}
+                placeholder="기존 비밀번호를 입력해주세요"
+                errorMessage={
+                  errors.currentPassword?.message ?? serverCurrentPwError
+                }
+              />
+            )}
           />
         </div>
       </FormField>
 
       <div className="flex w-full flex-col gap-10">
-        <FormField label="새 비밀번호" className="h-99">
+        <FormField label="새 비밀번호" className="min-h-99">
           <div className="flex w-full flex-col gap-6">
-            <PasswordTextField
-              value={newPw}
-              onChange={(e) => onChangeNewPw(e.target.value)}
-              placeholder="비밀번호"
+            <Controller
+              name="newPassword"
+              control={control}
+              rules={{ required: "비밀번호를 입력해주세요" }}
+              render={({ field }) => (
+                <PasswordTextField
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="비밀번호"
+                  errorMessage={errors.newPassword?.message}
+                />
+              )}
             />
             <PasswordStrengthMeter
               password={newPw}
@@ -51,13 +65,22 @@ export default function PasswordChangeForm({
           </div>
         </FormField>
 
-        <FormField label="새 비밀번호 확인" className="h-77">
+        <FormField label="새 비밀번호 확인" className="min-h-77">
           <div className="w-full">
-            <PasswordTextField
-              value={newPwCheck}
-              onChange={(e) => onChangeNewPwCheck(e.target.value)}
-              placeholder="비밀번호를 입력해주세요"
-              errorMessage={newPwCheckError}
+            <Controller
+              name="newPasswordCheck"
+              control={control}
+              rules={{ required: "비밀번호를 입력해주세요" }}
+              render={({ field }) => (
+                <PasswordTextField
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="비밀번호를 입력해주세요"
+                  errorMessage={
+                    errors.newPasswordCheck?.message ?? serverNewPwCheckError
+                  }
+                />
+              )}
             />
           </div>
           {/* TODO(API hookup): validation / error message */}

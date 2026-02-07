@@ -1,3 +1,4 @@
+import axios from "axios";
 import { authAPI } from "@/apis/axios";
 import type { ApiError, ApiResponse } from "@/types/api/api";
 import type {
@@ -15,11 +16,21 @@ function toApiError(code: string, message: string): ApiError {
 }
 
 export const changePassword = async (payload: ChangePasswordRequest) => {
-  const { data } = await authAPI.patch<ApiResponse<ChangePasswordResult>>(
-    CHANGE_PASSWORD_ENDPOINT,
-    payload
-  );
+  try {
+    const { data } = await authAPI.patch<ApiResponse<ChangePasswordResult>>(
+      CHANGE_PASSWORD_ENDPOINT,
+      payload
+    );
 
-  if (!data.isSuccess) throw toApiError(data.code, data.message);
-  return data.result;
+    if (!data.isSuccess) throw toApiError(data.code, data.message);
+    return data.result;
+  } catch (error) {
+    if (axios.isAxiosError<ApiResponse<ChangePasswordResult>>(error)) {
+      const data = error.response?.data;
+      if (data?.code && data?.message) {
+        throw toApiError(data.code, data.message);
+      }
+    }
+    throw error;
+  }
 };

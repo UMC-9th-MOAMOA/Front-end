@@ -1,7 +1,9 @@
 ﻿import { useEffect, useState } from "react";
+import { useForm, useWatch } from "react-hook-form";
 import Header from "@/components/common/header/Header";
 import { ERROR_CODES } from "@/constants/errorCodes";
 import type { ApiError } from "@/types/api/api";
+import type { ChangePasswordRequest } from "@/types/password/password";
 import BottomActionBar from "./components/common/BottomActionBar";
 import PasswordChangeForm from "./components/Password/PasswordChangeForm";
 import PasswordChangeIntro from "./components/Password/PasswordChangeIntro";
@@ -10,81 +12,105 @@ import { useChangePassword } from "./components/Password/hooks/useChangePassword
 
 export default function PasswordChangePage() {
   const [successOpen, setSuccessOpen] = useState(false);
-  const [currentPw, setCurrentPw] = useState("");
-  const [newPw, setNewPw] = useState("");
-  const [newPwCheck, setNewPwCheck] = useState("");
-  const [currentPwError, setCurrentPwError] = useState("");
-  const [newPwCheckError, setNewPwCheckError] = useState("");
   const { mutate, isPending } = useChangePassword();
+  const {
+    control,
+    handleSubmit,
+    reset,
+    setError,
+    clearErrors,
+    trigger,
+    formState: { errors, isValid },
+  } = useForm<ChangePasswordRequest>({
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      newPasswordCheck: "",
+    },
+    mode: "onChange",
+  });
+
+  const newPassword = useWatch({ control, name: "newPassword" });
+  const newPasswordCheck = useWatch({ control, name: "newPasswordCheck" });
+  const currentPassword = useWatch({ control, name: "currentPassword" });
+  const [serverCurrentPwError, setServerCurrentPwError] = useState("");
+  const [serverNewPwCheckError, setServerNewPwCheckError] = useState("");
 
   useEffect(() => {
-    if (!newPwCheck) {
-      setNewPwCheckError("");
-      return;
+    if (newPasswordCheck) {
+      trigger("newPasswordCheck");
     }
+  }, [newPassword, newPasswordCheck, trigger]);
 
-    if (newPw !== newPwCheck) {
-      setNewPwCheckError("비밀번호가 일치하지 않아요.");
-      return;
+  useEffect(() => {
+    clearErrors("currentPassword");
+    if (serverCurrentPwError) {
+      setServerCurrentPwError("");
     }
+  }, [currentPassword, clearErrors]);
 
-    setNewPwCheckError("");
-  }, [newPw, newPwCheck]);
-
-  const onSubmit = () => {
-    if (newPw !== newPwCheck) {
-      setNewPwCheckError("비밀번호가 일치하지 않아요.");
-      return;
-    }
-
-    mutate(
-      {
-        currentPassword: currentPw,
-        newPassword: newPw,
-        newPasswordCheck: newPwCheck,
-      },
-      {
-        onSuccess: () => {
-          setCurrentPw("");
-          setNewPw("");
-          setNewPwCheck("");
-          setCurrentPwError("");
-          setNewPwCheckError("");
-          setSuccessOpen(true);
-        },
-        onError: (error) => {
-          const apiError = error as ApiError;
-          if (apiError.serverCode === ERROR_CODES.MEMBER.PW_MISMATCH) {
-            setCurrentPwError("비밀번호가 일치하지 않아요.");
-          }
-        },
+  useEffect(() => {
+    if (!newPasswordCheck) {
+      clearErrors("newPasswordCheck");
+      if (serverNewPwCheckError) {
+        setServerNewPwCheckError("");
       }
-    );
-  };
+      return;
+    }
+
+    if (newPassword !== newPasswordCheck) {
+      setError("newPasswordCheck", {
+        type: "validate",
+        message: "비밀번호가 일치하지 않아요.",
+      });
+      return;
+    }
+
+    clearErrors("newPasswordCheck");
+    if (serverNewPwCheckError) {
+      setServerNewPwCheckError("");
+    }
+  }, [newPassword, newPasswordCheck, clearErrors, setError]);
+
+  const onSubmit = handleSubmit((formValues) => {
+    mutate(formValues, {
+      onSuccess: () => {
+        reset();
+        setSuccessOpen(true);
+      },
+      onError: (error) => {
+        const apiError = error as ApiError;
+        if (apiError.serverCode === "AUTH400_2") {
+          setError("currentPassword", {
+            type: "server",
+            message: "현재 비밀번호가 일치하지 않습니다.",
+          });
+          setServerCurrentPwError("현재 비밀번호가 일치하지 않습니다.");
+          return;
+        }
+        if (apiError.serverCode === "AUTH400_10") {
+          setError("newPasswordCheck", {
+            type: "server",
+            message: "새 비밀번호와 비밀번호 확인이 일치하지 않습니다.",
+          });
+          setServerNewPwCheckError(
+            "새 비밀번호와 비밀번호 확인이 일치하지 않습니다."
+          );
+          return;
+        }
+        if (apiError.serverMessage) {
+          setError("currentPassword", {
+            type: "server",
+            message: apiError.serverMessage,
+          });
+          setServerCurrentPwError(apiError.serverMessage);
+        }
+      },
+    });
+  });
 
   const onConfirmSuccess = () => {
     setSuccessOpen(false);
-  };
-
-  const handleChangeCurrentPw = (value: string) => {
-    setCurrentPw(value);
-    if (currentPwError) {
-      setCurrentPwError("");
-    }
-  };
-
-  const handleChangeNewPw = (value: string) => {
-    setNewPw(value);
-    if (newPwCheckError) {
-      setNewPwCheckError("");
-    }
-  };
-
-  const handleChangeNewPwCheck = (value: string) => {
-    setNewPwCheck(value);
-    if (newPwCheckError) {
-      setNewPwCheckError("");
-    }
   };
 
   return (
@@ -95,14 +121,10 @@ export default function PasswordChangePage() {
       <div className="w-full bg-white pt-20 pb-28">
         <PasswordChangeIntro />
         <PasswordChangeForm
-          currentPw={currentPw}
-          newPw={newPw}
-          newPwCheck={newPwCheck}
-          currentPwError={currentPwError}
-          newPwCheckError={newPwCheckError}
-          onChangeCurrentPw={handleChangeCurrentPw}
-          onChangeNewPw={handleChangeNewPw}
-          onChangeNewPwCheck={handleChangeNewPwCheck}
+          control={control}
+          errors={errors}
+          serverCurrentPwError={serverCurrentPwError}
+          serverNewPwCheckError={serverNewPwCheckError}
         />
 
         <PasswordChangeSuccessModal
@@ -114,7 +136,7 @@ export default function PasswordChangePage() {
       <BottomActionBar
         label={isPending ? "변경 중..." : "비밀번호 변경하기"}
         onClick={onSubmit}
-        disabled={isPending || !currentPw || !newPw || !newPwCheck || newPw !== newPwCheck}
+        disabled={isPending || !isValid}
       />
     </>
   );
