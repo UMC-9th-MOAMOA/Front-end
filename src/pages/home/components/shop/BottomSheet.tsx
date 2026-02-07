@@ -1,10 +1,8 @@
 import { motion } from "motion/react";
-import { useState } from "react";
-import type { ShopItem } from "@/types/home/shop";
-import { useShopItems } from "../../hooks/useQuery/useShopItems";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import { useSheetAnimation } from "../../hooks/useSheetAnimation";
-import type { BottomSheetProps, ItemStatus } from "../../types/types";
-import ItemCard from "./ItemCard";
+import type { BottomSheetProps } from "../../types/types";
+import ShopItemsGrid from "./ShopItemsGrid";
 
 const BottomSheet = ({
   category,
@@ -16,23 +14,10 @@ const BottomSheet = ({
     isExpanded,
     onExpandChange
   );
-  const { data, isLoading } = useShopItems(category);
-  const shopItems = data?.items ?? [];
-  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
   const selectedItem = items.find((item) => item.category === category);
   const Icon = selectedItem?.icon;
   const isBackground = category === "BACKGROUND";
-
-  const getItemStatus = (item: ShopItem): ItemStatus => {
-    if (selectedItemId === item.itemId) return "selected";
-    if (!item.affordable) return "locked";
-    return "owned";
-  };
-
-  const handleItemSelect = (itemId: number) => {
-    setSelectedItemId(selectedItemId === itemId ? null : itemId);
-  };
 
   return (
     <motion.div
@@ -58,28 +43,9 @@ const BottomSheet = ({
       </motion.div>
 
       <div className="mt-15 mb-10 flex-1 overflow-y-auto px-37 pb-96">
-        {isLoading ? (
-          <div className="flex flex-wrap gap-16">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="h-102 w-87 animate-pulse rounded-lg bg-gray-100"
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="flex flex-wrap gap-16">
-            {shopItems.map((item) => (
-              <ItemCard
-                key={item.itemId}
-                item={item}
-                isBackground={isBackground}
-                status={getItemStatus(item)}
-                onSelect={() => handleItemSelect(item.itemId)}
-              />
-            ))}
-          </div>
-        )}
+        <AsyncBoundary>
+          <ShopItemsGrid category={category} isBackground={isBackground} />
+        </AsyncBoundary>
       </div>
     </motion.div>
   );
