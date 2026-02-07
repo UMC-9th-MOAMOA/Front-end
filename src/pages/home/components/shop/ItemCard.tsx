@@ -1,4 +1,3 @@
-import { useState } from "react";
 import LockIcon from "@/assets/icons/home/ic_lock.svg?react";
 import BigAcornIcon from "@/assets/icons/ic_big_acorn.svg?react";
 import CheckCircleIcon from "@/assets/icons/ic_check_circle.svg?react";
@@ -14,7 +13,6 @@ interface ItemCardProps {
 }
 
 const ItemCard = ({ item, isBackground, status, onSelect }: ItemCardProps) => {
-  const [isLoaded, setIsLoaded] = useState(false);
   const isSelected = status === "selected";
   const isLocked = status === "locked";
 
@@ -33,19 +31,14 @@ const ItemCard = ({ item, isBackground, status, onSelect }: ItemCardProps) => {
           !isBackground && "bg-white"
         )}
       >
-        {!isLoaded && (
-          <div className="absolute inset-0 animate-pulse bg-gray-100" />
-        )}
         <img
           src={item.imageUrl}
           alt={item.name}
           className={cn(
             isBackground
               ? "h-full w-full object-cover"
-              : "h-60 w-60 object-contain",
-            !isLoaded && "opacity-0"
+              : "h-60 w-60 object-contain"
           )}
-          onLoad={() => setIsLoaded(true)}
         />
       </div>
 
