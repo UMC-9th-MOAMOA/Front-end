@@ -1,18 +1,20 @@
 import { Suspense } from "react";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import FindId from "@/pages/auth/find-id/FindId";
 import LoginPage from "@/pages/auth/login/Login";
-import ResetPassword from "@/pages/auth/reset-password/ResetPassword";
+import ResetPassword from "@/pages/auth/password/Password";
 import SignUpPage from "@/pages/auth/signup/SignUp";
+import Terms from "@/pages/auth/signup/Terms";
 import HomePage from "@/pages/home/Home";
 import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
+import Onboarding from "@/pages/onboarding/Onboarding";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
 import AccountInfoPage from "@/pages/settings/AccountInfoPage";
 import FaqPage from "@/pages/settings/components/FaqPage";
 import Interests from "@/pages/settings/components/Interests";
+import InquiryConsentPage from "@/pages/settings/components/inquiry/InquiryConsentPage";
 import InquiryDetailPage from "@/pages/settings/components/inquiry/InquiryDetailPage";
 import InquiryPage from "@/pages/settings/components/inquiry/InquiryPage";
 import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
@@ -48,18 +50,18 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
-        path: "find-id",
-        element: <FindId />,
-        handle: { bgColor: "bg-white", hideBottomNav: true },
-      },
-      {
-        path: "reset-password",
+        path: "password",
         element: <ResetPassword />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
+        path: "terms",
+        element: <Terms />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
         path: "onboarding",
-        element: <div>온보딩</div>,
+        element: <Onboarding />,
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
@@ -125,6 +127,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "/settings/inquiry",
         element: <InquiryPage />,
+        handle: { hideBottomNav: true },
+      },
+      {
+        path: "/settings/inquiry/consent",
+        element: <InquiryConsentPage />,
         handle: { hideBottomNav: true },
       },
       {

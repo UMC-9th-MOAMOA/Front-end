@@ -13,10 +13,8 @@ export function useCategorySwipe(
   const currentIndex = MAIN_CATEGORIES.indexOf(selectedCategory);
 
   useEffect(() => {
-    if (initialCategory !== selectedCategory) {
-      setSelectedCategory(initialCategory);
-    }
-  }, [initialCategory, selectedCategory]);
+    setSelectedCategory(initialCategory);
+  }, [initialCategory]);
 
   const handleCategoryChange = (category: MainCategory) => {
     setSelectedCategory(category);

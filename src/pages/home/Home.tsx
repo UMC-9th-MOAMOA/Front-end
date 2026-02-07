@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "motion/react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import squirrelDefault from "@/assets/icons/home/character/squirrel_default.svg";
-import { useAttendanceStore } from "@/store/attendance";
+import { useAttendanceStore } from "@/store/attendance/attendance";
 import { getWeeklyAttendance } from "@/utils/attendance/attendance";
 import CustomizationToolbar from "./components/CustomizationToolbar";
 import HeaderButtons from "./components/HeaderButtons";
@@ -14,9 +15,13 @@ import { useBottomSheet } from "./hooks/useBottomSheet";
 
 const HomePage = () => {
   useBgm("/audio/bgm.mp3");
+  const navigate = useNavigate();
   const [acornCount] = useState(13);
-  const [, setSelectedTime] = useState<number | null>(null);
   const nickname = "사용자";
+
+  const handleTimeSelect = (time: number) => {
+    navigate(`/today-mission?time=${time}`);
+  };
 
   const {
     activeCustomization,
@@ -46,7 +51,7 @@ const HomePage = () => {
 
       {!activeCustomization && (
         <div className="mt-17 mb-21 flex justify-center">
-          <QuestionBox nickname={nickname} onTimeSelect={setSelectedTime} />
+          <QuestionBox nickname={nickname} onTimeSelect={handleTimeSelect} />
         </div>
       )}
 
@@ -64,7 +69,7 @@ const HomePage = () => {
         {activeCustomization && (
           <BottomSheet
             key="bottom-sheet"
-            type={activeCustomization}
+            category={activeCustomization}
             items={CUSTOMIZATION_ITEMS}
             isExpanded={isExpanded}
             onExpandChange={setIsExpanded}

@@ -1,8 +1,5 @@
-﻿// InquiryPage.tsx
-import { Suspense, useState } from "react";
-import { useNavigate } from "react-router-dom";
+﻿import { Suspense, useEffect, useState } from "react";
 import Header from "@/components/common/header/Header";
-
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import type { InquiryCategoryServer } from "@/types/inquiry/inquiry";
 import type {
@@ -10,6 +7,7 @@ import type {
   InquiryDraft,
   TabKey,
 } from "../../types/inquiry.type";
+
 import BottomActionBar from "../common/BottomActionBar";
 import { useCreateInquiry } from "./hooks/useCreateInquiry";
 import InquiryList from "./InquiryList";
@@ -27,6 +25,27 @@ const CATEGORY_TO_SERVER: Record<InquiryCategory, InquiryCategoryServer> = {
 export default function InquiryPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<TabKey>("write");
+  const [agreed, setAgreed] = useState(false);
+  const [draft, setDraft] = useState<InquiryDraft>({
+    category: null,
+    title: "",
+    content: "",
+    images: [],
+  });
+  const location = useLocation();
+
+  useEffect(() => {
+    const state = location.state as {
+      consentAgreed?: boolean;
+      draft?: InquiryDraft;
+    } | null;
+    if (typeof state?.consentAgreed === "boolean") {
+      setAgreed(state.consentAgreed);
+    }
+    if (state?.draft) {
+      setDraft(state.draft);
+    }
+  }, [location.state]);
 
   // ✅ draft를 여기로 올림
   const [draft, setDraft] = useState<InquiryDraft>({
@@ -59,8 +78,7 @@ export default function InquiryPage() {
 
       <div className="flex w-full flex-col items-center">
         {tab === "write" ? (
-          // ✅ props로 draft와 setDraft 내려줌
-          <InquiryWriteForm draft={draft} setDraft={setDraft} />
+          <InquiryWriteForm agreed={agreed} draft={draft} setDraft={setDraft} />
         ) : (
           <Suspense fallback={<LoadingSpinner />}>
             <InquiryList
@@ -73,8 +91,10 @@ export default function InquiryPage() {
       {tab === "write" && (
         <BottomActionBar
           label={isPending ? "접수 중..." : "문의 접수"}
+          disabled={!agreed || !canSubmit || isPending}
+          buttonClassName={agreed ? "bg-moamoa-300" : "bg-gray-300"}
           onClick={() => {
-            if (!canSubmit || isPending) return;
+            if (!agreed || !canSubmit || isPending) return;
 
             mutate(
               {
