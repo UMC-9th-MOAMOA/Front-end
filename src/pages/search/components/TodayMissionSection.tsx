@@ -1,25 +1,10 @@
 import IcReload from "@/assets/icons/ic_reload.svg?react";
 import { cn } from "@/utils/cn/cn";
+import { useRecommendedMissions } from "../hooks/useQuery/useRecommendedMissions";
 import RecommendedMissionCard from "./common/RecommendedMissionCard";
 
-interface Mission {
-  id: number;
-  title: string;
-  keywords: string[];
-  minute: number;
-  category: string;
-  description: string;
-}
-
-interface TodayMissionSectionProps {
-  missions: Mission[];
-  onRefresh?: () => void;
-}
-
-export default function TodayMissionSection({
-  missions,
-  onRefresh,
-}: TodayMissionSectionProps) {
+export default function TodayMissionSection() {
+  const { data: missions, refetch } = useRecommendedMissions({ time: null });
   return (
     <div className="mt-48">
       <div className="flex items-center justify-between px-1">
@@ -27,7 +12,7 @@ export default function TodayMissionSection({
         <button
           type="button"
           className="flex cursor-pointer items-center gap-6"
-          onClick={onRefresh}
+          onClick={() => refetch()}
         >
           <IcReload className="size-19 text-moamoa-400" />
           <span className="body-2 text-black">새로고침</span>
@@ -35,24 +20,31 @@ export default function TodayMissionSection({
       </div>
 
       <div className="-mx-layout-side mt-22 overflow-x-auto">
-        <div className="flex gap-10">
-          {missions.map((mission, index) => (
-            <div
-              key={mission.id}
-              className={cn("shrink-0", index === 0 && "ml-layout-side")}
-            >
-              <RecommendedMissionCard
-                title={mission.title}
-                keywords={mission.keywords}
-                minute={mission.minute}
-                category={mission.category}
-                description={mission.description}
-              />
-            </div>
-          ))}
+        {missions.length === 0 ? (
+          <div className="flex h-200 items-center justify-center">
+            <span className="body-2 text-gray-400">추천 미션이 없습니다</span>
+          </div>
+        ) : (
+          <div className="flex gap-10">
+            {missions.map((mission, index) => (
+              <div
+                key={mission.missionId}
+                className={cn("shrink-0", index === 0 && "ml-layout-side")}
+              >
+                <RecommendedMissionCard
+                  title={mission.title}
+                  keywords={mission.keywords}
+                  durationMinutes={mission.durationMinutes}
+                  category={mission.category}
+                  description={mission.description}
+                  isScrapped={mission.isScrapped}
+                />
+              </div>
+            ))}
 
-          <div className="w-15 shrink-0" />
-        </div>
+            <div className="w-15 shrink-0" />
+          </div>
+        )}
       </div>
     </div>
   );
