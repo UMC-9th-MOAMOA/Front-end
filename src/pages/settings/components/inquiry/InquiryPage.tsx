@@ -1,4 +1,5 @@
 ﻿import { Suspense, useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import type { InquiryCategoryServer } from "@/types/inquiry/inquiry";
@@ -47,14 +48,6 @@ export default function InquiryPage() {
     }
   }, [location.state]);
 
-  // ✅ draft를 여기로 올림
-  const [draft, setDraft] = useState<InquiryDraft>({
-    category: null,
-    title: "",
-    content: "",
-    images: [],
-  });
-
   const { mutate, isPending } = useCreateInquiry();
 
   const canSubmit =
@@ -101,6 +94,7 @@ export default function InquiryPage() {
                 category: CATEGORY_TO_SERVER[draft.category!],
                 title: draft.title.trim(),
                 content: draft.content.trim(),
+                termsAgreed: agreed,
                 images: draft.images,
               },
               {
