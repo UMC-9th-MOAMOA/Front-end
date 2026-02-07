@@ -9,14 +9,17 @@ export type AuthTextFieldProps = {
   value: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 
+  height?: "sm" | "md";
   width?: "full" | "lg" | "md";
   variant?: "outlined" | "ghost";
 
   helperText?: string;
   errorMessage?: string;
+  error?: boolean;
   disabled?: boolean;
   name?: string;
   endAdornment?: ReactNode;
+  endAdornmentPaddingClassName?: string;
 };
 
 export function AuthTextField({
@@ -26,25 +29,33 @@ export function AuthTextField({
   value,
   onChange,
   width,
+  height,
   variant,
   helperText,
   errorMessage,
+  error = false,
   disabled = false,
   name,
   endAdornment,
+  endAdornmentPaddingClassName,
 }: AuthTextFieldProps) {
   const reactId = useId();
 
-  const hasError = Boolean(errorMessage);
+  const hasError = Boolean(errorMessage) || error;
   const inputId = name ?? reactId;
 
   const baseClassName = textFieldVariants({
     width,
     variant,
+    height,
     error: hasError,
   });
 
-  const inputClassName = `${baseClassName} ${endAdornment ? "pr-44" : ""}`;
+  const paddingRight = endAdornment
+    ? (endAdornmentPaddingClassName ?? "pr-44")
+    : "";
+
+  const inputClassName = `${baseClassName} ${paddingRight}`;
 
   return (
     <div className="flex flex-col gap-10">
@@ -77,7 +88,7 @@ export function AuthTextField({
       </div>
 
       {/* Helper / Error message */}
-      {hasError ? (
+      {errorMessage ? (
         <p className="body-5 text-red-500">{errorMessage}</p>
       ) : (
         helperText && <p className="body-5 text-gray-500">{helperText}</p>

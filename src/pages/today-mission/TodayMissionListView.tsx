@@ -1,57 +1,23 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useQueryClient } from "@tanstack/react-query";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import { Button } from "@/components/common/button/Button";
-import MissionCard from "@/components/MissionCard";
-
-const ITEMS_PER_PAGE = 10;
-
-// TODO: 홈 화면 추천 미션 API 연결 시 수정 필요
-const TEMP_MISSIONS = [
-  {
-    id: 1,
-    title: "임시 미션",
-    keywords: ["임시"],
-    minute: 10,
-    category: "임시",
-    quizCount: 3,
-    isLiked: false,
-  },
-];
+import TodayMissionList from "./components/TodayMissionList";
 
 export default function TodayMissionListView() {
   const navigate = useNavigate();
-  const [missions] = useState(TEMP_MISSIONS);
-  const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
-  const observerTarget = useRef<HTMLDivElement>(null);
+  const queryClient = useQueryClient();
+  const [searchParams] = useSearchParams();
+  const time = searchParams.get("time");
+  const timeValue = time ? Number(time) : null;
 
   const handleRefresh = () => {
-    setDisplayedCount(ITEMS_PER_PAGE);
+    queryClient.invalidateQueries({
+      queryKey: ["missions", "recommended", { time: timeValue }],
+    });
   };
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting && displayedCount < missions.length) {
-          setDisplayedCount((prev) =>
-            Math.min(prev + ITEMS_PER_PAGE, missions.length)
-          );
-        }
-      },
-      { threshold: 1.0 }
-    );
-
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
-    }
-
-    return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
-      }
-    };
-  }, [displayedCount, missions.length]);
 
   return (
     <div>
@@ -77,12 +43,9 @@ export default function TodayMissionListView() {
         </Button>
       </div>
 
-      <div className="mt-16 -mb-96 flex flex-col gap-16">
-        {missions.slice(0, displayedCount).map((mission) => (
-          <MissionCard key={mission.id} {...mission} />
-        ))}
-        <div ref={observerTarget} className="h-1" />
-      </div>
+      <AsyncBoundary>
+        <TodayMissionList />
+      </AsyncBoundary>
     </div>
   );
 }

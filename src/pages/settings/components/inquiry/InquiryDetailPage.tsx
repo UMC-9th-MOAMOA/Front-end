@@ -1,6 +1,8 @@
-﻿import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import IcReply from "@/assets/icons/ic_reply.svg?react";
 import Header from "@/components/common/header/Header";
 import { useMyInquiryDetail } from "./hooks/useMyInquiryDetail";
+
 import StatusPill from "./StatusPill";
 
 // TODO(API 연결 시): GET /inquiries/{inquiryId} 결과로 교체
@@ -40,11 +42,9 @@ export default function InquiryDetailPage() {
               {formatIsoToDotDate(data.createdAt)}
             </span>
           </div>
-
           <p className="heading-2 mt-20 w-full truncate text-black">
             {data.title}
           </p>
-
           {data.inquiryImageUrls.length > 0 && (
             <div className="mt-16 grid w-full grid-cols-3 gap-20">
               {data.inquiryImageUrls.map((url, index) => (
@@ -62,9 +62,28 @@ export default function InquiryDetailPage() {
               ))}
             </div>
           )}
-
           <p className="body-4 mt-16 w-full text-black">{data.content}</p>
-          {/* ✅ 답변/이미지는 UI 요구 나오면 여기 아래에 추가하면 됨 (지금은 UI 수정 안 하기로 했으니 미출력) */}
+          <div
+            className="mt-23 mb-23 h-2 w-full rounded-md"
+            style={{ background: "var(--MOAMOA-G-200, #EEE)" }}
+          />
+          <div className="flex w-full flex-col items-start gap-20 self-stretch">
+            <div className="flex items-center gap-12">
+              <IcReply className="h-24 w-24" aria-hidden />
+              <span className="body-4 text-center text-black">담당자 OOO</span>
+            </div>
+
+            <div className="flex items-start gap-20">
+              <div className="h-139 w-139 rounded-lg bg-moamoa-50" />
+              <div className="h-139 w-139 rounded-lg bg-moamoa-50" />
+            </div>
+
+            <p className="body-4 text-black">
+              {data.answerStatus === "COMPLETED"
+                ? "답변 내용이 표시됩니다."
+                : "아직 답변이 등록되지 않았어요."}
+            </p>
+          </div>
         </div>
       </div>
     </div>

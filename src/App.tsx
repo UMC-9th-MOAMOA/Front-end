@@ -27,7 +27,7 @@ function App() {
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [handleCheckAttendance]);
+  }, []);
 
   return <RouterProvider router={router} />;
 }
