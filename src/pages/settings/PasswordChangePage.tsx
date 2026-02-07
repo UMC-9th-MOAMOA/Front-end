@@ -1,7 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import Header from "@/components/common/header/Header";
-import { ERROR_CODES } from "@/constants/errorCodes";
 import type { ApiError } from "@/types/api/api";
 import type { ChangePasswordRequest } from "@/types/password/password";
 import BottomActionBar from "./components/common/BottomActionBar";
@@ -44,33 +43,28 @@ export default function PasswordChangePage() {
 
   useEffect(() => {
     clearErrors("currentPassword");
-    if (serverCurrentPwError) {
-      setServerCurrentPwError("");
-    }
-  }, [currentPassword, clearErrors]);
+    setServerCurrentPwError("");
+  }, [currentPassword, clearErrors, serverCurrentPwError]);
 
   useEffect(() => {
-    if (!newPasswordCheck) {
-      clearErrors("newPasswordCheck");
-      if (serverNewPwCheckError) {
-        setServerNewPwCheckError("");
-      }
-      return;
-    }
-
     if (newPassword !== newPasswordCheck) {
-      setError("newPasswordCheck", {
-        type: "validate",
-        message: "비밀번호가 일치하지 않아요.",
-      });
-      return;
-    }
-
-    clearErrors("newPasswordCheck");
-    if (serverNewPwCheckError) {
+      if (newPasswordCheck) {
+        setError("newPasswordCheck", {
+          type: "validate",
+          message: "비밀번호가 일치하지 않아요.",
+        });
+      }
+    } else if (newPasswordCheck) {
+      clearErrors("newPasswordCheck");
       setServerNewPwCheckError("");
     }
-  }, [newPassword, newPasswordCheck, clearErrors, setError]);
+  }, [
+    newPassword,
+    newPasswordCheck,
+    clearErrors,
+    setError,
+    serverNewPwCheckError,
+  ]);
 
   const onSubmit = handleSubmit((formValues) => {
     mutate(formValues, {
