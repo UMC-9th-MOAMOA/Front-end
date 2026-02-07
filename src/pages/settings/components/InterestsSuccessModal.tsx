@@ -31,8 +31,8 @@ export default function InterestsSuccessModal({ open, onConfirm }: Props) {
             id="interests-success-desc"
             className="body-2 whitespace-pre-line text-center text-gray-600"
           >
-            목표 미션 개수가 저장 되었습니다.
-            {"\n"}새로운 기준은 다음 주부터 적용됩니다.
+            이제 새로운 관심사를
+            {"\n"}기준으로 콘텐츠가 추천돼요.
           </p>
 
           <div className="flex w-full items-center justify-center">
