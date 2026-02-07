@@ -1,12 +1,11 @@
 import { motion } from "motion/react";
-import { useState } from "react";
-import { SHOP_ITEMS } from "../../constants/constants";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import { useSheetAnimation } from "../../hooks/useSheetAnimation";
-import type { BottomSheetProps, ItemStatus } from "../../types/types";
-import ItemCard from "./ItemCard";
+import type { BottomSheetProps } from "../../types/types";
+import ShopItemsGrid from "./ShopItemsGrid";
 
 const BottomSheet = ({
-  type,
+  category,
   items,
   isExpanded,
   onExpandChange,
@@ -15,21 +14,10 @@ const BottomSheet = ({
     isExpanded,
     onExpandChange
   );
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
 
-  const selectedItem = items.find((item) => item.type === type);
+  const selectedItem = items.find((item) => item.category === category);
   const Icon = selectedItem?.icon;
-  const shopItems = SHOP_ITEMS[type] || [];
-  const isBackground = type === "background";
-
-  const getItemStatus = (itemId: string): ItemStatus => {
-    if (selectedItemId === itemId) return "selected";
-    return "owned";
-  };
-
-  const handleItemSelect = (itemId: string) => {
-    setSelectedItemId(selectedItemId === itemId ? null : itemId);
-  };
+  const isBackground = category === "BACKGROUND";
 
   return (
     <motion.div
@@ -55,17 +43,9 @@ const BottomSheet = ({
       </motion.div>
 
       <div className="mt-15 mb-10 flex-1 overflow-y-auto px-37 pb-96">
-        <div className="flex flex-wrap gap-16">
-          {shopItems.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              isBackground={isBackground}
-              status={getItemStatus(item.id)}
-              onSelect={() => handleItemSelect(item.id)}
-            />
-          ))}
-        </div>
+        <AsyncBoundary key={category}>
+          <ShopItemsGrid category={category} isBackground={isBackground} />
+        </AsyncBoundary>
       </div>
     </motion.div>
   );
