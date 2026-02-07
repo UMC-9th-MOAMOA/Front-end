@@ -1,6 +1,6 @@
-import { Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import IcSearch from "@/assets/icons/ic_search.svg?react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import CategoryMissionList from "../components/CategoryMissionList";
 import CategorySection from "../components/CategorySection";
@@ -25,15 +25,15 @@ export default function MainSearchView() {
         </button>
       </div>
 
-      <Suspense
-        fallback={
+      <AsyncBoundary
+        loadingFallback={
           <div className="mt-48 flex h-200 items-center justify-center">
             <LoadingSpinner className="size-60" />
           </div>
         }
       >
         <TodayMissionSection />
-      </Suspense>
+      </AsyncBoundary>
       <div className="-mx-layout-side mt-18 h-8 bg-gray-200" />
 
       <CategorySection
@@ -41,8 +41,8 @@ export default function MainSearchView() {
         onCategoryChange={setSelectedCategory}
       />
 
-      <Suspense
-        fallback={
+      <AsyncBoundary
+        loadingFallback={
           <div className="mt-30 flex items-center justify-center">
             <LoadingSpinner className="size-60" />
           </div>
@@ -52,7 +52,7 @@ export default function MainSearchView() {
           selectedCategory={selectedCategory}
           swipeHandlers={swipeHandlers}
         />
-      </Suspense>
+      </AsyncBoundary>
     </>
   );
 }
