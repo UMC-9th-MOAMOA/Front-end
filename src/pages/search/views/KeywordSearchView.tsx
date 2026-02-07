@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
-import { MOCK_KEYWORD_SEARCH_MISSIONS } from "@/mocks/search/mission";
+import AsyncBoundary from "@/components/AsyncBoundary";
+import type { KeywordFilterTab } from "@/types/keyword/keyword";
 import SearchBar from "../components/common/SearchBar";
 import RecommendedKeywordsSection from "../components/RecommendedKeywordsSection";
 import SearchResultsView from "../components/SearchResultsView";
@@ -12,9 +13,12 @@ export default function KeywordSearchView() {
   const navigate = useNavigate();
 
   const [searchValue, setSearchValue] = useState("");
-  const [selectedFilter, setSelectedFilter] = useState("전체");
+  const [selectedFilter, setSelectedFilter] =
+    useState<KeywordFilterTab>("전체");
   const [selectedKeywords, setSelectedKeywords] = useState<string[]>([]);
   const [isSearched, setIsSearched] = useState(false);
+
+  const seedRef = useRef(Date.now());
 
   const handleBack = () => {
     if (isSearched) {
@@ -36,20 +40,10 @@ export default function KeywordSearchView() {
 
   const handleSearch = () => {
     if (selectedKeywords.length > 0 || searchValue.trim()) {
+      seedRef.current = Date.now();
       setIsSearched(true);
     }
   };
-
-  // TODO: 키워드 검색 API 연결 시 수정
-  const missions = MOCK_KEYWORD_SEARCH_MISSIONS.map((m) => ({
-    id: m.missionId,
-    title: m.title,
-    keywords: m.keywords,
-    minute: m.durationMinutes,
-    category: m.category,
-    quizCount: m.quizCount,
-    isLiked: m.isScrapped,
-  }));
 
   return (
     <>
@@ -72,11 +66,14 @@ export default function KeywordSearchView() {
       />
 
       {isSearched ? (
-        <SearchResultsView
-          selectedKeywords={selectedKeywords}
-          onKeywordClick={handleKeywordClick}
-          missions={missions}
-        />
+        <AsyncBoundary>
+          <SearchResultsView
+            searchText={searchValue}
+            selectedKeywords={selectedKeywords}
+            onKeywordClick={handleKeywordClick}
+            seed={seedRef.current}
+          />
+        </AsyncBoundary>
       ) : (
         <>
           <div className="flex items-center gap-4">
@@ -86,12 +83,14 @@ export default function KeywordSearchView() {
             </p>
           </div>
 
-          <RecommendedKeywordsSection
-            selectedFilter={selectedFilter}
-            onFilterChange={setSelectedFilter}
-            selectedKeywords={selectedKeywords}
-            onKeywordClick={handleKeywordClick}
-          />
+          <AsyncBoundary>
+            <RecommendedKeywordsSection
+              selectedFilter={selectedFilter}
+              onFilterChange={setSelectedFilter}
+              selectedKeywords={selectedKeywords}
+              onKeywordClick={handleKeywordClick}
+            />
+          </AsyncBoundary>
         </>
       )}
     </>

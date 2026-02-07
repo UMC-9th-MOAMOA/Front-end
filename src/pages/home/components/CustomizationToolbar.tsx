@@ -1,10 +1,11 @@
+import type { ItemCategory } from "@/types/home/shop";
 import { cn } from "@/utils/cn/cn";
-import type { CustomizationType, ToolbarItem } from "../types/types";
+import type { ToolbarItem } from "../types/types";
 
 interface CustomizationToolbarProps {
   items: ToolbarItem[];
-  activeCustomization: CustomizationType | null;
-  onItemClick: (type: CustomizationType) => void;
+  activeCustomization: ItemCategory | null;
+  onItemClick: (category: ItemCategory) => void;
 }
 
 const CustomizationToolbar = ({
@@ -16,12 +17,12 @@ const CustomizationToolbar = ({
     <div className="flex flex-col rounded-lg bg-white">
       {items.map((item) => {
         const Icon = item.icon;
-        const isActive = activeCustomization === item.type;
+        const isActive = activeCustomization === item.category;
         return (
           <button
-            key={item.type}
+            key={item.category}
             type="button"
-            onClick={() => onItemClick(item.type)}
+            onClick={() => onItemClick(item.category)}
             className="flex items-center justify-center px-7 py-8 transition-colors"
           >
             <Icon

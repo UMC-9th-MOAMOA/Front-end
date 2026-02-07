@@ -44,7 +44,7 @@ export default function AuthHeader({
         </button>
         <h1 className="heading-2 text-center text-black">{title}</h1>
       </header>
-      <div className="-mx-25 mt-16 h-1 w-[calc(100%+50px)] bg-gray-200" />
+      <div className="-mx-layout-side h-1 w-[calc(100%+50px)] bg-gray-200" />
     </>
   );
 }
