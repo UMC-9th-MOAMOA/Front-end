@@ -69,7 +69,7 @@ const HomePage = () => {
         {activeCustomization && (
           <BottomSheet
             key="bottom-sheet"
-            type={activeCustomization}
+            category={activeCustomization}
             items={CUSTOMIZATION_ITEMS}
             isExpanded={isExpanded}
             onExpandChange={setIsExpanded}

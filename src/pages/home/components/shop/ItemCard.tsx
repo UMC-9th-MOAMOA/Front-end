@@ -1,8 +1,10 @@
+import { useState } from "react";
 import LockIcon from "@/assets/icons/home/ic_lock.svg?react";
 import BigAcornIcon from "@/assets/icons/ic_big_acorn.svg?react";
 import CheckCircleIcon from "@/assets/icons/ic_check_circle.svg?react";
+import type { ShopItem } from "@/types/home/shop";
 import { cn } from "@/utils/cn/cn";
-import type { ItemStatus, ShopItem } from "../../types/types";
+import type { ItemStatus } from "../../types/types";
 
 interface ItemCardProps {
   item: ShopItem;
@@ -12,7 +14,7 @@ interface ItemCardProps {
 }
 
 const ItemCard = ({ item, isBackground, status, onSelect }: ItemCardProps) => {
-  const Icon = item.icon;
+  const [isLoaded, setIsLoaded] = useState(false);
   const isSelected = status === "selected";
   const isLocked = status === "locked";
 
@@ -31,15 +33,20 @@ const ItemCard = ({ item, isBackground, status, onSelect }: ItemCardProps) => {
           !isBackground && "bg-white"
         )}
       >
-        {isBackground && item.image ? (
-          <img
-            src={item.image}
-            alt={item.name}
-            className="h-full w-full object-cover"
-          />
-        ) : (
-          Icon && <Icon className="h-60 w-60" />
+        {!isLoaded && (
+          <div className="absolute inset-0 animate-pulse bg-gray-100" />
         )}
+        <img
+          src={item.imageUrl}
+          alt={item.name}
+          className={cn(
+            isBackground
+              ? "h-full w-full object-cover"
+              : "h-60 w-60 object-contain",
+            !isLoaded && "opacity-0"
+          )}
+          onLoad={() => setIsLoaded(true)}
+        />
       </div>
 
       {isLocked && (

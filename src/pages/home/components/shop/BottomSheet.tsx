@@ -1,12 +1,13 @@
 import { motion } from "motion/react";
 import { useState } from "react";
-import { SHOP_ITEMS } from "../../constants/constants";
+import type { ShopItem } from "@/types/home/shop";
+import { useShopItems } from "../../hooks/useQuery/useShopItems";
 import { useSheetAnimation } from "../../hooks/useSheetAnimation";
 import type { BottomSheetProps, ItemStatus } from "../../types/types";
 import ItemCard from "./ItemCard";
 
 const BottomSheet = ({
-  type,
+  category,
   items,
   isExpanded,
   onExpandChange,
@@ -15,19 +16,21 @@ const BottomSheet = ({
     isExpanded,
     onExpandChange
   );
-  const [selectedItemId, setSelectedItemId] = useState<string | null>(null);
+  const { data, isLoading } = useShopItems(category);
+  const shopItems = data?.items ?? [];
+  const [selectedItemId, setSelectedItemId] = useState<number | null>(null);
 
-  const selectedItem = items.find((item) => item.type === type);
+  const selectedItem = items.find((item) => item.category === category);
   const Icon = selectedItem?.icon;
-  const shopItems = SHOP_ITEMS[type] || [];
-  const isBackground = type === "background";
+  const isBackground = category === "BACKGROUND";
 
-  const getItemStatus = (itemId: string): ItemStatus => {
-    if (selectedItemId === itemId) return "selected";
+  const getItemStatus = (item: ShopItem): ItemStatus => {
+    if (selectedItemId === item.itemId) return "selected";
+    if (!item.affordable) return "locked";
     return "owned";
   };
 
-  const handleItemSelect = (itemId: string) => {
+  const handleItemSelect = (itemId: number) => {
     setSelectedItemId(selectedItemId === itemId ? null : itemId);
   };
 
@@ -55,17 +58,28 @@ const BottomSheet = ({
       </motion.div>
 
       <div className="mt-15 mb-10 flex-1 overflow-y-auto px-37 pb-96">
-        <div className="flex flex-wrap gap-16">
-          {shopItems.map((item) => (
-            <ItemCard
-              key={item.id}
-              item={item}
-              isBackground={isBackground}
-              status={getItemStatus(item.id)}
-              onSelect={() => handleItemSelect(item.id)}
-            />
-          ))}
-        </div>
+        {isLoading ? (
+          <div className="flex flex-wrap gap-16">
+            {Array.from({ length: 6 }).map((_, i) => (
+              <div
+                key={i}
+                className="h-102 w-87 animate-pulse rounded-lg bg-gray-100"
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="flex flex-wrap gap-16">
+            {shopItems.map((item) => (
+              <ItemCard
+                key={item.itemId}
+                item={item}
+                isBackground={isBackground}
+                status={getItemStatus(item)}
+                onSelect={() => handleItemSelect(item.itemId)}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </motion.div>
   );
