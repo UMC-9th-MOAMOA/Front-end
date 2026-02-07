@@ -43,7 +43,7 @@ const BottomSheet = ({
       </motion.div>
 
       <div className="mt-15 mb-10 flex-1 overflow-y-auto px-37 pb-96">
-        <AsyncBoundary>
+        <AsyncBoundary key={category}>
           <ShopItemsGrid category={category} isBackground={isBackground} />
         </AsyncBoundary>
       </div>
