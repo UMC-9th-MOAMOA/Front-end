@@ -1,17 +1,8 @@
-import IcDash from "@/assets/icons/ic.dottedline.svg?react";
+﻿import IcDash from "@/assets/icons/ic.dottedline.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
-import type {
-  InterestCategoryKey,
-  InterestSubKey,
-} from "../../constants/interests";
-import {
-  type EMPTY_SELECTED_INTERESTS,
-  getSelectedCount,
-  type INTEREST_CATEGORIES,
-  isSubSelected,
-} from "../../constants/interests";
+import type { InterestWithDetails } from "@/types/interest/interest.setting";
 
-type InterestCategory = (typeof INTEREST_CATEGORIES)[number];
+type SelectedMap = Record<number, number[]>;
 
 type InterestSubButtonProps = {
   label: string;
@@ -20,14 +11,11 @@ type InterestSubButtonProps = {
 };
 
 type InterestCategoryCardProps = {
-  category: InterestCategory;
+  category: InterestWithDetails;
   isOpen: boolean;
-  selected: typeof EMPTY_SELECTED_INTERESTS;
+  selected: SelectedMap;
   onToggle: () => void;
-  onToggleSub: (
-    categoryKey: InterestCategoryKey,
-    subKey: InterestSubKey
-  ) => void;
+  onToggleSub: (interestId: number, subInterestId: number) => void;
 };
 
 function InterestSubButton({
@@ -40,7 +28,7 @@ function InterestSubButton({
       type="button"
       onClick={onClick}
       className={[
-        "body-4 flex h-34 flex-1 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
+        "body-4 flex h-34 shrink-0 items-center justify-center gap-4 whitespace-nowrap rounded-lg px-16 py-8",
         selected ? "bg-moamoa-300 text-white" : "bg-moamoa-50 text-moamoa-300",
       ].join(" ")}
     >
@@ -56,10 +44,11 @@ export default function InterestCategoryCard({
   onToggle,
   onToggleSub,
 }: InterestCategoryCardProps) {
-  const rows = [category.subs.slice(0, 3), category.subs.slice(3)].filter(
+  const rows = [category.details.slice(0, 3), category.details.slice(3)].filter(
     (row) => row.length > 0
   );
-  const isActive = getSelectedCount(selected, category.key) > 0;
+  const selectedCount = selected[category.id]?.length ?? 0;
+  const isActive = selectedCount > 0;
 
   return (
     <div
@@ -73,14 +62,12 @@ export default function InterestCategoryCard({
         onClick={onToggle}
         className="flex w-full items-center justify-between px-26 py-13"
         aria-expanded={isOpen}
-        aria-label={`${category.label} ${isOpen ? "접기" : "펼치기"}`}
+        aria-label={`${category.name} ${isOpen ? "닫기" : "열기"}`}
       >
         <div className="flex items-center gap-12">
-          <span className="heading-4 text-black">{category.label}</span>
+          <span className="heading-4 text-black">{category.name}</span>
 
-          <span className="body-2 text-gray-900">
-            {getSelectedCount(selected, category.key)}개 선택중
-          </span>
+          <span className="body-2 text-gray-900">{selectedCount}개 선택</span>
         </div>
 
         <IcLeft
@@ -101,17 +88,21 @@ export default function InterestCategoryCard({
             <div className="mt-21 flex w-full flex-col gap-15">
               {rows.map((row, index) => (
                 <div
-                  key={row[0]?.key ?? index}
-                  className="flex w-full items-center gap-16"
+                  key={row[0]?.id ?? index}
+                  className="-mx-27 overflow-x-auto"
                 >
-                  {row.map((sub) => (
-                    <InterestSubButton
-                      key={sub.key}
-                      label={sub.label}
-                      selected={isSubSelected(selected, category.key, sub.key)}
-                      onClick={() => onToggleSub(category.key, sub.key)}
-                    />
-                  ))}
+                  <div className="flex w-max gap-16 px-27">
+                    {row.map((sub) => (
+                      <InterestSubButton
+                        key={sub.id}
+                        label={sub.name}
+                        selected={
+                          selected[category.id]?.includes(sub.id) ?? false
+                        }
+                        onClick={() => onToggleSub(category.id, sub.id)}
+                      />
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
