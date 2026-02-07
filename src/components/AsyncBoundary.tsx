@@ -1,7 +1,6 @@
 import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import { type ReactNode, Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Button } from "@/components/common/button/Button";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 
 interface AsyncBoundaryProps {
@@ -28,18 +27,12 @@ export default function AsyncBoundary({
       {({ reset }) => (
         <ErrorBoundary
           onReset={reset}
-          fallbackRender={({ resetErrorBoundary }) =>
+          fallbackRender={() =>
             errorFallback ?? (
               <div className="flex h-[50vh] flex-col items-center justify-center gap-16">
                 <p className="body-1 text-gray-500">
                   데이터를 불러오는데 실패했어요
                 </p>
-                <Button
-                  onClick={resetErrorBoundary}
-                  className="rounded-lg bg-moamoa-300 px-20 py-10 text-white"
-                >
-                  다시 시도
-                </Button>
               </div>
             )
           }
