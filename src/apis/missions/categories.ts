@@ -4,7 +4,7 @@ import type { MissionsPageResponse } from "@/types/mission/mission";
 
 interface GetCategoryMissionsParams {
   categoryId: number;
-  subcategoryId?: number;
+  subCategoryId?: number;
   page?: number;
   size?: number;
   seed?: number;
@@ -12,7 +12,7 @@ interface GetCategoryMissionsParams {
 
 export const getCategoryMissions = async ({
   categoryId,
-  subcategoryId,
+  subCategoryId,
   page = 0,
   size = 3,
   seed,
@@ -21,8 +21,8 @@ export const getCategoryMissions = async ({
   if (seed !== undefined) {
     params.seed = seed;
   }
-  if (subcategoryId !== undefined) {
-    params.subcategoryId = subcategoryId;
+  if (subCategoryId !== undefined) {
+    params.subCategoryId = subCategoryId;
   }
 
   const { data } = await authAPI.get<ApiResponse<MissionsPageResponse>>(

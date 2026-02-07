@@ -1,4 +1,4 @@
-import { Suspense } from "react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { MAIN_CATEGORIES } from "@/constants/missions/categories";
 import CategoryButton from "../components/CategoryButton";
@@ -50,8 +50,8 @@ export default function CategoryDetailView() {
       </div>
 
       {selectedSubCategory.categoryId !== 0 && (
-        <Suspense
-          fallback={
+        <AsyncBoundary
+          loadingFallback={
             <div className="mt-30 flex items-center justify-center">
               <LoadingSpinner className="size-60" />
             </div>
@@ -60,11 +60,11 @@ export default function CategoryDetailView() {
           <CategoryMissionInfiniteList
             key={`${categoryId}-${selectedSubCategory.categoryId}`}
             categoryId={categoryId}
-            subcategoryId={selectedSubCategory.categoryId}
+            subCategoryId={selectedSubCategory.categoryId}
             seed={seed}
             swipeHandlers={swipeHandlers}
           />
-        </Suspense>
+        </AsyncBoundary>
       )}
     </>
   );

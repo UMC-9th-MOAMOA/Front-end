@@ -3,21 +3,21 @@ import { getCategoryMissions } from "@/apis/missions/categories";
 
 interface UseCategoryMissionsInfiniteParams {
   categoryId: number;
-  subcategoryId: number;
+  subCategoryId: number;
   seed: number;
 }
 
 export const useCategoryMissionsInfinite = ({
   categoryId,
-  subcategoryId,
+  subCategoryId,
   seed,
 }: UseCategoryMissionsInfiniteParams) => {
   return useSuspenseInfiniteQuery({
-    queryKey: ["missions", "category", categoryId, subcategoryId, seed],
+    queryKey: ["missions", "category", categoryId, subCategoryId, seed],
     queryFn: ({ pageParam }) =>
       getCategoryMissions({
         categoryId,
-        subcategoryId,
+        subCategoryId,
         page: pageParam,
         size: 10,
         seed,
