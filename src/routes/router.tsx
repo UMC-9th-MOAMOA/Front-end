@@ -19,6 +19,8 @@ import InquiryPage from "@/pages/settings/components/inquiry/InquiryPage";
 import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
 import PasswordChangePage from "@/pages/settings/PasswordChangePage";
 import SettingsPage from "@/pages/settings/SettingsPage";
+import SplashPage from "@/pages/splash/Splash";
+import StartPage from "@/pages/splash/Start";
 import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
@@ -37,7 +39,21 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
     path: "/",
     element: <RootLayout />,
     children: [
-      { path: "", element: <HomePage />, handle: { bgColor: "bg-moamoa-50" } },
+      {
+        path: "splash",
+        element: <SplashPage />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
+        path: "start",
+        element: <StartPage />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
+        path: "",
+        element: <HomePage />,
+        handle: { bgColor: "bg-moamoa-50" },
+      },
       {
         path: "login",
         element: <LoginPage />,
