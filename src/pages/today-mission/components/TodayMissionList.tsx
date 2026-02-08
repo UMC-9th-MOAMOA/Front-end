@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import MissionCard from "@/components/MissionCard";
+import { useScrapMission } from "@/hooks/useScrapMission";
 import { useRecommendedMissions } from "@/pages/search/hooks/useQuery/useRecommendedMissions";
 
 const ITEMS_PER_PAGE = 10;
@@ -11,6 +12,7 @@ export default function TodayMissionList() {
   const timeValue = time ? Number(time) : null;
 
   const { data: missions } = useRecommendedMissions({ time: timeValue });
+  const scrapMutation = useScrapMission();
 
   const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -49,7 +51,13 @@ export default function TodayMissionList() {
           minute={mission.durationMinutes}
           category={mission.category}
           quizCount={mission.quizCount}
-          isLiked={mission.isScrapped}
+          isScrapped={mission.isScrapped}
+          onHeartClick={() =>
+            scrapMutation.mutate({
+              missionId: mission.missionId,
+              isScrapped: mission.isScrapped,
+            })
+          }
         />
       ))}
       <div ref={observerTarget} className="h-1" />
