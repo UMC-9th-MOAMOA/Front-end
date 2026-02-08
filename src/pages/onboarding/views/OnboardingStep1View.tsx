@@ -1,8 +1,9 @@
 import SquirrelOnboarding from "@/assets/images/squirrel_onboarding.svg";
 import { Button } from "@/components/common/button/Button";
-import type { OnboardingPayload } from "@/types/onboarding";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import type { OnboardingPayload } from "@/types/onboarding/onboarding";
 import OnboardingCard from "../components/OnboardingCard";
-import { ONBOARDING_TOPICS } from "../constants/onboardingData";
+import { useInterests } from "../hooks/useInterests";
 
 interface OnboardingStep1ViewProps {
   payload: OnboardingPayload;
@@ -15,7 +16,11 @@ export default function OnboardingStep1View({
   onChange,
   onNext,
 }: OnboardingStep1ViewProps) {
-  const topics = ONBOARDING_TOPICS.slice(0, 5);
+  const {
+    data: interests = [],
+    isLoading,
+    isError,
+  } = useInterests();
 
   const toggleTopic = (interestId: number) => {
     const exists = payload.selections.some(
@@ -30,6 +35,27 @@ export default function OnboardingStep1View({
     onChange({ ...payload, selections: nextSelections });
   };
 
+  if (isLoading) {
+    return (
+      <section className="mt-60 flex flex-1 flex-col items-center justify-center gap-16 pb-24">
+        <div className="scale-125">
+          <LoadingSpinner />
+        </div>
+        <p className="body-2 text-black">관심사를 불러오는 중...</p>
+      </section>
+    );
+  }
+
+  if (isError) {
+    return (
+      <section className="mt-60 flex flex-1 items-center justify-center pb-24">
+        <p className="body-2 text-black">
+          관심사를 불러오지 못했어요. 잠시 후 다시 시도해 주세요.
+        </p>
+      </section>
+    );
+  }
+
   return (
     <section className="mt-13 flex flex-col items-center pb-24">
       <img
@@ -41,22 +67,22 @@ export default function OnboardingStep1View({
         당신의 관심사를 골라주세요 !
       </h2>
       <div className="mt-46 flex w-full flex-col gap-14">
-        {topics.map((topic, index) => {
-          const interestId = index + 1;
+        {interests.map((interest) => {
+          const interestId = interest.id;
           const isSelected = payload.selections.some(
             (selection) => selection.interestId === interestId
           );
 
           return (
             <button
-              key={topic.id}
+              key={interest.id}
               type="button"
               className="text-left"
               onClick={() => toggleTopic(interestId)}
             >
               <OnboardingCard
                 variant="chip"
-                title={topic.label}
+                title={interest.name}
                 selected={isSelected}
               />
             </button>

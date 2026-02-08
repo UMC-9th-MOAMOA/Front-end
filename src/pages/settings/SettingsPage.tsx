@@ -1,39 +1,21 @@
-﻿import { useMemo, useState } from "react";
+﻿import { Suspense, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
+import { useMyProfile } from "./components/account/hooks/useMyProfile";
 import LogoutConfirmModal from "./components/LogoutConfirmModal";
 import ProfileHeaderCard from "./components/ProfileHeaderCard";
-import ProfilePickerModal from "./components/ProfilePickerModal";
 import { LogoutAction, WithdrawAction } from "./components/SettingsActions";
 import { SettingsSection, sections } from "./components/SettingsSectionList";
 import WithdrawConfirmModal from "./components/WithdrawConfirmModal";
-import { mockProfiles, mockUser } from "./mocks/account/account.mock";
 
-export default function SettingsPage() {
+function SettingsPageInner() {
   const navigate = useNavigate();
-  const [isProfilePickerOpen, setIsProfilePickerOpen] = useState(false);
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
-
-  // TODO(API 연결 시): user / profiles를 query로 교체
-  const user = mockUser;
-  const profiles = mockProfiles;
-  const [selectedProfileId, setSelectedProfileId] = useState(user.profileId);
-
-  const selectedProfileLabel = useMemo(() => {
-    return profiles.find((p) => p.id === selectedProfileId)?.label ?? "프로필";
-  }, [selectedProfileId]);
-
-  const onClickProfile = () => setIsProfilePickerOpen(true);
+  const { data: profile } = useMyProfile();
 
   const onNavigate = (path: string) => {
     navigate(path);
-  };
-
-  const onSelectProfile = (profileId: string) => {
-    // TODO(API 연결 시): PATCH /users/profile 같은 API 호출 후 invalidate
-    setSelectedProfileId(profileId);
-    setIsProfilePickerOpen(false);
   };
 
   const onLogout = () => setIsLogoutOpen(true);
@@ -52,16 +34,15 @@ export default function SettingsPage() {
 
       <div className="-mx-25 w-screen bg-setting">
         <ProfileHeaderCard
-          name={user.name}
-          email={user.email}
-          profileLabel={selectedProfileLabel}
-          onClickProfile={onClickProfile}
+          name={profile.name}
+          email={profile.email}
+          profileImage={profile.profileImage}
         />
       </div>
 
       <div className="-mx-25 mt-10 w-screen">
         <div className="flex w-full flex-1 flex-col bg-white pt-28">
-          <div className="px-25 flex flex-col gap-20">
+          <div className="flex flex-col gap-20 px-25">
             {sections.map((section, index) => (
               <div key={section.id}>
                 <SettingsSection section={section} onNavigate={onNavigate} />
@@ -75,7 +56,7 @@ export default function SettingsPage() {
           <div className="mt-45 px-25">
             <LogoutAction onLogout={onLogout} />
           </div>
-          <div className="mt-34 -mx-25 h-2 w-screen" style={dividerStyle} />
+          <div className="-mx-25 mt-34 h-2 w-screen" style={dividerStyle} />
           <div className="px-25">
             <WithdrawAction onWithdraw={onWithdraw} />
           </div>
@@ -93,14 +74,14 @@ export default function SettingsPage() {
         onCancel={() => setIsLogoutOpen(false)}
         onConfirm={() => setIsLogoutOpen(false)}
       />
-
-      <ProfilePickerModal
-        open={isProfilePickerOpen}
-        profiles={profiles}
-        selectedId={selectedProfileId}
-        onClose={() => setIsProfilePickerOpen(false)}
-        onSelect={onSelectProfile}
-      />
     </div>
+  );
+}
+
+export default function SettingsPage() {
+  return (
+    <Suspense fallback={<div className="p-20">로딩중...</div>}>
+      <SettingsPageInner />
+    </Suspense>
   );
 }
