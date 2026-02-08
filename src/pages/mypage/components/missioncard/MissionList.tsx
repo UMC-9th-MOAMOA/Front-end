@@ -1,7 +1,15 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useState } from "react";
 import IcSadSquirrel from "@/assets/icons/ic_sadsquirrel.svg?react";
-import { mockDoneMissions, mockLikedMissions } from "../../mocks/mypage.mock";
-import type { MissionItem, MissionSubTabKey } from "../../types/mypage.type";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { CATEGORY_ID_MAP } from "@/constants/missions/categories";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useScrapMission } from "@/hooks/useScrapMission";
+import type {
+  MissionCategory,
+  MissionItem,
+  MissionSubTabKey,
+} from "../../types/mypage.type";
+import { useMyMissionsInfinite } from "../../hooks/useMyMissionsInfinite";
 import MissionFilters from "../filters/MissionFilters";
 import MissionCard from "./MissionCard";
 import MissionTabs from "./MissionTabs";
@@ -18,65 +26,43 @@ export default function MissionTab() {
   const [timeSort, setTimeSort] = useState<MissionTimeSort>("short");
   const [category, setCategory] = useState<MissionCategoryFilter>("all");
 
-  const [likedList, setLikedList] = useState<MissionItem[]>(mockLikedMissions);
-  const doneList = mockDoneMissions;
+  const status =
+    subTab === "liked" ? "SCRAP" : doneView === "done" ? "COMPLETE" : "RETRY";
+  const condition =
+    timeSort === "short"
+      ? "TIME_ASC"
+      : timeSort === "long"
+        ? "TIME_DESC"
+        : "LATEST";
+  const categoryId =
+    category === "all" ? undefined : CATEGORY_ID_MAP[category as MissionCategory];
 
-  const loadSize = 6;
-  const [visibleCount, setVisibleCount] = useState(loadSize);
-  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useMyMissionsInfinite({
+      status,
+      condition,
+      categoryId,
+    });
 
-  const baseList = subTab === "liked" ? likedList : doneList;
+  const scrapMutation = useScrapMission();
+  const { ref } = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
+
+  const missions = data.pages.flatMap((page) => page.missions);
+  const list: MissionItem[] = missions.map((m) => ({
+    id: String(m.missionId),
+    title: m.title,
+    expectedMinutes: m.durationMinutes,
+    category: m.category as MissionCategory,
+    quizType: "OX",
+    liked: m.isScrapped,
+    done: subTab === "done",
+  }));
+
   const actionLabel = subTab === "liked" ? "시작하기" : "자세히 보기";
-
-  const list = useMemo(() => {
-    let copied = [...baseList];
-
-    if (category !== "all") {
-      copied = copied.filter((m) => m.category === category);
-    }
-
-    if (timeSort === "short")
-      copied.sort((a, b) => a.expectedMinutes - b.expectedMinutes);
-    if (timeSort === "long")
-      copied.sort((a, b) => b.expectedMinutes - a.expectedMinutes);
-    if (timeSort === "recent") {
-    }
-
-    return copied;
-  }, [baseList, timeSort, category]);
-
-  useEffect(() => {
-    setVisibleCount(loadSize);
-  }, [list]);
-
-  const visibleList = list.slice(0, visibleCount);
-  const hasMore = visibleCount < list.length;
-
-  useEffect(() => {
-    if (!hasMore) return;
-    const node = sentinelRef.current;
-    if (!node) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0]?.isIntersecting) {
-          setVisibleCount((prev) => Math.min(prev + loadSize, list.length));
-        }
-      },
-      { rootMargin: "200px", threshold: 0 }
-    );
-
-    observer.observe(node);
-    return () => observer.disconnect();
-  }, [hasMore, list.length]);
-
-  const toggleLike = (id: string) => {
-    setLikedList((prev) =>
-      prev
-        .map((m) => (m.id === id ? { ...m, liked: !m.liked } : m))
-        .filter((m) => m.liked)
-    );
-  };
 
   const goDetail = (id: string) => {
     console.log("detail:", id);
@@ -119,19 +105,42 @@ export default function MissionTab() {
                   <IcSadSquirrel aria-hidden />
                 </div>
               ) : (
-                visibleList.map((m) => (
+                list.map((m) => (
                   <MissionCard
                     key={m.id}
                     item={m}
-                    keywords={["키워드", "키워드", "키워드"]}
-                    onToggleLike={toggleLike}
+                    keywords={(() => {
+                      const found = missions.find(
+                        (mission) => String(mission.missionId) === m.id
+                      );
+                      const safe = found?.keywords ?? [];
+                      return safe.length > 0
+                        ? safe
+                        : ["키워드", "키워드", "키워드"];
+                    })()}
+                    onToggleLike={(id) => {
+                      const target = missions.find(
+                        (mission) => String(mission.missionId) === id
+                      );
+                      if (!target) return;
+                      scrapMutation.mutate({
+                        missionId: target.missionId,
+                        isScrapped: target.isScrapped,
+                      });
+                    }}
                     onClickDetail={goDetail}
                     actionLabel={actionLabel}
                     disableLike={subTab === "done"}
                   />
                 ))
               )}
-              {hasMore && <div ref={sentinelRef} className="h-1 w-full" />}
+              {hasNextPage && (
+                <div ref={ref} className="flex justify-center py-20">
+                  {isFetchingNextPage && (
+                    <LoadingSpinner className="size-40" />
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
