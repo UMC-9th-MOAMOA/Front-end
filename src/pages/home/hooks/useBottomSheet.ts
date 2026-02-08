@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import type { CustomizationType } from "../types/types";
+import type { ItemCategory } from "@/types/home/shop";
 
 export const useBottomSheet = () => {
   const [activeCustomization, setActiveCustomization] =
-    useState<CustomizationType | null>(null);
+    useState<ItemCategory | null>(null);
   const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
@@ -18,15 +18,15 @@ export const useBottomSheet = () => {
     setIsExpanded(false);
   };
 
-  const handleToolbarClick = (type: CustomizationType) => {
-    if (activeCustomization === type) {
+  const handleToolbarClick = (category: ItemCategory) => {
+    if (activeCustomization === category) {
       if (isExpanded) {
         setIsExpanded(false);
       } else {
         close();
       }
     } else {
-      setActiveCustomization(type);
+      setActiveCustomization(category);
       setIsExpanded(false);
     }
   };

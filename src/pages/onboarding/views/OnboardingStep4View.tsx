@@ -1,16 +1,16 @@
 import { Button } from "@/components/common/button/Button";
-import type { OnboardingPayload } from "@/types/onboarding";
+import type { OnboardingPayload } from "@/types/onboarding/onboarding";
 
 interface OnboardingStep4ViewProps {
   payload: OnboardingPayload;
   onChange: (next: OnboardingPayload) => void;
-  onNext: () => void;
+  onSubmit: (next: OnboardingPayload, dailyMissionGoal: number) => void;
 }
 
 export default function OnboardingStep4View({
   payload,
   onChange,
-  onNext,
+  onSubmit,
 }: OnboardingStep4ViewProps) {
   const min = 0;
   const max = 5;
@@ -89,8 +89,9 @@ export default function OnboardingStep4View({
             type="button"
             className="body-2 h-50 rounded-lg bg-moamoa-50 py-12 text-moamoa-500 active:bg-moamoa-100"
             onClick={() => {
-              onChange({ ...payload, dailyMissionGoal: value });
-              onNext();
+              const nextPayload = { ...payload, dailyMissionGoal: value };
+              onChange(nextPayload);
+              onSubmit(nextPayload, value);
             }}
           >
             계속하기
@@ -99,8 +100,9 @@ export default function OnboardingStep4View({
             type="button"
             className="body-2 h-50 rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
             onClick={() => {
-              onChange({ ...payload, dailyMissionGoal: null });
-              onNext();
+              const nextPayload = { ...payload, dailyMissionGoal: null };
+              onChange(nextPayload);
+              onSubmit(nextPayload, 0);
             }}
           >
             나중에 설정
