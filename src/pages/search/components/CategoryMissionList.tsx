@@ -6,6 +6,7 @@ import {
   CATEGORY_ID_MAP,
   type MainCategory,
 } from "@/constants/missions/categories";
+import { useScrapMission } from "@/hooks/useScrapMission";
 import { useCategoryMissions } from "../hooks/useQuery/category/useCategoryMissions";
 
 interface CategoryMissionListProps {
@@ -20,6 +21,7 @@ export default function CategoryMissionList({
   const navigate = useNavigate();
   const categoryId = CATEGORY_ID_MAP[selectedCategory];
   const { data } = useCategoryMissions({ categoryId });
+  const scrapMutation = useScrapMission();
 
   const categoryMissions = data.missions.map((m) => ({
     id: m.missionId,
@@ -28,7 +30,12 @@ export default function CategoryMissionList({
     minute: m.durationMinutes,
     category: m.category,
     quizCount: m.quizCount,
-    isLiked: m.isScrapped,
+    isScrapped: m.isScrapped,
+    onHeartClick: () =>
+      scrapMutation.mutate({
+        missionId: m.missionId,
+        isScrapped: m.isScrapped,
+      }),
   }));
 
   const handleMoreClick = () => {

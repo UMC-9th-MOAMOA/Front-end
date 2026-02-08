@@ -9,19 +9,18 @@ interface MissionCardProps {
   minute: number;
   category: string;
   quizCount: number;
-  isLiked: boolean;
+  isScrapped: boolean;
   onHeartClick?: () => void;
   onStartClick?: () => void;
 }
 
 export default function MissionCard({
-  id: _id,
   title,
   keywords,
   minute,
   category,
   quizCount,
-  isLiked,
+  isScrapped,
   onHeartClick,
   onStartClick,
 }: MissionCardProps) {
@@ -32,8 +31,8 @@ export default function MissionCard({
         <button type="button" onClick={onHeartClick} className="shrink-0">
           <IcHeart
             className={cn(
-              "size-24 shrink-0 cursor-pointer text-moamoa-100",
-              isLiked && "fill-moamoa-100"
+              "size-24 shrink-0 cursor-pointer text-moamoa-200",
+              isScrapped && "fill-moamoa-100",
             )}
           />
         </button>

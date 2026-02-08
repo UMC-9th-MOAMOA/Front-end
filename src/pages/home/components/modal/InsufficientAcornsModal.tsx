@@ -6,14 +6,14 @@ interface InsufficientAcornsModalProps {
   isOpen: boolean;
   onClose: () => void;
   onGoToMission: () => void;
-  neededAcorns: number;
+  shortfall: number;
 }
 
 export default function InsufficientAcornsModal({
   isOpen,
   onClose,
   onGoToMission,
-  neededAcorns,
+  shortfall,
 }: InsufficientAcornsModalProps) {
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -25,7 +25,7 @@ export default function InsufficientAcornsModal({
         <p className="body-4 mt-3 text-center text-gray-600">
           이 아이템을 구매하려면
           <br />
-          도토리 {neededAcorns}개가 더 필요해요.
+          도토리 {shortfall}개가 더 필요해요.
         </p>
 
         <div className="mt-4 flex w-full gap-12">

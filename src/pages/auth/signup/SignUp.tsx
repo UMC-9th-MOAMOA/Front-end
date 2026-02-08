@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/common/button/Button";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { Modal } from "@/pages/auth/components/Modal";
-import AgreementList from "@/pages/auth/signup/components/AgreementList";
+import AgreementList, {
+  type AgreementKey,
+} from "@/pages/auth/signup/components/AgreementList";
 import { PWTextField } from "@/pages/auth/signup/components/PWTextField";
 import {
   getPasswordStrength,
@@ -22,6 +24,11 @@ import {
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const agreementsFromState = (
+    location.state as { agreements?: Record<AgreementKey, boolean> } | null
+  )?.agreements;
 
   const [name, setName] = useState("");
 
@@ -249,7 +256,7 @@ export default function SignUp() {
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
         <div className="mt-37">
-          <AgreementList value={agreements} onChange={setAgreements} />
+          <AgreementList initialChecked={agreementsFromState} />
         </div>
       </div>
       <div className="fixed inset-x-0 bottom-0 z-10 bg-white px-24 pt-10 shadow-[0px_-8px_50px_3px_rgba(0,0,0,0.10)]">
