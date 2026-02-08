@@ -24,10 +24,14 @@ export default function RecommendedMissionCard({
     <div className="w-180 rounded-xl border border-moamoa-200 bg-white px-16 py-18">
       <div className="flex items-center justify-between gap-8">
         <h3 className="body-2 truncate text-black">{title}</h3>
-        <IcHeart
-          className={cn("size-24 shrink-0 cursor-pointer text-moamoa-100", isScrapped && "fill-moamoa-100")}
-          onClick={onHeartClick}
-        />
+        <button type="button" onClick={onHeartClick} className="shrink-0">
+          <IcHeart
+            className={cn(
+              "size-24 shrink-0 cursor-pointer text-moamoa-200",
+              isScrapped && "fill-moamoa-100"
+            )}
+          />
+        </button>
       </div>
 
       <div className="-mx-16 mt-18 overflow-x-auto">
@@ -53,7 +57,9 @@ export default function RecommendedMissionCard({
           <span>카테고리 :</span>
           <span className="ml-3">{category}</span>
         </div>
-        {description && <p className="body-5 truncate text-black">{description}</p>}
+        {description && (
+          <p className="body-5 truncate text-black">{description}</p>
+        )}
       </div>
     </div>
   );
