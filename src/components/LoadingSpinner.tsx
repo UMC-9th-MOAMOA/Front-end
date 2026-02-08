@@ -1,4 +1,4 @@
-import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
+import AcornIcon from "@/assets/icons/ic_acorn_onboarding.svg?react";
 import { cn } from "@/utils/cn/cn";
 
 interface LoadingSpinnerProps {
