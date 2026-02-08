@@ -19,6 +19,7 @@ import { CodeStepView } from "./views/CodeStepView";
 import { EmailStepView } from "./views/EmailStepView";
 import { NewPasswordStepView } from "./views/NewPasswordStepView";
 import { NoAccountModalView } from "./views/NoAccountModalView";
+import PasswordChangeSuccessModal from "@/pages/settings/components/Password/PasswordChangeSuccessModal";
 
 export default function Password() {
   const navigate = useNavigate();
@@ -30,6 +31,7 @@ export default function Password() {
 
   const [errorText, setErrorText] = useState<string>("");
   const [noAccountModalOpen, setNoAccountModalOpen] = useState(false);
+  const [resetSuccessModalOpen, setResetSuccessModalOpen] = useState(false);
   const [emailError, setEmailError] = useState<string | undefined>(undefined);
 
   const [password, setPassword] = useState("");
@@ -183,6 +185,7 @@ export default function Password() {
         newPassword: password,
         newPasswordCheck: passwordConfirm,
       });
+      setResetSuccessModalOpen(true);
     } catch (e: unknown) {
       const serverMessage = getServerMessage(e);
       if (serverMessage) {
@@ -206,6 +209,13 @@ export default function Password() {
         onSignup={() => {
           setNoAccountModalOpen(false);
           navigate("/signup");
+        }}
+      />
+      <PasswordChangeSuccessModal
+        open={resetSuccessModalOpen}
+        onConfirm={() => {
+          setResetSuccessModalOpen(false);
+          navigate("/login");
         }}
       />
 
