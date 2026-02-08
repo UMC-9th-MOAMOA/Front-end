@@ -34,7 +34,7 @@ export default function DailyGoalAchievement({
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center">
+    <div className="relative -mb-96 flex min-h-screen flex-col items-center">
       <Header leftIcon="quit" title="" property="common" onBack={onClose} />
       <h2 className="heading-2 z-40 text-center">
         <span className="text-moamoa-400">오늘의 목표</span>
@@ -110,7 +110,7 @@ export default function DailyGoalAchievement({
         )}
       </div>
 
-      <div className="mt-auto flex w-full flex-col items-center px-25 pb-30">
+      <div className="mt-auto flex w-full flex-col items-center px-25 pt-22 pb-30">
         <p className="body-4 mb-18 text-center text-gray-600">
           획득한 도토리로 다람쥐를 꾸며볼까요?
         </p>
