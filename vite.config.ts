@@ -29,13 +29,43 @@ export default defineConfig({
       manifest: false,
       workbox: {
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff,woff2}"],
-        maximumFileSizeToCacheInBytes: 3 * 1024 * 1024,
+        maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
       },
     }),
   ],
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "src"),
+    },
+  },
+  build: {
+    chunkSizeWarningLimit: 1000,
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          if (id.includes("node_modules")) {
+            if (
+              id.includes("react") ||
+              id.includes("react-dom") ||
+              id.includes("react-router-dom") ||
+              id.includes("zustand")
+            ) {
+              return "react-vendor";
+            }
+            if (id.includes("motion")) {
+              return "motion-vendor";
+            }
+            if (
+              id.includes("@tanstack") ||
+              id.includes("axios") ||
+              id.includes("react-hook-form")
+            ) {
+              return "data-vendor";
+            }
+            return "vendor";
+          }
+        },
+      },
     },
   },
   server: {
