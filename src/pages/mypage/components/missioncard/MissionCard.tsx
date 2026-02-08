@@ -1,5 +1,4 @@
-import IcHeart from "@/assets/icons/ic_heart.svg?react";
-import { Button } from "@/components/common/button/Button";
+﻿import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import type { MissionItem } from "../../types/mypage.type";
 
 function HeartIcon({ filled }: { filled: boolean }) {
@@ -45,20 +44,20 @@ export default function MissionCard({
           {item.title}
         </h3>
 
-        <Button
+        <button
           type="button"
           aria-label="찜 토글"
           onClick={() => onToggleLike(item.id)}
           disabled={disableLike}
           className={[
-            "mr-8 h-24 w-24",
+            "mr-8 h-24 w-24 rounded-none bg-transparent p-0 border-0 shadow-none outline-none focus:outline-none focus:ring-0",
             disableLike ? "cursor-not-allowed opacity-60" : "",
           ]
             .filter(Boolean)
             .join(" ")}
         >
           <HeartIcon filled={item.liked} />
-        </Button>
+        </button>
       </div>
 
       <div className="mt-14 flex gap-4">
@@ -86,7 +85,7 @@ export default function MissionCard({
               labelWidth: 48,
             },
             {
-              label: "퀴즈 개수",
+              label: "난이도 개수",
               value: "3개",
               labelWidth: 51,
             },
@@ -105,13 +104,13 @@ export default function MissionCard({
         </div>
 
         <div className="shrink-0">
-          <Button
+          <button
             type="button"
             onClick={() => onClickDetail(item.id)}
             className="flex h-40 w-126 flex-col items-center justify-center gap-1 whitespace-nowrap rounded-lg bg-[#EEF4FF] px-16 py-10 font-semibold text-14 text-[#2E5FEA] leading-[18px]"
           >
             {actionLabel}
-          </Button>
+          </button>
         </div>
       </div>
     </article>

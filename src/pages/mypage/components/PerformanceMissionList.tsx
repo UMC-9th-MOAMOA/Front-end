@@ -3,19 +3,7 @@ import IcAd from "@/assets/icons/ic_ad.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
-
-function IcMinus({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden
-    >
-      <rect x="2" y="7.5" width="12" height="1" fill="currentColor" />
-    </svg>
-  );
-}
+import IcMinus from "@/assets/icons/ic_minus.svg?react";
 
 type RowKind = "attendance" | "ad" | "mission";
 
@@ -38,7 +26,6 @@ type AcornDeltaProps = {
 
 function AcornDelta({ value, className, textClassName }: AcornDeltaProps) {
   const isNegative = value < 0;
-  const sign = isNegative ? "-" : "+";
   return (
     <div className={["flex items-center", className].filter(Boolean).join(" ")}>
       {isNegative ? (
@@ -46,10 +33,7 @@ function AcornDelta({ value, className, textClassName }: AcornDeltaProps) {
       ) : (
         <IcPlus className="h-16 w-16" aria-hidden />
       )}
-      <span className={textClassName}>
-        {sign}
-        {Math.abs(value)}
-      </span>
+      <span className={textClassName}>{Math.abs(value)}</span>
       <IcAcorn className="h-29 w-21" aria-hidden />
     </div>
   );
@@ -105,11 +89,11 @@ export default function PerformanceMissionList({
                             : ""}
                         </span>
 
-                        <AcornDelta
-                          value={Math.abs(row.acornDelta)}
-                          className="gap-2"
-                          textClassName="body-2 text-black"
-                        />
+        <AcornDelta
+          value={row.acornDelta}
+          className="gap-2"
+          textClassName="body-2 text-black"
+        />
 
                         <span aria-hidden />
 
@@ -144,9 +128,9 @@ export default function PerformanceMissionList({
                   </div>
 
                   <AcornDelta
-                    value={Math.abs(row.acornDelta)}
+                    value={row.acornDelta}
                     className="ml-auto gap-4"
-                    textClassName="body-2 text-[var(--color-black)]"
+                    textClassName="body-2 text-black"
                   />
                 </div>
               </div>

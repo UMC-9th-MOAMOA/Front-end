@@ -1,5 +1,5 @@
-import type { MyPageTopTabKey } from "../types/mypage.type";
 import { Button } from "@/components/common/button/Button";
+import type { MyPageTopTabKey } from "../types/mypage.type";
 
 const tabs: { key: MyPageTopTabKey; label: string }[] = [
   { key: "all", label: "전체" },
@@ -23,6 +23,7 @@ export default function MyPageTabs({ activeTab, onChange }: Props) {
             onClick={() => onChange(tab.key)}
             className={[
               "inline-flex min-w-0 flex-1 items-center justify-center whitespace-nowrap px-34 py-10 text-sm",
+              "rounded-none",
               activeTab === tab.key
                 ? "border-black border-b-1 font-bold text-black"
                 : "text-gray-400",

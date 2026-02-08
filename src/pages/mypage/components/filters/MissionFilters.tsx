@@ -68,7 +68,7 @@ export default function MissionFilters({
         {openMenu === "time" && (
           <div
             className={[
-              "absolute top-full right-0 z-50 flex h-103 w-128 flex-col items-start justify-center gap-4 rounded-lg border border-gray-400 py-10",
+              "absolute top-full right-0 z-50 flex h-103 w-128 flex-col items-start justify-center gap-4 rounded-lg border border-gray-400 py-10 px-10",
               isEmpty ? "bg-[#E6E6E6]" : "bg-gray-100",
             ].join(" ")}
             style={{ boxShadow: "3px 9px 20.1px 3px rgba(0, 0, 0, 0.10)" }}

@@ -93,7 +93,7 @@ export default function MissionTab() {
         }}
       />
 
-      <div className="-mx-25 w-screen">
+      <div className="-mx-25 w-full">
         <div
           className={[
             "relative flex w-full flex-col gap-6 rounded-t-xl pt-17 shadow-sm",
