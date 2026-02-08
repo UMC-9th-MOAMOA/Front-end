@@ -76,7 +76,7 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [filtered.length, hasMore, loadSize]);
+  }, [filtered.length, hasMore]);
 
   return (
     <section className="mt-19 flex w-full flex-col gap-4 px-2">
