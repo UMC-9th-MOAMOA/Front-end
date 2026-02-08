@@ -29,6 +29,7 @@ export default function SignUp() {
   const [emailDomain, setEmailDomain] = useState("");
   const [code, setCode] = useState("");
   const [emailVerified, setEmailVerified] = useState(false);
+  const [emailLocked, setEmailLocked] = useState(false);
 
   const [emailStatusText, setEmailStatusText] = useState<string>("");
   const [emailStatusTone, setEmailStatusTone] = useState<
@@ -37,6 +38,9 @@ export default function SignUp() {
   const [verifyModalType, setVerifyModalType] = useState<
     "success" | "error" | null
   >(null);
+  const [verifyModalMessage, setVerifyModalMessage] = useState(
+    "인증번호가 잘못 입력되었습니다."
+  );
   const [resendCooldown, setResendCooldown] = useState(0);
   const [showResendCountdown, setShowResendCountdown] = useState(false);
 
@@ -76,6 +80,7 @@ export default function SignUp() {
       setEmailStatusText("인증 메일을 보냈어요");
       setEmailStatusTone("info");
       setEmailVerified(false);
+      setEmailLocked(true);
       setResendCooldown(30);
       setShowResendCountdown(true);
     } catch (error) {
@@ -122,18 +127,20 @@ export default function SignUp() {
     } catch (error) {
       const errorState = getVerifyEmailAuthCodeErrorState(error);
       if (errorState) {
-        setEmailStatusText(errorState.text);
-        setEmailStatusTone(errorState.tone);
+        setEmailStatusText(" ");
+        setEmailStatusTone("info");
         setEmailVerified(false);
+        setVerifyModalMessage(errorState.text);
         setVerifyModalType("error");
         return;
       }
 
       const serverMessage = (error as { serverMessage?: string })
         ?.serverMessage;
-      setEmailStatusText(serverMessage || "인증번호 확인에 실패했어요");
-      setEmailStatusTone("error");
+      setEmailStatusText(" ");
+      setEmailStatusTone("info");
       setEmailVerified(false);
+      setVerifyModalMessage(serverMessage || "인증번호 확인에 실패했어요");
       setVerifyModalType("error");
     }
   };
@@ -166,8 +173,7 @@ export default function SignUp() {
     setEmailStatusTone("info");
   }, [resendCooldown, showResendCountdown]);
 
-  const disabledConfirm =
-    code.trim().length === 0 || isVerifyingEmailCode;
+  const disabledConfirm = code.trim().length === 0 || isVerifyingEmailCode;
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
@@ -214,6 +220,7 @@ export default function SignUp() {
           onConfirmCode={handleConfirmCode}
           emailStatusText={emailStatusText || " "}
           emailStatusTone={emailStatusTone}
+          disabledEmailInput={emailLocked || isSendingEmail}
           disabledRequest={disabledRequest}
           disabledConfirm={disabledConfirm}
           isVerified={emailVerified}
@@ -252,9 +259,7 @@ export default function SignUp() {
         ) : (
           <div className="flex flex-col items-center">
             <p className="heading-3 text-red-400">인증번호 확인 실패</p>
-            <p className="body-2 mt-20 text-gray-600">
-              인증번호가 잘못 입력되었습니다.
-            </p>
+            <p className="body-2 mt-20 text-gray-600">{verifyModalMessage}</p>
             <div className="mt-32 flex w-full gap-12">
               <Button
                 type="button"

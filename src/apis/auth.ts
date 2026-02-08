@@ -17,17 +17,36 @@ export interface LoginResult {
   accessTokenExpiresIn: number;
 }
 
+const toApiErrorFromAxios = (error: unknown): ApiError | null => {
+  if (!axios.isAxiosError<ApiResponse<unknown>>(error)) return null;
+
+  const data = error.response?.data;
+  if (!data || typeof data !== "object") return null;
+
+  const apiError = new Error(data.message) as ApiError;
+  apiError.serverCode = data.code;
+  apiError.serverMessage = data.message;
+  apiError.serverResult = data.result;
+  return apiError;
+};
+
 export const login = async (payload: LoginRequest) => {
-  const { data } = await publicAPI.post<ApiResponse<LoginResult>>(
-    "/auth/login",
-    payload
-  );
+  try {
+    const { data } = await publicAPI.post<ApiResponse<LoginResult>>(
+      "/auth/login",
+      payload
+    );
 
-  if (!data.isSuccess) {
-    throw new Error(data.message);
+    if (!data.isSuccess) {
+      throw new Error(data.message);
+    }
+
+    return data.result;
+  } catch (error) {
+    const apiError = toApiErrorFromAxios(error);
+    if (apiError) throw apiError;
+    throw error;
   }
-
-  return data.result;
 };
 
 export const refreshAccessToken = async (): Promise<string> => {
@@ -53,19 +72,25 @@ export interface SendVerificationEmailRequest {
 export const sendVerificationEmail = async (
   payload: SendVerificationEmailRequest
 ) => {
-  const { data } = await publicAPI.post<
-    ApiResponse<SendVerificationEmailResult>
-  >("/auth/email/send-code", payload);
+  try {
+    const { data } = await publicAPI.post<
+      ApiResponse<SendVerificationEmailResult>
+    >("/auth/email/send-code", payload);
 
-  if (!data.isSuccess) {
-    const apiError = new Error(data.message) as ApiError;
-    apiError.serverCode = data.code;
-    apiError.serverMessage = data.message;
-    apiError.serverResult = data.result;
-    throw apiError;
+    if (!data.isSuccess) {
+      const apiError = new Error(data.message) as ApiError;
+      apiError.serverCode = data.code;
+      apiError.serverMessage = data.message;
+      apiError.serverResult = data.result;
+      throw apiError;
+    }
+
+    return data.result;
+  } catch (error) {
+    const apiError = toApiErrorFromAxios(error);
+    if (apiError) throw apiError;
+    throw error;
   }
-
-  return data.result;
 };
 
 export interface VerifyEmailAuthCodeRequest {
@@ -76,17 +101,23 @@ export interface VerifyEmailAuthCodeRequest {
 export const verifyEmailAuthCode = async (
   payload: VerifyEmailAuthCodeRequest
 ) => {
-  const { data } = await publicAPI.post<
-    ApiResponse<VerifyEmailAuthCodeResult>
-  >("/auth/email/verifications", payload);
+  try {
+    const { data } = await publicAPI.post<
+      ApiResponse<VerifyEmailAuthCodeResult>
+    >("/auth/email/verify", payload);
 
-  if (!data.isSuccess) {
-    const apiError = new Error(data.message) as ApiError;
-    apiError.serverCode = data.code;
-    apiError.serverMessage = data.message;
-    apiError.serverResult = data.result;
-    throw apiError;
+    if (!data.isSuccess) {
+      const apiError = new Error(data.message) as ApiError;
+      apiError.serverCode = data.code;
+      apiError.serverMessage = data.message;
+      apiError.serverResult = data.result;
+      throw apiError;
+    }
+
+    return data.result;
+  } catch (error) {
+    const apiError = toApiErrorFromAxios(error);
+    if (apiError) throw apiError;
+    throw error;
   }
-
-  return data.result;
 };
