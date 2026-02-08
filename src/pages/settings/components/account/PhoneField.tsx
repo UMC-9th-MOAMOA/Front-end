@@ -25,7 +25,7 @@ export default function PhoneField({
 }: Props) {
   if (!isEditing) {
     return (
-      <div className="flex w-full items-center gap-10">
+      <div className="flex w-full items-center gap-10 pb-130">
         <input
           value={value}
           disabled
@@ -64,7 +64,7 @@ export default function PhoneField({
         </Button>
       </div>
 
-      <div className="flex w-full items-center gap-10">
+      <div className="flex w-full items-center gap-10 pb-74">
         <input
           value={verifyCode}
           onChange={(e) => onChangeVerifyCode(e.target.value)}

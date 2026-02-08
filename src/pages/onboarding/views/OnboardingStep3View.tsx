@@ -1,5 +1,5 @@
 import { Button } from "@/components/common/button/Button";
-import type { OnboardingPayload } from "@/types/onboarding";
+import type { OnboardingPayload } from "@/types/onboarding/onboarding";
 import OnboardingCard from "../components/OnboardingCard";
 import { ONBOARDING_TIME_PANELS } from "../constants/onboardingData";
 

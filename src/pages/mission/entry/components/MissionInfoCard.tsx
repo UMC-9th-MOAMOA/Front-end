@@ -5,58 +5,71 @@ import { Button } from "@/components/common/button/Button";
 import { buttonVariants } from "@/components/common/button/buttonVariants";
 
 interface MissionInfoCardProps {
-  organization: string;
-  category: string;
-  keywords: string[];
-  thumbnailUrl: string;
-  contentUrl: string;
-  isContentWatched?: boolean;
-  onContentClick?: () => void;
-  onQuizStart?: () => void;
+  title: string;
+  interest: string;
+  keyword: string[];
+  durationMinutes: number;
+  videoUrl: string;
+  isContentWatched: boolean;
+  attemptCount: number;
+  onContentClick: () => void;
+  onQuizStart: () => void;
+}
+
+function getYoutubeThumbnail(url: string): string | null {
+  const match = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?/]+)/
+  );
+  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
 }
 
 export default function MissionInfoCard({
-  organization,
-  category,
-  keywords,
-  thumbnailUrl,
-  contentUrl,
-  isContentWatched = false,
+  title,
+  interest,
+  keyword,
+  durationMinutes,
+  videoUrl,
+  isContentWatched,
+  attemptCount,
   onContentClick,
   onQuizStart,
 }: MissionInfoCardProps) {
+  // attemptCount > 0이면 "다시 풀기", 아니면 "퀴즈 도전 !"
+  const buttonText = attemptCount > 0 ? "다시 풀기" : "퀴즈 도전 !";
+  const thumbnailUrl = getYoutubeThumbnail(videoUrl);
+
   const handleContentClick = () => {
-    window.open(contentUrl, "_blank", "noopener,noreferrer");
-    onContentClick?.();
+    window.open(videoUrl, "_blank", "noopener,noreferrer");
+    onContentClick();
   };
 
   return (
     <div className="flex w-full flex-col gap-8 rounded-xl bg-white px-23 py-21">
       <div className="flex items-center gap-10">
-        <h2 className="heading-3 pb-4 text-center text-black">미션 이름</h2>
+        <h2 className="heading-3 pb-4 text-center text-black">{title}</h2>
       </div>
       <div className="flex items-start gap-4 self-stretch pb-8">
-        {keywords.map((keyword, index) => (
+        {keyword.map((kw, index) => (
           <div
             key={index}
             className="body-4 flex items-center justify-center gap-4 rounded-lg bg-moamoa-50 px-16 py-8 text-center text-moamoa-500"
           >
-            {keyword}
+            {kw}
           </div>
         ))}
       </div>
 
       <div className="body-4 flex items-start justify-between self-stretch text-black">
-        <span>예상 소요시간 : {organization}</span>
-        <span>{category}</span>
+        <span>예상 소요시간 : {durationMinutes}분</span>
+        <span>{interest}</span>
       </div>
 
-      <div className="flex h-152 w-full items-center justify-center overflow-hidden rounded-xl bg-black">
+      <div className="relative aspect-video w-full overflow-hidden rounded-xl bg-black">
         {thumbnailUrl ? (
           <img
             src={thumbnailUrl}
             alt="콘텐츠 썸네일"
-            className="h-full w-full rounded-xl object-contain"
+            className="h-full w-full rounded-xl object-cover"
           />
         ) : (
           <div className="flex h-full w-full items-center justify-center bg-gray-200">
@@ -84,7 +97,6 @@ export default function MissionInfoCard({
             />
           ))}
         </div>
-        {/* 양옆 동그라미 추가 */}
       </div>
 
       <div className="flex w-full flex-col items-center gap-16 self-center px-48 pt-35 pb-32">
@@ -94,12 +106,14 @@ export default function MissionInfoCard({
           }`}
         >
           {isContentWatched ? (
-            <div className="flex items-center justify-center">
-              <span className="heading-6 text-moamoa-500">
+            <div className="flex flex-wrap items-center justify-center">
+              <span className="heading-6 whitespace-nowrap text-moamoa-500">
                 지금 퀴즈 도전하고
               </span>
-              <IcAcorn className="h-30 w-30" />
-              <span className="heading-6 text-moamoa-500">도토리 받기</span>
+              <span className="flex items-center whitespace-nowrap">
+                <IcAcorn className="h-30 w-30 shrink-0" />
+                <span className="heading-6 text-moamoa-500">도토리 받기</span>
+              </span>
             </div>
           ) : (
             <span className="heading-6 text-center text-red-400">
@@ -113,7 +127,7 @@ export default function MissionInfoCard({
             className="flex h-64 w-238 items-center justify-center rounded-xl bg-moamoa-100 px-76 py-26"
           >
             <span className="heading-3 text-center text-moamoa-500">
-              퀴즈 도전 !
+              {buttonText}
             </span>
           </Button>
         ) : (
@@ -122,7 +136,7 @@ export default function MissionInfoCard({
             className="relative flex h-64 w-238 items-center justify-center rounded-xl px-76 py-26"
           >
             <span className="heading-3 text-center text-gray-400">
-              퀴즈 도전 !
+              {buttonText}
             </span>
             <div className="absolute flex h-40 w-40 items-center justify-center">
               <IcLock className="h-40 w-40 text-gray-700" />

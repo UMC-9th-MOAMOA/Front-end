@@ -3,12 +3,13 @@ import { Button } from "@/components/common/button/Button";
 import { cn } from "@/utils/cn/cn";
 
 interface MissionCardProps {
+  id: number;
   title: string;
   keywords: string[];
   minute: number;
   category: string;
   quizCount: number;
-  isLiked: boolean;
+  isScrapped: boolean;
   onHeartClick?: () => void;
   onStartClick?: () => void;
 }
@@ -19,7 +20,7 @@ export default function MissionCard({
   minute,
   category,
   quizCount,
-  isLiked,
+  isScrapped,
   onHeartClick,
   onStartClick,
 }: MissionCardProps) {
@@ -30,22 +31,25 @@ export default function MissionCard({
         <button type="button" onClick={onHeartClick} className="shrink-0">
           <IcHeart
             className={cn(
-              "size-24 shrink-0 cursor-pointer text-moamoa-100",
-              isLiked && "fill-moamoa-100"
+              "size-24 shrink-0 cursor-pointer text-moamoa-200",
+              isScrapped && "fill-moamoa-100",
             )}
           />
         </button>
       </div>
 
-      <div className="mt-12 flex flex-wrap gap-4">
-        {keywords.map((keyword, index) => (
-          <span
-            key={index}
-            className="body-4 rounded-sm bg-moamoa-50 px-17 py-8 text-moamoa-500"
-          >
-            {keyword}
-          </span>
-        ))}
+      <div className="-mx-20 mt-12 overflow-x-auto">
+        <div className="flex gap-4 px-20">
+          {keywords.map((keyword, index) => (
+            <span
+              key={index}
+              className="body-4 shrink-0 rounded-sm bg-moamoa-50 px-17 py-8 text-moamoa-500"
+            >
+              {keyword}
+            </span>
+          ))}
+          <div className="w-20 shrink-0" />
+        </div>
       </div>
 
       <div className="mt-12 flex items-end justify-between">
