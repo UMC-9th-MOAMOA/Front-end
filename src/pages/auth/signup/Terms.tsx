@@ -3,6 +3,7 @@ import IcChecked from "@/assets/icons/auth/ic_checked_blue.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked_gray.svg";
 import { Button } from "@/components/common/button/Button";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
+import { cn } from "@/utils/cn/cn";
 import { TERMS, type TermKey } from "./constants/terms";
 
 export default function Terms() {
@@ -37,10 +38,10 @@ export default function Terms() {
         <Button
           type="button"
           onClick={toggleAll}
-          className={
-            "relative mb-44 h-52 w-full justify-start overflow-hidden rounded-lg" +
-            (allChecked ? "bg-moamoa-200" : "bg-gray-100")
-          }
+          className={cn(
+            "relative mb-44 h-52 w-full justify-start overflow-hidden rounded-lg",
+            allChecked ? "bg-moamoa-50" : "bg-gray-100"
+          )}
         >
           <div className="ml-17 inline-flex items-center justify-start gap-60">
             <img
@@ -86,10 +87,10 @@ export default function Terms() {
         <Button
           type="button"
           disabled={!requiredChecked}
-          className={
-            "body-2 h-48 w-full text-white" +
-            (requiredChecked ? "bg-moamoa-300" : "bg-gray-300")
-          }
+          className={cn(
+            "body-2 h-48 w-full text-white",
+            requiredChecked ? "bg-moamoa-300" : "bg-gray-300"
+          )}
         >
           동의합니다
         </Button>
