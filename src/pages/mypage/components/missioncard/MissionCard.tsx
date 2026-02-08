@@ -50,7 +50,7 @@ export default function MissionCard({
           onClick={() => onToggleLike(item.id)}
           disabled={disableLike}
           className={[
-            "mr-8 h-24 w-24 rounded-none bg-transparent p-0 border-0 shadow-none outline-none focus:outline-none focus:ring-0",
+            "mr-8 h-24 w-24 rounded-none border-0 bg-transparent p-0 shadow-none outline-none focus-visible:rounded-full focus-visible:ring-2 focus-visible:ring-moamoa-300",
             disableLike ? "cursor-not-allowed opacity-60" : "",
           ]
             .filter(Boolean)

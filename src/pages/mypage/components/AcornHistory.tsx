@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
-import IcPlus from "@/assets/icons/ic_plus.svg?react";
 import IcMinus from "@/assets/icons/ic_minus.svg?react";
+import IcPlus from "@/assets/icons/ic_plus.svg?react";
 
 import type {
   AcornHistoryFilterKey,
@@ -55,7 +55,7 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
 
   useEffect(() => {
     setVisibleCount(loadSize);
-  }, [filtered.length, loadSize]);
+  }, [filtered.length]);
 
   const visibleList = filtered.slice(0, visibleCount);
   const hasMore = visibleCount < filtered.length;
@@ -109,7 +109,6 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
                           </span>
                         ))}
                       </div>
-
                       <div className="flex h-40 w-full items-center">
                         <div className="heading-5 h-28 flex-1 truncate text-black">
                           {item.missionTitle}
@@ -130,7 +129,9 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
                           <IcAcorn className="h-40 w-29 shrink-0" aria-hidden />
                         </div>
                       </div>
-                      <div className="body-2 text-moamoa-300">도토리 적립</div>
+                      <div className="body-2 text-moamoa-300">
+                        {item.acornDelta >= 0 ? "도토리 적립" : "도토리 사용"}
+                      </div>
                     </div>
                   </li>
                 );

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 import { Button } from "@/components/common/button/Button";
 import type {
@@ -39,9 +39,21 @@ export default function MissionFilters({
   isEmpty,
 }: Props) {
   const [openMenu, setOpenMenu] = useState<MenuKey>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!openMenu) return;
+    const handleClick = (e: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+        setOpenMenu(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [openMenu]);
 
   return (
-    <div className="mb-9 flex w-full flex-nowrap items-start gap-60">
+    <div ref={containerRef} className="mb-9 flex w-full flex-nowrap items-start gap-60">
       <div className="relative">
         <Button
           type="button"
