@@ -2,6 +2,7 @@ import { useMemo } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MissionCard from "@/components/MissionCard";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useScrapMission } from "@/hooks/useScrapMission";
 import { useCategoryMissionsInfinite } from "../hooks/useQuery/category/useCategoryMissionsInfinite";
 
 interface CategoryMissionInfiniteListProps {
@@ -24,6 +25,8 @@ export default function CategoryMissionInfiniteList({
       seed,
     });
 
+  const scrapMutation = useScrapMission();
+
   const { ref } = useInfiniteScroll({
     fetchNextPage,
     hasNextPage,
@@ -41,7 +44,12 @@ export default function CategoryMissionInfiniteList({
           minute: m.durationMinutes,
           category: m.category,
           quizCount: m.quizCount,
-          isLiked: m.isScrapped,
+          isScrapped: m.isScrapped,
+          onHeartClick: () =>
+            scrapMutation.mutate({
+              missionId: m.missionId,
+              isScrapped: m.isScrapped,
+            }),
         })),
     [data.pages]
   );
