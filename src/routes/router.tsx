@@ -65,7 +65,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "mission/quiz/:missionId",
         element: <QuizPage />,
-        handle: { bgColor: "bg-white", hideBottomNav: true },
+        handle: { bgColor: "bg-gray-100", hideBottomNav: true },
       },
       {
         path: "search",
