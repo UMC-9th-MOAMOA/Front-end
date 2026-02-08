@@ -1,39 +1,37 @@
-import { useEffect, useMemo } from "react";
-import { useInView } from "react-intersection-observer";
+import { useMemo } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MissionCard from "@/components/MissionCard";
-import { useCategoryMissionsInfinite } from "../hooks/useQuery/useCategoryMissionsInfinite";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useScrapMission } from "@/hooks/useScrapMission";
+import { useCategoryMissionsInfinite } from "../hooks/useQuery/category/useCategoryMissionsInfinite";
 
 interface CategoryMissionInfiniteListProps {
   categoryId: number;
-  subcategoryId: number;
+  subCategoryId: number;
   seed: number;
   swipeHandlers: Record<string, unknown>;
 }
 
 export default function CategoryMissionInfiniteList({
   categoryId,
-  subcategoryId,
+  subCategoryId,
   seed,
   swipeHandlers,
 }: CategoryMissionInfiniteListProps) {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useCategoryMissionsInfinite({
       categoryId,
-      subcategoryId,
+      subCategoryId,
       seed,
     });
 
-  const { ref, inView } = useInView({
-    threshold: 0.1,
-    rootMargin: "300px",
-  });
+  const scrapMutation = useScrapMission();
 
-  useEffect(() => {
-    if (inView && hasNextPage && !isFetchingNextPage) {
-      fetchNextPage();
-    }
-  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+  const { ref } = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
   const missions = useMemo(
     () =>
@@ -46,7 +44,12 @@ export default function CategoryMissionInfiniteList({
           minute: m.durationMinutes,
           category: m.category,
           quizCount: m.quizCount,
-          isLiked: m.isScrapped,
+          isScrapped: m.isScrapped,
+          onHeartClick: () =>
+            scrapMutation.mutate({
+              missionId: m.missionId,
+              isScrapped: m.isScrapped,
+            }),
         })),
     [data.pages]
   );

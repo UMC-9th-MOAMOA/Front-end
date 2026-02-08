@@ -7,6 +7,7 @@ import TermsPage from "@/pages/auth/terms/Terms";
 import HomePage from "@/pages/home/Home";
 import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
+import MyPage from "@/pages/mypage/MyPage";
 import Onboarding from "@/pages/onboarding/Onboarding";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
@@ -76,7 +77,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "mission/quiz/:missionId",
         element: <QuizPage />,
-        handle: { bgColor: "bg-white", hideBottomNav: true },
+        handle: { bgColor: "bg-gray-100", hideBottomNav: true },
       },
       {
         path: "search",
@@ -95,7 +96,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "mypage",
-        element: <div>마이페이지</div>,
+        element: <MyPage />,
         handle: { bgColor: "bg-gray-100" },
       },
       {

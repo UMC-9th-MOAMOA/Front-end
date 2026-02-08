@@ -18,7 +18,7 @@ export default function CategoryButton({
       data-category={category}
       onClick={() => onClick(category)}
       className={cn(
-        "heading-5 shrink-0 grow whitespace-nowrap",
+        "heading-5 shrink-0 grow whitespace-nowrap rounded-none",
         isSelected ? "border-black border-b text-black" : "text-gray-500"
       )}
     >
