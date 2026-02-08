@@ -1,13 +1,36 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import SquirrelStart from "@/assets/icons/squirrel_start.svg?react";
 import Logo from "@/assets/LOGO.svg?react";
 import { Button } from "@/components/common/button/Button";
 
-const StartPage = () => {
+interface StartPageProps {
+  enableFade?: boolean;
+}
+
+const StartPage = ({ enableFade = true }: StartPageProps) => {
   const navigate = useNavigate();
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    if (!enableFade) {
+      setIsVisible(true);
+      return;
+    }
+
+    const raf = window.requestAnimationFrame(() => {
+      setIsVisible(true);
+    });
+
+    return () => {
+      window.cancelAnimationFrame(raf);
+    };
+  }, [enableFade]);
 
   return (
-    <div className="-mb-96 flex flex-1 flex-col items-center not-[]:text-center">
+    <div
+      className={`-mb-96 flex flex-1 flex-col items-center ${enableFade ? "transition-opacity duration-400" : ""} ${isVisible ? "opacity-100" : "opacity-0"} not-[]:text-center`}
+    >
       <Logo className="mx-auto mt-85 block h-auto w-193" aria-label="MOAMOA" />
       <div className="flex flex-col items-center gap-20">
         <h1 className="heading-1 mt-34 text-center text-black">
