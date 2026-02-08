@@ -44,8 +44,6 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
       navigate(result.onboardingCompleted ? "/" : "/onboarding");
     },
     onError: (error) => {
-      handleError(error);
-
       const apiError = error as ApiError;
       const code = apiError?.serverCode as BlockedCode | undefined;
       const message =
@@ -57,6 +55,7 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
         return;
       }
 
+      handleError(error);
       handlers?.onMessage?.(resolveLoginErrorMessage(code, message));
     },
   });
