@@ -15,6 +15,10 @@ import {
   getSendVerificationEmailErrorState,
   useSendVerificationEmail,
 } from "./hooks/useMutation/useSendVerificationEmail";
+import {
+  getVerifyEmailAuthCodeErrorState,
+  useVerifyEmailAuthCode,
+} from "./hooks/useMutation/useVerifyEmailAuthCode";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -38,6 +42,8 @@ export default function SignUp() {
 
   const { mutateAsync: sendVerificationEmail, isPending: isSendingEmail } =
     useSendVerificationEmail();
+  const { mutateAsync: verifyEmailAuthCode, isPending: isVerifyingEmailCode } =
+    useVerifyEmailAuthCode();
 
   const domainOptions = [
     "naver.com",
@@ -92,21 +98,44 @@ export default function SignUp() {
   };
 
   const handleConfirmCode = async () => {
-    // TODO: API 붙이기 (응답 결과에 따라 성공/실패 분기)
-    const isValid = code.trim() === "1111";
+    if (emailLocal.trim().length === 0 || emailDomain.trim().length === 0) {
+      setEmailStatusText("이메일을 입력해주세요.");
+      setEmailStatusTone("error");
+      return;
+    }
 
-    if (isValid) {
+    const email = `${emailLocal}@${emailDomain}`;
+
+    setEmailStatusText("인증번호를 확인하는 중...");
+    setEmailStatusTone("info");
+
+    try {
+      await verifyEmailAuthCode({
+        email,
+        authCode: code.trim(),
+      });
       setEmailStatusText("사용 가능한 이메일");
       setEmailStatusTone("success");
       setEmailVerified(true);
       setVerifyModalType("success");
       return;
-    }
+    } catch (error) {
+      const errorState = getVerifyEmailAuthCodeErrorState(error);
+      if (errorState) {
+        setEmailStatusText(errorState.text);
+        setEmailStatusTone(errorState.tone);
+        setEmailVerified(false);
+        setVerifyModalType("error");
+        return;
+      }
 
-    setEmailStatusText("인증번호가 올바르지 않아요");
-    setEmailStatusTone("error");
-    setEmailVerified(false);
-    setVerifyModalType("error");
+      const serverMessage = (error as { serverMessage?: string })
+        ?.serverMessage;
+      setEmailStatusText(serverMessage || "인증번호 확인에 실패했어요");
+      setEmailStatusTone("error");
+      setEmailVerified(false);
+      setVerifyModalType("error");
+    }
   };
 
   const disabledRequest =
@@ -137,7 +166,8 @@ export default function SignUp() {
     setEmailStatusTone("info");
   }, [resendCooldown, showResendCountdown]);
 
-  const disabledConfirm = code.trim().length === 0;
+  const disabledConfirm =
+    code.trim().length === 0 || isVerifyingEmailCode;
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
