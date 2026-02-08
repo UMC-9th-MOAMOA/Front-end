@@ -1,19 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
-
-function IcMinus({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 16 16"
-      fill="none"
-      aria-hidden
-    >
-      <rect x="2" y="7.5" width="12" height="1" fill="currentColor" />
-    </svg>
-  );
-}
+import IcMinus from "@/assets/icons/ic_minus.svg?react";
 
 import type {
   AcornHistoryFilterKey,
@@ -43,7 +31,7 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
       const date = new Date(dateStr);
       if (Number.isNaN(date.getTime())) return false;
       const diffMs = now.getTime() - date.getTime();
-      return diffMs <= days * 24 * 60 * 60 * 1000;
+      return diffMs >= 0 && diffMs <= days * 24 * 60 * 60 * 1000;
     };
 
     if (sortKey === "3m") {
@@ -131,10 +119,12 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
                           {item.acornDelta < 0 ? (
                             <IcMinus className="h-16 w-16 shrink-0" />
                           ) : (
-                            <IcPlus className="h-16 w-16 shrink-0" aria-hidden />
+                            <IcPlus
+                              className="h-16 w-16 shrink-0"
+                              aria-hidden
+                            />
                           )}
                           <span className="heading-5 text-black">
-                            {item.acornDelta < 0 ? "-" : "+"}
                             {Math.abs(item.acornDelta)}
                           </span>
                           <IcAcorn className="h-40 w-29 shrink-0" aria-hidden />

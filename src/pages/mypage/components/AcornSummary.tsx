@@ -25,7 +25,7 @@ export default function AcornSummary({ count }: { count: number }) {
               <Button
                 type="button"
                 onClick={goUseAcorn}
-                className="heading-5 h-40 w-131 rounded-lg bg-moamoa-50 px-0 text-moamoa-600 active:bg-moamoa-100"
+                className="body-2 h-40 min-w-131 whitespace-nowrap rounded-lg bg-moamoa-50 px-0 px-16 py-10 text-moamoa-600 active:bg-moamoa-100"
               >
                 도토리 사용하기
               </Button>
