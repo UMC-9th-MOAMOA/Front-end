@@ -20,6 +20,7 @@ export const useAuth = () => {
         storage.setToken(newToken);
         setAuthenticated(true);
       } catch {
+        storage.removeToken();
         setAuthenticated(false);
       } finally {
         setLoading(false);
