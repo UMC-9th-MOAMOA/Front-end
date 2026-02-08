@@ -7,3 +7,7 @@ export interface ChangePasswordRequest {
 export type ChangePasswordResult = string;
 
 export type PasswordResetEmailResult = null;
+
+export interface PasswordResetVerificationResult {
+  resetToken: string;
+}

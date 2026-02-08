@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthHeader from "../components/AuthHeader";
 import {
@@ -6,10 +6,11 @@ import {
   PASSWORD_INVALID_MESSAGE,
 } from "../utils/passwordStrength";
 import { useSendPasswordResetEmail } from "./hooks/useSendPasswordResetEmail";
+import { useVerifyPasswordResetCode } from "./hooks/useVerifyPasswordResetCode";
 import {
   getServerCode,
+  getServerMessage,
   isValidEmail,
-  type Loading,
   PASSWORD_RESET_MESSAGES,
   type Step,
 } from "./passwordReset.shared";
@@ -25,16 +26,18 @@ export default function Password() {
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
 
-  const [loading, setLoading] = useState<Loading>(null);
   const [errorText, setErrorText] = useState<string>("");
   const [noAccountModalOpen, setNoAccountModalOpen] = useState(false);
   const [emailError, setEmailError] = useState<string | undefined>(undefined);
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [resendCooldown, setResendCooldown] = useState(0);
 
   const { mutateAsync: sendResetEmail, isPending: isSendingEmail } =
     useSendPasswordResetEmail();
+  const { mutateAsync: verifyResetCode, isPending: isVerifying } =
+    useVerifyPasswordResetCode();
 
   const [passwordErrorMessage, setPasswordErrorMessage] = useState<
     string | undefined
@@ -47,16 +50,24 @@ export default function Password() {
   };
 
   const verifyCode = async () => {
-    throw new Error("verifyCode API not implemented");
+    return verifyResetCode({ email, authCode: code });
   };
 
   const pw = useMemo(() => getPasswordStrength(password), [password]);
-  const disabled = loading !== null;
+  const disabled = isVerifying;
   const canUsePassword = pw.canSubmit;
   const isPasswordFormValid =
     canUsePassword &&
     passwordConfirm.length > 0 &&
     !passwordConfirmErrorMessage;
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const id = setInterval(() => {
+      setResendCooldown((prev) => Math.max(prev - 1, 0));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [resendCooldown]);
 
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
@@ -110,6 +121,7 @@ export default function Password() {
     try {
       await sendEmail(email);
       setStep("CODE");
+      setResendCooldown(30);
     } catch (e: unknown) {
       const serverCode = getServerCode(e);
 
@@ -131,10 +143,15 @@ export default function Password() {
     }
 
     try {
-      setLoading("VERIFY");
       await verifyCode();
       setStep("NEW_PASSWORD");
     } catch (e: unknown) {
+      const serverMessage = getServerMessage(e);
+      if (serverMessage) {
+        setErrorText(serverMessage);
+        return;
+      }
+
       const serverCode = getServerCode(e);
 
       if (serverCode === "CODE_MISMATCH" || serverCode === "INVALID_CODE") {
@@ -144,8 +161,6 @@ export default function Password() {
       } else {
         setErrorText(PASSWORD_RESET_MESSAGES.verifyFailed);
       }
-    } finally {
-      setLoading(null);
     }
   };
 
@@ -188,7 +203,8 @@ export default function Password() {
           code={code}
           errorText={errorText}
           isSending={isSendingEmail}
-          isVerifying={loading === "VERIFY"}
+          isVerifying={isVerifying}
+          resendCooldown={resendCooldown}
           onCodeChange={setCode}
           onResendEmail={handleSendEmail}
           onVerifyCode={handleVerifyCode}
