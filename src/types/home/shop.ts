@@ -29,3 +29,19 @@ export interface ShopItemsResult {
   walletPoint: number;
   items: ShopItem[];
 }
+
+export interface PurchaseResult {
+  itemId: number;
+  spentPoint: number;
+  walletPoint: number;
+}
+
+export interface EquippedItem {
+  type: ItemType;
+  itemId: number;
+  imageUrl: string;
+}
+
+export interface EquipResult {
+  equippedItems: EquippedItem[];
+}
