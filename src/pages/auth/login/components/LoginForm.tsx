@@ -6,6 +6,7 @@ import { AuthTextField } from "../../components/AuthTextField";
 import { Modal } from "../../components/Modal";
 import { PasswordTextField } from "../../components/PasswordTextField";
 import { useLogin } from "../hooks/useMutation/useLogin";
+import { useRecoverAccount } from "../hooks/useMutation/useRecoverAccount";
 
 function AuthLinksRow() {
   return (
@@ -35,6 +36,12 @@ export default function LoginForm() {
       setBlockedCode(code);
       setIsBlockedModalOpen(true);
       setErrorMessage("");
+    },
+    onMessage: (message) => setErrorMessage(message),
+  });
+  const { mutate: recoverMutate, isPending: isRecovering } = useRecoverAccount({
+    onSuccess: () => {
+      setIsBlockedModalOpen(false);
     },
     onMessage: (message) => setErrorMessage(message),
   });
@@ -120,9 +127,13 @@ export default function LoginForm() {
                 <Button
                   type="button"
                   className="body-2 h-50 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
-                  onClick={() => setIsBlockedModalOpen(false)}
+                  onClick={() => {
+                    if (isRecovering) return;
+                    setErrorMessage("");
+                    recoverMutate({ email, password });
+                  }}
                 >
-                  복구하기
+                  {isRecovering ? "복구 중..." : "복구하기"}
                 </Button>
               </div>
             </>

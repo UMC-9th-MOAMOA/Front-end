@@ -1,6 +1,7 @@
 import axios from "axios";
 import type { ApiError, ApiResponse } from "@/types/api/api";
 import type { LoginRequest, LoginResult } from "@/types/auth/login";
+import type { RecoverResult } from "@/types/auth/recover";
 import type {
   SocialLoginResult,
   SocialLoginTokenRequest,
@@ -49,6 +50,36 @@ export const refreshAccessToken = async (): Promise<string> => {
   }
 
   return data.result.accessToken;
+};
+
+export const recoverAccount = async (payload: LoginRequest) => {
+  try {
+    const { data } = await publicAPI.post<ApiResponse<RecoverResult>>(
+      "/auth/recover",
+      payload
+    );
+
+    if (!data.isSuccess) {
+      const apiError = new Error(data.message) as ApiError;
+      apiError.serverCode = data.code;
+      apiError.serverMessage = data.message;
+      throw apiError;
+    }
+
+    return data.result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const data = error.response?.data as ApiResponse<null> | undefined;
+      if (data) {
+        const apiError = new Error(data.message) as ApiError;
+        apiError.serverCode = data.code;
+        apiError.serverMessage = data.message;
+        throw apiError;
+      }
+    }
+
+    throw error;
+  }
 };
 
 export const exchangeSocialToken = async (
