@@ -30,7 +30,7 @@ export default function LoginForm() {
     "AUTH403_2" | "AUTH403_3" | ""
   >("");
   const [isBlockedModalOpen, setIsBlockedModalOpen] = useState(false);
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { mutate: loginMutate, isPending } = useLogin({
     onBlocked: (code) => {
       setBlockedCode(code);
@@ -55,8 +55,13 @@ export default function LoginForm() {
     if (error === "ACCOUNT_BANNED") {
       setBlockedCode("AUTH403_3");
       setIsBlockedModalOpen(true);
+      setSearchParams((prev) => {
+        const nextParams = new URLSearchParams(prev);
+        nextParams.delete("error");
+        return nextParams;
+      }, { replace: true });
     }
-  }, [error]);
+  }, [error, setSearchParams]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -137,7 +142,7 @@ export default function LoginForm() {
                 </Button>
               </div>
             </>
-          ) : (
+          ) : blockedCode === "AUTH403_3" ? (
             <>
               <p className="heading-3 text-black">
                 서비스 이용이
@@ -152,7 +157,7 @@ export default function LoginForm() {
                 확인
               </Button>
             </>
-          )}
+          ) : null}
         </div>
       </Modal>
     </form>
