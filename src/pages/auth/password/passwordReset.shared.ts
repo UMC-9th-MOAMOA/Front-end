@@ -24,6 +24,7 @@ export const PASSWORD_RESET_MESSAGES = {
   codeInvalid: "인증번호가 올바르지 않아요.",
   codeExpired: "인증번호가 만료됐어요. 재발송을 요청해주세요.",
   verifyFailed: "인증에 실패했어요. 잠시 후 다시 시도해주세요.",
+  resetFailed: "비밀번호 재설정에 실패했어요. 잠시 후 다시 시도해주세요.",
   passwordMismatch: "비밀번호가 일치하지 않아요.",
 } as const;
 
