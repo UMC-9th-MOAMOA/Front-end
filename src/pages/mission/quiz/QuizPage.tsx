@@ -69,6 +69,7 @@ export default function QuizPage() {
   // timings (should match `QuizProgressBar` animation duration)
   const ANIMATION_DURATION = 500; // ms (kept in sync with QuizProgressBar)
   const FEEDBACK_DELAY_AFTER_ANIMATION = 400; // ms pause before showing feedback
+  const LAST_QUESTION_EXTRA_DELAY = 400; // ms 마지막 문제에서 아이콘 전환 후 추가 딜레이
 
   const navigate = useNavigate();
 
@@ -104,11 +105,18 @@ export default function QuizPage() {
     // Fallback: show feedback after animation + extra delay
     if (feedbackTimeoutRef.current)
       window.clearTimeout(feedbackTimeoutRef.current);
+
+    const totalDelay = isLastQuestion
+      ? ANIMATION_DURATION +
+        FEEDBACK_DELAY_AFTER_ANIMATION +
+        LAST_QUESTION_EXTRA_DELAY
+      : ANIMATION_DURATION + FEEDBACK_DELAY_AFTER_ANIMATION;
+
     feedbackTimeoutRef.current = window.setTimeout(() => {
       setShowFeedback(true);
       setIsAnimating(false);
       feedbackTimeoutRef.current = null;
-    }, ANIMATION_DURATION + FEEDBACK_DELAY_AFTER_ANIMATION);
+    }, totalDelay);
   };
 
   const handleNext = () => {
@@ -189,7 +197,7 @@ export default function QuizPage() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="-mb-96 flex min-h-screen flex-col">
       <Header
         title="미션 수행하기"
         property="common"
