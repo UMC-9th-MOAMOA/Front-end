@@ -1,17 +1,13 @@
 import Header from "@/components/common/header/Header";
-import AcornHistory from "./components/AcornHistory";
-import AcornSummary from "./components/AcornSummary";
+import { Suspense } from "react";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import AcornSection from "./components/AcornSection";
 import Calendar from "./components/calendar/Calendar";
 import MyPageTabs from "./components/MyPageTabs";
 import MissionList from "./components/missioncard/MissionList";
 import PerformanceSection from "./components/PerformanceSection";
 import { useMyPageTab } from "./hooks/useMyPageTab";
-import {
-  calendarMarks,
-  mockAcornCount,
-  mockAcornHistory,
-  mockPerformance,
-} from "./mocks/mypage.mock";
+import { calendarMarks, mockPerformance } from "./mocks/mypage.mock";
 
 export default function MyPage() {
   const { activeTab, changeTab } = useMyPageTab("all");
@@ -39,10 +35,9 @@ export default function MyPage() {
       {activeTab === "mission" && <MissionList />}
 
       {activeTab === "acorn" && (
-        <>
-          <AcornSummary count={mockAcornCount} />
-          <AcornHistory items={mockAcornHistory} />
-        </>
+        <Suspense fallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}>
+          <AcornSection />
+        </Suspense>
       )}
     </div>
   );
