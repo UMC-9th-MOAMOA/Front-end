@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/common/button/Button";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
@@ -11,6 +11,10 @@ import {
 } from "@/pages/auth/utils/passwordStrength";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
+import {
+  getSendVerificationEmailErrorState,
+  useSendVerificationEmail,
+} from "./hooks/useMutation/useSendVerificationEmail";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -29,6 +33,11 @@ export default function SignUp() {
   const [verifyModalType, setVerifyModalType] = useState<
     "success" | "error" | null
   >(null);
+  const [resendCooldown, setResendCooldown] = useState(0);
+  const [showResendCountdown, setShowResendCountdown] = useState(false);
+
+  const { mutateAsync: sendVerificationEmail, isPending: isSendingEmail } =
+    useSendVerificationEmail();
 
   const domainOptions = [
     "naver.com",
@@ -39,9 +48,47 @@ export default function SignUp() {
   ];
 
   const handleRequestCode = async () => {
-    // TODO: API 붙이기
-    setEmailStatusText("인증 메일을 보냈어요");
+    if (emailLocal.trim().length === 0 || emailDomain.trim().length === 0) {
+      return;
+    }
+
+    const email = `${emailLocal}@${emailDomain}`;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setEmailStatusText("이메일 형식이 올바르지 않습니다.");
+      setEmailStatusTone("error");
+      return;
+    }
+
+    setEmailStatusText("인증 메일을 보내는 중...");
     setEmailStatusTone("info");
+
+    try {
+      await sendVerificationEmail({
+        email,
+      });
+      setEmailStatusText("인증 메일을 보냈어요");
+      setEmailStatusTone("info");
+      setEmailVerified(false);
+      setResendCooldown(30);
+      setShowResendCountdown(true);
+    } catch (error) {
+      const errorState = getSendVerificationEmailErrorState(error);
+      if (errorState) {
+        setEmailStatusText(errorState.text);
+        setEmailStatusTone(errorState.tone);
+        if (errorState.text.includes("30초")) {
+          setResendCooldown(30);
+          setShowResendCountdown(true);
+        }
+        return;
+      }
+
+      const serverMessage = (error as { serverMessage?: string })
+        ?.serverMessage;
+      setEmailStatusText(serverMessage || "인증 메일 전송에 실패했어요");
+      setEmailStatusTone("error");
+    }
   };
 
   const handleConfirmCode = async () => {
@@ -63,7 +110,32 @@ export default function SignUp() {
   };
 
   const disabledRequest =
-    emailLocal.trim().length === 0 || emailDomain.trim().length === 0;
+    emailLocal.trim().length === 0 ||
+    emailDomain.trim().length === 0 ||
+    isSendingEmail ||
+    resendCooldown > 0;
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const timer = window.setInterval(() => {
+      setResendCooldown((prev) => Math.max(0, prev - 1));
+    }, 1000);
+    return () => window.clearInterval(timer);
+  }, [resendCooldown]);
+
+  useEffect(() => {
+    if (!showResendCountdown) return;
+    if (resendCooldown > 0) {
+      setEmailStatusText(
+        `이메일 재전송은 ${resendCooldown}초 뒤에 가능합니다.`
+      );
+      setEmailStatusTone("error");
+      return;
+    }
+    setShowResendCountdown(false);
+    setEmailStatusText(" ");
+    setEmailStatusTone("info");
+  }, [resendCooldown, showResendCountdown]);
 
   const disabledConfirm = code.trim().length === 0;
 

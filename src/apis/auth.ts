@@ -1,5 +1,5 @@
 import axios from "axios";
-import type { ApiResponse } from "@/types/api/api";
+import type { ApiError, ApiResponse } from "@/types/api/api";
 import type { SendVerificationEmailResult } from "@/types/auth/email";
 import { publicAPI } from "./axios";
 
@@ -52,10 +52,14 @@ export const sendVerificationEmail = async (
 ) => {
   const { data } = await publicAPI.post<
     ApiResponse<SendVerificationEmailResult>
-  >("/auth/email/send-verification", payload);
+  >("/auth/email/send-code", payload);
 
   if (!data.isSuccess) {
-    throw new Error(data.message);
+    const apiError = new Error(data.message) as ApiError;
+    apiError.serverCode = data.code;
+    apiError.serverMessage = data.message;
+    apiError.serverResult = data.result;
+    throw apiError;
   }
 
   return data.result;

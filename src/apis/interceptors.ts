@@ -72,6 +72,7 @@ export const attachInterceptors = (instance: AxiosInstance) => {
         const apiError = new Error(errorData.message) as ApiError;
         apiError.serverCode = errorData.code;
         apiError.serverMessage = errorData.message;
+        apiError.serverResult = errorData.result;
         return Promise.reject(apiError);
       }
 
