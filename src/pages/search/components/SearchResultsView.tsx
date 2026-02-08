@@ -3,6 +3,7 @@ import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MissionCard from "@/components/MissionCard";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
+import { useScrapMission } from "@/hooks/useScrapMission";
 import { useSearchMissions } from "../hooks/useQuery/useSearchMissions";
 import RelatedKeywordsBar from "./RelatedKeywordsBar";
 
@@ -34,6 +35,7 @@ export default function SearchResultsView({
     isFetchingNextPage,
   });
 
+  const scrapMutation = useScrapMission();
   const missions = data.pages.flatMap((page) => page.missions);
 
   return (
@@ -63,7 +65,13 @@ export default function SearchResultsView({
               minute={mission.durationMinutes}
               category={mission.category}
               quizCount={mission.quizCount}
-              isLiked={mission.isScrapped}
+              isScrapped={mission.isScrapped}
+              onHeartClick={() =>
+                scrapMutation.mutate({
+                  missionId: mission.missionId,
+                  isScrapped: mission.isScrapped,
+                })
+              }
             />
           ))
         )}
