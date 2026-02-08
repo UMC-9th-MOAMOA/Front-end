@@ -177,6 +177,11 @@ export default function SignUp() {
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [agreements, setAgreements] = useState({
+    terms: false,
+    privacy: false,
+    marketing: false,
+  });
 
   const passwordStrength = getPasswordStrength(password);
   const canUsePassword = passwordStrength.canSubmit;
@@ -189,6 +194,15 @@ export default function SignUp() {
       ? "비밀번호가 일치하지 않습니다."
       : undefined;
 
+  const canStart =
+    name.trim().length > 0 &&
+    emailVerified &&
+    canUsePassword &&
+    passwordConfirm.length > 0 &&
+    !passwordConfirmErrorMessage &&
+    agreements.terms &&
+    agreements.privacy;
+
   return (
     <div>
       <AuthHeader
@@ -197,7 +211,7 @@ export default function SignUp() {
           navigate("/login");
         }}
       />
-      <div className="flex flex-col gap-18 pt-21">
+      <div className="flex flex-col gap-18 pt-50 pb-120">
         <AuthTextField
           label="이름"
           placeholder="이름을 입력하세요"
@@ -235,8 +249,18 @@ export default function SignUp() {
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
         <div className="mt-37">
-          <AgreementList />
+          <AgreementList value={agreements} onChange={setAgreements} />
         </div>
+      </div>
+      <div className="fixed inset-x-0 bottom-0 z-10 bg-white px-24 pt-10 shadow-[0px_-8px_50px_3px_rgba(0,0,0,0.10)]">
+        <Button
+          type="button"
+          disabled={!canStart}
+          className="body-2 h-48 w-full rounded-xl bg-moamoa-300 text-white disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-600"
+        >
+          시작하기
+        </Button>
+        <div className="h-28" />
       </div>
       <Modal
         open={verifyModalType !== null}
