@@ -51,8 +51,6 @@ export const refreshAccessToken = async (): Promise<string> => {
   return data.result.accessToken;
 };
 
-export const refreshToken = refreshAccessToken;
-
 export const exchangeSocialToken = async (
   payload: SocialLoginTokenRequest
 ) => {

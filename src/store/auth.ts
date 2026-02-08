@@ -8,7 +8,6 @@ interface AuthStore {
   setAuthenticated: (value: boolean) => void;
   setLoading: (value: boolean) => void;
   setPolicyAgreed: (value: boolean | null) => void;
-  logout: () => void;
 }
 
 export const useAuthStore = create<AuthStore>()(
@@ -21,10 +20,6 @@ export const useAuthStore = create<AuthStore>()(
       setAuthenticated: (value) => set({ isAuthenticated: value }),
       setLoading: (value) => set({ isLoading: value }),
       setPolicyAgreed: (value) => set({ policyAgreed: value }),
-
-      logout: () => {
-        set({ isAuthenticated: false, policyAgreed: null });
-      },
     }),
     {
       name: "auth",
