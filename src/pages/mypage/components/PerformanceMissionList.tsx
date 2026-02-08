@@ -2,8 +2,8 @@ import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcAd from "@/assets/icons/ic_ad.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
-import IcPlus from "@/assets/icons/ic_plus.svg?react";
 import IcMinus from "@/assets/icons/ic_minus.svg?react";
+import IcPlus from "@/assets/icons/ic_plus.svg?react";
 
 type RowKind = "attendance" | "ad" | "mission";
 
@@ -29,7 +29,7 @@ function AcornDelta({ value, className, textClassName }: AcornDeltaProps) {
   return (
     <div className={["flex items-center", className].filter(Boolean).join(" ")}>
       {isNegative ? (
-        <IcMinus className="h-16 w-16" />
+        <IcMinus className="h-16 w-16" aria-hidden />
       ) : (
         <IcPlus className="h-16 w-16" aria-hidden />
       )}
@@ -89,11 +89,11 @@ export default function PerformanceMissionList({
                             : ""}
                         </span>
 
-        <AcornDelta
-          value={row.acornDelta}
-          className="gap-2"
-          textClassName="body-2 text-black"
-        />
+                        <AcornDelta
+                          value={row.acornDelta}
+                          className="gap-2"
+                          textClassName="body-2 text-black"
+                        />
 
                         <span aria-hidden />
 

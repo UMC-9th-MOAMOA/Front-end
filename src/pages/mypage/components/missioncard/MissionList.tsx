@@ -47,7 +47,7 @@ export default function MissionTab() {
 
   useEffect(() => {
     setVisibleCount(loadSize);
-  }, [list.length, loadSize]);
+  }, [list]);
 
   const visibleList = list.slice(0, visibleCount);
   const hasMore = visibleCount < list.length;
@@ -68,7 +68,7 @@ export default function MissionTab() {
 
     observer.observe(node);
     return () => observer.disconnect();
-  }, [hasMore, list.length, loadSize]);
+  }, [hasMore, list.length]);
 
   const toggleLike = (id: string) => {
     setLikedList((prev) =>
@@ -93,7 +93,7 @@ export default function MissionTab() {
         }}
       />
 
-      <div className="-mx-25 w-full">
+      <div className="-mx-25 w-screen">
         <div
           className={[
             "relative flex w-full flex-col gap-6 rounded-t-xl pt-17 shadow-sm",
