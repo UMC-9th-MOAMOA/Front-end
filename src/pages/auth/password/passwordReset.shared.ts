@@ -1,11 +1,11 @@
 export type Step = "EMAIL" | "CODE" | "NEW_PASSWORD";
-export type Loading = null | "VERIFY";
-
 type ApiError = {
   serverCode?: string;
+  serverMessage?: string;
   response?: {
     data?: {
       code?: string;
+      message?: string;
     };
   };
 };
@@ -32,6 +32,15 @@ export function getServerCode(err: unknown): string | undefined {
     const apiError = err as ApiError;
     if (apiError.serverCode) return apiError.serverCode;
     if ("response" in apiError) return apiError.response?.data?.code;
+  }
+  return undefined;
+}
+
+export function getServerMessage(err: unknown): string | undefined {
+  if (typeof err === "object" && err !== null) {
+    const apiError = err as ApiError;
+    if (apiError.serverMessage) return apiError.serverMessage;
+    if ("response" in apiError) return apiError.response?.data?.message;
   }
   return undefined;
 }
