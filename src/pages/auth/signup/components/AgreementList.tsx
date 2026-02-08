@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked.svg";
@@ -17,28 +16,32 @@ const AGREEMENTS: AgreementItem[] = [
   { key: "marketing", label: "마케팅 정보 수신 동의(선택)" },
 ];
 
-export default function AgreementList() {
+type AgreementListValue = Record<AgreementKey, boolean>;
+
+interface AgreementListProps {
+  value: AgreementListValue;
+  onChange: (next: AgreementListValue) => void;
+}
+
+export default function AgreementList({
+  value,
+  onChange,
+}: AgreementListProps) {
   const navigate = useNavigate();
 
   const openDetailPage = () => {
     navigate("/terms");
   };
 
-  const [checked, setChecked] = useState<Record<AgreementKey, boolean>>({
-    terms: false,
-    privacy: false,
-    marketing: false,
-  });
-
-  const allChecked = Object.values(checked).every(Boolean);
+  const allChecked = Object.values(value).every(Boolean);
 
   const toggleAll = () => {
     const next = !allChecked;
-    setChecked({ terms: next, privacy: next, marketing: next });
+    onChange({ terms: next, privacy: next, marketing: next });
   };
 
   const toggleItem = (key: AgreementKey) => {
-    setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+    onChange({ ...value, [key]: !value[key] });
   };
 
   return (
@@ -58,7 +61,7 @@ export default function AgreementList() {
           <AgreementRow
             key={item.key}
             label={item.label}
-            checked={checked[item.key]}
+            checked={value[item.key]}
             onToggle={() => toggleItem(item.key)}
           />
         ))}
