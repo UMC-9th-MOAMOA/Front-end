@@ -44,7 +44,7 @@ export default function DailyWeeklyGoalAchievement({
   const grandTotal = missionAcorns + dailyBonusAcorns + weeklyBonusAcorns;
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center">
+    <div className="relative -mb-96 flex min-h-screen flex-col items-center">
       <h2 className="heading-2 z-40 mt-40 text-center">
         <span className="text-black">오늘의 </span>
         <span className="text-moamoa-400">MVP</span>
@@ -152,7 +152,7 @@ export default function DailyWeeklyGoalAchievement({
         </div>
       </div>
 
-      <div className="mt-auto flex w-full flex-col items-center px-25 pb-30">
+      <div className="mt-auto flex w-full flex-col items-center px-25 pt-22 pb-30">
         <p className="body-4 mb-20 text-center text-gray-600">
           일간과 주간 목표를 동시에 달성하셨어요!
         </p>

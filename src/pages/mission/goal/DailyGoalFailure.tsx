@@ -13,7 +13,7 @@ export default function DailyGoalFailure({
   onClose,
 }: DailyGoalFailureProps) {
   return (
-    <div className="relative flex min-h-screen flex-col items-center">
+    <div className="relative -mb-96 flex min-h-screen flex-col items-center">
       <h2 className="heading-2 mt-46 text-center text-black">
         이 날은 잠시 쉬어갔네요
       </h2>
@@ -41,7 +41,7 @@ export default function DailyGoalFailure({
         </div>
       </div>
 
-      <div className="mt-auto flex w-full flex-col items-center px-25 pb-30">
+      <div className="mt-auto flex w-full flex-col items-center px-25 pt-22 pb-30">
         <p className="body-4 mb-20 text-center text-gray-600">
           이 날 못한 몫까지 <br />
           오늘 더 힘차게 달려볼까요?

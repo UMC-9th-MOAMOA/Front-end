@@ -88,7 +88,7 @@ export default function MissionResult({
   }
 
   return (
-    <div className="relative flex min-h-screen flex-col items-center">
+    <div className="relative -mb-96 flex min-h-screen flex-col items-center">
       <Header leftIcon="quit" title="" property="common" onBack={handleExit} />
 
       <div className="absolute top-36 left-20 z-30 flex w-full justify-center">
@@ -158,7 +158,7 @@ export default function MissionResult({
         </div>
       </div>
 
-      <div className="mt-auto flex w-full flex-col items-center px-25 pb-30">
+      <div className="mt-auto flex w-full flex-col items-center px-25 pt-22 pb-30">
         <p className="body-4 mb-18 text-center text-gray-600">
           {isAllCorrect
             ? "이제 보상을 받으러 가볼까요?"

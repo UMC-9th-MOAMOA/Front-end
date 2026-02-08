@@ -13,7 +13,7 @@ export default function WeeklyGoalFailure({
   onClose,
 }: WeeklyGoalFailureProps) {
   return (
-    <div className="relative flex min-h-screen flex-col items-center">
+    <div className="relative -mb-96 flex min-h-screen flex-col items-center">
       <h2 className="heading-2 mt-46 text-center text-black">
         더 멀리 뛰기 위한 도움닫기
       </h2>
@@ -42,7 +42,7 @@ export default function WeeklyGoalFailure({
         </div>
       </div>
 
-      <div className="mt-auto flex w-full flex-col items-center px-25 pb-30">
+      <div className="mt-auto flex w-full flex-col items-center px-25 pt-22 pb-30">
         <p className="body-4 mb-20 text-center text-gray-600">
           이번 주에 쌓인 노력은 사라지지 않으니까요!
         </p>
