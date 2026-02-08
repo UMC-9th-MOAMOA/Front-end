@@ -21,6 +21,8 @@ import {
   getVerifyEmailAuthCodeErrorState,
   useVerifyEmailAuthCode,
 } from "./hooks/useMutation/useVerifyEmailAuthCode";
+import { useSignUp } from "./hooks/useMutation/useSignUp";
+import { TERMS } from "./constants/terms";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -55,6 +57,7 @@ export default function SignUp() {
     useSendVerificationEmail();
   const { mutateAsync: verifyEmailAuthCode, isPending: isVerifyingEmailCode } =
     useVerifyEmailAuthCode();
+  const { mutateAsync: signUp, isPending: isSigningUp } = useSignUp();
 
   const domainOptions = [
     "naver.com",
@@ -184,6 +187,7 @@ export default function SignUp() {
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [signUpError, setSignUpError] = useState("");
   const [agreements, setAgreements] = useState({
     terms: false,
     privacy: false,
@@ -215,6 +219,32 @@ export default function SignUp() {
     !passwordConfirmErrorMessage &&
     agreements.terms &&
     agreements.privacy;
+
+  const handleStart = async () => {
+    if (!canStart || isSigningUp) return;
+
+    setSignUpError("");
+    const email = `${emailLocal}@${emailDomain}`;
+    const agreedTerms = TERMS.map((term) => ({
+      policyId: term.policyId,
+      isAgreed: agreements[term.key],
+    }));
+
+    try {
+      await signUp({
+        email,
+        password,
+        passwordCheck: passwordConfirm,
+        name: name.trim(),
+        agreedTerms,
+      });
+      navigate("/login");
+    } catch (error) {
+      const serverMessage = (error as { serverMessage?: string })
+        ?.serverMessage;
+      setSignUpError(serverMessage || "회원가입에 실패했어요");
+    }
+  };
 
   return (
     <div>
@@ -266,12 +296,17 @@ export default function SignUp() {
         </div>
       </div>
       <div className="fixed inset-x-0 bottom-0 z-10 bg-white px-24 pt-10 shadow-[0px_-8px_50px_3px_rgba(0,0,0,0.10)]">
+        {signUpError ? (
+          <p className="body-4 mb-8 text-red-400">{signUpError}</p>
+        ) : null}
         <Button
           type="button"
-          disabled={!canStart}
+          disabled={!canStart || isSigningUp}
           className="body-2 h-48 w-full rounded-xl bg-moamoa-300 text-white disabled:cursor-not-allowed disabled:bg-gray-200 disabled:text-gray-600"
+          onClick={handleStart}
+          aria-busy={isSigningUp}
         >
-          시작하기
+          {isSigningUp ? "가입 중..." : "시작하기"}
         </Button>
         <div className="h-28" />
       </div>

@@ -4,6 +4,7 @@ import type {
   SendVerificationEmailResult,
   VerifyEmailAuthCodeResult,
 } from "@/types/auth/email";
+import type { SignupResult } from "@/types/auth/signup";
 import { publicAPI } from "./axios";
 
 export interface LoginRequest {
@@ -15,6 +16,17 @@ export interface LoginResult {
   grantType: string;
   accessToken: string;
   accessTokenExpiresIn: number;
+}
+
+export interface SignupRequest {
+  email: string;
+  password: string;
+  passwordCheck: string;
+  name: string;
+  agreedTerms: Array<{
+    policyId: number;
+    isAgreed: boolean;
+  }>;
 }
 
 const toApiErrorFromAxios = (error: unknown): ApiError | null => {
@@ -34,6 +46,25 @@ export const login = async (payload: LoginRequest) => {
   try {
     const { data } = await publicAPI.post<ApiResponse<LoginResult>>(
       "/auth/login",
+      payload
+    );
+
+    if (!data.isSuccess) {
+      throw new Error(data.message);
+    }
+
+    return data.result;
+  } catch (error) {
+    const apiError = toApiErrorFromAxios(error);
+    if (apiError) throw apiError;
+    throw error;
+  }
+};
+
+export const signUp = async (payload: SignupRequest) => {
+  try {
+    const { data } = await publicAPI.post<ApiResponse<SignupResult>>(
+      "/auth/signup",
       payload
     );
 
@@ -75,7 +106,7 @@ export const sendVerificationEmail = async (
   try {
     const { data } = await publicAPI.post<
       ApiResponse<SendVerificationEmailResult>
-    >("/auth/email/send-code", payload);
+    >("/auth/email/verification-codes", payload);
 
     if (!data.isSuccess) {
       const apiError = new Error(data.message) as ApiError;
@@ -104,7 +135,7 @@ export const verifyEmailAuthCode = async (
   try {
     const { data } = await publicAPI.post<
       ApiResponse<VerifyEmailAuthCodeResult>
-    >("/auth/email/verify", payload);
+    >("/auth/email/verifications", payload);
 
     if (!data.isSuccess) {
       const apiError = new Error(data.message) as ApiError;
