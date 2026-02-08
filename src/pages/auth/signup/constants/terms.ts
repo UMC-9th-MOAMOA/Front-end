@@ -1,4 +1,4 @@
-export type TermKey = "service" | "privacy" | "marketing";
+export type TermKey = "terms" | "privacy" | "marketing";
 
 export interface TermSection {
   key: TermKey;
@@ -10,7 +10,7 @@ export interface TermSection {
 
 export const TERMS: TermSection[] = [
   {
-    key: "service",
+    key: "terms",
     policyId: 1,
     title: "이용약관",
     required: true,

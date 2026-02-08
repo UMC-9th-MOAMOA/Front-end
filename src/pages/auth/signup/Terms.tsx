@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked_blue.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked_gray.svg";
 import { Button } from "@/components/common/button/Button";
@@ -7,10 +8,18 @@ import { cn } from "@/utils/cn/cn";
 import { TERMS, type TermKey } from "./constants/terms";
 
 export default function Terms() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const initialChecked = (
+    location.state as { agreements?: Record<TermKey, boolean> } | null
+  )?.agreements;
+
   const [checked, setChecked] = useState<Record<TermKey, boolean>>({
-    service: false,
+    terms: false,
     privacy: false,
     marketing: false,
+    ...initialChecked,
   });
 
   const requiredKeys = useMemo(
@@ -23,7 +32,7 @@ export default function Terms() {
 
   const toggleAll = () => {
     const next = !allChecked;
-    setChecked({ service: next, privacy: next, marketing: next });
+    setChecked({ terms: next, privacy: next, marketing: next });
   };
 
   const toggleItem = (key: TermKey) => {
@@ -32,7 +41,11 @@ export default function Terms() {
 
   return (
     <div className="-mb-96 flex min-h-0 flex-1 flex-col">
-      <AuthHeader title="이용 약관 동의" iconType="arrow" />
+      <AuthHeader
+        title="이용 약관 동의"
+        iconType="arrow"
+        onBack={() => navigate("/signup")}
+      />
 
       <div className="mt-34 flex flex-col">
         <Button
@@ -40,10 +53,10 @@ export default function Terms() {
           onClick={toggleAll}
           className={cn(
             "relative mb-44 h-52 w-full justify-start overflow-hidden rounded-lg",
-            allChecked ? "bg-moamoa-50" : "bg-gray-100"
+            allChecked ? "bg-moamoa-200" : "bg-gray-100"
           )}
         >
-          <div className="ml-17 inline-flex items-center justify-start gap-60">
+          <div className="ml-[17px] inline-flex items-center justify-start gap-[60px]">
             <img
               src={allChecked ? IcChecked : IcUnchecked}
               alt=""
@@ -73,7 +86,7 @@ export default function Terms() {
                 </span>
               </button>
 
-              <div className="max-h-180 w-full overflow-y-auto rounded-lg border border-gray-400 bg-white px-14 py-12">
+              <div className="max-h-[180px] w-full overflow-y-auto rounded-lg border border-gray-400 bg-white px-14 py-12">
                 <p className="body-4 whitespace-pre-line text-gray-700">
                   {term.content}
                 </p>
@@ -87,6 +100,9 @@ export default function Terms() {
         <Button
           type="button"
           disabled={!requiredChecked}
+          onClick={() =>
+            navigate("/signup", { state: { agreements: checked } })
+          }
           className={cn(
             "body-2 h-48 w-full text-white",
             requiredChecked ? "bg-moamoa-300" : "bg-gray-300"
