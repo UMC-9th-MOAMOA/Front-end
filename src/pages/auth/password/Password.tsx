@@ -1,21 +1,17 @@
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  mockSendResetEmail,
-  mockVerifyResetCode,
-} from "@/mocks/auth/passwordReset.mock";
 import AuthHeader from "../components/AuthHeader";
 import {
   getPasswordStrength,
   PASSWORD_INVALID_MESSAGE,
 } from "../utils/passwordStrength";
+import { useSendPasswordResetEmail } from "./hooks/useSendPasswordResetEmail";
 import {
   getServerCode,
   isValidEmail,
   type Loading,
   PASSWORD_RESET_MESSAGES,
   type Step,
-  USE_MOCK,
 } from "./passwordReset.shared";
 import { CodeStepView } from "./views/CodeStepView";
 import { EmailStepView } from "./views/EmailStepView";
@@ -37,29 +33,30 @@ export default function Password() {
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
 
+  const { mutateAsync: sendResetEmail, isPending: isSendingEmail } =
+    useSendPasswordResetEmail();
+
   const [passwordErrorMessage, setPasswordErrorMessage] = useState<
     string | undefined
   >(undefined);
   const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] =
     useState<string | undefined>(undefined);
 
-  const sendEmail = USE_MOCK
-    ? mockSendResetEmail
-    : async () => {
-        throw new Error("sendEmail API not implemented");
-      };
+  const sendEmail = async (inputEmail: string) => {
+    await sendResetEmail({ email: inputEmail });
+  };
 
-  const verifyCode = USE_MOCK
-    ? mockVerifyResetCode
-    : async () => {
-        throw new Error("verifyCode API not implemented");
-      };
+  const verifyCode = async () => {
+    throw new Error("verifyCode API not implemented");
+  };
 
   const pw = useMemo(() => getPasswordStrength(password), [password]);
   const disabled = loading !== null;
   const canUsePassword = pw.canSubmit;
   const isPasswordFormValid =
-    canUsePassword && passwordConfirm.length > 0 && !passwordConfirmErrorMessage;
+    canUsePassword &&
+    passwordConfirm.length > 0 &&
+    !passwordConfirmErrorMessage;
 
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
@@ -101,6 +98,7 @@ export default function Password() {
   };
 
   const handleSendEmail = async () => {
+    if (isSendingEmail) return;
     setErrorText("");
     setEmailError(undefined);
 
@@ -110,8 +108,7 @@ export default function Password() {
     }
 
     try {
-      setLoading("SEND");
-      await sendEmail(email, "SUCCESS");
+      await sendEmail(email);
       setStep("CODE");
     } catch (e: unknown) {
       const serverCode = getServerCode(e);
@@ -122,8 +119,6 @@ export default function Password() {
       }
 
       setErrorText(PASSWORD_RESET_MESSAGES.emailSendFailed);
-    } finally {
-      setLoading(null);
     }
   };
 
@@ -137,7 +132,7 @@ export default function Password() {
 
     try {
       setLoading("VERIFY");
-      await verifyCode(email, code, "SUCCESS");
+      await verifyCode();
       setStep("NEW_PASSWORD");
     } catch (e: unknown) {
       const serverCode = getServerCode(e);
@@ -154,8 +149,7 @@ export default function Password() {
     }
   };
 
-  const handleResetPassword = () => {
-  };
+  const handleResetPassword = () => {};
 
   return (
     <div className="flex flex-col">
@@ -179,7 +173,7 @@ export default function Password() {
           email={email}
           emailError={emailError}
           errorText={errorText}
-          isSending={loading === "SEND"}
+          isSending={isSendingEmail}
           onEmailChange={(value) => {
             setEmail(value);
             setEmailError(undefined);
@@ -193,7 +187,7 @@ export default function Password() {
         <CodeStepView
           code={code}
           errorText={errorText}
-          isSending={loading === "SEND"}
+          isSending={isSendingEmail}
           isVerifying={loading === "VERIFY"}
           onCodeChange={setCode}
           onResendEmail={handleSendEmail}

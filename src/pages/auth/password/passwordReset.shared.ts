@@ -1,7 +1,8 @@
 export type Step = "EMAIL" | "CODE" | "NEW_PASSWORD";
-export type Loading = null | "SEND" | "VERIFY";
+export type Loading = null | "VERIFY";
 
 type ApiError = {
+  serverCode?: string;
   response?: {
     data?: {
       code?: string;
@@ -27,8 +28,10 @@ export const PASSWORD_RESET_MESSAGES = {
 } as const;
 
 export function getServerCode(err: unknown): string | undefined {
-  if (typeof err === "object" && err !== null && "response" in err) {
-    return (err as ApiError).response?.data?.code;
+  if (typeof err === "object" && err !== null) {
+    const apiError = err as ApiError;
+    if (apiError.serverCode) return apiError.serverCode;
+    if ("response" in apiError) return apiError.response?.data?.code;
   }
   return undefined;
 }
