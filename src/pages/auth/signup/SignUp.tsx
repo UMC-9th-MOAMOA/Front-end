@@ -188,7 +188,13 @@ export default function SignUp() {
     terms: false,
     privacy: false,
     marketing: false,
+    ...agreementsFromState,
   });
+
+  useEffect(() => {
+    if (!agreementsFromState) return;
+    setAgreements((prev) => ({ ...prev, ...agreementsFromState }));
+  }, [agreementsFromState]);
 
   const passwordStrength = getPasswordStrength(password);
   const canUsePassword = passwordStrength.canSubmit;
@@ -256,7 +262,7 @@ export default function SignUp() {
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
         <div className="mt-37">
-          <AgreementList initialChecked={agreementsFromState} />
+          <AgreementList value={agreements} onChange={setAgreements} />
         </div>
       </div>
       <div className="fixed inset-x-0 bottom-0 z-10 bg-white px-24 pt-10 shadow-[0px_-8px_50px_3px_rgba(0,0,0,0.10)]">

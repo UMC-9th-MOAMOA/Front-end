@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked.svg";
@@ -18,28 +17,21 @@ const AGREEMENTS: AgreementItem[] = [
 ];
 
 interface AgreementListProps {
-  initialChecked?: Record<AgreementKey, boolean>;
+  value: Record<AgreementKey, boolean>;
+  onChange: (next: Record<AgreementKey, boolean>) => void;
 }
 
-export default function AgreementList({ initialChecked }: AgreementListProps) {
+export default function AgreementList({
+  value,
+  onChange,
+}: AgreementListProps) {
   const navigate = useNavigate();
 
   const openDetailPage = () => {
-    navigate("/terms", { state: { agreements: checked } });
+    navigate("/terms", { state: { agreements: value } });
   };
 
-  const [checked, setChecked] = useState<Record<AgreementKey, boolean>>({
-    terms: false,
-    privacy: false,
-    marketing: false,
-  });
-
-  useEffect(() => {
-    if (!initialChecked) return;
-    setChecked((prev) => ({ ...prev, ...initialChecked }));
-  }, [initialChecked]);
-
-  const allChecked = Object.values(checked).every(Boolean);
+  const allChecked = Object.values(value).every(Boolean);
 
   const toggleAll = () => {
     const next = !allChecked;
