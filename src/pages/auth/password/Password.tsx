@@ -7,6 +7,7 @@ import {
 } from "../utils/passwordStrength";
 import { useSendPasswordResetEmail } from "./hooks/useSendPasswordResetEmail";
 import { useVerifyPasswordResetCode } from "./hooks/useVerifyPasswordResetCode";
+import { useResetPassword } from "./hooks/useResetPassword";
 import {
   getServerCode,
   getServerMessage,
@@ -25,6 +26,7 @@ export default function Password() {
   const [step, setStep] = useState<Step>("EMAIL");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
+  const [resetToken, setResetToken] = useState<string | null>(null);
 
   const [errorText, setErrorText] = useState<string>("");
   const [noAccountModalOpen, setNoAccountModalOpen] = useState(false);
@@ -38,6 +40,8 @@ export default function Password() {
     useSendPasswordResetEmail();
   const { mutateAsync: verifyResetCode, isPending: isVerifying } =
     useVerifyPasswordResetCode();
+  const { mutateAsync: resetPassword, isPending: isResetting } =
+    useResetPassword();
 
   const [passwordErrorMessage, setPasswordErrorMessage] = useState<
     string | undefined
@@ -54,7 +58,7 @@ export default function Password() {
   };
 
   const pw = useMemo(() => getPasswordStrength(password), [password]);
-  const disabled = isVerifying;
+  const disabled = isVerifying || isResetting;
   const canUsePassword = pw.canSubmit;
   const isPasswordFormValid =
     canUsePassword &&
@@ -143,7 +147,8 @@ export default function Password() {
     }
 
     try {
-      await verifyCode();
+      const result = await verifyCode();
+      setResetToken(result.resetToken);
       setStep("NEW_PASSWORD");
     } catch (e: unknown) {
       const serverMessage = getServerMessage(e);
@@ -164,7 +169,29 @@ export default function Password() {
     }
   };
 
-  const handleResetPassword = () => {};
+  const handleResetPassword = async () => {
+    setErrorText("");
+
+    if (!resetToken) {
+      setErrorText(PASSWORD_RESET_MESSAGES.verifyFailed);
+      return;
+    }
+
+    try {
+      await resetPassword({
+        token: resetToken,
+        newPassword: password,
+        newPasswordCheck: passwordConfirm,
+      });
+    } catch (e: unknown) {
+      const serverMessage = getServerMessage(e);
+      if (serverMessage) {
+        setErrorText(serverMessage);
+        return;
+      }
+      setErrorText(PASSWORD_RESET_MESSAGES.resetFailed);
+    }
+  };
 
   return (
     <div className="flex flex-col">
