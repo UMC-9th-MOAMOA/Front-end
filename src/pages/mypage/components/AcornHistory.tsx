@@ -112,7 +112,7 @@ export default function AcornHistory() {
 
                 return (
                   <li
-                    key={`${item.createdAt}-${item.type}-${index}`}
+                    key={item.walletHistoryId ?? `${item.createdAt}-${item.type}-${index}`}
                     className="border-gray-400 border-b py-4"
                   >
                     <div className="flex h-106 w-full flex-col items-start justify-center gap-4 self-stretch px-17 py-12">

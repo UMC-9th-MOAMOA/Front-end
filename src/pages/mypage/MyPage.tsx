@@ -1,6 +1,6 @@
 import Header from "@/components/common/header/Header";
-import { Suspense } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import AcornSection from "./components/AcornSection";
 import Calendar from "./components/calendar/Calendar";
 import MyPageTabs from "./components/MyPageTabs";
@@ -35,9 +35,11 @@ export default function MyPage() {
       {activeTab === "mission" && <MissionList />}
 
       {activeTab === "acorn" && (
-        <Suspense fallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}>
+        <AsyncBoundary
+          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
+        >
           <AcornSection />
-        </Suspense>
+        </AsyncBoundary>
       )}
     </div>
   );
