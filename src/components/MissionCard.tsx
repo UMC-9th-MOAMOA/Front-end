@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { cn } from "@/utils/cn/cn";
@@ -14,9 +15,11 @@ interface MissionCardProps {
   onStartClick?: () => void;
   actionLabel?: string;
   hideHeart?: boolean;
+
 }
 
 export default function MissionCard({
+  id,
   title,
   keywords,
   minute,
@@ -27,7 +30,13 @@ export default function MissionCard({
   onStartClick,
   actionLabel = "시작하기",
   hideHeart = false,
+
 }: MissionCardProps) {
+  const navigate = useNavigate();
+
+  const handleStartClick = () => {
+    navigate(`/mission/${id}`);
+  };
   return (
     <div className="relative rounded-xl border border-moamoa-50 bg-white px-20 py-24 shadow-[0_0_16.9px_0_rgba(0,0,0,0.10)]">
       <div className="flex items-start gap-26">
@@ -42,6 +51,7 @@ export default function MissionCard({
             />
           </button>
         )}
+
       </div>
 
       <div className="-mx-20 mt-12 overflow-x-auto">
@@ -67,7 +77,7 @@ export default function MissionCard({
 
         <Button
           className="heading-5 w-126 rounded-lg bg-moamoa-50 py-10 text-moamoa-400 active:bg-moamoa-300 active:text-white"
-          onClick={onStartClick}
+          onClick={handleStartClick}
         >
           {actionLabel}
         </Button>
