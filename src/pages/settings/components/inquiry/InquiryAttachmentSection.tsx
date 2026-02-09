@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useState } from "react";
 import IcCamera from "@/assets/icons/ic_camera.svg?react";
 
 type Props = {
@@ -12,20 +12,20 @@ export default function InquiryAttachmentSection({
   images,
   onAddImages,
 }: Props) {
-  const previews = useMemo(
-    () =>
-      images.slice(0, 5).map((file) => ({
-        file,
-        url: URL.createObjectURL(file),
-      })),
-    [images]
-  );
+  const [previews, setPreviews] = useState<{ file: File; url: string }[]>([]);
 
   useEffect(() => {
+    const next = images.slice(0, 5).map((file) => ({
+      file,
+      url: URL.createObjectURL(file),
+    }));
+    setPreviews(next);
     return () => {
-      previews.forEach((p) => URL.revokeObjectURL(p.url));
+      next.forEach((p) => {
+        URL.revokeObjectURL(p.url);
+      });
     };
-  }, [previews]);
+  }, [images]);
 
   return (
     <div className="flex w-full flex-col items-start gap-8">
@@ -75,4 +75,3 @@ export default function InquiryAttachmentSection({
     </div>
   );
 }
-
