@@ -6,7 +6,7 @@ interface RecommendedMissionCardProps {
   keywords: string[];
   durationMinutes: number;
   category: string;
-  quizCount?: number;
+  quizCount: number;
   isScrapped?: boolean;
   onHeartClick?: () => void;
 }
