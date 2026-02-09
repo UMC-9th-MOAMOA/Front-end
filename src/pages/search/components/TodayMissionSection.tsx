@@ -38,7 +38,7 @@ export default function TodayMissionSection() {
                   keywords={mission.keywords}
                   durationMinutes={mission.durationMinutes}
                   category={mission.category}
-                  description={mission.description}
+                  quizCount={mission.quizCount}
                   isScrapped={mission.isScrapped}
                   onHeartClick={() =>
                     scrapMutation.mutate({

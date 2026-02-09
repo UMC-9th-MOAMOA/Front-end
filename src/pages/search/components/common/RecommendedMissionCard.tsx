@@ -6,7 +6,7 @@ interface RecommendedMissionCardProps {
   keywords: string[];
   durationMinutes: number;
   category: string;
-  description?: string;
+  quizCount?: number;
   isScrapped?: boolean;
   onHeartClick?: () => void;
 }
@@ -16,12 +16,12 @@ export default function RecommendedMissionCard({
   keywords,
   durationMinutes,
   category,
-  description,
+  quizCount,
   isScrapped,
   onHeartClick,
 }: RecommendedMissionCardProps) {
   return (
-    <div className="w-180 rounded-xl border border-moamoa-200 bg-white px-16 py-18">
+    <div className="w-176 rounded-xl border border-moamoa-200 bg-white px-16 py-27">
       <div className="flex items-center justify-between gap-8">
         <h3 className="body-2 truncate text-black">{title}</h3>
         <button type="button" onClick={onHeartClick} className="shrink-0">
@@ -48,18 +48,20 @@ export default function RecommendedMissionCard({
         </div>
       </div>
 
-      <div className="mt-8 flex flex-col gap-4">
-        <div className="body-2 flex items-center text-black">
+      <div className="mt-8 flex flex-col">
+        <div className="body-4 mb-8 flex items-center text-black">
           <span>예상 소요 시간 :</span>
           <span className="ml-3">{durationMinutes}분</span>
         </div>
-        <div className="body-5 flex items-center text-black">
+        <div className="body-5 mb-4 flex items-center text-black">
           <span>카테고리 :</span>
           <span className="ml-3">{category}</span>
         </div>
-        {description && (
-          <p className="body-5 truncate text-black">{description}</p>
-        )}
+
+        <div className="body-5 flex items-center text-black">
+          <span>퀴즈 개수 :</span>
+          <span className="ml-3">{quizCount}개</span>
+        </div>
       </div>
     </div>
   );
