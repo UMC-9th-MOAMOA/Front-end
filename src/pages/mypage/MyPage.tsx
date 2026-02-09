@@ -8,7 +8,10 @@ import MyPageTabs from "./components/MyPageTabs";
 import MissionList from "./components/missioncard/MissionList";
 import PerformanceSection from "./components/PerformanceSection";
 import type { AttendanceDay } from "./components/calendar/calendar.types";
-import type { SpaceCalendarDayItem } from "@/types/calendar/spaceCalendar";
+import type {
+  SpaceCalendarDayItem,
+  SpaceCalendarMonthResult,
+} from "@/types/calendar/spaceCalendar";
 import type { PerformanceMissionKind } from "./types/mypage.type";
 import { useMyProfile } from "./hooks/useMyProfile";
 import { useSpaceCalendarDay } from "./hooks/useSpaceCalendarDay";
@@ -40,12 +43,16 @@ export default function MyPage() {
       </div>
 
       {activeTab === "all" && (
-        <AllTabContent
-          month={month}
-          selectedYMD={selectedYMD}
-          onChangeMonth={setMonth}
-          onSelectYMD={setSelectedYMD}
-        />
+        <AsyncBoundary
+          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
+        >
+          <AllTabContent
+            month={month}
+            selectedYMD={selectedYMD}
+            onChangeMonth={setMonth}
+            onSelectYMD={setSelectedYMD}
+          />
+        </AsyncBoundary>
       )}
 
       {activeTab === "mission" && <MissionList />}
@@ -81,7 +88,10 @@ function AllTabContent({
 
   const marks: AttendanceDay[] = [];
   const datePrefix = `${year}-${String(monthNumber).padStart(2, "0")}-`;
-  const monthPayload = monthData ?? { attendedDays: [], missionRewardDays: [] };
+  const monthPayload: SpaceCalendarMonthResult = monthData ?? {
+    attendedDays: [],
+    missionRewardDays: [],
+  };
 
   monthPayload.attendedDays.forEach((d: number) => {
     marks.push({
