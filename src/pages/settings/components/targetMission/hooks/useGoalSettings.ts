@@ -56,7 +56,11 @@ const fromGoalRetention = (
   }
 };
 
-export const useGoalSettings = () => {
+type UseGoalSettingsOptions = {
+  onSaveSuccess?: () => void;
+};
+
+export const useGoalSettings = (options?: UseGoalSettingsOptions) => {
   const { data: goalData } = useSettingGoalOnboarding();
   const { mutate, isPending } = useUpdateSettingGoalOnboarding();
   const didInitRef = useRef(false);
@@ -144,7 +148,14 @@ export const useGoalSettings = () => {
 
     if (!isOn) {
       saveLast({ count: dailyCount, duration });
-      mutate({ goalEnabled: false });
+      mutate(
+        { goalEnabled: false },
+        {
+          onSuccess: () => {
+            options?.onSaveSuccess?.();
+          },
+        }
+      );
       return;
     }
 
@@ -161,7 +172,11 @@ export const useGoalSettings = () => {
         : {}),
     };
 
-    mutate(payload);
+    mutate(payload, {
+      onSuccess: () => {
+        options?.onSaveSuccess?.();
+      },
+    });
   };
 
   return {
