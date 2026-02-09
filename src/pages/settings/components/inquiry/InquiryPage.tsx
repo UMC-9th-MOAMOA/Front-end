@@ -1,11 +1,27 @@
-﻿import { useEffect, useState } from "react";
+﻿import { Suspense, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
-import type { InquiryDraft, TabKey } from "../../types/inquiry.type";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import type { InquiryCategoryServer } from "@/types/inquiry/inquiry";
+import type {
+  InquiryCategory,
+  InquiryDraft,
+  TabKey,
+} from "../../types/inquiry.type";
+
 import BottomActionBar from "../common/BottomActionBar";
+import { useCreateInquiry } from "./hooks/useCreateInquiry";
 import InquiryList from "./InquiryList";
 import InquiryTabs from "./InquiryTabs";
 import InquiryWriteForm from "./InquiryWriteForm";
+
+const CATEGORY_TO_SERVER: Record<InquiryCategory, InquiryCategoryServer> = {
+  보상: "REWARD",
+  "미션 및 퀴즈": "MISSION_QUIZ",
+  "상점 및 꾸미기": "SHOP_DECORATION",
+  계정: "ACCOUNT",
+  기타: "ETC",
+};
 
 export default function InquiryPage() {
   const navigate = useNavigate();
@@ -20,9 +36,10 @@ export default function InquiryPage() {
   const location = useLocation();
 
   useEffect(() => {
-    const state = location.state as
-      | { consentAgreed?: boolean; draft?: InquiryDraft }
-      | null;
+    const state = location.state as {
+      consentAgreed?: boolean;
+      draft?: InquiryDraft;
+    } | null;
     if (typeof state?.consentAgreed === "boolean") {
       setAgreed(state.consentAgreed);
     }
@@ -30,6 +47,13 @@ export default function InquiryPage() {
       setDraft(state.draft);
     }
   }, [location.state]);
+
+  const { mutate, isPending } = useCreateInquiry();
+
+  const canSubmit =
+    draft.category !== null &&
+    draft.title.trim().length > 0 &&
+    draft.content.trim().length > 0;
 
   return (
     <div className="min-h-screen w-full bg-white">
@@ -47,20 +71,53 @@ export default function InquiryPage() {
 
       <div className="flex w-full flex-col items-center">
         {tab === "write" ? (
-          <InquiryWriteForm agreed={agreed} draft={draft} setDraft={setDraft} />
+          <InquiryWriteForm
+            agreed={agreed}
+            onToggleAgreed={() => setAgreed((prev) => !prev)}
+            draft={draft}
+            setDraft={setDraft}
+          />
         ) : (
-          <InquiryList onSelect={(id) => navigate(`/settings/inquiry/${id}`)} />
+          <Suspense
+            fallback={<LoadingSpinner className="mx-auto mt-40 size-60" />}
+          >
+            <InquiryList
+              onSelect={(id) => navigate(`/settings/inquiry/${id}`)}
+            />
+          </Suspense>
         )}
       </div>
 
       {tab === "write" && (
         <BottomActionBar
-          label="문의 접수"
-          disabled={!agreed}
+          label={isPending ? "접수 중..." : "문의 접수"}
+          disabled={!agreed || !canSubmit || isPending}
           buttonClassName={agreed ? "bg-moamoa-300" : "bg-gray-300"}
           onClick={() => {
-            if (!agreed) return;
-            // TODO: 문의 접수 API 호출 로직 구현
+            if (!agreed || !canSubmit || isPending) return;
+
+            mutate(
+              {
+                category: CATEGORY_TO_SERVER[draft.category!],
+                title: draft.title.trim(),
+                content: draft.content.trim(),
+                termsAgreed: agreed,
+                images: draft.images,
+              },
+              {
+                onSuccess: (result) => {
+                  // ✅ 성공 후 행동 택1
+                  // 1) 상세로 이동
+                  navigate(`/settings/inquiry/${result.inquiryId}`);
+
+                  // 2) 또는 탭을 list로 전환
+                  // setTab("list");
+
+                  // (선택) 폼 초기화
+                  // setDraft({ category: null, title: "", content: "", images: [] });
+                },
+              }
+            );
           }}
         />
       )}
