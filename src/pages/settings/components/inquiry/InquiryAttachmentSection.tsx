@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react";
 import IcCamera from "@/assets/icons/ic_camera.svg?react";
 
 type Props = {
@@ -11,20 +12,38 @@ export default function InquiryAttachmentSection({
   images,
   onAddImages,
 }: Props) {
+  const previews = useMemo(
+    () =>
+      images.slice(0, 5).map((file) => ({
+        file,
+        url: URL.createObjectURL(file),
+      })),
+    [images]
+  );
+
+  useEffect(() => {
+    return () => {
+      previews.forEach((p) => URL.revokeObjectURL(p.url));
+    };
+  }, [previews]);
+
   return (
     <div className="flex w-full flex-col items-start gap-8">
       <p className="heading-5 whitespace-nowrap text-black">파일 첨부</p>
 
       <div className="flex w-full items-center gap-7 overflow-x-auto">
-        {images.slice(0, 5).map((file, index) => (
+        {previews.map((preview, index) => (
           <div
-            key={`${file.name}-${file.size}-${index}`}
-            className="flex aspect-square w-76 flex-shrink-0 items-center justify-center rounded-sm border border-gray-400"
-            title={file.name}
+            key={`${preview.file.name}-${preview.file.size}-${index}`}
+            className="flex aspect-square w-76 flex-shrink-0 items-center justify-center overflow-hidden rounded-sm border border-gray-400"
+            title={preview.file.name}
           >
-            <span className="body-5 px-6 text-center text-gray-500">
-              이미지
-            </span>
+            <img
+              src={preview.url}
+              alt={`attachment-${index + 1}`}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
           </div>
         ))}
 
@@ -40,19 +59,20 @@ export default function InquiryAttachmentSection({
               accept="image/jpeg,image/png"
               multiple
               className="hidden"
-            onChange={(e) => {
-              onAddImages(e.currentTarget.files);
-              e.currentTarget.value = "";
-            }}
+              onChange={(e) => {
+                onAddImages(e.currentTarget.files);
+                e.currentTarget.value = "";
+              }}
             />
           </label>
         )}
       </div>
 
       <p className="body-5 mt-12 whitespace-pre-line text-gray-700">
-        이미지 ( JPG,PNG )를 기준으로 장당 10MB,
-        {"\n"}최대 5장 등록 가능합니다.
+        이미지 ( JPG,PNG )를 기준으로 한당 10MB,
+        {"\n"}최대 5개까지 등록 가능합니다.
       </p>
     </div>
   );
 }
+

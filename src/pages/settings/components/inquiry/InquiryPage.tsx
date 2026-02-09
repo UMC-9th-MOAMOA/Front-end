@@ -73,7 +73,9 @@ export default function InquiryPage() {
         {tab === "write" ? (
           <InquiryWriteForm agreed={agreed} draft={draft} setDraft={setDraft} />
         ) : (
-          <Suspense fallback={<LoadingSpinner />}>
+          <Suspense
+            fallback={<LoadingSpinner className="mx-auto mt-40 size-60" />}
+          >
             <InquiryList
               onSelect={(id) => navigate(`/settings/inquiry/${id}`)}
             />
