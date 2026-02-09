@@ -50,7 +50,7 @@ export default function PerformanceMissionList({
         <div
           className={["grid w-full items-center", GRID_COLS_HEADER].join(" ")}
         >
-          <span className="heading-6">미션 이름</span>
+          <span className="heading-6">미션 제목</span>
           <span className="heading-6 justify-self-start">시간</span>
           <span className="heading-6 justify-self-start whitespace-nowrap">
             도토리
@@ -65,49 +65,41 @@ export default function PerformanceMissionList({
       <ul className="w-full divide-y divide-gray-100">
         {rows
           .filter((row) => row.kind === "mission")
-          .map((row) => {
-            const isMission = row.kind === "mission";
-
-            return (
-              <li key={row.rowId} className="w-full">
-                {isMission && (
-                  <div className="flex h-56 w-full flex-col items-center justify-center px-10">
-                    <div className="w-full">
-                      <div
-                        className={[
-                          "grid h-40 w-full items-center",
-                          GRID_COLS_ROW,
-                        ].join(" ")}
-                      >
-                        <div className="flex h-25 min-w-0 items-center text-black">
-                          <span className="body-2 truncate">{row.title}</span>
-                        </div>
-
-                        <span className="body-4 justify-self-start text-black">
-                          {row.durationMin != null
-                            ? `${row.durationMin}분`
-                            : ""}
-                        </span>
-
-                        <AcornDelta
-                          value={row.acornDelta}
-                          className="gap-2"
-                          textClassName="body-2 text-black"
-                        />
-
-                        <span aria-hidden />
-
-                        <IcDropdown
-                          className="h-24 w-24 -rotate-90 justify-self-end text-gray-700"
-                          aria-hidden
-                        />
-                      </div>
+          .map((row) => (
+            <li key={row.rowId} className="w-full">
+              <div className="flex h-56 w-full flex-col items-center justify-center px-10">
+                <div className="w-full">
+                  <div
+                    className={[
+                      "grid h-40 w-full items-center",
+                      GRID_COLS_ROW,
+                    ].join(" ")}
+                  >
+                    <div className="flex h-25 min-w-0 items-center text-black">
+                      <span className="body-2 truncate">{row.title}</span>
                     </div>
+
+                    <span className="body-4 justify-self-start text-black">
+                      {row.durationMin != null ? `${row.durationMin}분` : ""}
+                    </span>
+
+                    <AcornDelta
+                      value={row.acornDelta}
+                      className="gap-2"
+                      textClassName="body-2 text-black"
+                    />
+
+                    <span aria-hidden />
+
+                    <IcDropdown
+                      className="h-24 w-24 -rotate-90 justify-self-end text-gray-700"
+                      aria-hidden
+                    />
                   </div>
-                )}
-              </li>
-            );
-          })}
+                </div>
+              </div>
+            </li>
+          ))}
 
         {rows
           .filter((row) => row.kind !== "mission")
@@ -142,3 +134,4 @@ export default function PerformanceMissionList({
     </div>
   );
 }
+

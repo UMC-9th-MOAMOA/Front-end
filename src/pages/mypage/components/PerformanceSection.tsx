@@ -27,7 +27,7 @@ export default function PerformanceSection({
       <div className="flex w-full flex-col items-center gap-20">
         <div className="flex w-full flex-col items-center gap-10">
           <h2 className="heading-2 text-center text-black">
-            {data.userName}의 성과
+            {data.userName}님의 실적
           </h2>
         </div>
 
@@ -54,3 +54,4 @@ export default function PerformanceSection({
     </section>
   );
 }
+

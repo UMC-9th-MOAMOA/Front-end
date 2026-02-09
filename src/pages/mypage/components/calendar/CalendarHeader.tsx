@@ -14,13 +14,10 @@ export default function CalendarHeader({ month, onPrev, onNext }: Props) {
         <Button
           type="button"
           onClick={onPrev}
-          aria-label="이전 달"
+          aria-label="이전 월"
           className="flex h-25 w-25 items-center justify-center"
         >
-          <IcDropdown
-            className="h-13 w-13 rotate-90 text-gray-700"
-            aria-hidden
-          />
+          <IcDropdown className="h-13 w-13 rotate-90 text-gray-700" aria-hidden />
         </Button>
 
         <div className="heading-4 flex items-center gap-12 whitespace-nowrap text-black">
@@ -31,15 +28,13 @@ export default function CalendarHeader({ month, onPrev, onNext }: Props) {
         <Button
           type="button"
           onClick={onNext}
-          aria-label="다음 달"
+          aria-label="다음 월"
           className="flex h-25 w-25 items-center justify-center"
         >
-          <IcDropdown
-            className="h-13 w-13 -rotate-90 text-gray-700"
-            aria-hidden
-          />
+          <IcDropdown className="h-13 w-13 -rotate-90 text-gray-700" aria-hidden />
         </Button>
       </div>
     </div>
   );
 }
+
