@@ -41,8 +41,8 @@ export default function PerformanceSection({
             <span className="min-w-[70px] flex-1" aria-hidden />
             <span className="h-28 w-40">{totalMin}분</span>
             <span className="min-w-[70px] flex-1" aria-hidden />
-            <span className="flex h-28 w-48 items-center">
-              <span className="mr-4 h-20">
+            <span className="flex h-28 w-48 items-center justify-center">
+              <span className="mr-4 flex h-20 items-center text-center">
                 {totalAcorn < 0 ? "-" : "+"}
                 {Math.abs(totalAcorn)}
               </span>

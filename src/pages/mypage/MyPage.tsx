@@ -1,4 +1,4 @@
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import Header from "@/components/common/header/Header";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import AsyncBoundary from "@/components/AsyncBoundary";
@@ -39,14 +39,12 @@ export default function MyPage() {
       </div>
 
       {activeTab === "all" && (
-        <Suspense fallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}>
-          <AllTabContent
-            month={month}
-            selectedYMD={selectedYMD}
-            onChangeMonth={setMonth}
-            onSelectYMD={setSelectedYMD}
-          />
-        </Suspense>
+        <AllTabContent
+          month={month}
+          selectedYMD={selectedYMD}
+          onChangeMonth={setMonth}
+          onSelectYMD={setSelectedYMD}
+        />
       )}
 
       {activeTab === "mission" && <MissionList />}
@@ -76,19 +74,21 @@ function AllTabContent({
   const year = month.getFullYear();
   const monthNumber = month.getMonth() + 1;
   const { data: monthData } = useSpaceCalendarMonth(year, monthNumber);
-  const { data: dayData } = useSpaceCalendarDay(selectedYMD);
+  const { data: dayData, isLoading: isDayLoading } =
+    useSpaceCalendarDay(selectedYMD);
   const { data: profile } = useMyProfile();
 
   const marks: AttendanceDay[] = [];
   const datePrefix = `${year}-${String(monthNumber).padStart(2, "0")}-`;
+  const monthPayload = monthData ?? { attendedDays: [], missionRewardDays: [] };
 
-  monthData.attendedDays.forEach((d) => {
+  monthPayload.attendedDays.forEach((d) => {
     marks.push({
       date: `${datePrefix}${String(d).padStart(2, "0")}`,
       attended: true,
     });
   });
-  monthData.missionRewardDays.forEach((d) => {
+  monthPayload.missionRewardDays.forEach((d) => {
     const date = `${datePrefix}${String(d).padStart(2, "0")}`;
     const existing = marks.find((x) => x.date === date);
     if (existing) {
@@ -98,7 +98,8 @@ function AllTabContent({
     }
   });
 
-  const rows = dayData.items.map((item, idx) => {
+  const dayItems = dayData?.items ?? [];
+  const rows = dayItems.map((item, idx) => {
     const isMission = item.type.startsWith("MISSION");
     const isAd = item.type === "AD";
     const kind: PerformanceMissionKind = isMission
@@ -144,7 +145,11 @@ function AllTabContent({
         />
       </div>
       <div className="mt-[16px] mr-[-10px] ml-[-7px] mb-50">
-        <PerformanceSection data={performance} />
+        {isDayLoading && !dayData ? (
+          <LoadingSpinner className="mx-auto mt-40 size-40" />
+        ) : (
+          <PerformanceSection data={performance} />
+        )}
       </div>
     </>
   );
