@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import { cn } from "@/utils/cn/cn";
 
 interface RecommendedMissionCardProps {
+  missionId: number;
   title: string;
   keywords: string[];
   durationMinutes: number;
@@ -12,6 +14,7 @@ interface RecommendedMissionCardProps {
 }
 
 export default function RecommendedMissionCard({
+  missionId,
   title,
   keywords,
   durationMinutes,
@@ -20,8 +23,31 @@ export default function RecommendedMissionCard({
   isScrapped,
   onHeartClick,
 }: RecommendedMissionCardProps) {
+  const navigate = useNavigate();
+
+  const handleCardClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+    if ((e.target as HTMLElement).closest("button")) {
+      return;
+    }
+    navigate(`/mission/${missionId}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleCardClick(e);
+    }
+  };
+
   return (
-    <div className="w-176 rounded-xl border border-moamoa-200 bg-white px-16 py-27">
+    // biome-ignore lint/a11y/useSemanticElements: 카드 레이아웃 유지를 위해 div 사용
+    <div
+      role="button"
+      tabIndex={0}
+      className="w-176 cursor-pointer rounded-xl border border-moamoa-200 bg-white px-16 py-27"
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+    >
       <div className="flex items-center justify-between gap-8">
         <h3 className="body-2 truncate text-black">{title}</h3>
         <button type="button" onClick={onHeartClick} className="shrink-0">
