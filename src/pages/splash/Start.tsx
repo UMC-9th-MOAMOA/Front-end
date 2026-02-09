@@ -42,15 +42,13 @@ const StartPage = ({ enableFade = true }: StartPageProps) => {
         </p>
       </div>
       <SquirrelStart className="mt-40 h-auto w-300 px-7" aria-hidden="true" />
-      <div className="w-full">
-        <Button
-          type="button"
-          className="mt-84 h-48 w-full rounded-lg bg-moamoa-300 py-16 font-semibold text-base text-white"
-          onClick={() => navigate("/login")}
-        >
-          시작하기
-        </Button>
-      </div>
+      <Button
+        type="button"
+        className="mt-auto mb-80 h-48 w-full rounded-lg bg-moamoa-300 py-16 font-semibold text-base text-white"
+        onClick={() => navigate("/login")}
+      >
+        시작하기
+      </Button>
     </div>
   );
 };
