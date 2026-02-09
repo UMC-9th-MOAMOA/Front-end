@@ -1,11 +1,14 @@
+import { forwardRef } from "react";
+
 interface QuestionBoxProps {
   nickname: string;
   onTimeSelect: (time: number) => void;
 }
 
-const QuestionBox = ({ nickname, onTimeSelect }: QuestionBoxProps) => {
-  return (
-    <div className="w-325">
+const QuestionBox = forwardRef<HTMLDivElement, QuestionBoxProps>(
+  ({ nickname, onTimeSelect }, ref) => {
+    return (
+      <div ref={ref} className="w-325">
       <div className="rounded-lg bg-white px-38 py-23">
         <div className="flex flex-col items-center">
           <span className="body-2 text-black">안녕하세요, {nickname}님 !</span>
@@ -29,6 +32,6 @@ const QuestionBox = ({ nickname, onTimeSelect }: QuestionBoxProps) => {
       </div>
     </div>
   );
-};
+});
 
 export default QuestionBox;
