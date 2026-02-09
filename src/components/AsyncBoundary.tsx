@@ -11,7 +11,7 @@ interface AsyncBoundaryProps {
 
 function DefaultLoadingFallback() {
   return (
-    <div className="flex h-[50vh] items-center justify-center">
+    <div className="flex h-dvh items-center justify-center">
       <LoadingSpinner className="size-100" />
     </div>
   );
