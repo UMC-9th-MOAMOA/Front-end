@@ -3,6 +3,7 @@ import IcPolygon from "@/assets/icons/ic_polygon.svg?react";
 import IcAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { buttonVariants } from "@/components/common/button/buttonVariants";
+import { getYoutubeThumbnail } from "@/utils/youtube";
 
 interface MissionInfoCardProps {
   title: string;
@@ -14,13 +15,6 @@ interface MissionInfoCardProps {
   attemptCount: number;
   onContentClick: () => void;
   onQuizStart: () => void;
-}
-
-function getYoutubeThumbnail(url: string): string | null {
-  const match = url.match(
-    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([^&?/]+)/
-  );
-  return match ? `https://img.youtube.com/vi/${match[1]}/hqdefault.jpg` : null;
 }
 
 export default function MissionInfoCard({
