@@ -1,17 +1,18 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import IcSadSquirrel from "@/assets/icons/ic_sadsquirrel.svg?react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import MissionCard from "@/components/MissionCard";
 import { CATEGORY_ID_MAP } from "@/constants/missions/categories";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useScrapMission } from "@/hooks/useScrapMission";
+import { useMyMissionsInfinite } from "../../hooks/useMyMissionsInfinite";
 import type {
   MissionCategory,
   MissionItem,
   MissionSubTabKey,
 } from "../../types/mypage.type";
-import { useMyMissionsInfinite } from "../../hooks/useMyMissionsInfinite";
 import MissionFilters from "../filters/MissionFilters";
-import MissionCard from "./MissionCard";
 import MissionTabs from "./MissionTabs";
 
 import type {
@@ -35,7 +36,9 @@ export default function MissionTab() {
         ? "TIME_DESC"
         : "LATEST";
   const categoryId =
-    category === "all" ? undefined : CATEGORY_ID_MAP[category as MissionCategory];
+    category === "all"
+      ? undefined
+      : CATEGORY_ID_MAP[category as MissionCategory];
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useMyMissionsInfinite({
@@ -52,7 +55,9 @@ export default function MissionTab() {
   });
 
   const missions = data.pages.flatMap((page) => page.missions);
-  const list: MissionItem[] = missions.map((m) => ({
+  const visibleMissions =
+    status === "SCRAP" ? missions.filter((m) => m.isScrapped) : missions;
+  const list: MissionItem[] = visibleMissions.map((m) => ({
     id: String(m.missionId),
     title: m.title,
     expectedMinutes: m.durationMinutes,
@@ -62,7 +67,15 @@ export default function MissionTab() {
     done: subTab === "done",
   }));
 
-  const actionLabel = subTab === "liked" ? "시작하기" : "자세히 보기";
+  const actionLabel =
+    subTab === "liked"
+      ? "시작하기"
+      : doneView === "retry"
+        ? "다시 풀기"
+        : "자세히 보기";
+  const hideHeart = subTab !== "liked";
+
+  const navigate = useNavigate();
 
   const goDetail = (id: string) => {
     console.log("detail:", id);
@@ -105,40 +118,59 @@ export default function MissionTab() {
                   <IcSadSquirrel aria-hidden />
                 </div>
               ) : (
-                list.map((m) => (
-                  <MissionCard
-                    key={m.id}
-                    item={m}
-                    keywords={(() => {
-                      const found = missions.find(
-                        (mission) => String(mission.missionId) === m.id
-                      );
-                      const safe = found?.keywords ?? [];
-                      return safe.length > 0
-                        ? safe
-                        : ["키워드", "키워드", "키워드"];
-                    })()}
-                    onToggleLike={(id) => {
-                      const target = missions.find(
-                        (mission) => String(mission.missionId) === id
-                      );
-                      if (!target) return;
-                      scrapMutation.mutate({
-                        missionId: target.missionId,
-                        isScrapped: target.isScrapped,
-                      });
-                    }}
-                    onClickDetail={goDetail}
-                    actionLabel={actionLabel}
-                    disableLike={subTab === "done"}
-                  />
-                ))
+                list.map((m) => {
+                  const found = visibleMissions.find(
+                    (mission) => String(mission.missionId) === m.id
+                  );
+                  const keywords =
+                    found?.keywords && found.keywords.length > 0
+                      ? found.keywords
+                      : ["키워드", "키워드", "키워드"];
+
+                  const handleAction = () => {
+                    if (!found) return;
+                    if (subTab === "liked") {
+                      goDetail(m.id);
+                      return;
+                    }
+                    navigate(`/mypage/mission/${found.missionId}`, {
+                      state: {
+                        title: found.title,
+                        keywords: found.keywords,
+                        minute: found.durationMinutes,
+                        category: found.category,
+                        videoUrl: found.videoUrl,
+                      },
+                    });
+                  };
+
+                  return (
+                    <MissionCard
+                      key={m.id}
+                      id={Number(m.id)}
+                      title={m.title}
+                      keywords={keywords}
+                      minute={m.expectedMinutes}
+                      category={m.category}
+                      quizCount={found?.quizCount ?? 0}
+                      isScrapped={m.liked}
+                      actionLabel={actionLabel}
+                      hideHeart={hideHeart}
+                      onHeartClick={() => {
+                        if (!found) return;
+                        scrapMutation.mutate({
+                          missionId: found.missionId,
+                          isScrapped: found.isScrapped,
+                        });
+                      }}
+                      onStartClick={handleAction}
+                    />
+                  );
+                })
               )}
               {hasNextPage && (
                 <div ref={ref} className="flex justify-center py-20">
-                  {isFetchingNextPage && (
-                    <LoadingSpinner className="size-40" />
-                  )}
+                  {isFetchingNextPage && <LoadingSpinner className="size-40" />}
                 </div>
               )}
             </div>
