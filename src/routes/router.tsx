@@ -78,6 +78,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-gray-100", hideBottomNav: true },
       },
       {
+        path: "mission/:missionId",
+        element: <MissionEntry />,
+        handle: { bgColor: "bg-gray-100", hideBottomNav: true },
+      },
+      {
         path: "mission/quiz/:missionId",
         element: <QuizPage />,
         handle: { bgColor: "bg-gray-100", hideBottomNav: true },
@@ -104,7 +109,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "mypage/mission/:missionId",
-        element: <CompletedMissionDetailPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner className="mx-auto mt-40 size-60" />}>
+            <CompletedMissionDetailPage />
+          </Suspense>
+        ),
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {

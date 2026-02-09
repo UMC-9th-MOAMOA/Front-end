@@ -35,6 +35,10 @@ export default function MissionCard({
   const navigate = useNavigate();
 
   const handleStartClick = () => {
+    if (onStartClick) {
+      onStartClick();
+      return;
+    }
     navigate(`/mission/${id}`);
   };
   return (
