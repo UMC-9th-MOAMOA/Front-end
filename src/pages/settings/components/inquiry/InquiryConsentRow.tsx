@@ -2,21 +2,26 @@
 
 type Props = {
   onViewPolicy?: () => void;
+  onToggle?: () => void;
   agreed?: boolean;
 };
 
-export default function InquiryConsentRow({ onViewPolicy, agreed = false }: Props) {
+export default function InquiryConsentRow({
+  onViewPolicy,
+  onToggle,
+  agreed = false,
+}: Props) {
   return (
     <div className="flex w-full items-center justify-between pb-41">
       <div className="flex items-center gap-8">
         <button
           type="button"
-          onClick={onViewPolicy}
+          onClick={onToggle}
           className={[
             "flex h-16 w-16 items-center justify-center rounded-full p-1",
             agreed ? "bg-moamoa-50" : "bg-gray-400",
           ].join(" ")}
-          aria-label="약관 전문 보기"
+          aria-label="약관 동의"
         >
           <IcCheck
             className={[

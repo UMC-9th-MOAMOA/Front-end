@@ -71,7 +71,12 @@ export default function InquiryPage() {
 
       <div className="flex w-full flex-col items-center">
         {tab === "write" ? (
-          <InquiryWriteForm agreed={agreed} draft={draft} setDraft={setDraft} />
+          <InquiryWriteForm
+            agreed={agreed}
+            onToggleAgreed={() => setAgreed((prev) => !prev)}
+            draft={draft}
+            setDraft={setDraft}
+          />
         ) : (
           <Suspense
             fallback={<LoadingSpinner className="mx-auto mt-40 size-60" />}
