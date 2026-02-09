@@ -89,7 +89,7 @@ export default function AcornHistory() {
         earnSource={earnSource}
         onChangeEarnSource={setEarnSource}
       >
-        <div className="flex w-full flex-1 min-h-[60vh] pr-9 pl-8">
+          <div className="flex w-full flex-1 min-h-[60vh] items-start justify-center pr-9 pl-8">
           {items.length === 0 ? (
             <div className="body-4 p-6 text-center text-gray-500">
               도토리 내역이 없어요.
