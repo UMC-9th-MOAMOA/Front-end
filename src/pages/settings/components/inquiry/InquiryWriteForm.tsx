@@ -1,10 +1,10 @@
-﻿import { useId, useMemo } from "react";
+﻿import { useId } from "react";
 import { useNavigate } from "react-router-dom";
+import type { InquiryDraft } from "../../types/inquiry.type";
 import InquiryAttachmentSection from "./InquiryAttachmentSection";
 import InquiryCategorySection from "./InquiryCategorySection";
 import InquiryConsentRow from "./InquiryConsentRow";
 import InquiryTextFields from "./InquiryTextFields";
-import type { InquiryDraft } from "../../types/inquiry.type";
 
 const MAX_TITLE = 20;
 const MAX_CONTENT = 2000;
@@ -13,6 +13,7 @@ const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
 type Props = {
   agreed: boolean;
+  onToggleAgreed: () => void;
   draft: InquiryDraft;
   setDraft: React.Dispatch<React.SetStateAction<InquiryDraft>>;
 };
@@ -21,12 +22,17 @@ function clamp(n: number, max: number) {
   return Math.min(max, Math.max(0, n));
 }
 
-export default function InquiryWriteForm({ agreed, draft, setDraft }: Props) {
+export default function InquiryWriteForm({
+  agreed,
+  onToggleAgreed,
+  draft,
+  setDraft,
+}: Props) {
   const fileInputId = useId();
   const navigate = useNavigate();
 
-  const titleCount = useMemo(() => draft.title.length, [draft.title]);
-  const contentCount = useMemo(() => draft.content.length, [draft.content]);
+  const titleCount = draft.title.length;
+  const contentCount = draft.content.length;
 
   const setCategory = (category: InquiryDraft["category"]) => {
     setDraft((prev) => ({ ...prev, category }));
@@ -40,7 +46,6 @@ export default function InquiryWriteForm({ agreed, draft, setDraft }: Props) {
     setDraft((prev) => ({ ...prev, content: value.slice(0, MAX_CONTENT) }));
   };
 
-  // TODO(API 연결 시): FormData로 images 전송
   const onAddImages = (files: FileList | null) => {
     if (!files) return;
     const list = Array.from(files).filter(
@@ -80,6 +85,7 @@ export default function InquiryWriteForm({ agreed, draft, setDraft }: Props) {
 
       <div className="mt-67 w-full">
         <InquiryConsentRow
+          onToggle={onToggleAgreed}
           onViewPolicy={() =>
             navigate("/settings/inquiry/consent", { state: { draft } })
           }
