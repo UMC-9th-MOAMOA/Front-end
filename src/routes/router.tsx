@@ -11,6 +11,7 @@ import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
 import MyPage from "@/pages/mypage/MyPage";
 import Onboarding from "@/pages/onboarding/Onboarding";
+import OnboardingRecommend from "@/pages/onboarding/OnboardingRecommend";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
 import AccountInfoPage from "@/pages/settings/AccountInfoPage";
@@ -69,6 +70,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       {
         path: "onboarding",
         element: <Onboarding />,
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
+      },
+      {
+        path: "onboarding/recommend",
+        element: <OnboardingRecommend />,
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
