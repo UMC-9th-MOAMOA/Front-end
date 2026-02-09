@@ -118,7 +118,7 @@ export default function TargetMissionCount() {
           <>
             주중에 변경한 "일간 목표 유지 기간"은
             <br />
-            즉시 적용됩니다!.
+            즉시 적용됩니다.
           </>
         }
         confirmText="확인"
