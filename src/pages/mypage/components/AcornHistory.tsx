@@ -2,52 +2,80 @@ import { useMemo, useState } from "react";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcMinus from "@/assets/icons/ic_minus.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import type {
   AcornHistoryFilterKey,
-  AcornHistoryItem,
   AcornHistorySortKey,
 } from "../types/mypage.type";
-import AcornHistoryFilter, { type DoneMissionOption } from "./filters/AcornHistoryFilter";
+import { useMyWalletHistory } from "../hooks/useMyWalletHistory";
+import AcornHistoryFilter, {
+  type DoneMissionOption,
+} from "./filters/AcornHistoryFilter";
 
-const getTitle = (title: string) => title || "도토리 내역";
+const toApiTab = (filter: AcornHistoryFilterKey) => {
+  if (filter === "progress") return "EARN" as const;
+  if (filter === "done") return "USE" as const;
+  return "ALL" as const;
+};
 
-export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
+const toApiSort = (sortKey: AcornHistorySortKey) => {
+  if (sortKey === "oldest") return "OLDEST" as const;
+  return "RECENT" as const;
+};
+
+const toApiPeriod = (sortKey: AcornHistorySortKey) => {
+  if (sortKey === "3m") return "THREE_MONTHS" as const;
+  if (sortKey === "6m") return "SIX_MONTHS" as const;
+  return "ALL" as const;
+};
+
+const toApiEarnSource = (value: DoneMissionOption) => {
+  if (value === "attendance") return "ATTENDANCE" as const;
+  return "MISSION" as const;
+};
+
+const getTitle = (title: string | null, categoryLabel: string | null) => {
+  if (title) return title;
+  if (categoryLabel) return categoryLabel;
+  return "도토리 내역";
+};
+
+const ITEM_TYPE_LABEL: Record<string, string> = {
+  BACKGROUND: "배경",
+  HAT: "모자",
+  BOTTOM: "하의",
+  TOP: "상의",
+  FACE: "표정",
+  GLOVES: "장갑",
+  SHOES: "신발",
+  SCARF: "목도리",
+  GLASSES: "안경",
+};
+
+export default function AcornHistory() {
   const [filter, setFilter] = useState<AcornHistoryFilterKey>("all");
   const [sortKey, setSortKey] = useState<AcornHistorySortKey>("recent");
   const [earnSource, setEarnSource] = useState<DoneMissionOption>("mission");
 
-  const filtered = useMemo(() => {
-    let base = items;
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useMyWalletHistory({
+      tab: toApiTab(filter),
+      sort: toApiSort(sortKey),
+      period: toApiPeriod(sortKey),
+      earnSource: filter === "progress" ? toApiEarnSource(earnSource) : "ALL",
+    });
 
-    if (filter === "progress") {
-      base = base.filter((x) => x.status === "progress");
-    }
-    if (filter === "done") {
-      base = base.filter((x) => x.status === "done");
-    }
+  const { ref } = useInfiniteScroll({
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+  });
 
-    const now = new Date();
-    const monthsToDays = (months: number) => months * 30;
-    const withinDays = (dateStr: string, days: number) => {
-      const date = new Date(dateStr);
-      if (Number.isNaN(date.getTime())) return false;
-      const diffMs = now.getTime() - date.getTime();
-      return diffMs >= 0 && diffMs <= days * 24 * 60 * 60 * 1000;
-    };
-
-    if (sortKey === "3m") {
-      base = base.filter((x) => withinDays(x.date, monthsToDays(3)));
-    }
-    if (sortKey === "6m") {
-      base = base.filter((x) => withinDays(x.date, monthsToDays(6)));
-    }
-
-    const copied = [...base];
-    if (sortKey === "recent") copied.sort((a, b) => b.date.localeCompare(a.date));
-    if (sortKey === "oldest") copied.sort((a, b) => a.date.localeCompare(b.date));
-
-    return copied;
-  }, [items, filter, sortKey]);
+  const items = useMemo(
+    () => data.pages.flatMap((page) => page.items),
+    [data.pages]
+  );
 
   return (
     <section className="mt-19 flex w-full flex-col gap-4 px-2">
@@ -61,20 +89,34 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
         earnSource={earnSource}
         onChangeEarnSource={setEarnSource}
       >
-        <div className="flex w-full flex-1 min-h-[60vh] pr-9 pl-8">
-          {filtered.length === 0 ? (
+        <div className="flex min-h-[60vh] w-full flex-1 items-start justify-center px-8">
+          {items.length === 0 ? (
             <div className="body-4 p-6 text-center text-gray-500">
-              도토리 내역이 없어요.
+              도토리 내역이 없어요
             </div>
           ) : (
-            <ul className="w-full pb-20">
-              {filtered.map((item) => {
-                const [yy, mm, dd] = item.date.split("-");
-                const delta = item.acornDelta;
+            <ul className="w-full">
+              {items.map((item, index) => {
+                const dateStr = item.createdAt?.split("T")[0] ?? "";
+                const date = dateStr ? new Date(dateStr) : new Date("");
+                const hasValidDate = !Number.isNaN(date.getTime());
+                const yy = hasValidDate ? date.getFullYear() : "-";
+                const mm = hasValidDate
+                  ? `${date.getMonth() + 1}`.padStart(2, "0")
+                  : "-";
+                const dd = hasValidDate
+                  ? `${date.getDate()}`.padStart(2, "0")
+                  : "-";
+                const delta = item.amount;
                 const isMinus = delta < 0;
 
                 return (
-                  <li key={item.id} className="border-gray-400 border-b py-4">
+                  <li
+                    key={
+                      item.walletHistoryId ?? `${item.createdAt}-${item.type}-${index}`
+                    }
+                    className="border-b border-gray-400 py-4"
+                  >
                     <div className="flex h-106 w-full flex-col items-start justify-center gap-4 self-stretch px-17 py-12">
                       <div className="body-2 flex items-center gap-4 text-gray-500">
                         <span>{yy}</span>
@@ -85,8 +127,15 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
                       </div>
 
                       <div className="flex h-40 w-full items-center">
-                        <div className="heading-5 h-28 flex-1 truncate text-black">
-                          {getTitle(item.missionTitle)}
+                        <div className="flex h-28 flex-1 items-center gap-12 truncate">
+                          {item.itemType && (
+                            <span className="body-4 flex h-27 w-60 flex-shrink-0 items-center justify-center gap-4 rounded-[8px] bg-gray-100 px-16 py-5 text-gray-700">
+                              {ITEM_TYPE_LABEL[item.itemType] ?? item.itemType}
+                            </span>
+                          )}
+                          <span className="heading-5 truncate text-black">
+                            {getTitle(item.title, item.categoryLabel)}
+                          </span>
                         </div>
 
                         <div className="flex items-center gap-4">
@@ -114,6 +163,12 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
                   </li>
                 );
               })}
+
+              {hasNextPage && (
+                <li ref={ref} className="flex w-full justify-center py-12">
+                  {isFetchingNextPage && <LoadingSpinner className="size-24" />}
+                </li>
+              )}
             </ul>
           )}
         </div>
@@ -121,4 +176,3 @@ export default function AcornHistory({ items }: { items: AcornHistoryItem[] }) {
     </section>
   );
 }
-
