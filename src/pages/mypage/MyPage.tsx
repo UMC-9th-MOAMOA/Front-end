@@ -138,7 +138,7 @@ function AllTabContent({
           onSelectYMD={onSelectYMD}
         />
       </div>
-      <div className="mt-[16px] mr-[-10px] ml-[-7px]">
+      <div className="mt-[16px] mr-[-10px] ml-[-7px] mb-50">
         <PerformanceSection data={performance} />
       </div>
     </>
