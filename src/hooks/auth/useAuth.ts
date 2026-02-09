@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { refreshAccessToken } from "@/apis/auth";
+import { refreshAccessToken } from "@/apis/auth/auth";
 import { storage } from "@/apis/storage";
 import { useAuthStore } from "@/store/auth";
 
 export const useAuth = () => {
-  const { isLoading, isAuthenticated, setAuthenticated, setLoading } =
+  const { isLoading, isAuthenticated, policyAgreed, setAuthenticated, setLoading } =
     useAuthStore();
 
   useEffect(() => {
@@ -20,6 +20,7 @@ export const useAuth = () => {
         storage.setToken(newToken);
         setAuthenticated(true);
       } catch {
+        storage.removeToken();
         setAuthenticated(false);
       } finally {
         setLoading(false);
@@ -29,5 +30,5 @@ export const useAuth = () => {
     checkAuth();
   }, [setAuthenticated, setLoading]);
 
-  return { isLoading, isAuthenticated };
+  return { isLoading, isAuthenticated, policyAgreed };
 };
