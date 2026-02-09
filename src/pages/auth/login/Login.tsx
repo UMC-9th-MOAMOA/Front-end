@@ -19,7 +19,7 @@ export default function Login() {
           함께 숨겨진 시간을 찾아 생산적인 하루를 보내보세요.
         </p>
       </header>
-      <section className="mt-37">
+      <section className="mt-55">
         <LoginForm />
       </section>
       <section className="mt-51">
