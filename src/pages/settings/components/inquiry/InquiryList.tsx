@@ -1,10 +1,17 @@
-﻿import { useMemo, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcReply from "@/assets/icons/ic_reply.svg?react";
+
+import type {
+  InquiryAnswerStatusServer,
+  InquiryCategoryServer,
+  InquiryPeriodServer,
+  MyInquiryListItemApi,
+} from "@/types/inquiry/inquiry";
 import type { AnswerStatus } from "../../types/inquiry.type";
+import { useMyInquiries } from "./hooks/useMyInquiries";
 import StatusPill from "./StatusPill";
-import { mockMyInquiries } from "../../mocks/inquiry/inquiry.mock";
 
 const CATEGORY_OPTIONS = [
   { value: "보상", label: "보상" },
@@ -21,15 +28,34 @@ type CategoryValue = (typeof CATEGORY_OPTIONS)[number]["value"];
 type PeriodValue = (typeof PERIOD_OPTIONS)[number];
 type StatusValue = (typeof STATUS_OPTIONS)[number];
 
-const PERIOD_OPTION_ITEMS: ReadonlyArray<{
-  value: PeriodValue;
-  label: PeriodValue;
-}> = PERIOD_OPTIONS.map((value) => ({ value, label: value }));
+const CATEGORY_TO_SERVER: Record<CategoryValue, InquiryCategoryServer> = {
+  보상: "REWARD",
+  "미션 및 퀴즈": "MISSION_QUIZ",
+  "상점 및 꾸미기": "SHOP_DECORATION",
+  계정: "ACCOUNT",
+  기타: "ETC",
+};
 
-const STATUS_OPTION_ITEMS: ReadonlyArray<{
-  value: StatusValue;
-  label: StatusValue;
-}> = STATUS_OPTIONS.map((value) => ({ value, label: value }));
+const PERIOD_TO_SERVER: Record<PeriodValue, InquiryPeriodServer> = {
+  "1개월": "P1M",
+  "3개월": "P3M",
+  "6개월": "P6M",
+};
+
+const STATUS_TO_SERVER: Record<StatusValue, InquiryAnswerStatusServer> = {
+  "전체 문의": "ALL",
+  "답변 완료": "COMPLETED",
+  "답변 대기": "PENDING",
+};
+
+const PERIOD_OPTION_ITEMS = PERIOD_OPTIONS.map((value) => ({
+  value,
+  label: value,
+}));
+const STATUS_OPTION_ITEMS = STATUS_OPTIONS.map((value) => ({
+  value,
+  label: value,
+}));
 
 type FilterMenu = "category" | "period" | "status" | null;
 
@@ -53,7 +79,7 @@ function FilterMenuBox<T extends string>({
   return (
     <div
       className={[
-        "absolute left-0 top-full mt-3 flex flex-col items-start space-y-4 rounded-sm border border-gray-400 bg-gray-300",
+        "absolute top-full left-0 mt-3 flex flex-col items-start space-y-4 rounded-sm border border-gray-400 bg-gray-300",
         className,
       ].join(" ")}
       style={{ boxShadow: "3px 9px 20.1px 3px rgba(0, 0, 0, 0.10)" }}
@@ -78,11 +104,22 @@ function FilterMenuBox<T extends string>({
     </div>
   );
 }
+function formatIsoToDotDate(iso: string) {
+  // "2026-02-05T..." -> "2026.02.05"
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return iso;
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return `${y}.${m}.${day}`;
+}
 
 export default function InquiryList({ onSelect }: Props) {
   const [openMenu, setOpenMenu] = useState<FilterMenu>(null);
+
+  // ✅ category “필수 선택” 전제면 기본값 하나 잡기
   const [selectedCategory, setSelectedCategory] = useState<CategoryValue>(
-    CATEGORY_OPTIONS[1].value
+    CATEGORY_OPTIONS[0].value
   );
   const [selectedPeriod, setSelectedPeriod] = useState<PeriodValue>(
     PERIOD_OPTIONS[0]
@@ -96,45 +133,51 @@ export default function InquiryList({ onSelect }: Props) {
   };
 
   const selectedCategoryLabel =
-    CATEGORY_OPTIONS.find((option) => option.value === selectedCategory)?.label ??
-    selectedCategory;
+    CATEGORY_OPTIONS.find((option) => option.value === selectedCategory)
+      ?.label ?? selectedCategory;
 
-  const filteredInquiries = useMemo(() => {
-    const now = new Date();
-    const periodMonths =
-      selectedPeriod === PERIOD_OPTIONS[0]
-        ? 1
-        : selectedPeriod === PERIOD_OPTIONS[1]
-          ? 3
-          : 6;
-    const cutoff = new Date(now);
-    cutoff.setMonth(cutoff.getMonth() - periodMonths);
+  const categoryParam = CATEGORY_TO_SERVER[selectedCategory];
+  const periodParam = PERIOD_TO_SERVER[selectedPeriod];
+  const statusParam = STATUS_TO_SERVER[selectedStatus];
 
-    return mockMyInquiries.filter((item) => {
-      if (item.category !== selectedCategory) return false;
-
-      if (selectedStatus === STATUS_OPTIONS[1] && !item.answered) return false;
-      if (selectedStatus === STATUS_OPTIONS[2] && item.answered) return false;
-
-      const parts = item.createdAt.split(".").map(Number);
-      if (parts.length < 3) return true;
-      const [year, month, day] = parts;
-      if (!year || !month || !day) return true;
-      const createdAt = new Date(year, month - 1, day);
-      return createdAt >= cutoff;
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useMyInquiries({
+      category: categoryParam,
+      period: periodParam,
+      answerStatus: statusParam,
+      size: 10,
     });
-  }, [selectedCategory, selectedPeriod, selectedStatus]);
+
+  const items: MyInquiryListItemApi[] = data.pages.flatMap((p) => p.items);
+
+  // ✅ 무한스크롤 트리거 (라이브러리 없이)
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = sentinelRef.current;
+    if (!el) return;
+
+    const obs = new IntersectionObserver(
+      (entries) => {
+        const first = entries[0];
+        if (!first?.isIntersecting) return;
+        if (!hasNextPage || isFetchingNextPage) return;
+        fetchNextPage();
+      },
+      { rootMargin: "200px" } // 미리 로딩
+    );
+
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [fetchNextPage, hasNextPage, isFetchingNextPage]);
 
   return (
     <div className="flex w-full flex-col items-center pt-36">
-
       <div className="flex w-full items-start justify-between">
         <div className="flex items-center gap-10">
+          <span className="body-4 whitespace-nowrap text-black">문의 내역</span>
           <span className="body-4 whitespace-nowrap text-black">
-            문의 내역
-          </span>
-          <span className="body-4 whitespace-nowrap text-black">
-            {filteredInquiries.length}
+            {items.length}
           </span>
         </div>
 
@@ -194,7 +237,7 @@ export default function InquiryList({ onSelect }: Props) {
                   setSelectedPeriod(value);
                   setOpenMenu(null);
                 }}
-                className="w-54 pt-4 pb-4 pl-2 pr-0"
+                className="w-54 pt-4 pr-0 pb-4 pl-2"
               />
             )}
           </div>
@@ -232,8 +275,7 @@ export default function InquiryList({ onSelect }: Props) {
       </div>
 
       <div className="mt-10 flex w-full flex-col gap-12">
-        {/* TODO: shadow token 적용 필요 */}
-        {filteredInquiries.map((item) => {
+        {items.map((item) => {
           const status: AnswerStatus = item.answered ? "COMPLETED" : "PENDING";
 
           return (
@@ -246,7 +288,7 @@ export default function InquiryList({ onSelect }: Props) {
               <div className="flex w-full flex-col items-start gap-16 text-left">
                 <div className="flex items-center gap-12">
                   <span className="body-4 whitespace-nowrap text-black">
-                    {item.createdAt}
+                    {formatIsoToDotDate(item.createdAt)}
                   </span>
                   <StatusPill status={status} />
                 </div>
@@ -258,21 +300,24 @@ export default function InquiryList({ onSelect }: Props) {
                   <p className="body-4 w-full truncate text-black">
                     {item.contentPreview}
                   </p>
-
-                  {item.answered && item.answerPreview && (
-                    <div className="flex w-full items-center">
-                      <IcReply className="h-24 w-24" aria-hidden />
-                      <div className="ml-3 flex min-w-0 items-center">
-                        <span className="body-4 whitespace-nowrap text-black">
-                          {item.answerPreview.managerLabel}
+                  {item.answered && (item.responderName || item.answerPreview) && (
+                    <div className="flex w-full flex-col items-start gap-6">
+                      {item.responderName && (
+                        <span className="body-4 flex items-center gap-6 text-black">
+                          <IcReply className="h-16 w-16" aria-hidden />
+                          담당자 {item.responderName} 답변 :
+                          {item.answerPreview ? (
+                            <span className=" truncate text-black body-4">
+                              {item.answerPreview}
+                            </span>
+                          ) : null}
                         </span>
-                        <span className="body-4 mx-2 whitespace-nowrap text-black">
-                          :
-                        </span>
-                        <span className="body-4 min-w-0 flex-1 truncate text-black">
-                          {item.answerPreview.preview}
-                        </span>
-                      </div>
+                      )}
+                      {!item.responderName && item.answerPreview && (
+                        <p className="body-5 w-full truncate text-gray-700">
+                          답변: {item.answerPreview}
+                        </p>
+                      )}
                     </div>
                   )}
                 </div>
@@ -281,6 +326,9 @@ export default function InquiryList({ onSelect }: Props) {
           );
         })}
       </div>
+
+      {/* ✅ 무한스크롤 감지용 (UI 영향 거의 없음) */}
+      <div ref={sentinelRef} className="h-1 w-full" />
     </div>
   );
 }
