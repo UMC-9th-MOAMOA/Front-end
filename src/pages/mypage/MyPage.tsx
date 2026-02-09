@@ -8,6 +8,7 @@ import MyPageTabs from "./components/MyPageTabs";
 import MissionList from "./components/missioncard/MissionList";
 import PerformanceSection from "./components/PerformanceSection";
 import type { AttendanceDay } from "./components/calendar/calendar.types";
+import type { PerformanceMissionKind } from "./types/mypage.type";
 import { useMyProfile } from "./hooks/useMyProfile";
 import { useSpaceCalendarDay } from "./hooks/useSpaceCalendarDay";
 import { useSpaceCalendarMonth } from "./hooks/useSpaceCalendarMonth";
@@ -100,7 +101,11 @@ function AllTabContent({
   const rows = dayData.items.map((item, idx) => {
     const isMission = item.type.startsWith("MISSION");
     const isAd = item.type === "AD";
-    const kind = isMission ? "mission" : isAd ? "ad" : "attendance";
+    const kind: PerformanceMissionKind = isMission
+      ? "mission"
+      : isAd
+        ? "ad"
+        : "attendance";
     const title = isMission
       ? item.missionTitle ?? "미션"
       : isAd

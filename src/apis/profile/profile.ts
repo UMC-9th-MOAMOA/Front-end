@@ -5,7 +5,7 @@ import type {
   MyProfile,
   UpdateMyProfileRequest,
   UpdateMyProfileResult,
-} from "@/types/profile";
+} from "@/types/profile/profile";
 
 function toApiError(code: string, message: string): ApiError {
   const e = new Error(message) as ApiError;
