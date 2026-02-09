@@ -5,7 +5,7 @@ import type {
   MyProfile,
   UpdateMyProfileRequest,
   UpdateMyProfileResult,
-} from "@/types/profile/profile";
+} from "@/types/profile";
 
 function toApiError(code: string, message: string): ApiError {
   const e = new Error(message) as ApiError;
@@ -16,7 +16,7 @@ function toApiError(code: string, message: string): ApiError {
 
 export const getMyProfile = async () => {
   const { data } = await authAPI.get<ApiResponse<MyProfile>>(
-    "/members/me/profile"
+    "/members/me"
   );
 
   if (!data.isSuccess) {
@@ -28,7 +28,7 @@ export const getMyProfile = async () => {
 
 export const updateMyProfile = async (payload: UpdateMyProfileRequest) => {
   const { data } = await authAPI.put<ApiResponse<UpdateMyProfileResult>>(
-    "/members/me/profile",
+    "/members/me",
     payload
   );
 
