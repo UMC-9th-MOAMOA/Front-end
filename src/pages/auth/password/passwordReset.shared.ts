@@ -1,10 +1,11 @@
 export type Step = "EMAIL" | "CODE" | "NEW_PASSWORD";
-export type Loading = null | "SEND" | "VERIFY";
-
 type ApiError = {
+  serverCode?: string;
+  serverMessage?: string;
   response?: {
     data?: {
       code?: string;
+      message?: string;
     };
   };
 };
@@ -23,12 +24,24 @@ export const PASSWORD_RESET_MESSAGES = {
   codeInvalid: "인증번호가 올바르지 않아요.",
   codeExpired: "인증번호가 만료됐어요. 재발송을 요청해주세요.",
   verifyFailed: "인증에 실패했어요. 잠시 후 다시 시도해주세요.",
+  resetFailed: "비밀번호 재설정에 실패했어요. 잠시 후 다시 시도해주세요.",
   passwordMismatch: "비밀번호가 일치하지 않아요.",
 } as const;
 
 export function getServerCode(err: unknown): string | undefined {
-  if (typeof err === "object" && err !== null && "response" in err) {
-    return (err as ApiError).response?.data?.code;
+  if (typeof err === "object" && err !== null) {
+    const apiError = err as ApiError;
+    if (apiError.serverCode) return apiError.serverCode;
+    if ("response" in apiError) return apiError.response?.data?.code;
+  }
+  return undefined;
+}
+
+export function getServerMessage(err: unknown): string | undefined {
+  if (typeof err === "object" && err !== null) {
+    const apiError = err as ApiError;
+    if (apiError.serverMessage) return apiError.serverMessage;
+    if ("response" in apiError) return apiError.response?.data?.message;
   }
   return undefined;
 }
