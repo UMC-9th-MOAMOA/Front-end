@@ -6,6 +6,6 @@ export const useSpaceCalendarDay = (date: string) => {
   return useQuery<SpaceCalendarDayResult>({
     queryKey: ["space", "calendar", "day", date],
     queryFn: () => getSpaceCalendarDay(date),
-    placeholderData: (prev) => prev,
+    placeholderData: (prev: SpaceCalendarDayResult | undefined) => prev,
   });
 };

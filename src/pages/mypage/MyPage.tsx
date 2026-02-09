@@ -8,6 +8,7 @@ import MyPageTabs from "./components/MyPageTabs";
 import MissionList from "./components/missioncard/MissionList";
 import PerformanceSection from "./components/PerformanceSection";
 import type { AttendanceDay } from "./components/calendar/calendar.types";
+import type { SpaceCalendarDayItem } from "@/types/calendar/spaceCalendar";
 import type { PerformanceMissionKind } from "./types/mypage.type";
 import { useMyProfile } from "./hooks/useMyProfile";
 import { useSpaceCalendarDay } from "./hooks/useSpaceCalendarDay";
@@ -82,13 +83,13 @@ function AllTabContent({
   const datePrefix = `${year}-${String(monthNumber).padStart(2, "0")}-`;
   const monthPayload = monthData ?? { attendedDays: [], missionRewardDays: [] };
 
-  monthPayload.attendedDays.forEach((d) => {
+  monthPayload.attendedDays.forEach((d: number) => {
     marks.push({
       date: `${datePrefix}${String(d).padStart(2, "0")}`,
       attended: true,
     });
   });
-  monthPayload.missionRewardDays.forEach((d) => {
+  monthPayload.missionRewardDays.forEach((d: number) => {
     const date = `${datePrefix}${String(d).padStart(2, "0")}`;
     const existing = marks.find((x) => x.date === date);
     if (existing) {
@@ -99,7 +100,7 @@ function AllTabContent({
   });
 
   const dayItems = dayData?.items ?? [];
-  const rows = dayItems.map((item, idx) => {
+  const rows = dayItems.map((item: SpaceCalendarDayItem, idx: number) => {
     const isMission = item.type.startsWith("MISSION");
     const isAd = item.type === "AD";
     const kind: PerformanceMissionKind = isMission
