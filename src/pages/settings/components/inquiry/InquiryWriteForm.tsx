@@ -13,6 +13,7 @@ const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
 type Props = {
   agreed: boolean;
+  onToggleAgreed: () => void;
   draft: InquiryDraft;
   setDraft: React.Dispatch<React.SetStateAction<InquiryDraft>>;
 };
@@ -21,7 +22,12 @@ function clamp(n: number, max: number) {
   return Math.min(max, Math.max(0, n));
 }
 
-export default function InquiryWriteForm({ agreed, draft, setDraft }: Props) {
+export default function InquiryWriteForm({
+  agreed,
+  onToggleAgreed,
+  draft,
+  setDraft,
+}: Props) {
   const fileInputId = useId();
   const navigate = useNavigate();
 
@@ -79,6 +85,7 @@ export default function InquiryWriteForm({ agreed, draft, setDraft }: Props) {
 
       <div className="mt-67 w-full">
         <InquiryConsentRow
+          onToggle={onToggleAgreed}
           onViewPolicy={() =>
             navigate("/settings/inquiry/consent", { state: { draft } })
           }
