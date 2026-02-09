@@ -1,26 +1,25 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  mockSendResetEmail,
-  mockVerifyResetCode,
-} from "@/mocks/auth/passwordReset.mock";
 import AuthHeader from "../components/AuthHeader";
 import {
   getPasswordStrength,
   PASSWORD_INVALID_MESSAGE,
 } from "../utils/passwordStrength";
+import { useSendPasswordResetEmail } from "./hooks/useSendPasswordResetEmail";
+import { useVerifyPasswordResetCode } from "./hooks/useVerifyPasswordResetCode";
+import { useResetPassword } from "./hooks/useResetPassword";
 import {
   getServerCode,
+  getServerMessage,
   isValidEmail,
-  type Loading,
   PASSWORD_RESET_MESSAGES,
   type Step,
-  USE_MOCK,
 } from "./passwordReset.shared";
 import { CodeStepView } from "./views/CodeStepView";
 import { EmailStepView } from "./views/EmailStepView";
 import { NewPasswordStepView } from "./views/NewPasswordStepView";
 import { NoAccountModalView } from "./views/NoAccountModalView";
+import PasswordChangeSuccessModal from "@/pages/settings/components/Password/PasswordChangeSuccessModal";
 
 export default function Password() {
   const navigate = useNavigate();
@@ -28,14 +27,23 @@ export default function Password() {
   const [step, setStep] = useState<Step>("EMAIL");
   const [email, setEmail] = useState("");
   const [code, setCode] = useState("");
+  const [resetToken, setResetToken] = useState<string | null>(null);
 
-  const [loading, setLoading] = useState<Loading>(null);
   const [errorText, setErrorText] = useState<string>("");
   const [noAccountModalOpen, setNoAccountModalOpen] = useState(false);
+  const [resetSuccessModalOpen, setResetSuccessModalOpen] = useState(false);
   const [emailError, setEmailError] = useState<string | undefined>(undefined);
 
   const [password, setPassword] = useState("");
   const [passwordConfirm, setPasswordConfirm] = useState("");
+  const [resendCooldown, setResendCooldown] = useState(0);
+
+  const { mutateAsync: sendResetEmail, isPending: isSendingEmail } =
+    useSendPasswordResetEmail();
+  const { mutateAsync: verifyResetCode, isPending: isVerifying } =
+    useVerifyPasswordResetCode();
+  const { mutateAsync: resetPassword, isPending: isResetting } =
+    useResetPassword();
 
   const [passwordErrorMessage, setPasswordErrorMessage] = useState<
     string | undefined
@@ -43,23 +51,29 @@ export default function Password() {
   const [passwordConfirmErrorMessage, setPasswordConfirmErrorMessage] =
     useState<string | undefined>(undefined);
 
-  const sendEmail = USE_MOCK
-    ? mockSendResetEmail
-    : async () => {
-        throw new Error("sendEmail API not implemented");
-      };
+  const sendEmail = async (inputEmail: string) => {
+    await sendResetEmail({ email: inputEmail });
+  };
 
-  const verifyCode = USE_MOCK
-    ? mockVerifyResetCode
-    : async () => {
-        throw new Error("verifyCode API not implemented");
-      };
+  const verifyCode = async () => {
+    return verifyResetCode({ email, authCode: code });
+  };
 
   const pw = useMemo(() => getPasswordStrength(password), [password]);
-  const disabled = loading !== null;
+  const disabled = isVerifying || isResetting;
   const canUsePassword = pw.canSubmit;
   const isPasswordFormValid =
-    canUsePassword && passwordConfirm.length > 0 && !passwordConfirmErrorMessage;
+    canUsePassword &&
+    passwordConfirm.length > 0 &&
+    !passwordConfirmErrorMessage;
+
+  useEffect(() => {
+    if (resendCooldown <= 0) return;
+    const id = setInterval(() => {
+      setResendCooldown((prev) => Math.max(prev - 1, 0));
+    }, 1000);
+    return () => clearInterval(id);
+  }, [resendCooldown]);
 
   const onPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const v = e.target.value;
@@ -101,6 +115,7 @@ export default function Password() {
   };
 
   const handleSendEmail = async () => {
+    if (isSendingEmail) return;
     setErrorText("");
     setEmailError(undefined);
 
@@ -110,9 +125,9 @@ export default function Password() {
     }
 
     try {
-      setLoading("SEND");
-      await sendEmail(email, "SUCCESS");
+      await sendEmail(email);
       setStep("CODE");
+      setResendCooldown(30);
     } catch (e: unknown) {
       const serverCode = getServerCode(e);
 
@@ -122,8 +137,6 @@ export default function Password() {
       }
 
       setErrorText(PASSWORD_RESET_MESSAGES.emailSendFailed);
-    } finally {
-      setLoading(null);
     }
   };
 
@@ -136,10 +149,16 @@ export default function Password() {
     }
 
     try {
-      setLoading("VERIFY");
-      await verifyCode(email, code, "SUCCESS");
+      const result = await verifyCode();
+      setResetToken(result.resetToken);
       setStep("NEW_PASSWORD");
     } catch (e: unknown) {
+      const serverMessage = getServerMessage(e);
+      if (serverMessage) {
+        setErrorText(serverMessage);
+        return;
+      }
+
       const serverCode = getServerCode(e);
 
       if (serverCode === "CODE_MISMATCH" || serverCode === "INVALID_CODE") {
@@ -149,12 +168,32 @@ export default function Password() {
       } else {
         setErrorText(PASSWORD_RESET_MESSAGES.verifyFailed);
       }
-    } finally {
-      setLoading(null);
     }
   };
 
-  const handleResetPassword = () => {
+  const handleResetPassword = async () => {
+    setErrorText("");
+
+    if (!resetToken) {
+      setErrorText(PASSWORD_RESET_MESSAGES.verifyFailed);
+      return;
+    }
+
+    try {
+      await resetPassword({
+        token: resetToken,
+        newPassword: password,
+        newPasswordCheck: passwordConfirm,
+      });
+      setResetSuccessModalOpen(true);
+    } catch (e: unknown) {
+      const serverMessage = getServerMessage(e);
+      if (serverMessage) {
+        setErrorText(serverMessage);
+        return;
+      }
+      setErrorText(PASSWORD_RESET_MESSAGES.resetFailed);
+    }
   };
 
   return (
@@ -172,6 +211,13 @@ export default function Password() {
           navigate("/signup");
         }}
       />
+      <PasswordChangeSuccessModal
+        open={resetSuccessModalOpen}
+        onConfirm={() => {
+          setResetSuccessModalOpen(false);
+          navigate("/login");
+        }}
+      />
 
       {/* 이메일 주소 입력 스텝 */}
       {step === "EMAIL" && (
@@ -179,7 +225,7 @@ export default function Password() {
           email={email}
           emailError={emailError}
           errorText={errorText}
-          isSending={loading === "SEND"}
+          isSending={isSendingEmail}
           onEmailChange={(value) => {
             setEmail(value);
             setEmailError(undefined);
@@ -193,8 +239,9 @@ export default function Password() {
         <CodeStepView
           code={code}
           errorText={errorText}
-          isSending={loading === "SEND"}
-          isVerifying={loading === "VERIFY"}
+          isSending={isSendingEmail}
+          isVerifying={isVerifying}
+          resendCooldown={resendCooldown}
           onCodeChange={setCode}
           onResendEmail={handleSendEmail}
           onVerifyCode={handleVerifyCode}
