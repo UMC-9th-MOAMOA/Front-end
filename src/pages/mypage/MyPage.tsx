@@ -1,15 +1,17 @@
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useState } from "react";
 import Header from "@/components/common/header/Header";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import AcornSection from "./components/AcornSection";
 import Calendar from "./components/calendar/Calendar";
 import MyPageTabs from "./components/MyPageTabs";
 import MissionList from "./components/missioncard/MissionList";
 import PerformanceSection from "./components/PerformanceSection";
-import { useMyPageTab } from "./hooks/useMyPageTab";
+import type { AttendanceDay } from "./components/calendar/calendar.types";
+import { useMyProfile } from "./hooks/useMyProfile";
 import { useSpaceCalendarDay } from "./hooks/useSpaceCalendarDay";
 import { useSpaceCalendarMonth } from "./hooks/useSpaceCalendarMonth";
-import type { AttendanceDay } from "./components/calendar/calendar.types";
+import { useMyPageTab } from "./hooks/useMyPageTab";
 
 const toYMD = (d: Date) => {
   const y = d.getFullYear();
@@ -49,9 +51,11 @@ export default function MyPage() {
       {activeTab === "mission" && <MissionList />}
 
       {activeTab === "acorn" && (
-        <Suspense fallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}>
+        <AsyncBoundary
+          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
+        >
           <AcornSection />
-        </Suspense>
+        </AsyncBoundary>
       )}
     </div>
   );
@@ -72,60 +76,56 @@ function AllTabContent({
   const monthNumber = month.getMonth() + 1;
   const { data: monthData } = useSpaceCalendarMonth(year, monthNumber);
   const { data: dayData } = useSpaceCalendarDay(selectedYMD);
+  const { data: profile } = useMyProfile();
 
-  const marks: AttendanceDay[] = useMemo(() => {
-    const result: AttendanceDay[] = [];
-    const datePrefix = `${year}-${String(monthNumber).padStart(2, "0")}-`;
+  const marks: AttendanceDay[] = [];
+  const datePrefix = `${year}-${String(monthNumber).padStart(2, "0")}-`;
 
-    monthData.attendedDays.forEach((d) => {
-      result.push({
-        date: `${datePrefix}${String(d).padStart(2, "0")}`,
-        attended: true,
-      });
+  monthData.attendedDays.forEach((d) => {
+    marks.push({
+      date: `${datePrefix}${String(d).padStart(2, "0")}`,
+      attended: true,
     });
-    monthData.missionRewardDays.forEach((d) => {
-      const date = `${datePrefix}${String(d).padStart(2, "0")}`;
-      const existing = result.find((x) => x.date === date);
-      if (existing) {
-        existing.hasAcorn = true;
-      } else {
-        result.push({ date, attended: false, hasAcorn: true });
-      }
-    });
-    return result;
-  }, [monthData, year, monthNumber]);
+  });
+  monthData.missionRewardDays.forEach((d) => {
+    const date = `${datePrefix}${String(d).padStart(2, "0")}`;
+    const existing = marks.find((x) => x.date === date);
+    if (existing) {
+      existing.hasAcorn = true;
+    } else {
+      marks.push({ date, attended: false, hasAcorn: true });
+    }
+  });
 
-  const performance = useMemo(() => {
-    const rows = dayData.items.map((item, idx) => {
-      const isMission = item.type.startsWith("MISSION");
-      const isAd = item.type === "AD";
-      const kind = isMission ? "mission" : isAd ? "ad" : "attendance";
-      const title = isMission
-        ? item.missionTitle ?? "미션"
-        : isAd
-          ? "광고"
-          : "출석";
-
-      return {
-        id: `${item.type}-${item.occurredAt}-${idx}`,
-        durationMin: isMission ? item.missionDurationMinutes ?? 0 : 0,
-        status: "success" as const,
-        missions: [
-          {
-            id: `${item.type}-${idx}`,
-            kind,
-            title,
-            acornDelta: item.amount,
-          },
-        ],
-      };
-    });
+  const rows = dayData.items.map((item, idx) => {
+    const isMission = item.type.startsWith("MISSION");
+    const isAd = item.type === "AD";
+    const kind = isMission ? "mission" : isAd ? "ad" : "attendance";
+    const title = isMission
+      ? item.missionTitle ?? "미션"
+      : isAd
+        ? "광고"
+        : "출석";
 
     return {
-      userName: "나",
-      items: rows,
+      id: `${item.type}-${item.occurredAt}-${idx}`,
+      durationMin: isMission ? item.missionDurationMinutes ?? 0 : 0,
+      status: "success" as const,
+      missions: [
+        {
+          id: `${item.type}-${idx}`,
+          kind,
+          title,
+          acornDelta: item.amount,
+        },
+      ],
     };
-  }, [dayData]);
+  });
+
+  const performance = {
+    userName: profile.name,
+    items: rows,
+  };
 
   return (
     <>
@@ -144,4 +144,3 @@ function AllTabContent({
     </>
   );
 }
-

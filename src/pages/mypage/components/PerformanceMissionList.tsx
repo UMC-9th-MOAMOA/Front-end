@@ -8,7 +8,7 @@ import IcPlus from "@/assets/icons/ic_plus.svg?react";
 type RowKind = "attendance" | "ad" | "mission";
 
 const GRID_COLS_HEADER = "grid-cols-[1fr_64px_41px_28px_24px]";
-const GRID_COLS_ROW = "grid-cols-[1fr_64px_max-content_28px_24px]";
+const GRID_COLS_ROW = "grid-cols-[1fr_64px_max-content_20px_24px]";
 
 export type PerformanceMissionRow = {
   rowId: string;
@@ -50,7 +50,7 @@ export default function PerformanceMissionList({
         <div
           className={["grid w-full items-center", GRID_COLS_HEADER].join(" ")}
         >
-          <span className="heading-6">미션 제목</span>
+          <span className="heading-6">미션 이름</span>
           <span className="heading-6 justify-self-start">시간</span>
           <span className="heading-6 justify-self-start whitespace-nowrap">
             도토리
@@ -79,13 +79,13 @@ export default function PerformanceMissionList({
                       <span className="body-2 truncate">{row.title}</span>
                     </div>
 
-                    <span className="body-4 justify-self-start text-black">
+                    <span className="body-4 justify-self-center mr-20 text-black">
                       {row.durationMin != null ? `${row.durationMin}분` : ""}
                     </span>
 
                     <AcornDelta
                       value={row.acornDelta}
-                      className="gap-2"
+                      className="gap-2 justify-self-end"
                       textClassName="body-2 text-black"
                     />
 
@@ -134,4 +134,3 @@ export default function PerformanceMissionList({
     </div>
   );
 }
-

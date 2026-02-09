@@ -27,7 +27,7 @@ export default function PerformanceSection({
       <div className="flex w-full flex-col items-center gap-20">
         <div className="flex w-full flex-col items-center gap-10">
           <h2 className="heading-2 text-center text-black">
-            {data.userName}님의 실적
+            {data.userName}의 성과
           </h2>
         </div>
 
@@ -41,12 +41,12 @@ export default function PerformanceSection({
             <span className="min-w-[70px] flex-1" aria-hidden />
             <span className="h-28 w-40">{totalMin}분</span>
             <span className="min-w-[70px] flex-1" aria-hidden />
-            <span className="flex h-28 w-48 items-center gap-4">
-              <span className="h-20 w-23">
+            <span className="flex h-28 w-48 items-center">
+              <span className="mr-4 h-20">
                 {totalAcorn < 0 ? "-" : "+"}
                 {Math.abs(totalAcorn)}
               </span>
-              <IcAcorn className="h-29 w-21" aria-hidden />
+              <IcAcorn className="h-[29px] w-[21px] shrink-0" aria-hidden />
             </span>
           </div>
         </div>
@@ -54,4 +54,3 @@ export default function PerformanceSection({
     </section>
   );
 }
-

@@ -1,4 +1,6 @@
+import { Suspense } from "react";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import LoginPage from "@/pages/auth/login/Login";
 import OAuthCallback from "@/pages/auth/oauth-callback/OAuthCallback";
 import Password from "@/pages/auth/password/Password";
@@ -141,7 +143,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "/settings/inquiry/:inquiryId",
-        element: <InquiryDetailPage />,
+        element: (
+          <Suspense fallback={<LoadingSpinner />}>
+            <InquiryDetailPage />
+          </Suspense>
+        ),
         handle: { hideBottomNav: true },
       },
     ],
