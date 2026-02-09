@@ -40,7 +40,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
     element: <RootLayout />,
     children: [
       {
-        path: "splash",
+        path: "",
         element: <SplashPage />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
@@ -50,7 +50,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
-        path: "",
+        path: "home",
         element: <HomePage />,
         handle: { bgColor: "bg-moamoa-50" },
       },
