@@ -8,13 +8,13 @@ interface AuthGuardProps {
 }
 
 const PUBLIC_PATHS = [
+  "/",
+  "/start",
   "/login",
   "/signup",
   "/find-id",
   "/password",
   "/terms",
-  "/start",
-  "/splash",
 ];
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
@@ -33,7 +33,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     }
 
     if (location.pathname === "/login" && isAuthenticated) {
-      navigate("/", { replace: true });
+      navigate("/home", { replace: true });
     }
   }, [location.pathname, navigate, isAuthenticated, isLoading, isPublicPath]);
 
