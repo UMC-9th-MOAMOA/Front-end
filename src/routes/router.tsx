@@ -6,6 +6,7 @@ import Terms from "@/pages/auth/signup/Terms";
 import HomePage from "@/pages/home/Home";
 import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
+import CompletedMissionDetailPage from "@/pages/mypage/CompletedMissionDetailPage";
 import MyPage from "@/pages/mypage/MyPage";
 import Onboarding from "@/pages/onboarding/Onboarding";
 import Pocket from "@/pages/pocket/Pocket";
@@ -92,6 +93,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         path: "mypage",
         element: <MyPage />,
         handle: { bgColor: "bg-gray-100" },
+      },
+      {
+        path: "mypage/mission/:missionId",
+        element: <CompletedMissionDetailPage />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
         path: "settings",
