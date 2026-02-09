@@ -89,10 +89,10 @@ export default function AcornHistory() {
         earnSource={earnSource}
         onChangeEarnSource={setEarnSource}
       >
-          <div className="flex w-full flex-1 min-h-[60vh] items-start justify-center pr-9 pl-8">
+        <div className="flex min-h-[60vh] w-full flex-1 items-start justify-center px-8">
           {items.length === 0 ? (
             <div className="body-4 p-6 text-center text-gray-500">
-              도토리 내역이 없어요.
+              도토리 내역이 없어요
             </div>
           ) : (
             <ul className="w-full">
@@ -112,8 +112,10 @@ export default function AcornHistory() {
 
                 return (
                   <li
-                    key={item.walletHistoryId ?? `${item.createdAt}-${item.type}-${index}`}
-                    className="border-gray-400 border-b py-4"
+                    key={
+                      item.walletHistoryId ?? `${item.createdAt}-${item.type}-${index}`
+                    }
+                    className="border-b border-gray-400 py-4"
                   >
                     <div className="flex h-106 w-full flex-col items-start justify-center gap-4 self-stretch px-17 py-12">
                       <div className="body-2 flex items-center gap-4 text-gray-500">
@@ -138,15 +140,9 @@ export default function AcornHistory() {
 
                         <div className="flex items-center gap-4">
                           {isMinus ? (
-                            <IcMinus
-                              className="h-16 w-16 shrink-0"
-                              aria-hidden
-                            />
+                            <IcMinus className="h-16 w-16 shrink-0" aria-hidden />
                           ) : (
-                            <IcPlus
-                              className="h-16 w-16 shrink-0"
-                              aria-hidden
-                            />
+                            <IcPlus className="h-16 w-16 shrink-0" aria-hidden />
                           )}
                           <span className="heading-5 text-black">
                             {Math.abs(delta)}
