@@ -18,18 +18,6 @@ export interface CreateInquiryPayload {
   images?: File[];
 }
 
-export interface CreateInquiryAnswerResult {
-  inquiryId: number;
-  createdAt: string;
-}
-
-export interface CreateInquiryAnswerPayload {
-  inquiryId: number;
-  answer: string;
-  responderName: string;
-  images?: File[];
-}
-
 /** ====== list (my inquiries) ====== */
 
 export type InquiryAnswerStatusServer = "ALL" | "COMPLETED" | "PENDING";
@@ -80,4 +68,3 @@ export interface MyInquiryDetailResultApi {
   inquiryImageUrls: string[];
   answerImageUrls: string[];
 }
-

@@ -2,8 +2,6 @@ import { authAPI } from "@/apis/axios";
 import type { ApiError, ApiResponse } from "@/types/api/api";
 import type {
   CreateInquiryPayload,
-  CreateInquiryAnswerPayload,
-  CreateInquiryAnswerResult,
   CreateInquiryResult,
   GetMyInquiriesParams,
   MyInquiryDetailResultApi,
@@ -12,7 +10,6 @@ import type {
 
 const CREATE_ENDPOINT = "/support/inquiries";
 const MY_LIST_ENDPOINT = "/members/me/support/inquiries";
-const ADMIN_ANSWER_ENDPOINT = "/admin/support/inquiries";
 
 function toApiError(code: string, message: string): ApiError {
   const e = new Error(message) as ApiError;
@@ -34,26 +31,6 @@ export const createInquiry = async (payload: CreateInquiryPayload) => {
 
   const { data } = await authAPI.post<ApiResponse<CreateInquiryResult>>(
     CREATE_ENDPOINT,
-    form
-  );
-
-  if (!data.isSuccess) throw toApiError(data.code, data.message);
-  return data.result;
-};
-
-export const createInquiryAnswer = async (
-  payload: CreateInquiryAnswerPayload
-) => {
-  const form = new FormData();
-  form.append("answer", payload.answer);
-  form.append("responderName", payload.responderName);
-
-  (payload.images ?? []).forEach((file) => {
-    form.append("images", file);
-  });
-
-  const { data } = await authAPI.post<ApiResponse<CreateInquiryAnswerResult>>(
-    `${ADMIN_ANSWER_ENDPOINT}/${payload.inquiryId}/answer`,
     form
   );
 

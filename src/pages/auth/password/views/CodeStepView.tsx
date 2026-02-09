@@ -6,6 +6,7 @@ type CodeStepViewProps = {
   errorText: string;
   isSending: boolean;
   isVerifying: boolean;
+  resendCooldown: number;
   onCodeChange: (value: string) => void;
   onResendEmail: () => void;
   onVerifyCode: () => void;
@@ -16,10 +17,13 @@ export function CodeStepView({
   errorText,
   isSending,
   isVerifying,
+  resendCooldown,
   onCodeChange,
   onResendEmail,
   onVerifyCode,
 }: CodeStepViewProps) {
+  const isResendDisabled = isSending || isVerifying || resendCooldown > 0;
+
   return (
     <>
       <h1 className="heading-3 mt-156 text-center text-black">
@@ -44,9 +48,11 @@ export function CodeStepView({
           type="button"
           onClick={onResendEmail}
           className="body-4 flex justify-start text-gray-600 underline disabled:text-gray-400"
-          disabled={isSending || isVerifying}
+          disabled={isResendDisabled}
         >
-          인증 메일 재발송
+          {resendCooldown > 0
+            ? `인증 메일 재발송 (${resendCooldown}s)`
+            : "인증 메일 재발송"}
         </button>
 
         {errorText && (
