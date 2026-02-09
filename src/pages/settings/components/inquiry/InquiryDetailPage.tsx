@@ -2,10 +2,7 @@ import { useParams } from "react-router-dom";
 import IcReply from "@/assets/icons/ic_reply.svg?react";
 import Header from "@/components/common/header/Header";
 import { useMyInquiryDetail } from "./hooks/useMyInquiryDetail";
-
 import StatusPill from "./StatusPill";
-
-// TODO(API 연결 시): GET /inquiries/{inquiryId} 결과로 교체
 
 function formatIsoToDotDate(iso: string) {
   const d = new Date(iso);
@@ -69,17 +66,32 @@ export default function InquiryDetailPage() {
           <div className="flex w-full flex-col items-start gap-20 self-stretch">
             <div className="flex items-center gap-12">
               <IcReply className="h-24 w-24" aria-hidden />
-              <span className="body-4 text-center text-black">담당자 OOO</span>
+              <span className="body-4 text-center text-black">
+                담당자 {data.responderName ?? "미정"}
+              </span>
             </div>
 
-            <div className="flex items-start gap-20">
-              <div className="h-139 w-139 rounded-lg bg-moamoa-50" />
-              <div className="h-139 w-139 rounded-lg bg-moamoa-50" />
-            </div>
+            {data.answerImageUrls.length > 0 && (
+              <div className="flex items-start gap-20">
+                {data.answerImageUrls.map((url, index) => (
+                  <div
+                    key={`${url}-${index}`}
+                    className="h-139 w-139 overflow-hidden rounded-lg bg-gray-100"
+                  >
+                    <img
+                      src={url}
+                      alt={`inquiry-answer-${index + 1}`}
+                      className="h-full w-full object-cover"
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            )}
 
             <p className="body-4 text-black">
-              {data.answerStatus === "COMPLETED"
-                ? "답변 내용이 표시됩니다."
+              {data.answered
+                ? data.answerContent ?? "답변 내용이 없습니다."
                 : "아직 답변이 등록되지 않았어요."}
             </p>
           </div>
@@ -88,3 +100,4 @@ export default function InquiryDetailPage() {
     </div>
   );
 }
+

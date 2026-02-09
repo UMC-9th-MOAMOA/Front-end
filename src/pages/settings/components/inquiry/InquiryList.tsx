@@ -1,6 +1,7 @@
 ﻿import { useEffect, useRef, useState } from "react";
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
+import IcReply from "@/assets/icons/ic_reply.svg?react";
 
 import type {
   InquiryAnswerStatusServer,
@@ -299,10 +300,26 @@ export default function InquiryList({ onSelect }: Props) {
                   <p className="body-4 w-full truncate text-black">
                     {item.contentPreview}
                   </p>
-
-                  {/* 서버 리스트에는 답변 프리뷰가 없으니 자연스럽게 미노출 */}
-                  {/* (UI 구조는 유지하고 싶으면 상세에서 답변 영역을 보여주면 됨) */}
-                  {/* 아래 블록은 유지하고 싶다면 data에 answerPreview를 매핑해서 넣어도 됨 */}
+                  {item.answered && (item.responderName || item.answerPreview) && (
+                    <div className="flex w-full flex-col items-start gap-6">
+                      {item.responderName && (
+                        <span className="body-4 flex items-center gap-6 text-black">
+                          <IcReply className="h-16 w-16" aria-hidden />
+                          담당자 {item.responderName} 답변 :
+                          {item.answerPreview ? (
+                            <span className=" truncate text-black body-4">
+                              {item.answerPreview}
+                            </span>
+                          ) : null}
+                        </span>
+                      )}
+                      {!item.responderName && item.answerPreview && (
+                        <p className="body-5 w-full truncate text-gray-700">
+                          답변: {item.answerPreview}
+                        </p>
+                      )}
+                    </div>
+                  )}
                 </div>
               </div>
             </button>

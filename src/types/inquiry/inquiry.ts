@@ -26,6 +26,7 @@ export interface CreateInquiryAnswerResult {
 export interface CreateInquiryAnswerPayload {
   inquiryId: number;
   answer: string;
+  responderName: string;
   images?: File[];
 }
 
@@ -41,6 +42,8 @@ export interface MyInquiryListItemApi {
   contentPreview: string;
   answered: boolean;
   createdAt: string; // ISO
+  responderName: string | null;
+  answerPreview: string | null;
 }
 
 export interface MyInquiryNextCursorApi {
@@ -63,7 +66,7 @@ export interface GetMyInquiriesParams {
   cursorId?: number;
 }
 
-/** ✅ 상세 조회 result 타입 */
+/** detail (my inquiry) */
 export interface MyInquiryDetailResultApi {
   inquiryId: number;
   category: InquiryCategoryServer;
@@ -71,8 +74,10 @@ export interface MyInquiryDetailResultApi {
   content: string;
   answered: boolean;
   createdAt: string; // ISO
-  answeredAt: string | null; // answered=false면 null 가능성
-  answerContent: string | null; // answered=false면 null 가능성
+  responderName: string | null;
+  answeredAt: string | null;
+  answerContent: string | null;
   inquiryImageUrls: string[];
   answerImageUrls: string[];
 }
+

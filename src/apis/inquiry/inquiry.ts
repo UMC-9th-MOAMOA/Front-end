@@ -46,6 +46,7 @@ export const createInquiryAnswer = async (
 ) => {
   const form = new FormData();
   form.append("answer", payload.answer);
+  form.append("responderName", payload.responderName);
 
   (payload.images ?? []).forEach((file) => {
     form.append("images", file);
