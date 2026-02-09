@@ -18,10 +18,13 @@ export default function InquiryDetailPage() {
   const inquiryId = Number(params.inquiryId);
   const isValidId = Number.isFinite(inquiryId);
 
-  const { data } = useMyInquiryDetail(inquiryId);
-
   if (!isValidId) return null;
 
+  return <InquiryDetailContent inquiryId={inquiryId} />;
+}
+
+function InquiryDetailContent({ inquiryId }: { inquiryId: number }) {
+  const { data } = useMyInquiryDetail(inquiryId);
   const answerStatus = data.answered ? "COMPLETED" : "PENDING";
 
   return (
@@ -41,7 +44,7 @@ export default function InquiryDetailPage() {
           <p className="heading-2 mt-20 w-full truncate text-black">
             {data.title}
           </p>
-          {data.inquiryImageUrls.length > 0 && (
+          {data.inquiryImageUrls?.length > 0 && (
             <div className="mt-16 grid w-full grid-cols-3 gap-20">
               {data.inquiryImageUrls.map((url, index) => (
                 <div
@@ -71,7 +74,7 @@ export default function InquiryDetailPage() {
               </span>
             </div>
 
-            {data.answerImageUrls.length > 0 && (
+            {data.answerImageUrls?.length > 0 && (
               <div className="flex items-start gap-20">
                 {data.answerImageUrls.map((url, index) => (
                   <div
@@ -100,4 +103,3 @@ export default function InquiryDetailPage() {
     </div>
   );
 }
-

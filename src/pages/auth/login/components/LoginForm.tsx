@@ -1,15 +1,12 @@
-import axios from "axios";
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { login } from "@/apis/auth";
-import { storage } from "@/apis/storage";
-import CheckBoxOnIcon from "@/assets/icons/auth/ic_checked.svg?react";
-import CheckBoxOffIcon from "@/assets/icons/auth/ic_unchecked.svg?react";
+import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import DividerIcon from "@/assets/icons/ic_divider.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
 import { Modal } from "../../components/Modal";
 import { PasswordTextField } from "../../components/PasswordTextField";
+import { useLogin } from "../hooks/useMutation/useLogin";
+import { useRecoverAccount } from "../hooks/useMutation/useRecoverAccount";
 
 function AuthLinksRow() {
   return (
@@ -28,70 +25,53 @@ function AuthLinksRow() {
 export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [autoLogin, setAutoLogin] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [blockedCode, setBlockedCode] = useState<
     "AUTH403_2" | "AUTH403_3" | ""
   >("");
   const [isBlockedModalOpen, setIsBlockedModalOpen] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { mutate: loginMutate, isPending } = useLogin({
+    onBlocked: (code) => {
+      setBlockedCode(code);
+      setIsBlockedModalOpen(true);
+      setErrorMessage("");
+    },
+    onMessage: (message) => setErrorMessage(message),
+  });
+  const { mutate: recoverMutate, isPending: isRecovering } = useRecoverAccount({
+    onSuccess: () => {
+      setIsBlockedModalOpen(false);
+    },
+    onMessage: (message) => setErrorMessage(message),
+  });
 
   const canSubmit =
-    email.trim().length > 0 && password.trim().length > 0 && !isSubmitting;
+    email.trim().length > 0 && password.trim().length > 0 && !isPending;
 
-  const resolveLoginErrorMessage = (code?: string, fallback?: string) => {
-    switch (code) {
-      case "VALIDATION400_2":
-      case "AUTH401_1":
-        return "이메일 또는 비밀번호가 일치하지 않습니다.";
-      case "COMMON500_1":
-        return "서버 에러가 발생했습니다. 다시 시도해주세요.";
-      default:
-        return fallback ?? "로그인에 실패했습니다.";
+  const error = searchParams.get("error");
+
+  useEffect(() => {
+    if (error === "ACCOUNT_BANNED") {
+      setBlockedCode("AUTH403_3");
+      setIsBlockedModalOpen(true);
+      setSearchParams((prev) => {
+        const nextParams = new URLSearchParams(prev);
+        nextParams.delete("error");
+        return nextParams;
+      }, { replace: true });
     }
-  };
+  }, [error, setSearchParams]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (isSubmitting) return;
+    if (isPending) return;
 
     setErrorMessage("");
-    setIsSubmitting(true);
     setBlockedCode("");
     setIsBlockedModalOpen(false);
 
-    try {
-      const result = await login({ email, password });
-      storage.setToken(result.accessToken);
-
-      if (autoLogin) {
-        // TODO: 자동 로그인 기능 구현
-      }
-
-      navigate("/onboarding");
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        const data = error.response?.data as {
-          code?: string;
-          message?: string;
-        };
-        if (data?.code === "AUTH403_2" || data?.code === "AUTH403_3") {
-          setBlockedCode(data.code);
-          setIsBlockedModalOpen(true);
-          setErrorMessage("");
-        } else {
-          const message = resolveLoginErrorMessage(data?.code, data?.message);
-          setErrorMessage(message);
-        }
-      } else {
-        const message =
-          error instanceof Error ? error.message : "로그인에 실패했습니다.";
-        setErrorMessage(message);
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
+    loginMutate({ email, password });
   };
 
   return (
@@ -114,30 +94,18 @@ export default function LoginForm() {
           width="full"
           variant="outlined"
         />
-        <label className="inline-flex w-fit items-center gap-8">
-          <input
-            type="checkbox"
-            checked={autoLogin}
-            onChange={(e) => setAutoLogin(e.target.checked)}
-            className="sr-only"
-          />
-          <span className="h-16 w-16">
-            {autoLogin ? <CheckBoxOnIcon /> : <CheckBoxOffIcon />}
-          </span>
-          <span className="body-4 mb-10 text-gray-900">자동 로그인</span>
-        </label>
       </div>
-      <div className="min-h-10 text-center">
+      <div className="text-center">
         {errorMessage ? (
           <p className="body-4 text-red-500">{errorMessage}</p>
         ) : null}
       </div>
       <Button
         type="submit"
-        className="heading-5 mt-23 mb-4 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-800"
+        className="heading-5 mt-58 mb-26 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-800"
         disabled={!canSubmit}
       >
-        {isSubmitting ? "로그인 중..." : "로그인"}
+        {isPending ? "로그인 중..." : "로그인"}
       </Button>
       <AuthLinksRow />
       <Modal
@@ -164,13 +132,17 @@ export default function LoginForm() {
                 <Button
                   type="button"
                   className="body-2 h-50 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
-                  onClick={() => setIsBlockedModalOpen(false)}
+                  onClick={() => {
+                    if (isRecovering) return;
+                    setErrorMessage("");
+                    recoverMutate({ email, password });
+                  }}
                 >
-                  복구하기
+                  {isRecovering ? "복구 중..." : "복구하기"}
                 </Button>
               </div>
             </>
-          ) : (
+          ) : blockedCode === "AUTH403_3" ? (
             <>
               <p className="heading-3 text-black">
                 서비스 이용이
@@ -185,7 +157,7 @@ export default function LoginForm() {
                 확인
               </Button>
             </>
-          )}
+          ) : null}
         </div>
       </Modal>
     </form>

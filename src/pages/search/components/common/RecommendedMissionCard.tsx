@@ -1,33 +1,63 @@
+import { useNavigate } from "react-router-dom";
 import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import { cn } from "@/utils/cn/cn";
 
 interface RecommendedMissionCardProps {
+  missionId: number;
   title: string;
   keywords: string[];
   durationMinutes: number;
   category: string;
-  description?: string;
+  quizCount: number;
   isScrapped?: boolean;
   onHeartClick?: () => void;
 }
 
 export default function RecommendedMissionCard({
+  missionId,
   title,
   keywords,
   durationMinutes,
   category,
-  description,
+  quizCount,
   isScrapped,
   onHeartClick,
 }: RecommendedMissionCardProps) {
+  const navigate = useNavigate();
+
+  const handleCardClick = (e: React.MouseEvent | React.KeyboardEvent) => {
+    if ((e.target as HTMLElement).closest("button")) {
+      return;
+    }
+    navigate(`/mission/${missionId}`);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      handleCardClick(e);
+    }
+  };
+
   return (
-    <div className="w-180 rounded-xl border border-moamoa-200 bg-white px-16 py-18">
+    // biome-ignore lint/a11y/useSemanticElements: 카드 레이아웃 유지를 위해 div 사용
+    <div
+      role="button"
+      tabIndex={0}
+      className="w-176 cursor-pointer rounded-xl border border-moamoa-200 bg-white px-16 py-27"
+      onClick={handleCardClick}
+      onKeyDown={handleKeyDown}
+    >
       <div className="flex items-center justify-between gap-8">
         <h3 className="body-2 truncate text-black">{title}</h3>
-        <IcHeart
-          className={cn("size-24 shrink-0 cursor-pointer text-moamoa-100", isScrapped && "fill-moamoa-100")}
-          onClick={onHeartClick}
-        />
+        <button type="button" onClick={onHeartClick} className="shrink-0">
+          <IcHeart
+            className={cn(
+              "size-24 shrink-0 cursor-pointer text-moamoa-200",
+              isScrapped && "fill-moamoa-100"
+            )}
+          />
+        </button>
       </div>
 
       <div className="-mx-16 mt-18 overflow-x-auto">
@@ -44,16 +74,20 @@ export default function RecommendedMissionCard({
         </div>
       </div>
 
-      <div className="mt-8 flex flex-col gap-4">
-        <div className="body-2 flex items-center text-black">
+      <div className="mt-8 flex flex-col">
+        <div className="body-4 mb-8 flex items-center text-black">
           <span>예상 소요 시간 :</span>
           <span className="ml-3">{durationMinutes}분</span>
         </div>
-        <div className="body-5 flex items-center text-black">
+        <div className="body-5 mb-4 flex items-center text-black">
           <span>카테고리 :</span>
           <span className="ml-3">{category}</span>
         </div>
-        {description && <p className="body-5 truncate text-black">{description}</p>}
+
+        <div className="body-5 flex items-center text-black">
+          <span>퀴즈 개수 :</span>
+          <span className="ml-3">{quizCount}개</span>
+        </div>
       </div>
     </div>
   );

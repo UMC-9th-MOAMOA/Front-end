@@ -15,6 +15,14 @@ export interface MissionsPageResponse {
   hasNext: boolean;
 }
 
+export type MissionStatus = "NONE" | "SCRAP" | "FAIL";
+
+export interface MissionStatusResult {
+  missionId: number;
+  status: string;
+  attemptCount: number;
+}
+
 export interface Category {
   categoryId: number;
   name: string;
