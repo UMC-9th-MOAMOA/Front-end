@@ -7,7 +7,16 @@ interface AuthGuardProps {
   children: ReactNode;
 }
 
-const PUBLIC_PATHS = ["/login", "/signup", "/find-id", "/password", "/terms"];
+const PUBLIC_PATHS = [
+  "/",
+  "/start",
+  "/login",
+  "/signup",
+  "/find-id",
+  "/password",
+  "/terms",
+  "/oauth/callback",
+];
 
 const AuthGuard = ({ children }: AuthGuardProps) => {
   const navigate = useNavigate();
@@ -31,7 +40,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     }
 
     if (location.pathname === "/login" && isAuthenticated) {
-      navigate(policyAgreed === false ? "/terms" : "/", { replace: true });
+      navigate(policyAgreed === false ? "/terms" : "/home", { replace: true });
     }
   }, [
     location.pathname,
