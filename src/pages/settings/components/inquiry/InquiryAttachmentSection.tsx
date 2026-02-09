@@ -69,7 +69,7 @@ export default function InquiryAttachmentSection({
       </div>
 
       <p className="body-5 mt-12 whitespace-pre-line text-gray-700">
-        이미지 ( JPG,PNG )를 기준으로 한당 10MB,
+        이미지 ( JPG,PNG )를 기준으로 한장당 10MB,
         {"\n"}최대 5개까지 등록 가능합니다.
       </p>
     </div>
