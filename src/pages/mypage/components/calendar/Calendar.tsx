@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import CalendarGrid from "./CalendarGrid";
 import CalendarHeader from "./CalendarHeader";
 import type { AttendanceDay } from "./calendar.types";
@@ -41,27 +41,36 @@ function getCalendarGrid(month: Date) {
   return days;
 }
 
-export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
-  const [month, setMonth] = useState(() => startOfMonth(new Date()));
-  const [selectedYMD, setSelectedYMD] = useState(() => toYMD(new Date()));
+type Props = {
+  marks?: AttendanceDay[];
+  month: Date;
+  selectedYMD: string;
+  onChangeMonth: (month: Date) => void;
+  onSelectYMD: (ymd: string) => void;
+};
 
+export default function Calendar({
+  marks = [],
+  month,
+  selectedYMD,
+  onChangeMonth,
+  onSelectYMD,
+}: Props) {
   function addMonths(date: Date, months: number) {
     return new Date(date.getFullYear(), date.getMonth() + months, 1);
   }
 
-  const goPrevMonth = () =>
-    setMonth((prev) => {
-      const next = addMonths(prev, -1);
-      setSelectedYMD(toYMD(next));
-      return next;
-    });
+  const goPrevMonth = () => {
+    const next = addMonths(month, -1);
+    onSelectYMD(toYMD(next));
+    onChangeMonth(next);
+  };
 
-  const goNextMonth = () =>
-    setMonth((prev) => {
-      const next = addMonths(prev, 1);
-      setSelectedYMD(toYMD(next));
-      return next;
-    });
+  const goNextMonth = () => {
+    const next = addMonths(month, 1);
+    onSelectYMD(toYMD(next));
+    onChangeMonth(next);
+  };
 
   const markMap = useMemo(() => {
     const m = new Map<string, AttendanceDay>();
@@ -88,7 +97,7 @@ export default function Calendar({ marks = [] }: { marks?: AttendanceDay[] }) {
         currentMonth={currentMonth}
         markMap={markMap}
         selectedYMD={selectedYMD}
-        onSelectYMD={setSelectedYMD}
+        onSelectYMD={onSelectYMD}
         toYMD={toYMD}
       />
     </section>
