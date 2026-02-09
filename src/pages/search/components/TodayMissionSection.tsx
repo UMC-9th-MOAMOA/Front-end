@@ -1,10 +1,12 @@
 import IcReload from "@/assets/icons/ic_reload.svg?react";
+import { useScrapMission } from "@/hooks/useScrapMission";
 import { cn } from "@/utils/cn/cn";
 import { useRecommendedMissions } from "../hooks/useQuery/useRecommendedMissions";
 import RecommendedMissionCard from "./common/RecommendedMissionCard";
 
 export default function TodayMissionSection() {
   const { data: missions, refetch } = useRecommendedMissions({ time: null });
+  const scrapMutation = useScrapMission();
   return (
     <div className="mt-48">
       <div className="flex items-center justify-between px-1">
@@ -32,12 +34,19 @@ export default function TodayMissionSection() {
                 className={cn("shrink-0", index === 0 && "ml-layout-side")}
               >
                 <RecommendedMissionCard
+                  missionId={mission.missionId}
                   title={mission.title}
                   keywords={mission.keywords}
                   durationMinutes={mission.durationMinutes}
                   category={mission.category}
-                  description={mission.description}
+                  quizCount={mission.quizCount}
                   isScrapped={mission.isScrapped}
+                  onHeartClick={() =>
+                    scrapMutation.mutate({
+                      missionId: mission.missionId,
+                      isScrapped: mission.isScrapped,
+                    })
+                  }
                 />
               </div>
             ))}
