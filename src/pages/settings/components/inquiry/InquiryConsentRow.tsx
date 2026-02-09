@@ -9,11 +9,14 @@ export default function InquiryConsentRow({ onViewPolicy, agreed = false }: Prop
   return (
     <div className="flex w-full items-center justify-between pb-41">
       <div className="flex items-center gap-8">
-        <div
+        <button
+          type="button"
+          onClick={onViewPolicy}
           className={[
             "flex h-16 w-16 items-center justify-center rounded-full p-1",
             agreed ? "bg-moamoa-50" : "bg-gray-400",
           ].join(" ")}
+          aria-label="약관 전문 보기"
         >
           <IcCheck
             className={[
@@ -21,7 +24,7 @@ export default function InquiryConsentRow({ onViewPolicy, agreed = false }: Prop
               agreed ? "text-moamoa-400" : "text-white",
             ].join(" ")}
           />
-        </div>
+        </button>
         <span className="body-4 text-center text-gray-600">
           (필수) 개인정보 수집・이용에 대한 안내
         </span>
