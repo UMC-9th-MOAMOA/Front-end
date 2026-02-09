@@ -109,7 +109,7 @@ export default function MissionTab() {
               isEmpty={list.length === 0}
             />
 
-            <div className="flex w-full flex-col gap-16">
+            <div className="flex w-full flex-col gap-16 pb-30">
               {list.length === 0 ? (
                 <div className="mt-105 flex w-full flex-col items-center gap-4">
                   <p className="heading-5 text-gray-500">
