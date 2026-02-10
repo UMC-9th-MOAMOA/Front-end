@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { login } from "@/apis/auth/auth";
 import { storage } from "@/apis/storage";
 import { useApiError } from "@/hooks/api/useApiError";
@@ -28,6 +28,7 @@ const resolveLoginErrorMessage = (code?: string, fallback?: string) => {
 export const useLogin = (handlers?: LoginErrorHandlers) => {
   const { handleError } = useApiError();
   const navigate = useNavigate();
+  const location = useLocation();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
 
@@ -38,7 +39,10 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
       if (!result.policyAgreed) {
-        navigate("/terms", { replace: true });
+        navigate("/terms", {
+          replace: true,
+          state: { from: location.pathname },
+        });
         return;
       }
       navigate(result.onboardingCompleted ? "/" : "/onboarding");
