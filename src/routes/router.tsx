@@ -129,11 +129,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "mypage/mission/:missionId",
-        element: (
-          <Suspense fallback={<LoadingSpinner className="mx-auto mt-40 size-60" />}>
-            <CompletedMissionDetailPage />
-          </Suspense>
-        ),
+        element: <CompletedMissionDetailPage />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
