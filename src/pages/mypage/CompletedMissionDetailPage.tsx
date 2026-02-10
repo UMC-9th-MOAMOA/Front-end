@@ -1,10 +1,9 @@
-import { useParams } from "react-router-dom";
+﻿import { useParams } from "react-router-dom";
 import IcPolygon from "@/assets/icons/ic_polygon.svg?react";
 import IcSubtract from "@/assets/icons/ic_subtract.svg?react";
 import IcUnion from "@/assets/icons/ic_union.svg?react";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
-import BottomActionBar from "@/pages/settings/components/common/BottomActionBar";
 import type { MissionDetailQuiz } from "@/types/mission/missionDetail";
 import { useMissionDetail } from "./hooks/useMissionDetail";
 
@@ -46,7 +45,7 @@ function ShortQuizSection({
       <div className="mt-12 w-full rounded-lg px-12 py-8 text-black">
         <p className="body-2">{question}</p>
       </div>
-      <div className="mt-26 flex w-full items-start rounded-lg border border-[#B4C9F9] bg-[#E3EBFD] px-10 py-9 text-left text-[#191919]">
+      <div className="mt-26 flex w-full items-start rounded-lg border border-[#B4C9F9] bg-[#E3EBFD] px-10 py-9 text-left text-black">
         <p className="body-2">{answer ? `답안: ${answer}` : "답안"}</p>
       </div>
     </div>
@@ -77,11 +76,10 @@ function OxQuizSection({
       </div>
       <div className="mt-20 flex w-full items-center gap-20 rounded-lg px-4 md:px-20">
         <div className="flex h-full w-120px flex-col items-center gap-4">
-          <span className="body-3 text-center text-[#5586F1]">주장한다</span>
           <button
             type="button"
             className={[
-              "flex h-[94px] w-full items-center justify-center gap-4 rounded-lg px-6 py-6",
+              "flex h-94 w-124 items-center justify-center gap-4 rounded-lg px-6 py-6",
               isO
                 ? "border border-[#2664ED] bg-[#B4C9F9]"
                 : "border border-[#E0E0E0] bg-[#FAFAFA]",
@@ -90,20 +88,23 @@ function OxQuizSection({
             <IcSubtract className="h-47 w-47 text-[#2664ED]" aria-hidden />
           </button>
         </div>
-        <div className="flex h-full w-[120px] flex-col items-center gap-4">
-          <span className="body-3 text-center text-[#424242]">
-            주장하지 않는다
-          </span>
+        <div className="flex h-full w-120 flex-col items-center gap-4">
           <button
             type="button"
             className={[
-              "flex h-[94px] w-full flex-col items-center justify-center gap-4 rounded-lg px-6 py-6",
+              "flex h-[94px] w-124 flex-col items-center justify-center gap-4 rounded-lg px-6 py-6",
               isX
                 ? "border border-[#2664ED] bg-[#B4C9F9]"
                 : "border border-[#E0E0E0] bg-[#FAFAFA]",
             ].join(" ")}
           >
-            <IcUnion className="h-47 w-47 text-[#424242]" aria-hidden />
+            <IcUnion
+              className={[
+                "h-47 w-47",
+                isX ? "text-moamoa-warning" : "text-[#424242]",
+              ].join(" ")}
+              aria-hidden
+            />
           </button>
         </div>
       </div>
@@ -141,7 +142,7 @@ function MultipleQuizSection({
           </div>
         ))}
       </div>
-      <div className="mt-16 flex w-full items-start rounded-lg border border-[#B4C9F9] bg-[#E3EBFD] px-10 py-9 text-left text-[#191919]">
+      <div className="mt-16 flex w-full items-start rounded-lg border border-[#B4C9F9] bg-[#E3EBFD] px-10 py-9 text-left text-black">
         <p className="body-2">{answer ? `정답: ${answer}` : "정답"}</p>
       </div>
     </div>
@@ -201,7 +202,7 @@ function MissionDetailContent({ missionId }: { missionId: number }) {
   return (
     <>
       <Header title="완료 미션" property="common" />
-      <div className="mt-44 flex w-full flex-col items-center px-6 pb-48">
+      <div className="mt-44 -mb-96 flex w-full flex-col items-center px-6 pb-88">
         <div className="flex w-full max-w-screen-xl flex-col gap-12">
           <h2 className="heading-4 text-black">{data.title}</h2>
 
@@ -267,7 +268,6 @@ function MissionDetailContent({ missionId }: { missionId: number }) {
           </div>
         </div>
       </div>
-      <BottomActionBar label="정답 확인하기" onClick={() => {}} />
     </>
   );
 }
