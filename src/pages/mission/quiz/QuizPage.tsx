@@ -73,14 +73,19 @@ function QuizPageContent({ missionId }: { missionId: number }) {
     const userAnswer =
       currentQuestion.type === "MULTIPLE" ? selectedOption || "" : userInput;
 
+    const normalize = (s: string) => s.replaceAll(" ", "").toLowerCase();
+
     let correct = false;
     if (currentQuestion.type === "MULTIPLE") {
       const selectedIndex = currentQuestion.option.indexOf(userAnswer);
-      correct = String(selectedIndex + 1) === currentQuestion.answer;
+      correct = currentQuestion.acceptedAnswers.some(
+        (a) => normalize(a) === String(selectedIndex + 1)
+      );
     } else {
-      correct =
-        userAnswer.trim().toLowerCase() ===
-        currentQuestion.answer.toLowerCase();
+      const userParts = userAnswer.split(",").map((s) => normalize(s));
+      correct = userParts.some((part) =>
+        currentQuestion.acceptedAnswers.some((a) => normalize(a) === part)
+      );
     }
 
     setAnswers([
@@ -155,7 +160,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         {
           onSuccess: (data) => {
             if (isRetry) {
-              navigate("/");
+              navigate("/mypage?tab=mission");
             } else {
               setQuizResult({
                 isSuccess: data.isSuccess,
@@ -210,7 +215,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         missionName={mission.interest}
         isDailyGoalAchieved={quizResult.isDailyGoalAchieved}
         isWeeklyGoalAchieved={quizResult.isWeeklyGoalAchieved}
-        onClose={() => navigate("/")}
+        onClose={() => navigate("/home")}
         onRetryWrong={() => {
           navigate(`/mission/entry/${missionId}`);
         }}
@@ -252,7 +257,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         property="common"
         onBack={() => {
           if (isRetry) {
-            navigate("/");
+            navigate(-1);
           } else {
             setShowQuitPopup(true);
           }
@@ -289,7 +294,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
       {showQuitPopup && (
         <QuizQuitPopup
           acorns={5}
-          onQuit={() => navigate("/")}
+          onQuit={() => navigate("/home")}
           onStay={() => setShowQuitPopup(false)}
         />
       )}
