@@ -6,7 +6,6 @@ interface QuizResultProps {
   isCorrect: boolean;
   userAnswer: string;
   category: string;
-  questionText: string;
   explanation?: string;
   questionType: "subjective" | "ox" | "multiple";
   isLastQuestion: boolean;
@@ -18,7 +17,6 @@ export default function QuizResult({
   isCorrect,
   userAnswer,
   category,
-  questionText,
   explanation,
   questionType,
   isLastQuestion,
@@ -30,7 +28,6 @@ export default function QuizResult({
       <QuizSuccessResult
         userAnswer={userAnswer}
         category={category}
-        questionText={questionText}
         explanation={explanation}
         questionType={questionType}
         isLastQuestion={isLastQuestion}

@@ -238,7 +238,6 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         isCorrect={isCorrect}
         userAnswer={userAnswer}
         category={mission.interest}
-        questionText={currentQuestion.question}
         explanation={currentQuestion.explanation}
         questionType={
           currentQuestion.type === "SHORT"

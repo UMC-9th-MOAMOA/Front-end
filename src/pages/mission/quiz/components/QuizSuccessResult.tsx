@@ -72,12 +72,11 @@ export default function QuizSuccessResult({
         <div
           className={`${questionType === "multiple" ? "mt-37" : "mt-19"} rounded-2xl bg-[#F3F7FE] pt-14 pr-20 pb-23 pl-20`}
         >
-          <span className="body-3 text-moamoa-300">{category}</span>
-          <p className="heading-4 pt-4 text-black">{questionText}</p>
+          <span className="body-3 text-moamoa-300">{category} 미션</span>
           {explanation && (
-            <div className="mt-18 flex gap-7">
-              <div className="h-75 w-2 shrink-0 rounded-full bg-gray-400" />
-              <p className="body-2 text-gray-400">{explanation}</p>
+            <div className="mt-18 flex items-center gap-9">
+              <div className="w-2 shrink-0 self-stretch rounded-full bg-moamoa-200" />
+              <p className="body-4 text-moamoa-700">{explanation}</p>
             </div>
           )}
         </div>
