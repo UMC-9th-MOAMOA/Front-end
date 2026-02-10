@@ -10,7 +10,7 @@ import type {
   PasswordResetVerificationResult,
 } from "@/types/password/password";
 
-const CHANGE_PASSWORD_ENDPOINT = "/members/me/password";
+const CHANGE_PASSWORD_ENDPOINT = "/auth/password";
 const PASSWORD_RESET_EMAIL_ENDPOINT = "/auth/password-resets";
 const PASSWORD_RESET_VERIFY_ENDPOINT = "/auth/password-resets/verifications";
 const PASSWORD_RESET_ENDPOINT = "/auth/password-resets";
