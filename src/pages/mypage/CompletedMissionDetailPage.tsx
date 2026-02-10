@@ -75,24 +75,27 @@ function OxQuizSection({
         <p className="body-2">{question}</p>
       </div>
       <div className="mt-20 flex w-full items-center gap-20 rounded-lg px-4 md:px-20">
-        <div className="flex h-full w-120px flex-col items-center gap-4">
+        <div className="flex h-full w-[120px] flex-col items-center gap-4">
           <button
             type="button"
             className={[
-              "flex h-94 w-124 items-center justify-center gap-4 rounded-lg px-6 py-6",
+              "flex h-[94px] w-[124px] items-center justify-center gap-4 rounded-lg px-6 py-6",
               isO
                 ? "border border-[#2664ED] bg-[#B4C9F9]"
                 : "border border-[#E0E0E0] bg-[#FAFAFA]",
             ].join(" ")}
           >
-            <IcSubtract className="h-47 w-47 text-[#2664ED]" aria-hidden />
+            <IcSubtract
+              className="h-[47px] w-[47px] text-[`#2664ED`]"
+              aria-hidden
+            />
           </button>
         </div>
-        <div className="flex h-full w-120 flex-col items-center gap-4">
+        <div className="flex h-full w-[120px] flex-col items-center gap-4">
           <button
             type="button"
             className={[
-              "flex h-[94px] w-124 flex-col items-center justify-center gap-4 rounded-lg px-6 py-6",
+              "flex h-[94px] w-[124px] flex-col items-center justify-center gap-4 rounded-lg px-6 py-6",
               isX
                 ? "border border-[#2664ED] bg-[#B4C9F9]"
                 : "border border-[#E0E0E0] bg-[#FAFAFA]",
@@ -100,7 +103,7 @@ function OxQuizSection({
           >
             <IcUnion
               className={[
-                "h-47 w-47",
+                "h-[47px] w-[47px]",
                 isX ? "text-moamoa-warning" : "text-[#424242]",
               ].join(" ")}
               aria-hidden
@@ -244,7 +247,13 @@ function MissionDetailContent({ missionId }: { missionId: number }) {
 
           <button
             type="button"
-            className="mt-24 flex w-full items-center justify-center gap-14 rounded-lg bg-moamoa-100 px-65 py-10"
+            disabled={!data.videoUrl}
+            className={[
+              "mt-24 flex w-full items-center justify-center gap-14 rounded-lg px-65 py-10",
+              data.videoUrl
+                ? "bg-moamoa-100"
+                : "cursor-not-allowed bg-gray-200",
+            ].join(" ")}
             onClick={() => {
               if (!data.videoUrl) return;
               window.open(data.videoUrl, "_blank", "noopener,noreferrer");

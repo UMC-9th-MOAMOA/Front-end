@@ -60,16 +60,6 @@ export default function MissionTab() {
   const missions = data.pages.flatMap((page) => page.missions);
   const visibleMissions =
     status === "SCRAP" ? missions.filter((m) => m.isScrapped) : missions;
-  const list: MissionItem[] = visibleMissions.map((m) => ({
-    id: String(m.missionId),
-    title: m.title,
-    expectedMinutes: m.durationMinutes,
-    category: m.category as MissionCategory,
-    quizType: "OX",
-    liked: m.isScrapped,
-    done: subTab === "done",
-  }));
-
   const actionLabel =
     subTab === "liked"
       ? "시작하기"
@@ -100,7 +90,7 @@ export default function MissionTab() {
           className={[
             "relative flex w-full flex-col gap-6 rounded-t-xl pt-17 shadow-sm",
             "min-h-[62.2dvh]",
-            list.length === 0 ? "bg-[#E6E6E6]" : "bg-white",
+            visibleMissions.length === 0 ? "bg-[#E6E6E6]" : "bg-white",
           ].join(" ")}
         >
           <div className="flex w-full flex-col gap-4 px-25">
@@ -113,7 +103,7 @@ export default function MissionTab() {
             />
 
             <div className="flex w-full flex-col gap-16 pb-30">
-              {list.length === 0 ? (
+              {visibleMissions.length === 0 ? (
                 <div className="mt-105 flex w-full flex-col items-center gap-4">
                   <p className="heading-5 text-gray-500">
                     미션 내역이 없습니다
@@ -121,54 +111,49 @@ export default function MissionTab() {
                   <IcSadSquirrel aria-hidden />
                 </div>
               ) : (
-                list.map((m) => {
-                  const found = visibleMissions.find(
-                    (mission) => String(mission.missionId) === m.id
-                  );
+                visibleMissions.map((mission) => {
                   const keywords =
-                    found?.keywords && found.keywords.length > 0
-                      ? found.keywords
+                    mission.keywords && mission.keywords.length > 0
+                      ? mission.keywords
                       : ["키워드", "키워드", "키워드"];
 
                   const handleAction = () => {
-                    if (!found) return;
                     if (subTab === "liked") {
-                      goDetail(String(found.missionId));
+                      goDetail(String(mission.missionId));
                       return;
                     }
                     if (doneView === "retry") {
-                      setRetryMissionId(String(found.missionId));
+                      setRetryMissionId(String(mission.missionId));
                       setRetryModalOpen(true);
                       return;
                     }
-                    navigate(`/mypage/mission/${found.missionId}`, {
+                    navigate(`/mypage/mission/${mission.missionId}`, {
                       state: {
-                        title: found.title,
-                        keywords: found.keywords,
-                        minute: found.durationMinutes,
-                        category: found.category,
-                        videoUrl: found.videoUrl,
+                        title: mission.title,
+                        keywords: mission.keywords,
+                        minute: mission.durationMinutes,
+                        category: mission.category,
+                        videoUrl: mission.videoUrl,
                       },
                     });
                   };
 
                   return (
                     <MissionCard
-                      key={m.id}
-                      id={Number(m.id)}
-                      title={m.title}
+                      key={mission.missionId}
+                      id={mission.missionId}
+                      title={mission.title}
                       keywords={keywords}
-                      minute={m.expectedMinutes}
-                      category={m.category}
-                      quizCount={found?.quizCount ?? 0}
-                      isScrapped={m.liked}
+                      minute={mission.durationMinutes}
+                      category={mission.category as MissionCategory}
+                      quizCount={mission.quizCount ?? 0}
+                      isScrapped={mission.isScrapped}
                       actionLabel={actionLabel}
                       hideHeart={hideHeart}
                       onHeartClick={() => {
-                        if (!found) return;
                         scrapMutation.mutate({
-                          missionId: found.missionId,
-                          isScrapped: found.isScrapped,
+                          missionId: mission.missionId,
+                          isScrapped: mission.isScrapped,
                         });
                       }}
                       onStartClick={handleAction}
