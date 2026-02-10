@@ -35,12 +35,16 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     }
 
     if (isAuthenticated && policyAgreed === false && !isTermsPage) {
-      navigate("/terms", { replace: true });
+      navigate("/terms", { replace: true, state: { from: location.pathname } });
       return;
     }
 
     if (location.pathname === "/login" && isAuthenticated) {
-      navigate(policyAgreed === false ? "/terms" : "/home", { replace: true });
+      if (policyAgreed === false) {
+        navigate("/terms", { replace: true, state: { from: location.pathname } });
+      } else {
+        navigate("/home", { replace: true });
+      }
     }
   }, [
     location.pathname,
