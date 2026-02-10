@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import IcReply from "@/assets/icons/ic_reply.svg?react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import { useMyInquiryDetail } from "./hooks/useMyInquiryDetail";
 import StatusPill from "./StatusPill";
@@ -20,7 +21,11 @@ export default function InquiryDetailPage() {
 
   if (!isValidId) return null;
 
-  return <InquiryDetailContent inquiryId={inquiryId} />;
+  return (
+    <AsyncBoundary>
+      <InquiryDetailContent inquiryId={inquiryId} />
+    </AsyncBoundary>
+  );
 }
 
 function InquiryDetailContent({ inquiryId }: { inquiryId: number }) {
