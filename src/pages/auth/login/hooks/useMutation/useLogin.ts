@@ -37,6 +37,7 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
     onSuccess: (result) => {
       storage.setToken(result.token.accessToken);
       storage.setPolicyAgreed(result.policyAgreed);
+      storage.setOnboardingCompleted(result.onboardingCompleted);
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
       if (!result.policyAgreed) {
@@ -46,7 +47,7 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
         });
         return;
       }
-      navigate(result.onboardingCompleted ? "/" : "/onboarding");
+      navigate(result.onboardingCompleted ? "/home" : "/onboarding");
     },
     onError: (error) => {
       const apiError = error as ApiError;
