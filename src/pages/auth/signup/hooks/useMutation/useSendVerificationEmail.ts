@@ -10,6 +10,7 @@ import type { ApiError } from "@/types/api/api";
 type SendVerificationEmailErrorState = {
   text: string;
   tone: "error";
+  shouldStartCooldown?: boolean;
 };
 
 export const getSendVerificationEmailErrorState = (
@@ -35,6 +36,7 @@ export const getSendVerificationEmailErrorState = (
     return {
       text: "이메일 재전송은 30초 뒤에 가능합니다.",
       tone: "error",
+      shouldStartCooldown: true,
     };
   }
 

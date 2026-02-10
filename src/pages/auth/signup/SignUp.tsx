@@ -71,7 +71,7 @@ export default function SignUp() {
       onErrorState: (errorState) => {
         setEmailStatusText(errorState.text);
         setEmailStatusTone(errorState.tone);
-        if (errorState.text.includes("30초")) {
+        if (errorState.shouldStartCooldown) {
           setResendCooldown(30);
           setShowResendCountdown(true);
         }
