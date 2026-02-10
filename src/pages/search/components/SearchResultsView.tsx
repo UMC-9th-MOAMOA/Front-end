@@ -5,6 +5,7 @@ import { useDebounce } from "@/hooks/useDebounce";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useScrapMission } from "@/hooks/useScrapMission";
 import { useSearchMissions } from "../hooks/useQuery/useSearchMissions";
+import NoSearchResults from "./NoSearchResults";
 import RelatedKeywordsBar from "./RelatedKeywordsBar";
 
 interface SearchResultsViewProps {
@@ -52,9 +53,7 @@ export default function SearchResultsView({
 
       <div className="mt-12 flex flex-col gap-16 pb-38">
         {missions.length === 0 ? (
-          <div className="mt-50 flex justify-center">
-            <span className="body-2 text-gray-400">검색 결과가 없습니다</span>
-          </div>
+          <NoSearchResults searchText={debouncedSearchText} />
         ) : (
           missions.map((mission) => (
             <MissionCard

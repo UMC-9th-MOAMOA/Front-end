@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/common/button/Button";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { Modal } from "@/pages/auth/components/Modal";
-import AgreementList from "@/pages/auth/signup/components/AgreementList";
+import AgreementList, {
+  type AgreementKey,
+} from "@/pages/auth/signup/components/AgreementList";
 import { PWTextField } from "@/pages/auth/signup/components/PWTextField";
 import {
   getPasswordStrength,
@@ -14,6 +16,11 @@ import EmailVerifySection from "./components/EmailVerifySection";
 
 export default function SignUp() {
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const agreementsFromState = (
+    location.state as { agreements?: Record<AgreementKey, boolean> } | null
+  )?.agreements;
 
   const [name, setName] = useState("");
 
@@ -126,7 +133,7 @@ export default function SignUp() {
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
         <div className="mt-37">
-          <AgreementList />
+          <AgreementList initialChecked={agreementsFromState} />
         </div>
       </div>
       <Modal

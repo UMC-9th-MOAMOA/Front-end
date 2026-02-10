@@ -1,13 +1,15 @@
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
 import LoginPage from "@/pages/auth/login/Login";
-import ResetPassword from "@/pages/auth/password/Password";
+import OAuthCallback from "@/pages/auth/oauth-callback/OAuthCallback";
+import Password from "@/pages/auth/password/Password";
 import SignUpPage from "@/pages/auth/signup/SignUp";
-import Terms from "@/pages/auth/signup/Terms";
+import TermsPage from "@/pages/auth/terms/Terms";
 import HomePage from "@/pages/home/Home";
 import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
 import MyPage from "@/pages/mypage/MyPage";
 import Onboarding from "@/pages/onboarding/Onboarding";
+import OnboardingRecommend from "@/pages/onboarding/OnboardingRecommend";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
 import AccountInfoPage from "@/pages/settings/AccountInfoPage";
@@ -19,6 +21,8 @@ import InquiryPage from "@/pages/settings/components/inquiry/InquiryPage";
 import TargetMissionCount from "@/pages/settings/components/TargetMissionCount";
 import PasswordChangePage from "@/pages/settings/PasswordChangePage";
 import SettingsPage from "@/pages/settings/SettingsPage";
+import SplashPage from "@/pages/splash/Splash";
+import StartPage from "@/pages/splash/Start";
 import TodayMission from "@/pages/today-mission/TodayMission";
 import RootLayout from "../layouts/RootLayout";
 
@@ -37,10 +41,29 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
     path: "/",
     element: <RootLayout />,
     children: [
-      { path: "", element: <HomePage />, handle: { bgColor: "bg-moamoa-50" } },
+      {
+        path: "",
+        element: <SplashPage />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
+        path: "start",
+        element: <StartPage />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
+        path: "home",
+        element: <HomePage />,
+        handle: { bgColor: "bg-moamoa-50" },
+      },
       {
         path: "login",
         element: <LoginPage />,
+        handle: { bgColor: "bg-white", hideBottomNav: true },
+      },
+      {
+        path: "oauth/callback",
+        element: <OAuthCallback />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
@@ -49,13 +72,13 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
-        path: "password",
-        element: <ResetPassword />,
+        path: "terms",
+        element: <TermsPage />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
-        path: "terms",
-        element: <Terms />,
+        path: "password",
+        element: <Password />,
         handle: { bgColor: "bg-white", hideBottomNav: true },
       },
       {
@@ -65,6 +88,12 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "mission/:missionId",
+        path: "onboarding/recommend",
+        element: <OnboardingRecommend />,
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
+      },
+      {
+        path: "mission",
         element: <MissionEntry />,
         handle: { bgColor: "bg-gray-100", hideBottomNav: true },
       },
