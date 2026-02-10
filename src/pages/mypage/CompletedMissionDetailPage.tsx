@@ -86,7 +86,7 @@ function OxQuizSection({
             ].join(" ")}
           >
             <IcSubtract
-              className="h-[47px] w-[47px] text-[`#2664ED`]"
+              className="h-[47px] w-[47px] text-[#2664ED]"
               aria-hidden
             />
           </button>
