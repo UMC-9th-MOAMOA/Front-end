@@ -14,7 +14,7 @@ import { useAuthStore } from "@/store/auth";
 import { useSignUpStore } from "@/store/signup";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
-import { TERMS } from "./constants/terms";
+import { TERMS } from "@/pages/auth/terms/constants/terms";
 import {
   getSendVerificationEmailErrorState,
   useSendVerificationEmail,
