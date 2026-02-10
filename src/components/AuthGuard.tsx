@@ -21,10 +21,12 @@ const PUBLIC_PATHS = [
 const AuthGuard = ({ children }: AuthGuardProps) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { isLoading, isAuthenticated, policyAgreed } = useAuth();
+  const { isLoading, isAuthenticated, policyAgreed, onboardingCompleted } =
+    useAuth();
 
   const isPublicPath = PUBLIC_PATHS.includes(location.pathname);
   const isTermsPage = location.pathname === "/terms";
+  const isOnboardingPage = location.pathname === "/onboarding";
 
   useEffect(() => {
     if (isLoading) return;
@@ -39,6 +41,16 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
       return;
     }
 
+    if (
+      isAuthenticated &&
+      policyAgreed === true &&
+      onboardingCompleted === false &&
+      !isOnboardingPage
+    ) {
+      navigate("/onboarding", { replace: true });
+      return;
+    }
+
     if (location.pathname === "/login" && isAuthenticated) {
       if (policyAgreed !== true) {
         navigate("/terms", {
@@ -46,7 +58,9 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
           state: { from: location.pathname },
         });
       } else {
-        navigate("/home", { replace: true });
+        navigate(onboardingCompleted === false ? "/onboarding" : "/home", {
+          replace: true,
+        });
       }
     }
   }, [
@@ -57,6 +71,8 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     isPublicPath,
     isTermsPage,
     policyAgreed,
+    onboardingCompleted,
+    isOnboardingPage,
   ]);
 
   if (isLoading) {
@@ -72,6 +88,15 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
   }
 
   if (isAuthenticated && policyAgreed !== true && !isTermsPage) {
+    return null;
+  }
+
+  if (
+    isAuthenticated &&
+    policyAgreed === true &&
+    onboardingCompleted === false &&
+    !isOnboardingPage
+  ) {
     return null;
   }
 
