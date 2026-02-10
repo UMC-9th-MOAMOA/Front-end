@@ -10,9 +10,9 @@ import DailyWeeklyGoalAchievement from "@/pages/mission/goal/DailyWeeklyGoalAchi
 import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
-  subjective: "단답형",
-  ox: "OX",
-  multiple: "객관식",
+  SHORT: "단답식",
+  OX: "OX",
+  MULTIPLE: "객관식",
 };
 
 interface QuestionResult {
@@ -50,7 +50,7 @@ export default function MissionResult({
     if (isDailyGoalAchieved || isWeeklyGoalAchieved) {
       setShowGoalScreen(true);
     } else {
-      navigate("/");
+      navigate("/home");
     }
   };
 
@@ -61,7 +61,6 @@ export default function MissionResult({
           totalAcorns={totalAcorns}
           missionName={missionName}
           questionResults={questionResults}
-          onClose={() => navigate("/")}
         />
       );
     }
@@ -71,7 +70,7 @@ export default function MissionResult({
           totalAcorns={totalAcorns}
           questionResults={questionResults}
           correctCount={correctCount}
-          onClose={() => navigate("/")}
+          onClose={() => navigate("/home")}
         />
       );
     }
@@ -81,7 +80,7 @@ export default function MissionResult({
           totalAcorns={totalAcorns}
           questionResults={questionResults}
           correctCount={correctCount}
-          onClose={() => navigate("/")}
+          onClose={() => navigate("/home")}
         />
       );
     }
@@ -177,7 +176,7 @@ export default function MissionResult({
               </button>
               <button
                 type="button"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/home")}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-300 py-12 text-white"
               >
                 상점으로
@@ -187,7 +186,7 @@ export default function MissionResult({
             <>
               <button
                 type="button"
-                onClick={() => navigate("/")}
+                onClick={() => navigate("/home")}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
               >
                 상점으로
