@@ -10,9 +10,9 @@ import DailyWeeklyGoalAchievement from "@/pages/mission/goal/DailyWeeklyGoalAchi
 import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
-  subjective: "단답형",
-  ox: "OX",
-  multiple: "객관식",
+  SHORT: "단답식",
+  OX: "OX",
+  MULTIPLE: "주관식",
 };
 
 interface QuestionResult {
