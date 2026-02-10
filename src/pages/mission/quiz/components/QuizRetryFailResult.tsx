@@ -31,7 +31,7 @@ export default function QuizRetryFailResult({
           아쉽게도 오답이에요
         </p>
         {questionType === "subjective" && (
-          <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-90 py-9">
+          <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-9 py-9">
             <span className="heading-5 text-black">{userAnswer}</span>
           </div>
         )}
@@ -43,7 +43,7 @@ export default function QuizRetryFailResult({
           </div>
         )}
         {questionType === "multiple" && (
-          <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-90 py-9">
+          <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-9 py-9">
             <span className="heading-5 text-black">{userAnswer}</span>
           </div>
         )}
@@ -61,7 +61,7 @@ export default function QuizRetryFailResult({
           onClick={onNext}
           className="body-2-1 mt-18 h-48 w-full rounded-xl bg-moamoa-300 text-white"
         >
-          {isLastQuestion ? "결과 확인하기" : "다음 문제"}
+          {isLastQuestion ? "미션 완료하기" : "다음 문제"}
         </button>
       </div>
     </div>

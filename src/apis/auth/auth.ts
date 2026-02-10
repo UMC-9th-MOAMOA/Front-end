@@ -6,7 +6,7 @@ import type {
   SocialLoginResult,
   SocialLoginTokenRequest,
 } from "@/types/auth/social";
-import { publicAPI } from "../axios";
+import { authAPI, publicAPI } from "../axios";
 
 export const login = async (payload: LoginRequest) => {
   try {
@@ -90,6 +90,33 @@ export const exchangeSocialToken = async (
       "/auth/oauth2/token",
       payload
     );
+
+    if (!data.isSuccess) {
+      const apiError = new Error(data.message) as ApiError;
+      apiError.serverCode = data.code;
+      apiError.serverMessage = data.message;
+      throw apiError;
+    }
+
+    return data.result;
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const data = error.response?.data as ApiResponse<null> | undefined;
+      if (data) {
+        const apiError = new Error(data.message) as ApiError;
+        apiError.serverCode = data.code;
+        apiError.serverMessage = data.message;
+        throw apiError;
+      }
+    }
+
+    throw error;
+  }
+};
+
+export const logout = async () => {
+  try {
+    const { data } = await authAPI.post<ApiResponse<null>>("/auth/logout");
 
     if (!data.isSuccess) {
       const apiError = new Error(data.message) as ApiError;

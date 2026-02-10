@@ -37,14 +37,13 @@ export default function MoaToggle({
       {...rest}
     >
       <span
-        className="flex items-center"
+        className="flex items-center justify-center"
         style={{ width: 39, height: 16, gap: on ? 8 : 5 }}
       >
         {on ? (
           <>
             <span
-              className="detail-1"
-              style={{ width: 15, height: 13, color: "#FFFFFF" }}
+              className="detail-1 text-white"
             >
               ON
             </span>
