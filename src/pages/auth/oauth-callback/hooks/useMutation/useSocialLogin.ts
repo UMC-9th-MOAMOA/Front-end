@@ -13,6 +13,9 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
   const { handleError } = useApiError();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
+  const setOnboardingCompleted = useAuthStore(
+    (state) => state.setOnboardingCompleted,
+  );
 
   return useMutation({
     mutationFn: (payload: SocialLoginTokenRequest) =>
@@ -23,6 +26,7 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
       storage.setOnboardingCompleted(result.onboardingCompleted);
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
+      setOnboardingCompleted(result.onboardingCompleted);
 
       if (!result.policyAgreed) {
         return;
