@@ -16,7 +16,7 @@ function toApiError(code: string, message: string): ApiError {
 
 export const getMyProfile = async () => {
   const { data } = await authAPI.get<ApiResponse<MyProfile>>(
-    "/members/me/profile"
+    "/members/me"
   );
 
   if (!data.isSuccess) {
@@ -28,9 +28,19 @@ export const getMyProfile = async () => {
 
 export const updateMyProfile = async (payload: UpdateMyProfileRequest) => {
   const { data } = await authAPI.put<ApiResponse<UpdateMyProfileResult>>(
-    "/members/me/profile",
+    "/members/me",
     payload
   );
+
+  if (!data.isSuccess) {
+    throw toApiError(data.code, data.message);
+  }
+
+  return data.result;
+};
+
+export const deleteMember = async () => {
+  const { data } = await authAPI.delete<ApiResponse<null>>("/members/me");
 
   if (!data.isSuccess) {
     throw toApiError(data.code, data.message);

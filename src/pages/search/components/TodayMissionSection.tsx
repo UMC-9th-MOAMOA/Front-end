@@ -34,11 +34,12 @@ export default function TodayMissionSection() {
                 className={cn("shrink-0", index === 0 && "ml-layout-side")}
               >
                 <RecommendedMissionCard
+                  missionId={mission.missionId}
                   title={mission.title}
                   keywords={mission.keywords}
                   durationMinutes={mission.durationMinutes}
                   category={mission.category}
-                  description={mission.description}
+                  quizCount={mission.quizCount}
                   isScrapped={mission.isScrapped}
                   onHeartClick={() =>
                     scrapMutation.mutate({

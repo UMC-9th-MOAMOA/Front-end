@@ -13,16 +13,16 @@ import {
 } from "@/pages/auth/utils/passwordStrength";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
+import { TERMS } from "./constants/terms";
 import {
   getSendVerificationEmailErrorState,
   useSendVerificationEmail,
 } from "./hooks/useMutation/useSendVerificationEmail";
+import { useSignUp } from "./hooks/useMutation/useSignUp";
 import {
   getVerifyEmailAuthCodeErrorState,
   useVerifyEmailAuthCode,
 } from "./hooks/useMutation/useVerifyEmailAuthCode";
-import { useSignUp } from "./hooks/useMutation/useSignUp";
-import { TERMS } from "./constants/terms";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -184,7 +184,7 @@ export default function SignUp() {
     setShowResendCountdown(false);
     setEmailStatusText(" ");
     setEmailStatusTone("info");
-  }, [resendCooldown, showResendCountdown]);
+  }, [resendCooldown, showResendCountdown, emailVerified]);
 
   const disabledConfirm = code.trim().length === 0 || isVerifyingEmailCode;
 
@@ -295,7 +295,7 @@ export default function SignUp() {
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
         <div className="mt-37">
-          <AgreementList value={agreements} onChange={setAgreements} />
+          <AgreementList initialChecked={agreementsFromState} />
         </div>
       </div>
       <div className="fixed inset-x-0 bottom-0 z-10 bg-white px-24 pt-10 shadow-[0px_-8px_50px_3px_rgba(0,0,0,0.10)]">
