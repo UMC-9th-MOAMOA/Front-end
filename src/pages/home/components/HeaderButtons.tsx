@@ -3,12 +3,15 @@ import { useNavigate } from "react-router-dom";
 import BigAcornIcon from "@/assets/icons/ic_big_acorn.svg?react";
 import BoomerangIcon from "@/assets/icons/ic_boomerang.svg?react";
 import PocketIcon from "@/assets/icons/ic_pocket.svg?react";
+import MoaToggle from "@/pages/settings/components/common/Moatoggle";
 
 interface HeaderButtonsProps {
   acornCount: number;
   acornRef?: ForwardedRef<HTMLDivElement>;
   pocketRef?: ForwardedRef<HTMLButtonElement>;
   boomerangRef?: ForwardedRef<HTMLButtonElement>;
+  bgmEnabled: boolean;
+  onBgmToggle: (enabled: boolean) => void;
 }
 
 const HeaderButtons = ({
@@ -16,17 +19,25 @@ const HeaderButtons = ({
   acornRef,
   pocketRef,
   boomerangRef,
+  bgmEnabled,
+  onBgmToggle,
 }: HeaderButtonsProps) => {
   const navigate = useNavigate();
 
   return (
     <div className="flex items-start justify-between px-7 pt-42">
-      <div
-        ref={acornRef}
-        className="flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-15.5 py-4"
-      >
-        <BigAcornIcon className="h-24 w-24" />
-        <span className="body-4 text-black">{acornCount}</span>
+      <div className="flex flex-col">
+        <div className="flex items-center gap-10">
+          <span className="body-3 text-moamoa-300">배경음악</span>
+          <MoaToggle checked={bgmEnabled} onCheckedChange={onBgmToggle} />
+        </div>
+        <div
+          ref={acornRef}
+          className="mt-9 flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-15.5 py-4"
+        >
+          <BigAcornIcon className="h-24 w-24" />
+          <span className="body-4 text-black">{acornCount}</span>
+        </div>
       </div>
 
       <div className="flex items-center gap-10">

@@ -12,7 +12,12 @@ import QuestionBox from "./QuestionBox";
 import BottomSheet from "./shop/BottomSheet";
 import TutorialOverlay from "./tutorial/TutorialOverlay";
 
-const HomeContent = () => {
+interface HomeContentProps {
+  bgmEnabled: boolean;
+  onBgmToggle: (enabled: boolean) => void;
+}
+
+const HomeContent = ({ bgmEnabled, onBgmToggle }: HomeContentProps) => {
   const navigate = useNavigate();
   const { data: homeData } = useHome();
   const [showTutorial, setShowTutorial] = useState(homeData.shouldShowTutorial);
@@ -49,6 +54,8 @@ const HomeContent = () => {
         acornRef={acornRef}
         pocketRef={pocketRef}
         boomerangRef={boomerangRef}
+        bgmEnabled={bgmEnabled}
+        onBgmToggle={onBgmToggle}
       />
 
       <div ref={toolbarRef} className="absolute top-152 right-layout-side z-20">
