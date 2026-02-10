@@ -271,6 +271,7 @@ function MissionDetailContent({ missionId }: { missionId: number }) {
     </>
   );
 }
+
 export default function CompletedMissionDetailPage() {
   const { missionId } = useParams();
   const parsedMissionId = Number(missionId);
