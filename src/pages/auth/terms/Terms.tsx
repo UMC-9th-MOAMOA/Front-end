@@ -129,7 +129,7 @@ export default function TermsPage() {
           type="button"
           disabled={!requiredChecked || isPending}
           onClick={() => {
-            if (from !== "/signup") {
+            if (from && from !== "/signup") {
               submitAgreements({
                 agreements: TERMS.map((term) => ({
                   policyId: term.policyId,
