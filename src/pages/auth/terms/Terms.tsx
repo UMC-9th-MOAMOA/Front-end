@@ -44,10 +44,7 @@ export default function TermsPage() {
         navigate(from, { replace: true });
         return;
       }
-      const onboardingCompleted = storage.getOnboardingCompleted();
-      navigate(onboardingCompleted === false ? "/onboarding" : "/home", {
-        replace: true,
-      });
+      navigate("/home", { replace: true });
     },
   });
 

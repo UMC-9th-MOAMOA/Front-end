@@ -8,9 +8,11 @@ export const useAuth = () => {
     isLoading,
     isAuthenticated,
     policyAgreed,
+    onboardingCompleted,
     setAuthenticated,
     setLoading,
     setPolicyAgreed,
+    setOnboardingCompleted,
   } = useAuthStore();
 
   useEffect(() => {
@@ -20,6 +22,8 @@ export const useAuth = () => {
         setAuthenticated(true);
         const storedPolicyAgreed = storage.getPolicyAgreed();
         setPolicyAgreed(storedPolicyAgreed ?? true);
+        const storedOnboardingCompleted = storage.getOnboardingCompleted();
+        setOnboardingCompleted(storedOnboardingCompleted ?? true);
         setLoading(false);
         return;
       }
@@ -29,6 +33,8 @@ export const useAuth = () => {
         setAuthenticated(true);
         const storedPolicyAgreed = storage.getPolicyAgreed();
         setPolicyAgreed(storedPolicyAgreed ?? true);
+        const storedOnboardingCompleted = storage.getOnboardingCompleted();
+        setOnboardingCompleted(storedOnboardingCompleted ?? true);
       } catch {
         storage.removeToken();
         setAuthenticated(false);
@@ -38,7 +44,7 @@ export const useAuth = () => {
     };
 
     checkAuth();
-  }, [setAuthenticated, setLoading, setPolicyAgreed]);
+  }, [setAuthenticated, setLoading, setOnboardingCompleted, setPolicyAgreed]);
 
-  return { isLoading, isAuthenticated, policyAgreed };
+  return { isLoading, isAuthenticated, policyAgreed, onboardingCompleted };
 };
