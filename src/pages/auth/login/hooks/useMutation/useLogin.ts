@@ -28,6 +28,9 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
   const { handleError } = useApiError();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
+  const setOnboardingCompleted = useAuthStore(
+    (state) => state.setOnboardingCompleted,
+  );
 
   return useMutation({
     mutationFn: (payload: LoginRequest) => login(payload),
@@ -37,6 +40,7 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
       storage.setOnboardingCompleted(result.onboardingCompleted);
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
+      setOnboardingCompleted(result.onboardingCompleted);
       if (!result.policyAgreed) {
         return;
       }
