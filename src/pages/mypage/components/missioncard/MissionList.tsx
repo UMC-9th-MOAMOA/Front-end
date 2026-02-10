@@ -99,7 +99,7 @@ export default function MissionTab() {
               category={category}
               onChangeTime={setTimeSort}
               onChangeCategory={setCategory}
-              isEmpty={list.length === 0}
+              isEmpty={visibleMissions.length === 0}
             />
 
             <div className="flex w-full flex-col gap-16 pb-30">
