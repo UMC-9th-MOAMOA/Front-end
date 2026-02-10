@@ -34,14 +34,17 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
       return;
     }
 
-    if (isAuthenticated && policyAgreed === false && !isTermsPage) {
+    if (isAuthenticated && policyAgreed !== true && !isTermsPage) {
       navigate("/terms", { replace: true, state: { from: location.pathname } });
       return;
     }
 
     if (location.pathname === "/login" && isAuthenticated) {
-      if (policyAgreed === false) {
-        navigate("/terms", { replace: true, state: { from: location.pathname } });
+      if (policyAgreed !== true) {
+        navigate("/terms", {
+          replace: true,
+          state: { from: location.pathname },
+        });
       } else {
         navigate("/home", { replace: true });
       }
@@ -68,7 +71,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     return null;
   }
 
-  if (isAuthenticated && policyAgreed === false && !isTermsPage) {
+  if (isAuthenticated && policyAgreed !== true && !isTermsPage) {
     return null;
   }
 
