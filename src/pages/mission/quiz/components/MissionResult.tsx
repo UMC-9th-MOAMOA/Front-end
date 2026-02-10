@@ -12,7 +12,7 @@ import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
 const QUESTION_TYPE_LABELS: Record<string, string> = {
   SHORT: "단답식",
   OX: "OX",
-  MULTIPLE: "주관식",
+  MULTIPLE: "객관식",
 };
 
 interface QuestionResult {
