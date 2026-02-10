@@ -214,7 +214,8 @@ export default function SignUp() {
     passwordConfirm.length > 0 &&
     !passwordConfirmErrorMessage &&
     agreements.terms &&
-    agreements.privacy;
+    agreements.privacy &&
+    agreements.privacyCollection;
 
   const handleStart = async () => {
     if (!canStart || isSigningUp) return;
@@ -235,7 +236,7 @@ export default function SignUp() {
         agreedTerms,
       });
       resetSignUp();
-      navigate("/login");
+      navigate("/onboarding");
     } catch (error) {
       const serverMessage = (error as { serverMessage?: string })
         ?.serverMessage;
