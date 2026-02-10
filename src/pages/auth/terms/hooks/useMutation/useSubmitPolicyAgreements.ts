@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
-import { submitPolicyAgreements } from "@/apis/policy/policy";
+import type { PolicyAgreementPayload } from "@/apis/terms/terms";
+import { submitPolicyAgreements } from "@/apis/terms/terms";
 import { useApiError } from "@/hooks/api/useApiError";
-import type { PolicyAgreementPayload } from "@/apis/policy/policy";
 
 type SubmitPolicyAgreementsHandlers = {
   onSuccess?: () => void;
