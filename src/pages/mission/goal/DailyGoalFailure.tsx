@@ -24,7 +24,7 @@ export default function DailyGoalFailure({
         <IcBlueBook className="h-88.6 w-auto" />
       </div>
 
-      <div className="z-35 mt-235 w-full rounded-[20px] border-2 border-moamoa-100 bg-white px-23 pt-32 pb-28">
+      <div className="z-35 mt-235 w-full rounded-2xl border-2 border-moamoa-100 bg-white px-23 pt-32 pb-28">
         <div className="flex flex-col items-center gap-12">
           <p className="heading-2 text-center text-black">
             오늘 목표 중 <br />
