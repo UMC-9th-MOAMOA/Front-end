@@ -23,6 +23,7 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
     onSuccess: (result) => {
       storage.setToken(result.token.accessToken);
       storage.setPolicyAgreed(result.policyAgreed);
+      storage.setOnboardingCompleted(result.onboardingCompleted);
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
 
@@ -34,7 +35,7 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
         return;
       }
 
-      navigate(result.onboardingCompleted ? "/" : "/onboarding", {
+      navigate(result.onboardingCompleted ? "/home" : "/onboarding", {
         replace: true,
       });
     },
