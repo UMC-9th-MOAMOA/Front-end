@@ -65,6 +65,7 @@ export default function TermsPage() {
       <AuthHeader
         title="이용 약관 동의"
         iconType="arrow"
+        showBack={from === "/signup"}
         onBack={() => {
           if (from && from !== "/signup") {
             navigate(from);
@@ -128,7 +129,7 @@ export default function TermsPage() {
           type="button"
           disabled={!requiredChecked || isPending}
           onClick={() => {
-            if (from && from !== "/signup") {
+            if (from !== "/signup") {
               submitAgreements({
                 agreements: TERMS.map((term) => ({
                   policyId: term.policyId,
