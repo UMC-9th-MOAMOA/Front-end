@@ -51,7 +51,11 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
       return;
     }
 
-    if (location.pathname === "/login" && isAuthenticated) {
+    if (
+      (location.pathname === "/login" ||
+        location.pathname === "/oauth/callback") &&
+      isAuthenticated
+    ) {
       if (policyAgreed !== true) {
         navigate("/terms", {
           replace: true,
