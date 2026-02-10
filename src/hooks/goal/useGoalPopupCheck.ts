@@ -56,11 +56,16 @@ export const useGoalPopupCheck = () => {
   const handleClosePopup = () => closePopupWithAction(false);
   const handleMissionExplore = () => closePopupWithAction(true);
 
+  const resetNavigateToSearch = () => {
+    setShouldNavigateToSearch(false);
+  };
+
   return {
     currentPopup,
     shouldNavigateToSearch,
     handleCheckGoalPopups,
     handleClosePopup,
     handleMissionExplore,
+    resetNavigateToSearch,
   };
 };
