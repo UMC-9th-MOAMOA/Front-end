@@ -15,6 +15,7 @@ function App() {
     handleCheckGoalPopups,
     handleClosePopup,
     handleMissionExplore,
+    resetNavigateToSearch,
   } = useGoalPopupCheck();
 
   useEffect(() => {
@@ -45,8 +46,9 @@ function App() {
   useEffect(() => {
     if (shouldNavigateToSearch) {
       router.navigate("/search");
+      resetNavigateToSearch();
     }
-  }, [shouldNavigateToSearch]);
+  }, [shouldNavigateToSearch, resetNavigateToSearch]);
 
   return (
     <>
