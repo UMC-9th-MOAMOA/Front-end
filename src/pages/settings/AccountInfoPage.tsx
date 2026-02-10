@@ -1,5 +1,5 @@
-﻿import { Component, Suspense, useEffect, useState } from "react";
-import type { ReactNode } from "react";
+﻿import type { ReactNode } from "react";
+import { Component, Suspense, useEffect, useState } from "react";
 import Header from "@/components/common/header/Header";
 import { useApiError } from "@/hooks/api/useApiError";
 import AccountInfoSuccessModal from "./components/AccountInfoSuccessModal";
@@ -17,7 +17,14 @@ import {
 import BottomActionBar from "./components/common/BottomActionBar";
 import type { UserProfile } from "./types/settings.type";
 
-class ErrorBoundary extends Component<{ fallback: ReactNode; onError?: (error: unknown) => void; children: ReactNode; }, { hasError: boolean }> {
+class ErrorBoundary extends Component<
+  {
+    fallback: ReactNode;
+    onError?: (error: unknown) => void;
+    children: ReactNode;
+  },
+  { hasError: boolean }
+> {
   state = { hasError: false };
 
   static getDerivedStateFromError() {
@@ -97,7 +104,6 @@ function AccountInfoPageInner() {
     </div>
   );
 }
-
 
 export default function AccountInfoPage() {
   const { handleError } = useApiError();

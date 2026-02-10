@@ -44,7 +44,11 @@ export default function MyPage() {
 
       {activeTab === "all" && (
         <AsyncBoundary
-          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
+          loadingFallback={
+            <div className="flex w-full items-center justify-center py-40">
+              <LoadingSpinner className="size-60" />
+            </div>
+          }
         >
           <AllTabContent
             month={month}
@@ -59,7 +63,11 @@ export default function MyPage() {
 
       {activeTab === "acorn" && (
         <AsyncBoundary
-          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
+          loadingFallback={
+            <div className="flex w-full items-center justify-center py-40">
+              <LoadingSpinner className="size-60" />
+            </div>
+          }
         >
           <AcornSection />
         </AsyncBoundary>
@@ -157,7 +165,9 @@ function AllTabContent({
       </div>
       <div className="mt-[16px] mr-[-10px] ml-[-7px] mb-50">
         {isDayLoading && !dayData ? (
-          <LoadingSpinner className="mx-auto mt-40 size-40" />
+          <div className="flex w-full items-center justify-center py-40">
+            <LoadingSpinner className="size-60" />
+          </div>
         ) : (
           <PerformanceSection data={performance} />
         )}
