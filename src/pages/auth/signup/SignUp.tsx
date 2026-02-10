@@ -15,15 +15,9 @@ import { useSignUpStore } from "@/store/signup";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
 import { TERMS } from "@/pages/auth/terms/constants/terms";
-import {
-  getSendVerificationEmailErrorState,
-  useSendVerificationEmail,
-} from "./hooks/useMutation/useSendVerificationEmail";
+import { useSendVerificationEmail } from "./hooks/useMutation/useSendVerificationEmail";
 import { useSignUp } from "./hooks/useMutation/useSignUp";
-import {
-  getVerifyEmailAuthCodeErrorState,
-  useVerifyEmailAuthCode,
-} from "./hooks/useMutation/useVerifyEmailAuthCode";
+import { useVerifyEmailAuthCode } from "./hooks/useMutation/useVerifyEmailAuthCode";
 
 export default function SignUp() {
   const navigate = useNavigate();
@@ -64,15 +58,71 @@ export default function SignUp() {
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
 
-  const { mutateAsync: sendVerificationEmail, isPending: isSendingEmail } =
-    useSendVerificationEmail();
-  const { mutateAsync: verifyEmailAuthCode, isPending: isVerifyingEmailCode } =
-    useVerifyEmailAuthCode();
-  const { mutateAsync: signUp, isPending: isSigningUp } = useSignUp();
+  const { mutate: sendVerificationEmail, isPending: isSendingEmail } =
+    useSendVerificationEmail({
+      onSuccess: () => {
+        setEmailStatusText("인증 메일을 보냈어요");
+        setEmailStatusTone("info");
+        setEmailVerified(false);
+        setEmailLocked(true);
+        setResendCooldown(30);
+        setShowResendCountdown(true);
+      },
+      onErrorState: (errorState) => {
+        setEmailStatusText(errorState.text);
+        setEmailStatusTone(errorState.tone);
+        if (errorState.text.includes("30초")) {
+          setResendCooldown(30);
+          setShowResendCountdown(true);
+        }
+      },
+      onUnknownError: (message) => {
+        setEmailStatusText(message);
+        setEmailStatusTone("error");
+      },
+    });
+  const { mutate: verifyEmailAuthCode, isPending: isVerifyingEmailCode } =
+    useVerifyEmailAuthCode({
+      onSuccess: () => {
+        setEmailStatusText("사용 가능한 이메일");
+        setEmailStatusTone("success");
+        setEmailVerified(true);
+        setShowResendCountdown(false);
+        setResendCooldown(0);
+        setVerifyModalType("success");
+      },
+      onErrorState: (errorState) => {
+        setEmailStatusText(" ");
+        setEmailStatusTone("info");
+        setEmailVerified(false);
+        setVerifyModalMessage(errorState.text);
+        setVerifyModalType("error");
+      },
+      onUnknownError: (message) => {
+        setEmailStatusText(" ");
+        setEmailStatusTone("info");
+        setEmailVerified(false);
+        setVerifyModalMessage(message);
+        setVerifyModalType("error");
+      },
+    });
+  const { mutate: signUp, isPending: isSigningUp } = useSignUp({
+    onSuccess: (result) => {
+      storage.setToken(result.token.accessToken);
+      storage.setPolicyAgreed(result.policyAgreed);
+      setAuthenticated(true);
+      setPolicyAgreed(result.policyAgreed);
+      resetSignUp();
+      navigate("/home", { replace: true });
+    },
+    onErrorMessage: (message) => {
+      setSignUpError(message);
+    },
+  });
 
   const domainOptions = ["naver.com", "gmail.com"];
 
-  const handleRequestCode = async () => {
+  const handleRequestCode = () => {
     if (emailLocal.trim().length === 0 || emailDomain.trim().length === 0) {
       return;
     }
@@ -87,37 +137,10 @@ export default function SignUp() {
 
     setEmailStatusText("인증 메일을 보내는 중...");
     setEmailStatusTone("info");
-
-    try {
-      await sendVerificationEmail({
-        email,
-      });
-      setEmailStatusText("인증 메일을 보냈어요");
-      setEmailStatusTone("info");
-      setEmailVerified(false);
-      setEmailLocked(true);
-      setResendCooldown(30);
-      setShowResendCountdown(true);
-    } catch (error) {
-      const errorState = getSendVerificationEmailErrorState(error);
-      if (errorState) {
-        setEmailStatusText(errorState.text);
-        setEmailStatusTone(errorState.tone);
-        if (errorState.text.includes("30초")) {
-          setResendCooldown(30);
-          setShowResendCountdown(true);
-        }
-        return;
-      }
-
-      const serverMessage = (error as { serverMessage?: string })
-        ?.serverMessage;
-      setEmailStatusText(serverMessage || "인증 메일 전송에 실패했어요");
-      setEmailStatusTone("error");
-    }
+    sendVerificationEmail({ email });
   };
 
-  const handleConfirmCode = async () => {
+  const handleConfirmCode = () => {
     if (emailLocal.trim().length === 0 || emailDomain.trim().length === 0) {
       setEmailStatusText("이메일을 입력해주세요.");
       setEmailStatusTone("error");
@@ -129,37 +152,10 @@ export default function SignUp() {
     setEmailStatusText("인증번호를 확인하는 중...");
     setEmailStatusTone("info");
 
-    try {
-      await verifyEmailAuthCode({
-        email,
-        authCode: code.trim(),
-      });
-      setEmailStatusText("사용 가능한 이메일");
-      setEmailStatusTone("success");
-      setEmailVerified(true);
-      setShowResendCountdown(false);
-      setResendCooldown(0);
-      setVerifyModalType("success");
-      return;
-    } catch (error) {
-      const errorState = getVerifyEmailAuthCodeErrorState(error);
-      if (errorState) {
-        setEmailStatusText(" ");
-        setEmailStatusTone("info");
-        setEmailVerified(false);
-        setVerifyModalMessage(errorState.text);
-        setVerifyModalType("error");
-        return;
-      }
-
-      const serverMessage = (error as { serverMessage?: string })
-        ?.serverMessage;
-      setEmailStatusText(" ");
-      setEmailStatusTone("info");
-      setEmailVerified(false);
-      setVerifyModalMessage(serverMessage || "인증번호 확인에 실패했어요");
-      setVerifyModalType("error");
-    }
+    verifyEmailAuthCode({
+      email,
+      authCode: code.trim(),
+    });
   };
 
   const disabledRequest =
@@ -221,7 +217,7 @@ export default function SignUp() {
     agreements.privacy &&
     agreements.privacyCollection;
 
-  const handleStart = async () => {
+  const handleStart = () => {
     if (!canStart || isSigningUp) return;
 
     setSignUpError("");
@@ -231,25 +227,13 @@ export default function SignUp() {
       isAgreed: agreements[term.key],
     }));
 
-    try {
-      const result = await signUp({
-        email,
-        password,
-        passwordCheck: passwordConfirm,
-        name: name.trim(),
-        agreedTerms,
-      });
-      storage.setToken(result.token.accessToken);
-      storage.setPolicyAgreed(result.policyAgreed);
-      setAuthenticated(true);
-      setPolicyAgreed(result.policyAgreed);
-      resetSignUp();
-      navigate("/home", { replace: true });
-    } catch (error) {
-      const serverMessage = (error as { serverMessage?: string })
-        ?.serverMessage;
-      setSignUpError(serverMessage || "회원가입에 실패했어요");
-    }
+    signUp({
+      email,
+      password,
+      passwordCheck: passwordConfirm,
+      name: name.trim(),
+      agreedTerms,
+    });
   };
 
   return (

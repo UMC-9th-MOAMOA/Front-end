@@ -4,19 +4,9 @@ import type {
   SendVerificationEmailResult,
   VerifyEmailAuthCodeResult,
 } from "@/types/auth/email";
+import type { LoginRequest, LoginResult } from "@/types/auth/login";
 import type { SignupResult } from "@/types/auth/signup";
 import { publicAPI } from "./axios";
-
-export interface LoginRequest {
-  email: string;
-  password: string;
-}
-
-export interface LoginResult {
-  grantType: string;
-  accessToken: string;
-  accessTokenExpiresIn: number;
-}
 
 export interface SignupRequest {
   email: string;

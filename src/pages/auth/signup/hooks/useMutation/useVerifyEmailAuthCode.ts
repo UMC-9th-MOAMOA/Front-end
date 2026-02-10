@@ -56,12 +56,36 @@ export const getVerifyEmailAuthCodeErrorState = (
   return null;
 };
 
-export const useVerifyEmailAuthCode = () => {
+type VerifyEmailAuthCodeHandlers = {
+  onSuccess?: () => void;
+  onErrorState?: (state: VerifyEmailAuthCodeErrorState) => void;
+  onUnknownError?: (message: string) => void;
+};
+
+export const useVerifyEmailAuthCode = (
+  handlers?: VerifyEmailAuthCodeHandlers
+) => {
   const { handleError } = useApiError();
 
   return useMutation({
     mutationFn: (payload: VerifyEmailAuthCodeRequest) =>
       verifyEmailAuthCode(payload),
-    onError: (error) => handleError(error),
+    onSuccess: () => {
+      handlers?.onSuccess?.();
+    },
+    onError: (error) => {
+      const errorState = getVerifyEmailAuthCodeErrorState(error);
+      if (errorState) {
+        handlers?.onErrorState?.(errorState);
+        return;
+      }
+
+      handleError(error);
+      const serverMessage = (error as { serverMessage?: string })
+        ?.serverMessage;
+      handlers?.onUnknownError?.(
+        serverMessage || "인증번호 확인에 실패했어요"
+      );
+    },
   });
 };

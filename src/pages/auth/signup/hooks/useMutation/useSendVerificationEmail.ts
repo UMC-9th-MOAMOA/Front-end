@@ -65,12 +65,36 @@ export const getSendVerificationEmailErrorState = (
   return null;
 };
 
-export const useSendVerificationEmail = () => {
+type SendVerificationEmailHandlers = {
+  onSuccess?: () => void;
+  onErrorState?: (state: SendVerificationEmailErrorState) => void;
+  onUnknownError?: (message: string) => void;
+};
+
+export const useSendVerificationEmail = (
+  handlers?: SendVerificationEmailHandlers
+) => {
   const { handleError } = useApiError();
 
   return useMutation({
     mutationFn: (payload: SendVerificationEmailRequest) =>
       sendVerificationEmail(payload),
-    onError: (error) => handleError(error),
+    onSuccess: () => {
+      handlers?.onSuccess?.();
+    },
+    onError: (error) => {
+      const errorState = getSendVerificationEmailErrorState(error);
+      if (errorState) {
+        handlers?.onErrorState?.(errorState);
+        return;
+      }
+
+      handleError(error);
+      const serverMessage = (error as { serverMessage?: string })
+        ?.serverMessage;
+      handlers?.onUnknownError?.(
+        serverMessage || "인증 메일 전송에 실패했어요"
+      );
+    },
   });
 };
