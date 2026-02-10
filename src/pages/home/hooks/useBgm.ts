@@ -12,8 +12,11 @@ const useBgm = (src: string, volume = 0.3, enabled = true) => {
     }
     bgmAudio.volume = volume;
 
+    const prevEnabled = prevEnabledRef.current;
+    prevEnabledRef.current = enabled;
+
     if (enabled) {
-      if (!prevEnabledRef.current) {
+      if (!prevEnabled) {
         bgmAudio.currentTime = 0;
       }
 
@@ -30,8 +33,6 @@ const useBgm = (src: string, volume = 0.3, enabled = true) => {
     } else {
       bgmAudio.pause();
     }
-
-    prevEnabledRef.current = enabled;
   }, [src, volume, enabled]);
 };
 
