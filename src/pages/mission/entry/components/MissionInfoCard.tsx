@@ -28,7 +28,6 @@ export default function MissionInfoCard({
   onContentClick,
   onQuizStart,
 }: MissionInfoCardProps) {
-  // attemptCount > 0이면 "다시 풀기", 아니면 "퀴즈 도전 !"
   const buttonText = attemptCount > 0 ? "다시 풀기" : "퀴즈 도전 !";
   const thumbnailUrl = getYoutubeThumbnail(videoUrl);
 
