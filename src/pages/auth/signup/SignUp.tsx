@@ -1,16 +1,15 @@
-import { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/common/button/Button";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { Modal } from "@/pages/auth/components/Modal";
-import AgreementList, {
-  type AgreementKey,
-} from "@/pages/auth/signup/components/AgreementList";
+import AgreementList from "@/pages/auth/signup/components/AgreementList";
 import { PWTextField } from "@/pages/auth/signup/components/PWTextField";
 import {
   getPasswordStrength,
   PASSWORD_INVALID_MESSAGE,
 } from "@/pages/auth/utils/passwordStrength";
+import { useSignUpStore } from "@/store/signup";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
 import { TERMS } from "./constants/terms";
@@ -26,32 +25,40 @@ import {
 
 export default function SignUp() {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const agreementsFromState = (
-    location.state as { agreements?: Record<AgreementKey, boolean> } | null
-  )?.agreements;
-
-  const [name, setName] = useState("");
-
-  const [emailLocal, setEmailLocal] = useState("");
-  const [emailDomain, setEmailDomain] = useState("");
-  const [code, setCode] = useState("");
-  const [emailVerified, setEmailVerified] = useState(false);
-  const [emailLocked, setEmailLocked] = useState(false);
-
-  const [emailStatusText, setEmailStatusText] = useState<string>("");
-  const [emailStatusTone, setEmailStatusTone] = useState<
-    "success" | "error" | "info"
-  >("info");
-  const [verifyModalType, setVerifyModalType] = useState<
-    "success" | "error" | null
-  >(null);
-  const [verifyModalMessage, setVerifyModalMessage] = useState(
-    "인증번호가 잘못 입력되었습니다."
-  );
-  const [resendCooldown, setResendCooldown] = useState(0);
-  const [showResendCountdown, setShowResendCountdown] = useState(false);
+  const {
+    name,
+    setName,
+    emailLocal,
+    setEmailLocal,
+    emailDomain,
+    setEmailDomain,
+    code,
+    setCode,
+    emailVerified,
+    setEmailVerified,
+    emailLocked,
+    setEmailLocked,
+    emailStatusText,
+    setEmailStatusText,
+    emailStatusTone,
+    setEmailStatusTone,
+    verifyModalType,
+    setVerifyModalType,
+    verifyModalMessage,
+    setVerifyModalMessage,
+    resendCooldown,
+    setResendCooldown,
+    showResendCountdown,
+    setShowResendCountdown,
+    password,
+    setPassword,
+    passwordConfirm,
+    setPasswordConfirm,
+    signUpError,
+    setSignUpError,
+    agreements,
+    reset: resetSignUp,
+  } = useSignUpStore();
 
   const { mutateAsync: sendVerificationEmail, isPending: isSendingEmail } =
     useSendVerificationEmail();
@@ -59,13 +66,7 @@ export default function SignUp() {
     useVerifyEmailAuthCode();
   const { mutateAsync: signUp, isPending: isSigningUp } = useSignUp();
 
-  const domainOptions = [
-    "naver.com",
-    "gmail.com",
-    "daum.net",
-    "kakao.com",
-    "hanmail.net",
-  ];
+  const domainOptions = ["naver.com", "gmail.com"];
 
   const handleRequestCode = async () => {
     if (emailLocal.trim().length === 0 || emailDomain.trim().length === 0) {
@@ -169,7 +170,7 @@ export default function SignUp() {
       setResendCooldown((prev) => Math.max(0, prev - 1));
     }, 1000);
     return () => window.clearInterval(timer);
-  }, [resendCooldown]);
+  }, [resendCooldown, setResendCooldown]);
 
   useEffect(() => {
     if (!showResendCountdown) return;
@@ -184,24 +185,16 @@ export default function SignUp() {
     setShowResendCountdown(false);
     setEmailStatusText(" ");
     setEmailStatusTone("info");
-  }, [resendCooldown, showResendCountdown, emailVerified]);
+  }, [
+    resendCooldown,
+    showResendCountdown,
+    emailVerified,
+    setShowResendCountdown,
+    setEmailStatusText,
+    setEmailStatusTone,
+  ]);
 
   const disabledConfirm = code.trim().length === 0 || isVerifyingEmailCode;
-
-  const [password, setPassword] = useState("");
-  const [passwordConfirm, setPasswordConfirm] = useState("");
-  const [signUpError, setSignUpError] = useState("");
-  const [agreements, setAgreements] = useState({
-    terms: false,
-    privacy: false,
-    marketing: false,
-    ...agreementsFromState,
-  });
-
-  useEffect(() => {
-    if (!agreementsFromState) return;
-    setAgreements((prev) => ({ ...prev, ...agreementsFromState }));
-  }, [agreementsFromState]);
 
   const passwordStrength = getPasswordStrength(password);
   const canUsePassword = passwordStrength.canSubmit;
@@ -241,6 +234,7 @@ export default function SignUp() {
         name: name.trim(),
         agreedTerms,
       });
+      resetSignUp();
       navigate("/login");
     } catch (error) {
       const serverMessage = (error as { serverMessage?: string })
@@ -254,6 +248,7 @@ export default function SignUp() {
       <AuthHeader
         title="회원가입"
         onBack={() => {
+          resetSignUp();
           navigate("/login");
         }}
       />
@@ -295,7 +290,7 @@ export default function SignUp() {
           passwordConfirmErrorMessage={passwordConfirmErrorMessage}
         />
         <div className="mt-37">
-          <AgreementList initialChecked={agreementsFromState} />
+          <AgreementList />
         </div>
       </div>
       <div className="fixed inset-x-0 bottom-0 z-10 bg-white px-24 pt-10 shadow-[0px_-8px_50px_3px_rgba(0,0,0,0.10)]">
