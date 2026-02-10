@@ -1,5 +1,5 @@
 import { Suspense, useEffect, useRef, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useSubmitMissionQuiz } from "@/pages/mission/hooks/useMutation/useSubmitMissionQuiz";
@@ -118,6 +118,8 @@ function QuizPageContent({ missionId }: { missionId: number }) {
   };
 
   const handleNext = () => {
+    if (submitQuiz.isPending) return;
+
     if (isLastQuestion) {
       const allAnswers = [
         ...answers,
@@ -286,7 +288,11 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         <div className="h-48 w-full px-25">
           <QuizSubmitButton
             text={showFeedback ? "다음 문제" : "정답 확인하기"}
-            disabled={isAnimating || (!showFeedback && isAnswerEmpty())}
+            disabled={
+              isAnimating ||
+              submitQuiz.isPending ||
+              (!showFeedback && isAnswerEmpty())
+            }
             onClick={showFeedback ? handleNext : handleSubmit}
           />
         </div>
@@ -305,7 +311,9 @@ function QuizPageContent({ missionId }: { missionId: number }) {
 export default function QuizPage() {
   const { missionId } = useParams<{ missionId: string }>();
   const numericMissionId = Number(missionId);
-
+  if (!missionId || Number.isNaN(numericMissionId)) {
+    return <Navigate to="/home" replace />;
+  }
   return (
     <Suspense
       fallback={
