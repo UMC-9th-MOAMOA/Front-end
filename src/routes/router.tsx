@@ -93,12 +93,6 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "mission/:missionId",
-        path: "onboarding/recommend",
-        element: <OnboardingRecommend />,
-        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
-      },
-      {
-        path: "mission",
         element: <MissionEntry />,
         handle: { bgColor: "bg-gray-100", hideBottomNav: true },
       },
