@@ -86,7 +86,7 @@ export default function QuizAnswer({
               key={option}
               type="button"
               onClick={() => onOptionSelect(option)}
-              className={`body-2 flex h-42 w-full items-center justify-center rounded-md border py-9 transition-colors ${
+              className={`body-2 flex w-full items-center justify-center rounded-md border px-9 py-9 transition-colors ${
                 selectedOption === option
                   ? "border-moamoa-300 bg-moamoa-50 text-moamoa-500"
                   : "border-moamoa-100 bg-white text-black hover:bg-moamoa-50"

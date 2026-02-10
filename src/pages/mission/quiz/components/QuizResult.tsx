@@ -34,6 +34,7 @@ export default function QuizResult({
         explanation={explanation}
         questionType={questionType}
         isLastQuestion={isLastQuestion}
+        isRetry={isRetry}
         onNext={onNext}
       />
     );
