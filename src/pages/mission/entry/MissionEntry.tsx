@@ -59,7 +59,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
     if (isContentWatched) return;
     if (watchTimeoutRef.current) window.clearTimeout(watchTimeoutRef.current);
 
-    const watchDuration = mission.videoLength;
+    const watchDuration = mission.videoLength * 1000;
 
     watchTimeoutRef.current = window.setTimeout(() => {
       watchMission.mutate(missionId, {
