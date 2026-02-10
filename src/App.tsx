@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
-import { storage } from "./apis/storage";
+import GlobalModals from "./components/GlobalModals";
+import GoalPopups from "./components/GoalPopups";
 import { useAttendanceCheck } from "./hooks/attendance/useAttendanceCheck";
 import { useGoalPopupCheck } from "./hooks/goal/useGoalPopupCheck";
-import DailyGoalFailure from "./pages/mission/goal/DailyGoalFailure";
-import WeeklyGoalFailure from "./pages/mission/goal/WeeklyGoalFailure";
+import { useAppInitializer } from "./hooks/useAppInitializer";
 import router from "./routes/router";
+import { useSettingsStore } from "./store/settings";
 
 function App() {
   const { handleCheckAttendance } = useAttendanceCheck();
@@ -17,31 +18,15 @@ function App() {
     handleMissionExplore,
     resetNavigateToSearch,
   } = useGoalPopupCheck();
+  const showLogoutToast = useSettingsStore((state) => state.showLogoutToast);
+  const setShowLogoutToast = useSettingsStore(
+    (state) => state.setShowLogoutToast
+  );
 
-  useEffect(() => {
-    const token = storage.getToken();
-    if (!token) return;
-
-    handleCheckAttendance();
-    handleCheckGoalPopups();
-
-    const handleVisibilityChange = () => {
-      if (document.visibilityState === "visible") {
-        const currentToken = storage.getToken();
-        if (currentToken) {
-          handleCheckAttendance();
-          handleCheckGoalPopups();
-        }
-      }
-    };
-
-    document.addEventListener("visibilitychange", handleVisibilityChange);
-
-    return () => {
-      document.removeEventListener("visibilitychange", handleVisibilityChange);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  useAppInitializer({
+    onCheckAttendance: handleCheckAttendance,
+    onCheckGoalPopups: handleCheckGoalPopups,
+  });
 
   useEffect(() => {
     if (shouldNavigateToSearch) {
@@ -50,29 +35,24 @@ function App() {
     }
   }, [shouldNavigateToSearch, resetNavigateToSearch]);
 
+  useEffect(() => {
+    if (showLogoutToast) {
+      const timer = setTimeout(() => {
+        setShowLogoutToast(false);
+      }, 2500);
+      return () => clearTimeout(timer);
+    }
+  }, [showLogoutToast, setShowLogoutToast]);
+
   return (
     <>
       <RouterProvider router={router} />
-
-      {currentPopup && (
-        <div className="fixed inset-0 z-50 bg-white px-layout-side">
-          {currentPopup.goalType === "DAILY" && (
-            <DailyGoalFailure
-              completedMissions={currentPopup.achievedCount}
-              totalMissions={currentPopup.targetCount}
-              onClose={handleClosePopup}
-              onMissionExplore={handleMissionExplore}
-            />
-          )}
-          {currentPopup.goalType === "WEEKLY" && (
-            <WeeklyGoalFailure
-              completedMissions={currentPopup.achievedCount}
-              totalMissions={currentPopup.targetCount}
-              onClose={handleClosePopup}
-            />
-          )}
-        </div>
-      )}
+      <GoalPopups
+        currentPopup={currentPopup}
+        onClose={handleClosePopup}
+        onMissionExplore={handleMissionExplore}
+      />
+      <GlobalModals />
     </>
   );
 }

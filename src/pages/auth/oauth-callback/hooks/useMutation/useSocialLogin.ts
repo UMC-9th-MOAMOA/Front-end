@@ -22,6 +22,7 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
       exchangeSocialToken(payload),
     onSuccess: (result) => {
       storage.setToken(result.token.accessToken);
+      storage.setPolicyAgreed(result.policyAgreed);
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
 
