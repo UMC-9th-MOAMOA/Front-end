@@ -64,7 +64,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
-        path: "mission",
+        path: "mission/:missionId",
         element: <MissionEntry />,
         handle: { bgColor: "bg-gray-100", hideBottomNav: true },
       },
