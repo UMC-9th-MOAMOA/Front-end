@@ -109,7 +109,7 @@ export const useGoalSettings = (options?: UseGoalSettingsOptions) => {
   const isDirty = (() => {
     if (!initialRef.current) return false;
     if (isOn !== initialRef.current.goalEnabled) return true;
-    if (!isOn) return true;
+    if (!isOn) return false;
     return (
       dailyCount !== initialRef.current.count ||
       duration !== initialRef.current.duration
@@ -152,6 +152,13 @@ export const useGoalSettings = (options?: UseGoalSettingsOptions) => {
         { goalEnabled: false },
         {
           onSuccess: () => {
+            isDirtyRef.current = false;
+            initialRef.current = {
+              goalEnabled: false,
+              count: dailyCount,
+              duration,
+            };
+            didInitRef.current = true;
             options?.onSaveSuccess?.();
           },
         }
@@ -172,8 +179,22 @@ export const useGoalSettings = (options?: UseGoalSettingsOptions) => {
         : {}),
     };
 
+    const hasPayloadChange =
+      !initial?.goalEnabled ||
+      "dailyMissionGoal" in payload ||
+      "goalRetention" in payload;
+
+    if (!hasPayloadChange) return;
+
     mutate(payload, {
       onSuccess: () => {
+        isDirtyRef.current = false;
+        initialRef.current = {
+          goalEnabled: true,
+          count: dailyCount,
+          duration,
+        };
+        didInitRef.current = true;
         options?.onSaveSuccess?.();
       },
     });
