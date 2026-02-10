@@ -12,6 +12,10 @@ interface MissionCardProps {
   quizCount: number;
   isScrapped: boolean;
   onHeartClick?: () => void;
+  onStartClick?: () => void;
+  actionLabel?: string;
+  hideHeart?: boolean;
+
 }
 
 export default function MissionCard({
@@ -23,24 +27,35 @@ export default function MissionCard({
   quizCount,
   isScrapped,
   onHeartClick,
+  onStartClick,
+  actionLabel = "시작하기",
+  hideHeart = false,
+
 }: MissionCardProps) {
   const navigate = useNavigate();
 
   const handleStartClick = () => {
+    if (onStartClick) {
+      onStartClick();
+      return;
+    }
     navigate(`/mission/${id}`);
   };
   return (
     <div className="relative rounded-xl border border-moamoa-50 bg-white px-20 py-24 shadow-[0_0_16.9px_0_rgba(0,0,0,0.10)]">
       <div className="flex items-start gap-26">
         <h3 className="heading-3 w-full truncate">{title}</h3>
-        <button type="button" onClick={onHeartClick} className="shrink-0">
-          <IcHeart
-            className={cn(
-              "size-24 shrink-0 cursor-pointer text-moamoa-200",
-              isScrapped && "fill-moamoa-100"
-            )}
-          />
-        </button>
+        {!hideHeart && (
+          <button type="button" onClick={onHeartClick} className="shrink-0">
+            <IcHeart
+              className={cn(
+                "size-24 shrink-0 cursor-pointer text-moamoa-200",
+                isScrapped && "fill-moamoa-100",
+              )}
+            />
+          </button>
+        )}
+
       </div>
 
       <div className="-mx-20 mt-12 overflow-x-auto">
@@ -68,7 +83,7 @@ export default function MissionCard({
           className="heading-5 w-126 rounded-lg bg-moamoa-50 py-10 text-moamoa-400 active:bg-moamoa-300 active:text-white"
           onClick={handleStartClick}
         >
-          시작하기
+          {actionLabel}
         </Button>
       </div>
     </div>

@@ -85,26 +85,21 @@ export default function InterestCategoryCard({
             <IcDash className="block w-full" aria-hidden />
           </div>
           <div className="w-full pr-27 pb-21 pl-27">
-            <div className="mt-21 flex w-full flex-col gap-15">
-              {rows.map((row, index) => (
-                <div
-                  key={row[0]?.id ?? index}
-                  className="-mx-27 overflow-x-auto"
-                >
-                  <div className="flex w-max gap-16 px-27">
-                    {row.map((sub) => (
-                      <InterestSubButton
-                        key={sub.id}
-                        label={sub.name}
-                        selected={
-                          selected[category.id]?.includes(sub.id) ?? false
-                        }
-                        onClick={() => onToggleSub(category.id, sub.id)}
-                      />
-                    ))}
-                  </div>
+            <div className="mt-21 w-full">
+              <div className="-mx-27 overflow-x-auto">
+                <div className="flex w-max flex-nowrap gap-16 px-27">
+                  {rows.flat().map((sub) => (
+                    <InterestSubButton
+                      key={sub.id}
+                      label={sub.name}
+                      selected={
+                        selected[category.id]?.includes(sub.id) ?? false
+                      }
+                      onClick={() => onToggleSub(category.id, sub.id)}
+                    />
+                  ))}
                 </div>
-              ))}
+              </div>
             </div>
           </div>
         </>
