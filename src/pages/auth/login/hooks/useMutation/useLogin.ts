@@ -36,6 +36,7 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
     mutationFn: (payload: LoginRequest) => login(payload),
     onSuccess: (result) => {
       storage.setToken(result.token.accessToken);
+      storage.setPolicyAgreed(result.policyAgreed);
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
       if (!result.policyAgreed) {
