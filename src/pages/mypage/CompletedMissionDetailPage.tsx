@@ -2,6 +2,7 @@ import { useParams } from "react-router-dom";
 import IcPolygon from "@/assets/icons/ic_polygon.svg?react";
 import IcSubtract from "@/assets/icons/ic_subtract.svg?react";
 import IcUnion from "@/assets/icons/ic_union.svg?react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import BottomActionBar from "@/pages/settings/components/common/BottomActionBar";
 import type { MissionDetailQuiz } from "@/types/mission/missionDetail";
@@ -187,22 +188,8 @@ function QuizSection({
   );
 }
 
-export default function CompletedMissionDetailPage() {
-  const { missionId } = useParams();
-  const parsedMissionId = Number(missionId);
-
-  if (!Number.isFinite(parsedMissionId)) {
-    return (
-      <>
-        <Header title="완료 미션" property="common" />
-        <div className="flex w-full items-center justify-center py-40 text-gray-600">
-          유효하지 않은 미션입니다.
-        </div>
-      </>
-    );
-  }
-
-  const { data } = useMissionDetail(parsedMissionId);
+function MissionDetailContent({ missionId }: { missionId: number }) {
+  const { data } = useMissionDetail(missionId);
   const youtubeId = getYoutubeId(data.videoUrl);
   const thumbnailUrl = youtubeId
     ? `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`
@@ -282,5 +269,26 @@ export default function CompletedMissionDetailPage() {
       </div>
       <BottomActionBar label="정답 확인하기" onClick={() => {}} />
     </>
+  );
+}
+export default function CompletedMissionDetailPage() {
+  const { missionId } = useParams();
+  const parsedMissionId = Number(missionId);
+
+  if (!Number.isFinite(parsedMissionId)) {
+    return (
+      <>
+        <Header title="완료 미션" property="common" />
+        <div className="flex w-full items-center justify-center py-40 text-gray-600">
+          유효하지 않은 미션입니다.
+        </div>
+      </>
+    );
+  }
+
+  return (
+    <AsyncBoundary>
+      <MissionDetailContent missionId={parsedMissionId} />
+    </AsyncBoundary>
   );
 }
