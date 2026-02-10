@@ -1,9 +1,14 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked.svg";
 import IcRight from "@/assets/icons/ic_right.svg";
 
-export type AgreementKey = "terms" | "privacy" | "marketing";
+export type AgreementKey =
+  | "terms"
+  | "privacy"
+  | "privacyCollection"
+  | "marketing";
 
 interface AgreementItem {
   key: AgreementKey;
@@ -13,33 +18,50 @@ interface AgreementItem {
 const AGREEMENTS: AgreementItem[] = [
   { key: "terms", label: "이용약관 동의(필수)" },
   { key: "privacy", label: "개인정보 취급방침 동의(필수)" },
+  { key: "privacyCollection", label: "개인정보 수집 및 이용 동의(필수)" },
   { key: "marketing", label: "마케팅 정보 수신 동의(선택)" },
 ];
 
 interface AgreementListProps {
-  value: Record<AgreementKey, boolean>;
-  onChange: (next: Record<AgreementKey, boolean>) => void;
+  initialChecked?: Record<AgreementKey, boolean>;
 }
 
-export default function AgreementList({
-  value,
-  onChange,
-}: AgreementListProps) {
+export default function AgreementList({ initialChecked }: AgreementListProps) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const openDetailPage = () => {
-    navigate("/terms", { state: { agreements: value } });
+    navigate("/terms", {
+      state: { agreements: checked, from: location.pathname },
+    });
   };
 
-  const allChecked = Object.values(value).every(Boolean);
+  const [checked, setChecked] = useState<Record<AgreementKey, boolean>>({
+    terms: false,
+    privacy: false,
+    privacyCollection: false,
+    marketing: false,
+  });
+
+  useEffect(() => {
+    if (!initialChecked) return;
+    setChecked((prev) => ({ ...prev, ...initialChecked }));
+  }, [initialChecked]);
+
+  const allChecked = Object.values(checked).every(Boolean);
 
   const toggleAll = () => {
     const next = !allChecked;
-    onChange({ terms: next, privacy: next, marketing: next });
+    setChecked({
+      terms: next,
+      privacy: next,
+      privacyCollection: next,
+      marketing: next,
+    });
   };
 
   const toggleItem = (key: AgreementKey) => {
-    onChange({ ...value, [key]: !value[key] });
+    setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -59,7 +81,7 @@ export default function AgreementList({
           <AgreementRow
             key={item.key}
             label={item.label}
-            checked={value[item.key]}
+            checked={checked[item.key]}
             onToggle={() => toggleItem(item.key)}
           />
         ))}

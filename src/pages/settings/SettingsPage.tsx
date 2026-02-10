@@ -1,18 +1,48 @@
 ﻿import { Suspense, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
+import { useAuthStore } from "@/store/auth";
+import { useSettingsStore } from "@/store/settings";
 import { useMyProfile } from "./components/account/hooks/useMyProfile";
 import LogoutConfirmModal from "./components/LogoutConfirmModal";
 import ProfileHeaderCard from "./components/ProfileHeaderCard";
 import { LogoutAction, WithdrawAction } from "./components/SettingsActions";
 import { SettingsSection, sections } from "./components/SettingsSectionList";
 import WithdrawConfirmModal from "./components/WithdrawConfirmModal";
+import { useLogout } from "./hooks/useLogout";
+import { useWithdraw } from "./hooks/useWithdraw";
 
 function SettingsPageInner() {
   const navigate = useNavigate();
   const [isLogoutOpen, setIsLogoutOpen] = useState(false);
   const [isWithdrawOpen, setIsWithdrawOpen] = useState(false);
   const { data: profile } = useMyProfile();
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+  const setShowLogoutToast = useSettingsStore(
+    (state) => state.setShowLogoutToast
+  );
+  const setShowWithdrawSuccessModal = useSettingsStore(
+    (state) => state.setShowWithdrawSuccessModal
+  );
+
+  const logoutMutation = useLogout({
+    onSuccess: () => {
+      setIsLogoutOpen(false);
+      setShowLogoutToast(true);
+      navigate("/");
+      setTimeout(() => {
+        setAuthenticated(false);
+      }, 100);
+    },
+  });
+
+  const withdrawMutation = useWithdraw({
+    onSuccess: () => {
+      setIsWithdrawOpen(false);
+      setShowWithdrawSuccessModal(true);
+      
+    },
+  });
 
   const onNavigate = (path: string) => {
     navigate(path);
@@ -20,6 +50,14 @@ function SettingsPageInner() {
 
   const onLogout = () => setIsLogoutOpen(true);
   const onWithdraw = () => setIsWithdrawOpen(true);
+
+  const handleLogoutConfirm = () => {
+    logoutMutation.mutate();
+  };
+
+  const handleWithdrawConfirm = () => {
+    withdrawMutation.mutate();
+  };
 
   const dividerStyle = { background: "var(--MOAMOA-G-200, #EEE)" };
 
@@ -66,13 +104,13 @@ function SettingsPageInner() {
       <WithdrawConfirmModal
         open={isWithdrawOpen}
         onCancel={() => setIsWithdrawOpen(false)}
-        onConfirm={() => setIsWithdrawOpen(false)}
+        onConfirm={handleWithdrawConfirm}
       />
 
       <LogoutConfirmModal
         open={isLogoutOpen}
         onCancel={() => setIsLogoutOpen(false)}
-        onConfirm={() => setIsLogoutOpen(false)}
+        onConfirm={handleLogoutConfirm}
       />
     </div>
   );
