@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import IcCircleLeftArrow from "@/assets/icons/ic_circle_left_arrow.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import { Button } from "@/components/common/button/Button";
 import { useRecommendedMissions } from "@/pages/search/hooks/useQuery/useRecommendedMissions";
 import RecommendMissionCard from "./components/RecommendMissionCard";
@@ -9,7 +10,16 @@ import { useCarouselDrag } from "./hooks/useCarouselDrag";
 const CARD_GAP = 280;
 
 export default function OnboardingRecommend() {
+  return (
+    <AsyncBoundary>
+      <OnboardingRecommendContent />
+    </AsyncBoundary>
+  );
+}
+
+function OnboardingRecommendContent() {
   const navigate = useNavigate();
+
   const { data: missions, refetch } = useRecommendedMissions({ time: null });
   const { activeIndex, dragX, isDragging, bind } = useCarouselDrag({
     totalItems: missions.length,
