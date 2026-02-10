@@ -37,15 +37,15 @@ function ShortQuizSection({
   answer?: string;
 }) {
   return (
-    <div className="w-full rounded-[20px] bg-white p-16">
+    <div className="w-full rounded-2xl bg-white p-16">
       <div className="flex w-full items-center gap-2">
         <span className="heading-3 text-[#424242]">{label}</span>
         <span className="heading-6 text-[#2664ED]">(단답형)</span>
       </div>
-      <div className="mt-12 w-full rounded-[12px] px-12 py-8 text-black">
+      <div className="mt-12 w-full rounded-lg px-12 py-8 text-black">
         <p className="body-2">{question}</p>
       </div>
-      <div className="mt-26 flex w-full items-start rounded-[12px] border border-[#B4C9F9] bg-[#E3EBFD] px-10 py-9 text-left text-[#191919]">
+      <div className="mt-26 flex w-full items-start rounded-lg border border-[#B4C9F9] bg-[#E3EBFD] px-10 py-9 text-left text-[#191919]">
         <p className="body-2">{answer ? `답안: ${answer}` : "답안"}</p>
       </div>
     </div>
@@ -66,21 +66,21 @@ function OxQuizSection({
   const isX = normalized.includes("X");
 
   return (
-    <div className="w-full rounded-[20px] bg-white p-16">
+    <div className="w-full rounded-2xl bg-white p-16">
       <div className="flex w-full items-center gap-2">
         <span className="heading-3 text-[#424242]">{label}</span>
         <span className="heading-6 text-[#2664ED]">(OX)</span>
       </div>
-      <div className="mt-12 w-full rounded-[12px] px-12 py-8 text-black">
+      <div className="mt-12 w-full rounded-lg px-12 py-8 text-black">
         <p className="body-2">{question}</p>
       </div>
-      <div className="mt-20 flex w-full items-center gap-20 rounded-[12px] px-4 md:px-20">
-        <div className="flex h-full w-[120px] flex-col items-center gap-4">
+      <div className="mt-20 flex w-full items-center gap-20 rounded-lg px-4 md:px-20">
+        <div className="flex h-full w-120px flex-col items-center gap-4">
           <span className="body-3 text-center text-[#5586F1]">주장한다</span>
           <button
             type="button"
             className={[
-              "flex h-[94px] w-full items-center justify-center gap-4 rounded-[12px] px-6 py-6",
+              "flex h-[94px] w-full items-center justify-center gap-4 rounded-lg px-6 py-6",
               isO
                 ? "border border-[#2664ED] bg-[#B4C9F9]"
                 : "border border-[#E0E0E0] bg-[#FAFAFA]",
@@ -90,11 +90,13 @@ function OxQuizSection({
           </button>
         </div>
         <div className="flex h-full w-[120px] flex-col items-center gap-4">
-          <span className="body-3 text-center text-[#424242]">주장하지 않는다</span>
+          <span className="body-3 text-center text-[#424242]">
+            주장하지 않는다
+          </span>
           <button
             type="button"
             className={[
-              "flex h-[94px] w-full flex-col items-center justify-center gap-4 rounded-[12px] px-6 py-6",
+              "flex h-[94px] w-full flex-col items-center justify-center gap-4 rounded-lg px-6 py-6",
               isX
                 ? "border border-[#2664ED] bg-[#B4C9F9]"
                 : "border border-[#E0E0E0] bg-[#FAFAFA]",
@@ -120,32 +122,38 @@ function MultipleQuizSection({
   answer?: string;
 }) {
   return (
-    <div className="w-full rounded-[20px] bg-white p-16">
+    <div className="w-full rounded-2xl bg-white p-16">
       <div className="flex w-full items-center gap-2">
         <span className="heading-3 text-[#424242]">{label}</span>
         <span className="heading-6 text-[#2664ED]">(객관식)</span>
       </div>
-      <div className="mt-12 w-full rounded-[12px] px-12 py-8 text-black">
+      <div className="mt-12 w-full rounded-lg px-12 py-8 text-black">
         <p className="body-2">{question}</p>
       </div>
       <div className="mt-16 flex w-full flex-col gap-8 px-4">
         {options.map((opt, idx) => (
           <div
             key={`${opt}-${idx}`}
-            className="body-2 rounded-[12px] border border-[#E0E0E0] bg-[#FAFAFA] px-12 py-10 text-black"
+            className="body-2 rounded-lg border border-[#E0E0E0] bg-[#FAFAFA] px-12 py-10 text-black"
           >
             {opt}
           </div>
         ))}
       </div>
-      <div className="mt-16 flex w-full items-start rounded-[12px] border border-[#B4C9F9] bg-[#E3EBFD] px-10 py-9 text-left text-[#191919]">
+      <div className="mt-16 flex w-full items-start rounded-lg border border-[#B4C9F9] bg-[#E3EBFD] px-10 py-9 text-left text-[#191919]">
         <p className="body-2">{answer ? `정답: ${answer}` : "정답"}</p>
       </div>
     </div>
   );
 }
 
-function QuizSection({ quiz, index }: { quiz: MissionDetailQuiz; index: number }) {
+function QuizSection({
+  quiz,
+  index,
+}: {
+  quiz: MissionDetailQuiz;
+  index: number;
+}) {
   const label = `Q${index + 1}`;
   const uiType = normalizeQuizType(quiz.type);
 
@@ -206,7 +214,6 @@ export default function CompletedMissionDetailPage() {
   return (
     <>
       <Header title="완료 미션" property="common" />
-
       <div className="mt-44 flex w-full flex-col items-center px-6 pb-48">
         <div className="flex w-full max-w-screen-xl flex-col gap-12">
           <h2 className="heading-4 text-black">{data.title}</h2>
@@ -233,7 +240,7 @@ export default function CompletedMissionDetailPage() {
             <span className="body-4 text-black">{data.interest}</span>
           </div>
 
-          <div className="mt-8 h-[172px] w-full overflow-hidden rounded-[12px] bg-gray-100">
+          <div className="mt-8 h-[172px] w-full overflow-hidden rounded-lg bg-gray-100">
             {thumbnailUrl ? (
               <img
                 src={thumbnailUrl}
@@ -249,7 +256,7 @@ export default function CompletedMissionDetailPage() {
 
           <button
             type="button"
-            className="mt-24 flex w-full items-center justify-center gap-14 rounded-[12px] bg-moamoa-100 px-[65px] py-10"
+            className="mt-24 flex w-full items-center justify-center gap-14 rounded-lg bg-moamoa-100 px-65 py-10"
             onClick={() => {
               if (!data.videoUrl) return;
               window.open(data.videoUrl, "_blank", "noopener,noreferrer");
@@ -263,7 +270,10 @@ export default function CompletedMissionDetailPage() {
 
           <div className="flex w-full flex-col items-center gap-48">
             {quizzes.map((quiz, idx) => (
-              <section key={quiz.quizId} className="flex w-full flex-col gap-12">
+              <section
+                key={quiz.quizId}
+                className="flex w-full flex-col gap-12"
+              >
                 <QuizSection quiz={quiz} index={idx} />
               </section>
             ))}
