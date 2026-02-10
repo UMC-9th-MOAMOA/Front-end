@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { exchangeSocialToken } from "@/apis/auth/auth";
 import { storage } from "@/apis/storage";
 import { useApiError } from "@/hooks/api/useApiError";
@@ -13,6 +13,7 @@ type SocialLoginErrorHandlers = {
 export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
   const { handleError } = useApiError();
   const navigate = useNavigate();
+  const location = useLocation();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
 
@@ -25,7 +26,10 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
       setPolicyAgreed(result.policyAgreed);
 
       if (!result.policyAgreed) {
-        navigate("/terms", { replace: true });
+        navigate("/terms", {
+          replace: true,
+          state: { from: location.pathname },
+        });
         return;
       }
 

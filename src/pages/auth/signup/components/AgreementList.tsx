@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked.svg";
 import IcRight from "@/assets/icons/ic_right.svg";
@@ -25,9 +25,12 @@ export default function AgreementList({
   initialChecked,
 }: AgreementListProps) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   const openDetailPage = () => {
-    navigate("/terms", { state: { agreements: checked } });
+    navigate("/terms", {
+      state: { agreements: checked, from: location.pathname },
+    });
   };
 
   const [checked, setChecked] = useState<Record<AgreementKey, boolean>>({
