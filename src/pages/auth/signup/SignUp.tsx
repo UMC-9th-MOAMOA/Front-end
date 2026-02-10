@@ -132,6 +132,8 @@ export default function SignUp() {
       setEmailStatusText("사용 가능한 이메일");
       setEmailStatusTone("success");
       setEmailVerified(true);
+      setShowResendCountdown(false);
+      setResendCooldown(0);
       setVerifyModalType("success");
       return;
     } catch (error) {
@@ -171,6 +173,7 @@ export default function SignUp() {
 
   useEffect(() => {
     if (!showResendCountdown) return;
+    if (emailVerified) return;
     if (resendCooldown > 0) {
       setEmailStatusText(
         `이메일 재전송은 ${resendCooldown}초 뒤에 가능합니다.`
