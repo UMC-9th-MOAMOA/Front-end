@@ -302,7 +302,6 @@ function QuizPageContent({ missionId }: { missionId: number }) {
       </div>
       {showQuitPopup && (
         <QuizQuitPopup
-          acorns={5}
           onQuit={() => navigate("/home")}
           onStay={() => setShowQuitPopup(false)}
         />

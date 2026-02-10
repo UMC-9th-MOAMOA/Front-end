@@ -8,7 +8,6 @@ import IcSuccessSubjective from "@/assets/icons/mission/ic_success_subjective.sv
 interface QuizSuccessResultProps {
   userAnswer: string;
   category: string;
-  questionText: string;
   explanation?: string;
   questionType: "subjective" | "ox" | "multiple";
   isLastQuestion: boolean;
@@ -19,7 +18,6 @@ interface QuizSuccessResultProps {
 export default function QuizSuccessResult({
   userAnswer,
   category,
-  questionText,
   explanation,
   questionType,
   isLastQuestion,

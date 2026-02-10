@@ -1,11 +1,9 @@
 interface QuizQuitPopupProps {
-  acorns: number;
   onQuit: () => void;
   onStay: () => void;
 }
 
 export default function QuizQuitPopup({
-  acorns,
   onQuit,
   onStay,
 }: QuizQuitPopupProps) {
