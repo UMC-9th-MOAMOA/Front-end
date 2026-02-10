@@ -38,3 +38,13 @@ export const updateMyProfile = async (payload: UpdateMyProfileRequest) => {
 
   return data.result;
 };
+
+export const deleteMember = async () => {
+  const { data } = await authAPI.delete<ApiResponse<null>>("/members/me");
+
+  if (!data.isSuccess) {
+    throw toApiError(data.code, data.message);
+  }
+
+  return data.result;
+};
