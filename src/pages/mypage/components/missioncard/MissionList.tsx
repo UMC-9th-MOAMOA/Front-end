@@ -1,4 +1,4 @@
-import { useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcSadSquirrel from "@/assets/icons/ic_sadsquirrel.svg?react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
@@ -6,6 +6,7 @@ import MissionCard from "@/components/MissionCard";
 import { CATEGORY_ID_MAP } from "@/constants/missions/categories";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useScrapMission } from "@/hooks/useScrapMission";
+import InterestsSuccessModal from "@/pages/settings/components/InterestsSuccessModal";
 import { useMyMissionsInfinite } from "../../hooks/useMyMissionsInfinite";
 import type {
   MissionCategory,
@@ -23,6 +24,8 @@ import type {
 export default function MissionTab() {
   const [subTab, setSubTab] = useState<MissionSubTabKey>("liked");
   const [doneView, setDoneView] = useState<"done" | "retry">("done");
+  const [retryModalOpen, setRetryModalOpen] = useState(false);
+  const [retryMissionId, setRetryMissionId] = useState<string | null>(null);
 
   const [timeSort, setTimeSort] = useState<MissionTimeSort>("short");
   const [category, setCategory] = useState<MissionCategoryFilter>("all");
@@ -78,7 +81,7 @@ export default function MissionTab() {
   const navigate = useNavigate();
 
   const goDetail = (id: string) => {
-    console.log("detail:", id);
+    navigate(`/mission/${id}`);
   };
 
   return (
@@ -113,7 +116,7 @@ export default function MissionTab() {
               {list.length === 0 ? (
                 <div className="mt-105 flex w-full flex-col items-center gap-4">
                   <p className="heading-5 text-gray-500">
-                    이용 내역이 없습니다
+                    미션 내역이 없습니다
                   </p>
                   <IcSadSquirrel aria-hidden />
                 </div>
@@ -130,7 +133,12 @@ export default function MissionTab() {
                   const handleAction = () => {
                     if (!found) return;
                     if (subTab === "liked") {
-                      goDetail(m.id);
+                      goDetail(String(found.missionId));
+                      return;
+                    }
+                    if (doneView === "retry") {
+                      setRetryMissionId(String(found.missionId));
+                      setRetryModalOpen(true);
                       return;
                     }
                     navigate(`/mypage/mission/${found.missionId}`, {
@@ -177,6 +185,32 @@ export default function MissionTab() {
           </div>
         </div>
       </div>
+
+      <InterestsSuccessModal
+        open={retryModalOpen}
+        onConfirm={() => {
+          if (retryMissionId) {
+            goDetail(retryMissionId);
+          }
+          setRetryModalOpen(false);
+          setRetryMissionId(null);
+        }}
+        titleClassName="heading-4 text-center text-black"
+        title={
+          <>
+            다시 풀 때는
+            <br />
+            도토리가 지급되지 않아요.
+          </>
+        }
+        description={<>그래도 진행하시겠어요?</>}
+        confirmText="다시 풀기"
+        secondaryText="아니요"
+        onSecondary={() => {
+          setRetryModalOpen(false);
+          setRetryMissionId(null);
+        }}
+      />
     </section>
   );
 }
