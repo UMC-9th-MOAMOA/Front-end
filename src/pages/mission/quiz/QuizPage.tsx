@@ -60,6 +60,10 @@ function QuizPageContent({ missionId }: { missionId: number }) {
 
   const isRetry = mission.attemptCount > 0;
 
+  if (!mission.quizzes.length) {
+    return <Navigate to={`/mission/${missionId}`} replace />;
+  }
+
   const ANIMATION_DURATION = 500;
   const FEEDBACK_DELAY_AFTER_ANIMATION = 400;
   const LAST_QUESTION_EXTRA_DELAY = 400;
@@ -82,9 +86,9 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         (a) => normalize(a) === String(selectedIndex + 1)
       );
     } else {
-      const userParts = userAnswer.split(",").map((s) => normalize(s));
-      correct = userParts.some((part) =>
-        currentQuestion.acceptedAnswers.some((a) => normalize(a) === part)
+      const normalizedUserAnswer = normalize(userAnswer);
+      correct = currentQuestion.acceptedAnswers.some(
+        (a) => normalize(a) === normalizedUserAnswer
       );
     }
 
