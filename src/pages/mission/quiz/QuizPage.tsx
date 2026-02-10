@@ -1,6 +1,10 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Suspense, useEffect, useRef, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "@/components/common/header/Header";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
+import { useSubmitMissionQuiz } from "@/pages/mission/hooks/useMutation/useSubmitMissionQuiz";
+import { useMissionDetail } from "@/pages/mission/hooks/useQuery/useMissionDetail";
+import type { Quiz } from "@/types/mission/mission";
 import MissionResult from "./components/MissionResult";
 import QuizCard from "./components/QuizCard";
 import QuizProgress from "./components/QuizProgressBar";
@@ -9,52 +13,32 @@ import QuizResult from "./components/QuizResult";
 import QuizSubmitButton from "./components/QuizSubmitButton";
 
 type AnswerItem = {
-  questionId: string;
+  quizId: number;
   userAnswer: string;
   isCorrect: boolean;
 };
 
-const MOCK_QUIZ_DATA = {
-  missionId: "1",
-  totalQuestions: 3,
-  rewardAcorns: 4,
-  category: "경제 미션",
-  questions: [
-    {
-      questionId: "q1",
-      questionNumber: 1,
-      questionType: "subjective" as const,
-      questionText:
-        "케인즈가 주장한 개념으로,\n개인이 합리적으로 생각하여 지출을 늘렸지만,\n\n결과적으로 사회 전체의 수요가 줄어들어\n경제가 나빠지는 현상을 무엇이라고 할까요?",
-      correctAnswer: "절약의 역설",
-      explanation:
-        "케인즈는 개인의 절약이 사회 전체로는 오히려 경기를 악화시킬 수 있다고 주장했습니다.",
-    },
-    {
-      questionId: "q2",
-      questionNumber: 2,
-      questionType: "ox" as const,
-      questionText:
-        "케인즈는 불황일 수록\n사람들이 돈을 아끼고 저축하는 것이\n경제 전체에 도움이 된다고 주장했다.",
-      correctAnswer: "O",
-      explanation:
-        "케인즈는 불황기에 정부가 적극적으로 지출해야 한다고 주장했습니다.",
-    },
-    {
-      questionId: "q3",
-      questionNumber: 3,
-      questionType: "multiple" as const,
-      questionText:
-        "케인즈가 주장한 개념으로,\n개인이 합리적으로 생각하여 지출을 늘렸지만,\n\n결과적으로 사회 전체의 수요가 줄어들어\n경제가 나빠지는 현상을 무엇이라고 할까요?",
-      options: ["답1--------", "답2--------", "답3--------", "답4--------"],
-      correctAnswer: "답1--------",
-      explanation:
-        "절약의 역설은 미시적으로 합리적인 행동이 거시적으로는 부정적 결과를 초래하는 현상입니다.",
-    },
-  ],
-};
+function mapQuizToQuestion(quiz: Quiz) {
+  return {
+    questionId: String(quiz.quizId),
+    questionNumber: quiz.quizId,
+    questionType:
+      quiz.type === "SHORT"
+        ? ("subjective" as const)
+        : quiz.type === "OX"
+          ? ("ox" as const)
+          : ("multiple" as const),
+    questionText: quiz.question,
+    options: quiz.option,
+    correctAnswer: quiz.answer,
+  };
+}
 
-export default function QuizPage() {
+function QuizPageContent({ missionId }: { missionId: number }) {
+  const navigate = useNavigate();
+  const { data: mission } = useMissionDetail(missionId);
+  const submitQuiz = useSubmitMissionQuiz();
+
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -65,34 +49,44 @@ export default function QuizPage() {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showQuitPopup, setShowQuitPopup] = useState(false);
   const [showMissionResult, setShowMissionResult] = useState(false);
+  const [quizResult, setQuizResult] = useState<{
+    isSuccess: boolean;
+    totalAcorns: number;
+    isDailyGoalAchieved: boolean;
+    isWeeklyGoalAchieved: boolean;
+  } | null>(null);
+
   const feedbackTimeoutRef = useRef<number | null>(null);
-  // timings (should match `QuizProgressBar` animation duration)
-  const ANIMATION_DURATION = 500; // ms (kept in sync with QuizProgressBar)
-  const FEEDBACK_DELAY_AFTER_ANIMATION = 400; // ms pause before showing feedback
-  const LAST_QUESTION_EXTRA_DELAY = 400; // ms 마지막 문제에서 아이콘 전환 후 추가 딜레이
 
-  const navigate = useNavigate();
+  const isRetry = mission.attemptCount > 0;
 
-  const currentQuestion = MOCK_QUIZ_DATA.questions[currentQuestionIndex];
-  const isLastQuestion =
-    currentQuestionIndex === MOCK_QUIZ_DATA.totalQuestions - 1;
+  const ANIMATION_DURATION = 500;
+  const FEEDBACK_DELAY_AFTER_ANIMATION = 400;
+  const LAST_QUESTION_EXTRA_DELAY = 400;
+
+  const currentQuestion = mission.quizzes[currentQuestionIndex];
+  const isLastQuestion = currentQuestionIndex === mission.quizzes.length - 1;
 
   const handleSubmit = () => {
     if (!currentQuestion) return;
 
     const userAnswer =
-      currentQuestion.questionType === "multiple"
-        ? selectedOption || ""
-        : userInput;
+      currentQuestion.type === "MULTIPLE" ? selectedOption || "" : userInput;
 
-    const correct =
-      userAnswer.trim().toLowerCase() ===
-      currentQuestion.correctAnswer.toLowerCase();
+    let correct = false;
+    if (currentQuestion.type === "MULTIPLE") {
+      const selectedIndex = currentQuestion.option.indexOf(userAnswer);
+      correct = String(selectedIndex + 1) === currentQuestion.answer;
+    } else {
+      correct =
+        userAnswer.trim().toLowerCase() ===
+        currentQuestion.answer.toLowerCase();
+    }
 
     setAnswers([
       ...answers,
       {
-        questionId: currentQuestion.questionId,
+        quizId: currentQuestion.quizId,
         userAnswer,
         isCorrect: correct,
       },
@@ -102,7 +96,6 @@ export default function QuizPage() {
     setCompletedQuestions(completedQuestions + 1);
     setIsAnimating(true);
 
-    // Fallback: show feedback after animation + extra delay
     if (feedbackTimeoutRef.current)
       window.clearTimeout(feedbackTimeoutRef.current);
 
@@ -121,8 +114,61 @@ export default function QuizPage() {
 
   const handleNext = () => {
     if (isLastQuestion) {
-      setShowFeedback(false);
-      setShowMissionResult(true);
+      const allAnswers = [
+        ...answers,
+        ...(answers.find((a) => a.quizId === currentQuestion.quizId)
+          ? []
+          : [
+              {
+                quizId: currentQuestion.quizId,
+                userAnswer:
+                  currentQuestion.type === "MULTIPLE"
+                    ? selectedOption || ""
+                    : userInput,
+                isCorrect: isCorrect || false,
+              },
+            ]),
+      ];
+
+      submitQuiz.mutate(
+        {
+          missionId,
+          submissions: {
+            submissions: allAnswers.map((a) => {
+              const quiz = mission.quizzes.find((q) => q.quizId === a.quizId);
+              let answerToSend = a.userAnswer;
+
+              if (quiz?.type === "MULTIPLE" && quiz.option) {
+                const optionIndex = quiz.option.indexOf(a.userAnswer);
+                if (optionIndex !== -1) {
+                  answerToSend = String(optionIndex + 1);
+                }
+              }
+
+              return {
+                quizId: a.quizId,
+                answer: answerToSend,
+              };
+            }),
+          },
+        },
+        {
+          onSuccess: (data) => {
+            if (isRetry) {
+              navigate("/");
+            } else {
+              setQuizResult({
+                isSuccess: data.isSuccess,
+                totalAcorns: data.totalReward,
+                isDailyGoalAchieved: data.dailyGoalAchieved,
+                isWeeklyGoalAchieved: data.weeklyGoalAchieved,
+              });
+              setShowFeedback(false);
+              setShowMissionResult(true);
+            }
+          },
+        }
+      );
     } else {
       setCurrentQuestionIndex((prev) => prev + 1);
       setUserInput("");
@@ -142,35 +188,31 @@ export default function QuizPage() {
   }, []);
 
   const isAnswerEmpty = () => {
-    if (currentQuestion.questionType === "multiple") {
+    if (currentQuestion.type === "MULTIPLE") {
       return !selectedOption;
     }
     return userInput.trim() === "";
   };
 
-  if (showMissionResult) {
+  if (showMissionResult && quizResult) {
     const correctCount = answers.filter((a) => a.isCorrect).length;
     const questionResults = answers.map((a) => ({
-      type:
-        MOCK_QUIZ_DATA.questions.find((q) => q.questionId === a.questionId)
-          ?.questionType || "",
+      type: mission.quizzes.find((q) => q.quizId === a.quizId)?.type || "",
       isCorrect: a.isCorrect,
     }));
 
     return (
       <MissionResult
-        totalAcorns={correctCount}
+        totalAcorns={quizResult.totalAcorns}
         questionResults={questionResults}
         correctCount={correctCount}
-        totalQuestions={MOCK_QUIZ_DATA.totalQuestions}
-        missionName={MOCK_QUIZ_DATA.category}
-        // TODO: 임시 테스트 — 확인 후 제거
-        isDailyGoalAchieved
-        isWeeklyGoalAchieved
+        totalQuestions={mission.quizzes.length}
+        missionName={mission.interest}
+        isDailyGoalAchieved={quizResult.isDailyGoalAchieved}
+        isWeeklyGoalAchieved={quizResult.isWeeklyGoalAchieved}
         onClose={() => navigate("/")}
         onRetryWrong={() => {
-          // TODO: 오답 풀기 로직
-          navigate("/");
+          navigate(`/mission/entry/${missionId}`);
         }}
       />
     );
@@ -178,42 +220,55 @@ export default function QuizPage() {
 
   if (showFeedback && isCorrect !== null) {
     const userAnswer =
-      currentQuestion.questionType === "multiple"
-        ? selectedOption || ""
-        : userInput;
+      currentQuestion.type === "MULTIPLE" ? selectedOption || "" : userInput;
 
     return (
       <QuizResult
         isCorrect={isCorrect}
         userAnswer={userAnswer}
-        category={MOCK_QUIZ_DATA.category}
-        questionText={currentQuestion.questionText}
+        category={mission.interest}
+        questionText={currentQuestion.question}
         explanation={currentQuestion.explanation}
-        questionType={currentQuestion.questionType}
+        questionType={
+          currentQuestion.type === "SHORT"
+            ? "subjective"
+            : currentQuestion.type === "OX"
+              ? "ox"
+              : "multiple"
+        }
         isLastQuestion={isLastQuestion}
+        isRetry={isRetry}
         onNext={handleNext}
       />
     );
   }
+
+  const mappedQuestion = mapQuizToQuestion(currentQuestion);
 
   return (
     <div className="-mb-96 flex min-h-screen flex-col">
       <Header
         title="미션 수행하기"
         property="common"
-        onBack={() => setShowQuitPopup(true)}
+        onBack={() => {
+          if (isRetry) {
+            navigate("/");
+          } else {
+            setShowQuitPopup(true);
+          }
+        }}
       />
 
       <div className="px-21 pt-24">
         <QuizProgress
           current={completedQuestions}
-          total={MOCK_QUIZ_DATA.totalQuestions}
+          total={mission.quizzes.length}
         />
       </div>
 
       <div className="flex w-full px-21 pt-20">
         <QuizCard
-          question={currentQuestion}
+          question={mappedQuestion}
           userInput={userInput}
           selectedOption={selectedOption}
           showFeedback={showFeedback}
@@ -233,11 +288,28 @@ export default function QuizPage() {
       </div>
       {showQuitPopup && (
         <QuizQuitPopup
-          acorns={MOCK_QUIZ_DATA.rewardAcorns}
+          acorns={5}
           onQuit={() => navigate("/")}
           onStay={() => setShowQuitPopup(false)}
         />
       )}
     </div>
+  );
+}
+
+export default function QuizPage() {
+  const { missionId } = useParams<{ missionId: string }>();
+  const numericMissionId = Number(missionId);
+
+  return (
+    <Suspense
+      fallback={
+        <div className="flex min-h-screen items-center justify-center">
+          <LoadingSpinner className="size-60" />
+        </div>
+      }
+    >
+      <QuizPageContent missionId={numericMissionId} />
+    </Suspense>
   );
 }
