@@ -1,6 +1,6 @@
 import { authAPI } from "@/apis/axios";
 import type { ApiResponse } from "@/types/api/api";
-import type { PolicyAgreementsResult } from "@/types/policy/policy";
+import type { PolicyAgreementsResult } from "@/types/terms/terms";
 
 export interface PolicyAgreementPayload {
   agreements: {
