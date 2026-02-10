@@ -1,6 +1,4 @@
-import { Suspense } from "react";
 import { createBrowserRouter, type RouteObject } from "react-router-dom";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import LoginPage from "@/pages/auth/login/Login";
 import OAuthCallback from "@/pages/auth/oauth-callback/OAuthCallback";
 import Password from "@/pages/auth/password/Password";
@@ -11,6 +9,7 @@ import MissionEntry from "@/pages/mission/entry/MissionEntry";
 import QuizPage from "@/pages/mission/quiz/QuizPage";
 import MyPage from "@/pages/mypage/MyPage";
 import Onboarding from "@/pages/onboarding/Onboarding";
+import OnboardingRecommend from "@/pages/onboarding/OnboardingRecommend";
 import Pocket from "@/pages/pocket/Pocket";
 import Search from "@/pages/search/Search";
 import AccountInfoPage from "@/pages/settings/AccountInfoPage";
@@ -88,6 +87,11 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
         handle: { bgColor: "bg-gray-50", hideBottomNav: true },
       },
       {
+        path: "onboarding/recommend",
+        element: <OnboardingRecommend />,
+        handle: { bgColor: "bg-gray-50", hideBottomNav: true },
+      },
+      {
         path: "mission",
         element: <MissionEntry />,
         handle: { bgColor: "bg-gray-100", hideBottomNav: true },
@@ -159,11 +163,7 @@ const routes: (RouteObject & { handle?: RouteHandle })[] = [
       },
       {
         path: "/settings/inquiry/:inquiryId",
-        element: (
-          <Suspense fallback={<LoadingSpinner />}>
-            <InquiryDetailPage />
-          </Suspense>
-        ),
+        element: <InquiryDetailPage />,
         handle: { hideBottomNav: true },
       },
     ],
