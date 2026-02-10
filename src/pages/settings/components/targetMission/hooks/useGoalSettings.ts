@@ -85,11 +85,9 @@ export const useGoalSettings = (options?: UseGoalSettingsOptions) => {
       goalData.dailyMissionGoal ??
       last?.count ??
       MIN_COUNT;
-    const nextDuration =
-      fromGoalRetention(
-        goalData.pendingGoalRetention ?? goalData.goalRetention
-      ) ?? last?.duration ?? "keep";
-
+    const nextDuration = fromGoalRetention(
+      goalData.pendingGoalRetention ?? goalData.goalRetention
+    );
     setIsOn(goalEnabled);
     setDailyCount(nextCount);
     setDuration(nextDuration);
@@ -172,8 +170,8 @@ export const useGoalSettings = (options?: UseGoalSettingsOptions) => {
       ...(initial && !initial.goalEnabled
         ? { dailyMissionGoal: dailyCount }
         : dailyCount !== initial?.count
-        ? { dailyMissionGoal: dailyCount }
-        : {}),
+          ? { dailyMissionGoal: dailyCount }
+          : {}),
       ...(duration !== initial?.duration
         ? { goalRetention: toGoalRetention(duration) }
         : {}),
