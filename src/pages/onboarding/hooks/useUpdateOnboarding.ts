@@ -11,7 +11,7 @@ export const useUpdateOnboarding = () => {
   return useMutation({
     mutationFn: (payload: OnboardingRequest) => updateOnboarding(payload),
     onSuccess: () => {
-      navigate("/");
+      navigate("/onboarding/recommend");
     },
     onError: (error) => {
       handleError(error);
