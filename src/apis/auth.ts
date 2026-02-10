@@ -42,6 +42,20 @@ const toApiErrorFromAxios = (error: unknown): ApiError | null => {
   return apiError;
 };
 
+const createApiErrorFromResponse = (data: ApiResponse<unknown>): ApiError => {
+  const apiError = new Error(data.message) as ApiError;
+  apiError.serverCode = data.code;
+  apiError.serverMessage = data.message;
+  apiError.serverResult = data.result;
+  return apiError;
+};
+
+const isApiError = (error: unknown): error is ApiError =>
+  error instanceof Error &&
+  "serverCode" in error &&
+  "serverMessage" in error &&
+  "serverResult" in error;
+
 export const login = async (payload: LoginRequest) => {
   try {
     const { data } = await publicAPI.post<ApiResponse<LoginResult>>(
@@ -50,11 +64,12 @@ export const login = async (payload: LoginRequest) => {
     );
 
     if (!data.isSuccess) {
-      throw new Error(data.message);
+      throw createApiErrorFromResponse(data);
     }
 
     return data.result;
   } catch (error) {
+    if (isApiError(error)) throw error;
     const apiError = toApiErrorFromAxios(error);
     if (apiError) throw apiError;
     throw error;
@@ -69,11 +84,12 @@ export const signUp = async (payload: SignupRequest) => {
     );
 
     if (!data.isSuccess) {
-      throw new Error(data.message);
+      throw createApiErrorFromResponse(data);
     }
 
     return data.result;
   } catch (error) {
+    if (isApiError(error)) throw error;
     const apiError = toApiErrorFromAxios(error);
     if (apiError) throw apiError;
     throw error;
@@ -109,15 +125,12 @@ export const sendVerificationEmail = async (
     >("/auth/email/verification-codes", payload);
 
     if (!data.isSuccess) {
-      const apiError = new Error(data.message) as ApiError;
-      apiError.serverCode = data.code;
-      apiError.serverMessage = data.message;
-      apiError.serverResult = data.result;
-      throw apiError;
+      throw createApiErrorFromResponse(data);
     }
 
     return data.result;
   } catch (error) {
+    if (isApiError(error)) throw error;
     const apiError = toApiErrorFromAxios(error);
     if (apiError) throw apiError;
     throw error;
@@ -138,15 +151,12 @@ export const verifyEmailAuthCode = async (
     >("/auth/email/verifications", payload);
 
     if (!data.isSuccess) {
-      const apiError = new Error(data.message) as ApiError;
-      apiError.serverCode = data.code;
-      apiError.serverMessage = data.message;
-      apiError.serverResult = data.result;
-      throw apiError;
+      throw createApiErrorFromResponse(data);
     }
 
     return data.result;
   } catch (error) {
+    if (isApiError(error)) throw error;
     const apiError = toApiErrorFromAxios(error);
     if (apiError) throw apiError;
     throw error;
