@@ -45,7 +45,7 @@ export default function QuizAnswer({
           onClick={() => onInputChange("O")}
           className="flex flex-1 flex-col items-center"
         >
-          <span className="body-2 text-moamoa-300">주장했다</span>
+          <span className="body-2 text-moamoa-300">그렇다</span>
           <div
             className={`mt-8 flex w-full items-center justify-center rounded-xl border-2 px-25 py-24 transition-colors ${
               userInput === "O"
@@ -61,7 +61,7 @@ export default function QuizAnswer({
           onClick={() => onInputChange("X")}
           className="flex flex-1 flex-col items-center"
         >
-          <span className="body-2 text-red-400">주장하지 않았다</span>
+          <span className="body-2 text-red-400">아니다</span>
           <div
             className={`mt-8 flex w-full items-center justify-center rounded-xl border-2 p-28 transition-colors ${
               userInput === "X"
@@ -86,7 +86,7 @@ export default function QuizAnswer({
               key={option}
               type="button"
               onClick={() => onOptionSelect(option)}
-              className={`body-2 flex h-42 w-full items-center justify-center rounded-md border transition-colors ${
+              className={`body-2 flex w-full items-center justify-center rounded-md border px-9 py-9 transition-colors ${
                 selectedOption === option
                   ? "border-moamoa-300 bg-moamoa-50 text-moamoa-500"
                   : "border-moamoa-100 bg-white text-black hover:bg-moamoa-50"

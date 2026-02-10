@@ -4,14 +4,22 @@ import { storage } from "@/apis/storage";
 import { useAuthStore } from "@/store/auth";
 
 export const useAuth = () => {
-  const { isLoading, isAuthenticated, policyAgreed, setAuthenticated, setLoading } =
-    useAuthStore();
+  const {
+    isLoading,
+    isAuthenticated,
+    policyAgreed,
+    setAuthenticated,
+    setLoading,
+    setPolicyAgreed,
+  } = useAuthStore();
 
   useEffect(() => {
     const checkAuth = async () => {
       const accessToken = storage.getToken();
       if (accessToken) {
         setAuthenticated(true);
+        const storedPolicyAgreed = storage.getPolicyAgreed();
+        setPolicyAgreed(storedPolicyAgreed ?? true);
         setLoading(false);
         return;
       }
@@ -19,6 +27,8 @@ export const useAuth = () => {
         const newToken = await refreshAccessToken();
         storage.setToken(newToken);
         setAuthenticated(true);
+        const storedPolicyAgreed = storage.getPolicyAgreed();
+        setPolicyAgreed(storedPolicyAgreed ?? true);
       } catch {
         storage.removeToken();
         setAuthenticated(false);
@@ -28,7 +38,7 @@ export const useAuth = () => {
     };
 
     checkAuth();
-  }, [setAuthenticated, setLoading]);
+  }, [setAuthenticated, setLoading, setPolicyAgreed]);
 
   return { isLoading, isAuthenticated, policyAgreed };
 };
