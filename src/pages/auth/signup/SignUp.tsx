@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { storage } from "@/apis/storage";
 import { Button } from "@/components/common/button/Button";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { Modal } from "@/pages/auth/components/Modal";
@@ -9,6 +10,7 @@ import {
   getPasswordStrength,
   PASSWORD_INVALID_MESSAGE,
 } from "@/pages/auth/utils/passwordStrength";
+import { useAuthStore } from "@/store/auth";
 import { useSignUpStore } from "@/store/signup";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
@@ -59,6 +61,8 @@ export default function SignUp() {
     agreements,
     reset: resetSignUp,
   } = useSignUpStore();
+  const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
+  const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
 
   const { mutateAsync: sendVerificationEmail, isPending: isSendingEmail } =
     useSendVerificationEmail();
@@ -228,15 +232,19 @@ export default function SignUp() {
     }));
 
     try {
-      await signUp({
+      const result = await signUp({
         email,
         password,
         passwordCheck: passwordConfirm,
         name: name.trim(),
         agreedTerms,
       });
+      storage.setToken(result.token.accessToken);
+      storage.setPolicyAgreed(result.policyAgreed);
+      setAuthenticated(true);
+      setPolicyAgreed(result.policyAgreed);
       resetSignUp();
-      navigate("/onboarding");
+      navigate("/home", { replace: true });
     } catch (error) {
       const serverMessage = (error as { serverMessage?: string })
         ?.serverMessage;
