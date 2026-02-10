@@ -76,8 +76,5 @@ export const useScrapMission = () => {
       }
       handleError(error);
     },
-    onSettled: async () => {
-      await queryClient.invalidateQueries({ queryKey: ["missions"] });
-    },
   });
 };

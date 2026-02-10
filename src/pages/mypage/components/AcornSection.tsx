@@ -10,13 +10,7 @@ export default function AcornSection() {
   return (
     <>
       <AcornSummary count={data.point} />
-      <Suspense
-        fallback={
-          <div className="flex w-full items-center justify-center py-40">
-            <LoadingSpinner className="size-60" />
-          </div>
-        }
-      >
+      <Suspense fallback={<LoadingSpinner className="mx-auto mt-20 size-28" />}>
         <AcornHistory />
       </Suspense>
     </>

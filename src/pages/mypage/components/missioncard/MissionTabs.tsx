@@ -55,7 +55,7 @@ export default function MissionTabs({ subTab, doneView, onSelect }: Props) {
             isRetryView ? segmentActive : segmentInactive,
           ].join(" ")}
         >
-          다시 풀기
+          다시 풀기{" "}
         </Button>
       </div>
     </div>
