@@ -10,7 +10,6 @@ import InterestsSuccessModal from "@/pages/settings/components/InterestsSuccessM
 import { useMyMissionsInfinite } from "../../hooks/useMyMissionsInfinite";
 import type {
   MissionCategory,
-  MissionItem,
   MissionSubTabKey,
 } from "../../types/mypage.type";
 import MissionFilters from "../filters/MissionFilters";
