@@ -4,7 +4,7 @@ import IcTears from "@/assets/icons/mission/ic_tears.svg?react";
 interface WeeklyGoalFailureProps {
   completedMissions: number;
   totalMissions: number;
-  onClose: () => void;
+  onClose: () => void | Promise<void>;
 }
 
 export default function WeeklyGoalFailure({
@@ -25,7 +25,7 @@ export default function WeeklyGoalFailure({
         <IcTears className="h-17 w-112" />
       </div>
 
-      <div className="z-35 mt-228 w-full rounded-[20px] border-2 border-moamoa-100 bg-white px-23 pt-32 pb-28">
+      <div className="z-35 mt-228 w-full rounded-2xl border-2 border-moamoa-100 bg-white px-23 pt-32 pb-28">
         <div className="flex flex-col items-center gap-12">
           <p className="heading-2 text-center text-black">
             이번주 목표 중 <br />

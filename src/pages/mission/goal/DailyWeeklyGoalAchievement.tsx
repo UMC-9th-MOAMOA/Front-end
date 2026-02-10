@@ -22,7 +22,6 @@ interface DailyWeeklyGoalAchievementProps {
   questionResults: QuestionResult[];
   dailyBonusAcorns?: number;
   weeklyBonusAcorns?: number;
-  onClose: () => void;
 }
 
 export default function DailyWeeklyGoalAchievement({
@@ -31,7 +30,6 @@ export default function DailyWeeklyGoalAchievement({
   questionResults,
   dailyBonusAcorns = 1,
   weeklyBonusAcorns = 1,
-  onClose,
 }: DailyWeeklyGoalAchievementProps) {
   const navigate = useNavigate();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -160,14 +158,14 @@ export default function DailyWeeklyGoalAchievement({
         <div className="flex w-full gap-12">
           <button
             type="button"
-            onClick={onClose}
+            onClick={() => navigate("/mypage?tab=mission")}
             className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
           >
             확인
           </button>
           <button
             type="button"
-            onClick={() => navigate("/")}
+            onClick={() => navigate("/home")}
             className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-300 py-12 text-white"
           >
             상점으로

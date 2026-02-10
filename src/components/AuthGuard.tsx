@@ -34,13 +34,20 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
       return;
     }
 
-    if (isAuthenticated && policyAgreed === false && !isTermsPage) {
-      navigate("/terms", { replace: true });
+    if (isAuthenticated && policyAgreed !== true && !isTermsPage) {
+      navigate("/terms", { replace: true, state: { from: location.pathname } });
       return;
     }
 
     if (location.pathname === "/login" && isAuthenticated) {
-      navigate(policyAgreed === false ? "/terms" : "/home", { replace: true });
+      if (policyAgreed !== true) {
+        navigate("/terms", {
+          replace: true,
+          state: { from: location.pathname },
+        });
+      } else {
+        navigate("/home", { replace: true });
+      }
     }
   }, [
     location.pathname,
@@ -64,7 +71,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     return null;
   }
 
-  if (isAuthenticated && policyAgreed === false && !isTermsPage) {
+  if (isAuthenticated && policyAgreed !== true && !isTermsPage) {
     return null;
   }
 

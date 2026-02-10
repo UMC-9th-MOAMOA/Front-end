@@ -8,20 +8,20 @@ import IcSuccessSubjective from "@/assets/icons/mission/ic_success_subjective.sv
 interface QuizSuccessResultProps {
   userAnswer: string;
   category: string;
-  questionText: string;
   explanation?: string;
   questionType: "subjective" | "ox" | "multiple";
   isLastQuestion: boolean;
+  isRetry?: boolean;
   onNext: () => void;
 }
 
 export default function QuizSuccessResult({
   userAnswer,
   category,
-  questionText,
   explanation,
   questionType,
   isLastQuestion,
+  isRetry = false,
   onNext,
 }: QuizSuccessResultProps) {
   return (
@@ -47,9 +47,9 @@ export default function QuizSuccessResult({
         {questionType === "subjective" && (
           <>
             <p className="heading-3 pt-8 text-center text-black">정답이에요</p>
-            <div className="mt-17 flex items-center justify-center gap-4 rounded-xl border-2 border-blue-400 bg-moamoa-50 px-90 py-9">
+            <div className="mt-17 flex items-center justify-center gap-4 rounded-xl border-2 border-blue-400 bg-moamoa-50 px-9 py-9">
               <span className="body-2-1 text-black">{userAnswer}</span>
-              <IcSubjectiveCheck />
+              <IcSubjectiveCheck className="h-24 w-24" />
             </div>
           </>
         )}
@@ -61,21 +61,20 @@ export default function QuizSuccessResult({
           </div>
         )}
         {questionType === "multiple" && (
-          <div className="mt-35 flex items-center justify-center gap-4 rounded-xl border-2 border-blue-400 bg-moamoa-50 px-90 py-9">
+          <div className="mt-35 flex items-center justify-center gap-4 rounded-xl border-2 border-blue-400 bg-moamoa-50 px-9 py-9">
             <span className="body-2-1 text-black">{userAnswer}</span>
-            <IcSubjectiveCheck />
+            <IcSubjectiveCheck className="h-24 w-24" />
           </div>
         )}
 
         <div
           className={`${questionType === "multiple" ? "mt-37" : "mt-19"} rounded-2xl bg-[#F3F7FE] pt-14 pr-20 pb-23 pl-20`}
         >
-          <span className="body-3 text-moamoa-300">{category}</span>
-          <p className="heading-4 pt-4 text-black">{questionText}</p>
+          <span className="body-3 text-moamoa-300">{category} 미션</span>
           {explanation && (
-            <div className="mt-18 flex gap-7">
-              <div className="h-75 w-2 shrink-0 rounded-full bg-gray-400" />
-              <p className="body-2 text-gray-400">{explanation}</p>
+            <div className="mt-18 flex items-center gap-9">
+              <div className="w-2 shrink-0 self-stretch rounded-full bg-moamoa-200" />
+              <p className="body-4 text-moamoa-700">{explanation}</p>
             </div>
           )}
         </div>
@@ -92,7 +91,11 @@ export default function QuizSuccessResult({
           onClick={onNext}
           className="body-2-1 mt-18 h-48 w-full rounded-xl bg-moamoa-300 text-white"
         >
-          {isLastQuestion ? "결과 확인하기" : "다음 문제"}
+          {isLastQuestion
+            ? isRetry
+              ? "미션 완료하기"
+              : "결과 확인하기"
+            : "다음 문제"}
         </button>
       </div>
     </div>
