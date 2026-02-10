@@ -12,7 +12,7 @@ interface NavItemProps {
 
 const NAV_ITEMS: NavItemProps[] = [
   {
-    to: "/",
+    to: "/home",
     label: "홈",
     Icon: IcHome,
   },
