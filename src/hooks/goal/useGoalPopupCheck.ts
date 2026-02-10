@@ -36,15 +36,16 @@ export const useGoalPopupCheck = () => {
         (p) => p.goalResultId !== currentPopup.goalResultId
       );
 
+      if (navigateToSearch) {
+        setShouldNavigateToSearch(true);
+      }
+
       if (remainingPopups.length > 0) {
         setPopupQueue(remainingPopups);
         setCurrentPopup(remainingPopups[0]);
       } else {
         setPopupQueue([]);
         setCurrentPopup(null);
-        if (navigateToSearch) {
-          setShouldNavigateToSearch(true);
-        }
       }
     } catch (error) {
       console.error("Goal popup 확인 처리 실패:", error);
