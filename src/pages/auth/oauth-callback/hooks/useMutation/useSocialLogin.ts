@@ -36,7 +36,7 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
         return;
       }
 
-      navigate(result.onboardingCompleted ? "/" : "/onboarding", {
+      navigate(result.onboardingCompleted ? "/home" : "/onboarding", {
         replace: true,
       });
     },

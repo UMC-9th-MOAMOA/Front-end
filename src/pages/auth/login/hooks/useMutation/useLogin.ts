@@ -48,7 +48,7 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
         });
         return;
       }
-      navigate(result.onboardingCompleted ? "/" : "/onboarding");
+      navigate(result.onboardingCompleted ? "/home" : "/onboarding");
     },
     onError: (error) => {
       const apiError = error as ApiError;
