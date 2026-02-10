@@ -4,11 +4,11 @@ import IcMinus from "@/assets/icons/ic_minus.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { useMyWalletHistory } from "../hooks/useMyWalletHistory";
 import type {
   AcornHistoryFilterKey,
   AcornHistorySortKey,
 } from "../types/mypage.type";
+import { useMyWalletHistory } from "../hooks/useMyWalletHistory";
 import AcornHistoryFilter, {
   type DoneMissionOption,
 } from "./filters/AcornHistoryFilter";
@@ -113,10 +113,9 @@ export default function AcornHistory() {
                 return (
                   <li
                     key={
-                      item.walletHistoryId ??
-                      `${item.createdAt}-${item.type}-${index}`
+                      item.walletHistoryId ?? `${item.createdAt}-${item.type}-${index}`
                     }
-                    className="border-gray-400 border-b py-4"
+                    className="border-b border-gray-400 py-4"
                   >
                     <div className="flex h-106 w-full flex-col items-start justify-center gap-4 self-stretch px-17 py-12">
                       <div className="body-2 flex items-center gap-4 text-gray-500">
@@ -130,26 +129,20 @@ export default function AcornHistory() {
                       <div className="flex h-40 w-full items-center">
                         <div className="flex h-28 flex-1 items-center gap-12 truncate">
                           {item.itemType && (
-                            <span className="body-4 flex h-27 w-60 flex-shrink-0 items-center justify-center gap-4 rounded-sm bg-gray-100 px-16 py-5 text-gray-700">
+                            <span className="body-4 flex h-27 w-60 flex-shrink-0 items-center justify-center gap-4 rounded-[8px] bg-gray-100 px-16 py-5 text-gray-700">
                               {ITEM_TYPE_LABEL[item.itemType] ?? item.itemType}
                             </span>
                           )}
-                          <span className="heading-5 truncate pr-5 text-black">
+                          <span className="heading-5 truncate text-black">
                             {getTitle(item.title, item.categoryLabel)}
                           </span>
                         </div>
 
                         <div className="flex items-center gap-4">
                           {isMinus ? (
-                            <IcMinus
-                              className="h-16 w-16 shrink-0"
-                              aria-hidden
-                            />
+                            <IcMinus className="h-16 w-16 shrink-0" aria-hidden />
                           ) : (
-                            <IcPlus
-                              className="h-16 w-16 shrink-0"
-                              aria-hidden
-                            />
+                            <IcPlus className="h-16 w-16 shrink-0" aria-hidden />
                           )}
                           <span className="heading-5 text-black">
                             {Math.abs(delta)}

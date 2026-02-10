@@ -1,19 +1,9 @@
-﻿import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useMemo, useRef, useState } from "react";
 import IcSadSquirrel from "@/assets/icons/ic_sadsquirrel.svg?react";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
-import MissionCard from "@/components/MissionCard";
-import { CATEGORY_ID_MAP } from "@/constants/missions/categories";
-import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
-import { useScrapMission } from "@/hooks/useScrapMission";
-import RetryMissionModal from "../RetryMissionModal";
-import { useMyMissionsInfinite } from "../../hooks/useMyMissionsInfinite";
-import type {
-  MissionCategory,
-  MissionItem,
-  MissionSubTabKey,
-} from "../../types/mypage.type";
+import { mockDoneMissions, mockLikedMissions } from "../../mocks/mypage.mock";
+import type { MissionItem, MissionSubTabKey } from "../../types/mypage.type";
 import MissionFilters from "../filters/MissionFilters";
+import MissionCard from "./MissionCard";
 import MissionTabs from "./MissionTabs";
 
 import type {
@@ -24,64 +14,72 @@ import type {
 export default function MissionTab() {
   const [subTab, setSubTab] = useState<MissionSubTabKey>("liked");
   const [doneView, setDoneView] = useState<"done" | "retry">("done");
-  const [retryModalOpen, setRetryModalOpen] = useState(false);
-  const [retryMissionId, setRetryMissionId] = useState<string | null>(null);
 
   const [timeSort, setTimeSort] = useState<MissionTimeSort>("short");
   const [category, setCategory] = useState<MissionCategoryFilter>("all");
 
-  const status =
-    subTab === "liked" ? "SCRAP" : doneView === "done" ? "COMPLETE" : "RETRY";
-  const condition =
-    timeSort === "short"
-      ? "TIME_ASC"
-      : timeSort === "long"
-        ? "TIME_DESC"
-        : "LATEST";
-  const categoryId =
-    category === "all"
-      ? undefined
-      : CATEGORY_ID_MAP[category as MissionCategory];
+  const [likedList, setLikedList] = useState<MissionItem[]>(mockLikedMissions);
+  const doneList = mockDoneMissions;
 
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useMyMissionsInfinite({
-      status,
-      condition,
-      categoryId,
-    });
+  const loadSize = 6;
+  const [visibleCount, setVisibleCount] = useState(loadSize);
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
 
-  const scrapMutation = useScrapMission();
-  const { ref } = useInfiniteScroll({
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-  });
+  const baseList = subTab === "liked" ? likedList : doneList;
+  const actionLabel = subTab === "liked" ? "시작하기" : "자세히 보기";
 
-  const missions = data.pages.flatMap((page) => page.missions);
-  const visibleMissions =
-    status === "SCRAP" ? missions.filter((m) => m.isScrapped) : missions;
-  const list: MissionItem[] = visibleMissions.map((m) => ({
-    id: String(m.missionId),
-    title: m.title,
-    expectedMinutes: m.durationMinutes,
-    category: m.category as MissionCategory,
-    quizType: "OX",
-    liked: m.isScrapped,
-    done: subTab === "done",
-  }));
+  const list = useMemo(() => {
+    let copied = [...baseList];
 
-  const actionLabel =
-    subTab === "liked"
-      ? "시작하기"
-      : doneView === "retry"
-        ? "다시 풀기"
-        : "자세히 보기";
-  const hideHeart = subTab !== "liked";
+    if (category !== "all") {
+      copied = copied.filter((m) => m.category === category);
+    }
 
-  const navigate = useNavigate();
+    if (timeSort === "short")
+      copied.sort((a, b) => a.expectedMinutes - b.expectedMinutes);
+    if (timeSort === "long")
+      copied.sort((a, b) => b.expectedMinutes - a.expectedMinutes);
+    if (timeSort === "recent") {
+    }
+
+    return copied;
+  }, [baseList, timeSort, category]);
+
+  useEffect(() => {
+    setVisibleCount(loadSize);
+  }, [list]);
+
+  const visibleList = list.slice(0, visibleCount);
+  const hasMore = visibleCount < list.length;
+
+  useEffect(() => {
+    if (!hasMore) return;
+    const node = sentinelRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0]?.isIntersecting) {
+          setVisibleCount((prev) => Math.min(prev + loadSize, list.length));
+        }
+      },
+      { rootMargin: "200px", threshold: 0 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, [hasMore, list.length]);
+
+  const toggleLike = (id: string) => {
+    setLikedList((prev) =>
+      prev
+        .map((m) => (m.id === id ? { ...m, liked: !m.liked } : m))
+        .filter((m) => m.liked)
+    );
+  };
 
   const goDetail = (id: string) => {
-    navigate(`/mission/${id}`);
+    console.log("detail:", id);
   };
 
   return (
@@ -112,94 +110,32 @@ export default function MissionTab() {
               isEmpty={list.length === 0}
             />
 
-            <div className="flex w-full flex-col gap-16 pb-30">
+            <div className="flex w-full flex-col gap-16">
               {list.length === 0 ? (
                 <div className="mt-105 flex w-full flex-col items-center gap-4">
                   <p className="heading-5 text-gray-500">
-                    미션 내역이 없습니다
+                    이용 내역이 없습니다
                   </p>
                   <IcSadSquirrel aria-hidden />
                 </div>
               ) : (
-                list.map((m) => {
-                  const found = visibleMissions.find(
-                    (mission) => String(mission.missionId) === m.id
-                  );
-                  const keywords =
-                    found?.keywords && found.keywords.length > 0
-                      ? found.keywords
-                      : ["키워드", "키워드", "키워드"];
-
-                  const handleAction = () => {
-                    if (!found) return;
-                    if (subTab === "liked") {
-                      goDetail(String(found.missionId));
-                      return;
-                    }
-                    if (doneView === "retry") {
-                      setRetryMissionId(String(found.missionId));
-                      setRetryModalOpen(true);
-                      return;
-                    }
-                    navigate(`/mypage/mission/${found.missionId}`, {
-                      state: {
-                        title: found.title,
-                        keywords: found.keywords,
-                        minute: found.durationMinutes,
-                        category: found.category,
-                        videoUrl: found.videoUrl,
-                      },
-                    });
-                  };
-
-                  return (
-                    <MissionCard
-                      key={m.id}
-                      id={Number(m.id)}
-                      title={m.title}
-                      keywords={keywords}
-                      minute={m.expectedMinutes}
-                      category={m.category}
-                      quizCount={found?.quizCount ?? 0}
-                      isScrapped={m.liked}
-                      actionLabel={actionLabel}
-                      hideHeart={hideHeart}
-                      onHeartClick={() => {
-                        if (!found) return;
-                        scrapMutation.mutate({
-                          missionId: found.missionId,
-                          isScrapped: found.isScrapped,
-                        });
-                      }}
-                      onStartClick={handleAction}
-                    />
-                  );
-                })
+                visibleList.map((m) => (
+                  <MissionCard
+                    key={m.id}
+                    item={m}
+                    keywords={["키워드", "키워드", "키워드"]}
+                    onToggleLike={toggleLike}
+                    onClickDetail={goDetail}
+                    actionLabel={actionLabel}
+                    disableLike={subTab === "done"}
+                  />
+                ))
               )}
-              {hasNextPage && (
-                <div ref={ref} className="flex justify-center py-20">
-                  {isFetchingNextPage && <LoadingSpinner className="size-40" />}
-                </div>
-              )}
+              {hasMore && <div ref={sentinelRef} className="h-1 w-full" />}
             </div>
           </div>
         </div>
       </div>
-
-      <RetryMissionModal
-        open={retryModalOpen}
-        onConfirm={() => {
-          if (retryMissionId) {
-            goDetail(retryMissionId);
-          }
-          setRetryModalOpen(false);
-          setRetryMissionId(null);
-        }}
-        onCancel={() => {
-          setRetryModalOpen(false);
-          setRetryMissionId(null);
-        }}
-      />
     </section>
   );
 }
