@@ -84,7 +84,7 @@ export default function QuizProgressBar({
         </div>
       </div>
 
-      <p className="body-2 pt-10 text-center text-gray-600">
+      <p className="body-2 pt-10 text-center text-gray-700">
         {current}/{total}
       </p>
     </div>
