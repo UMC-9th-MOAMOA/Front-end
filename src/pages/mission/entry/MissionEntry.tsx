@@ -1,15 +1,18 @@
+import { QueryErrorResetBoundary } from "@tanstack/react-query";
 import type { ErrorInfo, ReactNode } from "react";
 import { Component, Suspense, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import MissionErrorToast from "@/pages/mission/components/MissionErrorToast";
 import { useChangeMissionStatus } from "@/pages/mission/hooks/useMutation/useChangeMissionStatus";
 import { useWatchMission } from "@/pages/mission/hooks/useMutation/useWatchMission";
 import { useMissionDetail } from "@/pages/mission/hooks/useQuery/useMissionDetail";
+import type { ApiError } from "@/types/api/api";
 import MissionInfoCard from "./components/MissionInfoCard";
 
 class MissionErrorBoundary extends Component<
-  { children: ReactNode },
+  { children: ReactNode; onReset?: () => void },
   { hasError: boolean }
 > {
   state = { hasError: false };
@@ -32,7 +35,10 @@ class MissionErrorBoundary extends Component<
           <button
             type="button"
             className="body-2 rounded-xl bg-moamoa-100 px-24 py-12 text-moamoa-500"
-            onClick={() => this.setState({ hasError: false })}
+            onClick={() => {
+              this.props.onReset?.();
+              this.setState({ hasError: false });
+            }}
           >
             다시 시도
           </button>
@@ -54,6 +60,12 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
 
   const watchMission = useWatchMission();
   const changeMissionStatus = useChangeMissionStatus();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleMutationError = (error: unknown) => {
+    const apiError = error as ApiError;
+    setErrorMessage(apiError.serverMessage || "오류가 발생했습니다.");
+  };
 
   const handleContentClick = () => {
     if (isContentWatched) return;
@@ -66,6 +78,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
         onSuccess: (data) => {
           setIsContentWatched(data.isContentWatched);
         },
+        onError: handleMutationError,
       });
     }, watchDuration);
   };
@@ -85,6 +98,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
         onSuccess: () => {
           navigate(`/mission/quiz/${missionId}`);
         },
+        onError: handleMutationError,
       }
     );
   };
@@ -92,7 +106,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
   const canStartQuiz = isContentWatched || mission.attemptCount > 0;
 
   return (
-    <div className="flex w-full flex-col items-center py-31">
+    <div className="flex w-full flex-col items-center py-30">
       <MissionInfoCard
         title={mission.title}
         interest={mission.interest}
@@ -104,6 +118,12 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
         onContentClick={handleContentClick}
         onQuizStart={handleStartQuiz}
       />
+      {errorMessage && (
+        <MissionErrorToast
+          message={errorMessage}
+          onClose={() => setErrorMessage(null)}
+        />
+      )}
     </div>
   );
 }
@@ -116,17 +136,21 @@ export default function MissionEntry() {
     <div className="-mb-96 flex min-h-screen flex-col">
       <Header title="미션 수행하기" property="common" />
 
-      <MissionErrorBoundary>
-        <Suspense
-          fallback={
-            <div className="flex flex-1 items-center justify-center">
-              <LoadingSpinner className="size-60" />
-            </div>
-          }
-        >
-          <MissionEntryContent missionId={numericMissionId} />
-        </Suspense>
-      </MissionErrorBoundary>
+      <QueryErrorResetBoundary>
+        {({ reset }) => (
+          <MissionErrorBoundary onReset={reset}>
+            <Suspense
+              fallback={
+                <div className="flex flex-1 items-center justify-center">
+                  <LoadingSpinner className="size-60" />
+                </div>
+              }
+            >
+              <MissionEntryContent missionId={numericMissionId} />
+            </Suspense>
+          </MissionErrorBoundary>
+        )}
+      </QueryErrorResetBoundary>
     </div>
   );
 }

@@ -1,9 +1,12 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
+import MissionErrorToast from "@/pages/mission/components/MissionErrorToast";
+import { useChangeMissionStatus } from "@/pages/mission/hooks/useMutation/useChangeMissionStatus";
 import { useSubmitMissionQuiz } from "@/pages/mission/hooks/useMutation/useSubmitMissionQuiz";
 import { useMissionDetail } from "@/pages/mission/hooks/useQuery/useMissionDetail";
+import type { ApiError } from "@/types/api/api";
 import type { Quiz } from "@/types/mission/mission";
 import MissionResult from "./components/MissionResult";
 import QuizCard from "./components/QuizCard";
@@ -38,6 +41,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
   const navigate = useNavigate();
   const { data: mission } = useMissionDetail(missionId);
   const submitQuiz = useSubmitMissionQuiz();
+  const changeMissionStatus = useChangeMissionStatus();
 
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [userInput, setUserInput] = useState("");
@@ -55,10 +59,16 @@ function QuizPageContent({ missionId }: { missionId: number }) {
     isDailyGoalAchieved: boolean;
     isWeeklyGoalAchieved: boolean;
   } | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const feedbackTimeoutRef = useRef<number | null>(null);
 
   const isRetry = mission.attemptCount > 0;
+
+  const handleMutationError = useCallback((error: unknown) => {
+    const apiError = error as ApiError;
+    setErrorMessage(apiError.serverMessage || "오류가 발생했습니다.");
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -187,6 +197,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
               setShowMissionResult(true);
             }
           },
+          onError: handleMutationError,
         }
       );
     } else {
@@ -221,7 +232,6 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         missionName={mission.interest}
         isDailyGoalAchieved={quizResult.isDailyGoalAchieved}
         isWeeklyGoalAchieved={quizResult.isWeeklyGoalAchieved}
-        onClose={() => navigate("/home")}
         onRetryWrong={() => {
           navigate(`/mission/entry/${missionId}`);
         }}
@@ -269,14 +279,14 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         }}
       />
 
-      <div className="px-21 pt-24">
+      <div className="pt-5">
         <QuizProgress
           current={completedQuestions}
           total={mission.quizzes.length}
         />
       </div>
 
-      <div className="flex w-full px-21 pt-20">
+      <div className="flex w-full pt-20">
         <QuizCard
           question={mappedQuestion}
           userInput={userInput}
@@ -288,7 +298,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
       </div>
 
       <div className="mt-auto flex justify-center pt-44 pb-42">
-        <div className="h-48 w-full px-25">
+        <div className="h-48 w-full">
           <QuizSubmitButton
             text={showFeedback ? "다음 문제" : "정답 확인하기"}
             disabled={
@@ -302,8 +312,19 @@ function QuizPageContent({ missionId }: { missionId: number }) {
       </div>
       {showQuitPopup && (
         <QuizQuitPopup
-          onQuit={() => navigate("/home")}
+          onQuit={() => {
+            changeMissionStatus.mutate(
+              { missionId, status: "FAIL" },
+              { onSettled: () => navigate("/home") }
+            );
+          }}
           onStay={() => setShowQuitPopup(false)}
+        />
+      )}
+      {errorMessage && (
+        <MissionErrorToast
+          message={errorMessage}
+          onClose={() => setErrorMessage(null)}
         />
       )}
     </div>
