@@ -59,7 +59,7 @@ const getInitialState = () => ({
   emailStatusText: "",
   emailStatusTone: "info" as EmailStatusTone,
   verifyModalType: null as VerifyModalType,
-  verifyModalMessage: "인증번호가 잘못 입력되었습니다.",
+  verifyModalMessage: "",
   resendCooldown: 0,
   showResendCountdown: false,
   password: "",

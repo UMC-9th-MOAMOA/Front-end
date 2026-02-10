@@ -1,5 +1,5 @@
 import { authAPI } from "@/apis/axios";
-import type { ApiResponse } from "@/types/api/api";
+import type { ApiError, ApiResponse } from "@/types/api/api";
 import type { PolicyAgreementsResult } from "@/types/terms/terms";
 
 export interface PolicyAgreementPayload {
@@ -18,7 +18,11 @@ export const submitPolicyAgreements = async (
   );
 
   if (!data.isSuccess) {
-    throw new Error(data.message);
+    const apiError = new Error(data.message) as ApiError;
+    apiError.serverCode = data.code;
+    apiError.serverMessage = data.message;
+    apiError.serverResult = data.result;
+    throw apiError;
   }
 
   return data.result;
