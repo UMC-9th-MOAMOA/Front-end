@@ -14,10 +14,16 @@ export default function TermsPage() {
   const location = useLocation();
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
 
-  const { agreements: initialChecked, from } = (location.state as {
+  const { agreements: initialChecked, from, onboardingCompleted } = (location
+    .state as {
     agreements?: Record<TermKey, boolean>;
     from?: string;
-  } | null) ?? { agreements: undefined, from: undefined };
+    onboardingCompleted?: boolean;
+  } | null) ?? {
+    agreements: undefined,
+    from: undefined,
+    onboardingCompleted: undefined,
+  };
 
   const [checked, setChecked] = useState<Record<TermKey, boolean>>({
     terms: false,
@@ -42,7 +48,9 @@ export default function TermsPage() {
         navigate(from, { replace: true });
         return;
       }
-      navigate("/home", { replace: true });
+      const nextPath =
+        onboardingCompleted === false ? "/onboarding" : "/home";
+      navigate(nextPath, { replace: true });
     },
   });
 

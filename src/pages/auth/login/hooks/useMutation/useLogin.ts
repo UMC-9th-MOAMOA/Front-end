@@ -41,7 +41,10 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
       if (!result.policyAgreed) {
         navigate("/terms", {
           replace: true,
-          state: { from: location.pathname },
+          state: {
+            from: location.pathname,
+            onboardingCompleted: result.onboardingCompleted,
+          },
         });
         return;
       }

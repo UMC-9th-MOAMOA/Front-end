@@ -28,7 +28,10 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
       if (!result.policyAgreed) {
         navigate("/terms", {
           replace: true,
-          state: { from: location.pathname },
+          state: {
+            from: location.pathname,
+            onboardingCompleted: result.onboardingCompleted,
+          },
         });
         return;
       }
