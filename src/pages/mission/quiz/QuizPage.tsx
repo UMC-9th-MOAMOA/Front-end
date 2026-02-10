@@ -60,6 +60,15 @@ function QuizPageContent({ missionId }: { missionId: number }) {
 
   const isRetry = mission.attemptCount > 0;
 
+  useEffect(() => {
+    return () => {
+      if (feedbackTimeoutRef.current) {
+        window.clearTimeout(feedbackTimeoutRef.current);
+        feedbackTimeoutRef.current = null;
+      }
+    };
+  }, []);
+
   if (!mission.quizzes.length) {
     return <Navigate to={`/mission/${missionId}`} replace />;
   }
@@ -188,15 +197,6 @@ function QuizPageContent({ missionId }: { missionId: number }) {
       setIsCorrect(null);
     }
   };
-
-  useEffect(() => {
-    return () => {
-      if (feedbackTimeoutRef.current) {
-        window.clearTimeout(feedbackTimeoutRef.current);
-        feedbackTimeoutRef.current = null;
-      }
-    };
-  }, []);
 
   const isAnswerEmpty = () => {
     if (currentQuestion.type === "MULTIPLE") {
