@@ -1,18 +1,13 @@
 ﻿import { authAPI } from "@/apis/axios";
-import type { ApiError, ApiResponse } from "@/types/api/api";
+import type { ApiResponse } from "@/types/api/api";
 import type {
   SettingGoalOnboardingRequest,
   SettingGoalOnboardingResult,
 } from "@/types/onboarding/onboarding.goal.setting";
+import { toApiError } from "@/utils/apiError";
 
 const ONBOARDING_ENDPOINT = "/members/me/onboarding";
 
-function toApiError(code: string, message: string): ApiError {
-  const e = new Error(message) as ApiError;
-  e.serverCode = code;
-  e.serverMessage = message;
-  return e;
-}
 
 export const getSettingGoalOnboarding = async () => {
   const { data } = await authAPI.get<ApiResponse<SettingGoalOnboardingResult>>(

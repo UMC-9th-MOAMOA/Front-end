@@ -1,5 +1,7 @@
 ﻿import { useId, useState } from "react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MoaToggle from "@/pages/settings/components/common/Moatoggle";
 import BottomActionBar from "./common/BottomActionBar";
 import InterestsSuccessModal from "./InterestsSuccessModal";
@@ -12,10 +14,10 @@ const DURATION_OPTIONS: DurationOption[] = [
   { key: "keep", label: "계속 유지" },
   { key: "1w", label: "1주" },
   { key: "2w", label: "2주" },
-  { key: "1m", label: "1개월" },
+  { key: "1m", label: "한 달" },
 ];
 
-export default function TargetMissionCount() {
+function TargetMissionCountInner() {
   const labelId = useId();
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const {
@@ -99,8 +101,8 @@ export default function TargetMissionCount() {
         </div>
 
         <p className="body-4 mt-31 w-full text-center text-gray-700">
-          주간 목표 변경한 "주간 목표 유지 기간"은
-          <br />그 다음주부터 적용됩니다.
+          주중에 변경한 "주간 목표 유지 기간"은
+          <br />그 다음주 부터 적용됩니다.
         </p>
       </div>
 
@@ -117,12 +119,25 @@ export default function TargetMissionCount() {
         description={
           <>
             주중에 변경한 "일간 목표 유지 기간"은
-            <br />
-            즉시 적용됩니다.
+            <br /> 즉시 적용됩니다.
           </>
         }
         confirmText="확인"
       />
     </div>
+  );
+}
+
+export default function TargetMissionCount() {
+  return (
+    <AsyncBoundary
+      loadingFallback={
+        <div className="flex w-full items-center justify-center py-40">
+          <LoadingSpinner className="size-60" />
+        </div>
+      }
+    >
+      <TargetMissionCountInner />
+    </AsyncBoundary>
   );
 }
