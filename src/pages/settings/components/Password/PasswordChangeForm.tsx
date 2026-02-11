@@ -1,5 +1,5 @@
-﻿import { Controller, useWatch } from "react-hook-form";
-import type { Control, FieldErrors } from "react-hook-form";
+﻿import type { Control, FieldErrors } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import { PasswordStrengthMeter } from "@/pages/auth/components/PasswordStrengthMeter";
 import { PasswordTextField } from "@/pages/auth/components/PasswordTextField";
 import type { ChangePasswordRequest } from "@/types/password/password";
