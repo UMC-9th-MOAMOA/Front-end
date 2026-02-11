@@ -6,6 +6,7 @@ import IcUnchecked from "@/assets/icons/auth/ic_unchecked_gray.svg";
 import { Button } from "@/components/common/button/Button";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { useAuthStore } from "@/store/auth";
+import { useSignUpStore } from "@/store/signup";
 import { cn } from "@/utils/cn/cn";
 import { TERMS, type TermKey } from "./constants/terms";
 import { useSubmitPolicyAgreements } from "./hooks/useMutation/useSubmitPolicyAgreements";
@@ -14,19 +15,36 @@ export default function TermsPage() {
   const navigate = useNavigate();
   const location = useLocation();
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
+  const signUpAgreements = useSignUpStore((state) => state.agreements);
+  const setSignUpAgreements = useSignUpStore((state) => state.setAgreements);
 
   const { agreements: initialChecked, from } = (location.state as {
     agreements?: Record<TermKey, boolean>;
     from?: string;
   } | null) ?? { agreements: undefined, from: undefined };
+  const isFromSignup = from === "/signup";
 
-  const [checked, setChecked] = useState<Record<TermKey, boolean>>({
+  const [localChecked, setLocalChecked] = useState<Record<TermKey, boolean>>({
     terms: false,
     privacy: false,
     privacyCollection: false,
     marketing: false,
     ...initialChecked,
   });
+  const checked = isFromSignup ? signUpAgreements : localChecked;
+
+  const updateChecked = (
+    updater:
+      | Record<TermKey, boolean>
+      | ((prev: Record<TermKey, boolean>) => Record<TermKey, boolean>)
+  ) => {
+    const next = typeof updater === "function" ? updater(checked) : updater;
+    if (isFromSignup) {
+      setSignUpAgreements(next);
+      return;
+    }
+    setLocalChecked(next);
+  };
 
   const requiredKeys = useMemo(
     () => TERMS.filter((item) => item.required).map((item) => item.key),
@@ -50,7 +68,7 @@ export default function TermsPage() {
 
   const toggleAll = () => {
     const next = !allChecked;
-    setChecked({
+    updateChecked({
       terms: next,
       privacy: next,
       privacyCollection: next,
@@ -59,7 +77,7 @@ export default function TermsPage() {
   };
 
   const toggleItem = (key: TermKey) => {
-    setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+    updateChecked((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -83,10 +101,10 @@ export default function TermsPage() {
           onClick={toggleAll}
           className={cn(
             "relative mb-44 h-52 w-full justify-start overflow-hidden rounded-lg",
-            allChecked ? "bg-moamoa-200" : "bg-gray-100"
+            allChecked ? "bg-moamoa-50" : "bg-gray-100"
           )}
         >
-          <div className="ml-[17px] inline-flex items-center justify-start gap-[60px]">
+          <div className="ml-17 inline-flex items-center justify-start gap-60">
             <img
               src={allChecked ? IcChecked : IcUnchecked}
               alt=""
@@ -116,7 +134,7 @@ export default function TermsPage() {
                 </span>
               </button>
 
-              <div className="max-h-[180px] w-full overflow-y-auto rounded-lg border border-gray-400 bg-white px-14 py-12">
+              <div className="max-h-180 w-full overflow-y-auto rounded-lg border border-gray-400 bg-white px-14 py-12">
                 <p className="body-4 whitespace-pre-line text-gray-700">
                   {term.content}
                 </p>
@@ -140,7 +158,7 @@ export default function TermsPage() {
               });
               return;
             }
-            navigate("/signup", { state: { agreements: checked } });
+            navigate("/signup");
           }}
           className={cn(
             "body-2 h-48 w-full text-white",
