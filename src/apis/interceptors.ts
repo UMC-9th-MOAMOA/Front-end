@@ -4,6 +4,7 @@ import type {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
+import router from "@/routes/router";
 import { useAuthStore } from "@/store/auth";
 import type { ApiError, ApiResponse } from "@/types/api/api";
 import { refreshAccessToken } from "./auth/auth";
@@ -69,9 +70,22 @@ export const attachInterceptors = (instance: AxiosInstance) => {
           return handleTokenRefresh(instance, error);
         }
 
+        if (errorData.code === "AUTH403_6") {
+          const currentPath = window.location.pathname;
+          const isOnboardingPath =
+            currentPath === "/onboarding" ||
+            currentPath === "/onboarding/recommend";
+
+          if (!isOnboardingPath) {
+            router.navigate("/onboarding", { replace: true });
+            return Promise.reject(new Error("Redirecting to onboarding"));
+          }
+        }
+
         const apiError = new Error(errorData.message) as ApiError;
         apiError.serverCode = errorData.code;
         apiError.serverMessage = errorData.message;
+        apiError.serverResult = errorData.result;
         return Promise.reject(apiError);
       }
 
