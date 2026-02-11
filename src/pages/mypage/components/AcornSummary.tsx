@@ -1,9 +1,12 @@
+import { useNavigate } from "react-router-dom";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import { Button } from "@/components/common/button/Button";
 
 export default function AcornSummary({ count }: { count: number }) {
+  const navigate = useNavigate();
+
   const goUseAcorn = () => {
-    // TODO: navigate("/store");
+    navigate("/home");
   };
 
   return (

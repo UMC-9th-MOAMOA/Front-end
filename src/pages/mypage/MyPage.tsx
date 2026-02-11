@@ -43,7 +43,9 @@ export default function MyPage() {
       </div>
 
       {activeTab === "all" && (
-        <AsyncBoundary>
+        <AsyncBoundary
+          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
+        >
           <AllTabContent
             month={month}
             selectedYMD={selectedYMD}
@@ -56,7 +58,9 @@ export default function MyPage() {
       {activeTab === "mission" && <MissionList />}
 
       {activeTab === "acorn" && (
-        <AsyncBoundary>
+        <AsyncBoundary
+          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
+        >
           <AcornSection />
         </AsyncBoundary>
       )}
@@ -151,7 +155,7 @@ function AllTabContent({
           onSelectYMD={onSelectYMD}
         />
       </div>
-      <div className="mt-[16px] mr-[-10px] mb-50 ml-[-7px]">
+      <div className="mt-16 mr-[-10px] mb-50 ml-[-7px]">
         {isDayLoading && !dayData ? (
           <LoadingSpinner className="mx-auto mt-40 size-40" />
         ) : (
