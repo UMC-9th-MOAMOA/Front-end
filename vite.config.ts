@@ -44,14 +44,6 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
-            if (
-              id.includes("/react/") ||
-              id.includes("/react-dom/") ||
-              id.includes("/react-router-dom/") ||
-              id.includes("zustand")
-            ) {
-              return "react-vendor";
-            }
             if (id.includes("motion")) {
               return "motion-vendor";
             }
@@ -61,6 +53,13 @@ export default defineConfig({
               id.includes("react-hook-form")
             ) {
               return "data-vendor";
+            }
+            if (
+              id.includes("react") ||
+              id.includes("scheduler") ||
+              id.includes("zustand")
+            ) {
+              return "react-vendor";
             }
             return "vendor";
           }
