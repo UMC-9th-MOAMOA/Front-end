@@ -3,7 +3,7 @@ import { getMyMissions } from "@/apis/missions/myMissions";
 import type {
   MyMissionCondition,
   MyMissionStatus,
-} from "@/types/mission/myMissions";
+} from "@/types/mission/myMission";
 
 interface UseMyMissionsInfiniteParams {
   status: MyMissionStatus;
