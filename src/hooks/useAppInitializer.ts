@@ -14,6 +14,8 @@ export const useAppInitializer = ({
   const callbacksRef = useRef({ onCheckAttendance, onCheckGoalPopups });
   callbacksRef.current = { onCheckAttendance, onCheckGoalPopups };
 
+  const prevPathnameRef = useRef(window.location.pathname);
+
   useEffect(() => {
     const runChecks = () => {
       const token = storage.getToken();
@@ -37,12 +39,17 @@ export const useAppInitializer = ({
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
-    // 온보딩 → 홈 등 SPA 네비게이션 시 체크 재실행
     const unsubscribe = router.subscribe((state) => {
       const pathname = state.location.pathname;
-      if (!pathname.startsWith("/onboarding")) {
+      const prevPathname = prevPathnameRef.current;
+      if (
+        prevPathname.startsWith("/onboarding") &&
+        !pathname.startsWith("/onboarding")
+      ) {
         runChecks();
       }
+
+      prevPathnameRef.current = pathname;
     });
 
     return () => {
