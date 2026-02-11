@@ -21,6 +21,7 @@ type EmailVerifySectionProps = {
   emailStatusText?: string; // "사용 가능한 이메일"
   emailStatusTone?: "success" | "error" | "info";
 
+  disabledEmailInput?: boolean;
   disabledRequest?: boolean;
   disabledConfirm?: boolean;
   isVerified?: boolean;
@@ -38,6 +39,7 @@ export default function EmailVerifySection({
   onConfirmCode,
   emailStatusText = "사용 가능한 이메일",
   emailStatusTone = "success",
+  disabledEmailInput = false,
   disabledRequest,
   disabledConfirm,
   isVerified = false,
@@ -58,13 +60,13 @@ export default function EmailVerifySection({
           <AuthTextField
             placeholder="이메일을 입력해주세요"
             value={emailLocal}
-            onChange={onChangeEmailLocal}
-            width="full"
-            height="sm"
-            variant="ghost"
-            disabled={isVerified}
-          />
-        </div>
+          onChange={onChangeEmailLocal}
+          width="full"
+          height="sm"
+          variant="ghost"
+          disabled={isVerified || disabledEmailInput}
+        />
+      </div>
 
         <span className="body-2 mr-2 ml-4 text-gray-700">@</span>
 
@@ -73,7 +75,7 @@ export default function EmailVerifySection({
           onChange={onChangeEmailDomain}
           options={domainOptions}
           className="w-90"
-          disabled={isVerified}
+          disabled={isVerified || disabledEmailInput}
         />
         <div className="ml-8">
           <Button

@@ -4,7 +4,6 @@ import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 import IcMinus from "@/assets/icons/ic_minus.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
-import { useNavigate } from "react-router-dom";
 
 type RowKind = "attendance" | "ad" | "mission";
 
@@ -13,7 +12,6 @@ const GRID_COLS_ROW = "grid-cols-[1fr_64px_max-content_20px_24px]";
 
 export type PerformanceMissionRow = {
   rowId: string;
-  missionId?: string;
   kind: RowKind;
   title: string;
   acornDelta: number;
@@ -46,8 +44,6 @@ export default function PerformanceMissionList({
 }: {
   rows: PerformanceMissionRow[];
 }) {
-  const navigate = useNavigate();
-
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="w-full px-10 text-black">
@@ -95,21 +91,10 @@ export default function PerformanceMissionList({
 
                     <span aria-hidden />
 
-                    <button
-                      type="button"
-                      onClick={() => {
-                        if (row.missionId) {
-                          navigate(`/mypage/mission/${row.missionId}`);
-                        }
-                      }}
-                      className="justify-self-end"
-                      aria-label="View mission detail"
-                    >
-                      <IcDropdown
-                        className="h-24 w-24 -rotate-90 text-gray-700"
-                        aria-hidden
-                      />
-                    </button>
+                    <IcDropdown
+                      className="h-24 w-24 -rotate-90 justify-self-end text-gray-700"
+                      aria-hidden
+                    />
                   </div>
                 </div>
               </div>

@@ -4,19 +4,15 @@ import { Button } from "@/components/common/button/Button";
 type Props = {
   open: boolean;
   onConfirm: () => void;
-  title?: ReactNode;
-  titleClassName?: string;
+  title?: string;
   description?: ReactNode;
   confirmText?: string;
-  secondaryText?: string;
-  onSecondary?: () => void;
 };
 
 export default function InterestsSuccessModal({
   open,
   onConfirm,
   title = "관심사 변경 완료!",
-  titleClassName = "heading-3 text-center text-moamoa-400",
   description = (
     <>
       이제 새로운 관심사를
@@ -25,12 +21,8 @@ export default function InterestsSuccessModal({
     </>
   ),
   confirmText = "확인",
-  secondaryText,
-  onSecondary,
 }: Props) {
   if (!open) return null;
-
-  const showSecondary = Boolean(secondaryText && onSecondary);
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center">
@@ -44,7 +36,10 @@ export default function InterestsSuccessModal({
         aria-describedby="interests-success-desc"
       >
         <div className="flex w-full flex-col items-center gap-20 rounded-xl bg-white px-20 pt-28 pb-20">
-          <p id="interests-success-title" className={titleClassName}>
+          <p
+            id="interests-success-title"
+            className="heading-3 text-center text-moamoa-400"
+          >
             {title}
           </p>
 
@@ -52,22 +47,11 @@ export default function InterestsSuccessModal({
             {description}
           </p>
 
-          <div className="flex w-full items-center justify-center gap-12">
-            {showSecondary && (
-              <Button
-                type="button"
-                onClick={onSecondary}
-                className="flex h-48 w-124 items-center justify-center rounded-lg bg-gray-200 px-30"
-              >
-                <span className="heading-5 whitespace-nowrap text-black">
-                  {secondaryText}
-                </span>
-              </Button>
-            )}
+          <div className="flex w-full items-center justify-center">
             <Button
               type="button"
               onClick={onConfirm}
-              className="flex h-48 w-124 items-center justify-center rounded-lg bg-moamoa-300 px-30"
+              className="flex h-48 w-154 items-center justify-center rounded-lg bg-moamoa-300"
             >
               <span className="heading-5 whitespace-nowrap text-white">
                 {confirmText}

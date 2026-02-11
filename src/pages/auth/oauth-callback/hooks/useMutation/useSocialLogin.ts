@@ -1,5 +1,4 @@
 import { useMutation } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "react-router-dom";
 import { exchangeSocialToken } from "@/apis/auth/auth";
 import { storage } from "@/apis/storage";
 import { useApiError } from "@/hooks/api/useApiError";
@@ -12,10 +11,11 @@ type SocialLoginErrorHandlers = {
 
 export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
   const { handleError } = useApiError();
-  const navigate = useNavigate();
-  const location = useLocation();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
+  const setOnboardingCompleted = useAuthStore(
+    (state) => state.setOnboardingCompleted,
+  );
 
   return useMutation({
     mutationFn: (payload: SocialLoginTokenRequest) =>
@@ -23,20 +23,14 @@ export const useSocialLogin = (handlers?: SocialLoginErrorHandlers) => {
     onSuccess: (result) => {
       storage.setToken(result.token.accessToken);
       storage.setPolicyAgreed(result.policyAgreed);
+      storage.setOnboardingCompleted(result.onboardingCompleted);
       setAuthenticated(true);
       setPolicyAgreed(result.policyAgreed);
+      setOnboardingCompleted(result.onboardingCompleted);
 
       if (!result.policyAgreed) {
-        navigate("/terms", {
-          replace: true,
-          state: { from: location.pathname },
-        });
         return;
       }
-
-      navigate(result.onboardingCompleted ? "/" : "/onboarding", {
-        replace: true,
-      });
     },
     onError: (error) => {
       handleError(error);
