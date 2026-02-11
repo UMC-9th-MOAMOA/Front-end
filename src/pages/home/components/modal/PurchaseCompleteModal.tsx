@@ -1,18 +1,21 @@
 import IcBigAcorn from "@/assets/icons/ic_big_acorn.svg?react";
 import { Button } from "@/components/common/button/Button";
+import { LoadingSpinner } from "@/components/LoadingSpinner";
 import Modal from "./Modal";
 
 interface PurchaseCompleteModalProps {
   isOpen: boolean;
   onClose: () => void;
-  onGoToMission: () => void;
+  onApply: () => void;
+  isLoading?: boolean;
   name: string;
 }
 
 export default function PurchaseCompleteModal({
   isOpen,
   onClose,
-  onGoToMission,
+  onApply,
+  isLoading = false,
   name,
 }: PurchaseCompleteModalProps) {
   return (
@@ -31,15 +34,17 @@ export default function PurchaseCompleteModal({
         <div className="mt-20 flex w-full gap-12">
           <Button
             onClick={onClose}
+            disabled={isLoading}
             className="body-2 rounded-lg bg-moamoa-50 px-30 py-12 text-moamoa-600"
           >
             닫기
           </Button>
           <Button
-            onClick={onGoToMission}
-            className="body-2 rounded-lg bg-moamoa-300 px-35 py-12 text-white"
+            onClick={onApply}
+            disabled={isLoading}
+            className="body-2 rounded-lg bg-moamoa-300 px-49.5 py-12 text-white"
           >
-            미션 하러가기
+            {isLoading ? <LoadingSpinner className="size-20" /> : "적용하기"}
           </Button>
         </div>
       </div>

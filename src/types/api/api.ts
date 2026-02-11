@@ -9,4 +9,5 @@ export interface ApiResponse<T> {
 export interface ApiError extends Error {
   serverCode: string;
   serverMessage: string;
+  serverResult?: unknown;
 }

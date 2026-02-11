@@ -1,26 +1,50 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { storage } from "@/apis/storage";
 import IcChecked from "@/assets/icons/auth/ic_checked_blue.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked_gray.svg";
 import { Button } from "@/components/common/button/Button";
 import AuthHeader from "@/pages/auth/components/AuthHeader";
+import { useAuthStore } from "@/store/auth";
+import { useSignUpStore } from "@/store/signup";
 import { cn } from "@/utils/cn/cn";
-import { TERMS, type TermKey } from "../signup/constants/terms";
+import { TERMS, type TermKey } from "./constants/terms";
+import { useSubmitPolicyAgreements } from "./hooks/useMutation/useSubmitPolicyAgreements";
 
 export default function TermsPage() {
   const navigate = useNavigate();
   const location = useLocation();
+  const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
+  const signUpAgreements = useSignUpStore((state) => state.agreements);
+  const setSignUpAgreements = useSignUpStore((state) => state.setAgreements);
 
-  const initialChecked = (
-    location.state as { agreements?: Record<TermKey, boolean> } | null
-  )?.agreements;
+  const { agreements: initialChecked, from } = (location.state as {
+    agreements?: Record<TermKey, boolean>;
+    from?: string;
+  } | null) ?? { agreements: undefined, from: undefined };
+  const isFromSignup = from === "/signup";
 
-  const [checked, setChecked] = useState<Record<TermKey, boolean>>({
+  const [localChecked, setLocalChecked] = useState<Record<TermKey, boolean>>({
     terms: false,
     privacy: false,
+    privacyCollection: false,
     marketing: false,
     ...initialChecked,
   });
+  const checked = isFromSignup ? signUpAgreements : localChecked;
+
+  const updateChecked = (
+    updater:
+      | Record<TermKey, boolean>
+      | ((prev: Record<TermKey, boolean>) => Record<TermKey, boolean>)
+  ) => {
+    const next = typeof updater === "function" ? updater(checked) : updater;
+    if (isFromSignup) {
+      setSignUpAgreements(next);
+      return;
+    }
+    setLocalChecked(next);
+  };
 
   const requiredKeys = useMemo(
     () => TERMS.filter((item) => item.required).map((item) => item.key),
@@ -30,13 +54,30 @@ export default function TermsPage() {
   const allChecked = Object.values(checked).every(Boolean);
   const requiredChecked = requiredKeys.every((key) => checked[key]);
 
+  const { mutate: submitAgreements, isPending } = useSubmitPolicyAgreements({
+    onSuccess: () => {
+      storage.setPolicyAgreed(true);
+      setPolicyAgreed(true);
+      if (from && !["/signup", "/login", "/oauth/callback"].includes(from)) {
+        navigate(from, { replace: true });
+        return;
+      }
+      navigate("/home", { replace: true });
+    },
+  });
+
   const toggleAll = () => {
     const next = !allChecked;
-    setChecked({ terms: next, privacy: next, marketing: next });
+    updateChecked({
+      terms: next,
+      privacy: next,
+      privacyCollection: next,
+      marketing: next,
+    });
   };
 
   const toggleItem = (key: TermKey) => {
-    setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+    updateChecked((prev) => ({ ...prev, [key]: !prev[key] }));
   };
 
   return (
@@ -44,7 +85,14 @@ export default function TermsPage() {
       <AuthHeader
         title="이용 약관 동의"
         iconType="arrow"
-        onBack={() => navigate("/signup")}
+        showBack={from === "/signup"}
+        onBack={() => {
+          if (from && from !== "/signup") {
+            navigate(from);
+            return;
+          }
+          navigate("/signup");
+        }}
       />
 
       <div className="mt-34 flex flex-col">
@@ -53,10 +101,10 @@ export default function TermsPage() {
           onClick={toggleAll}
           className={cn(
             "relative mb-44 h-52 w-full justify-start overflow-hidden rounded-lg",
-            allChecked ? "bg-moamoa-200" : "bg-gray-100"
+            allChecked ? "bg-moamoa-50" : "bg-gray-100"
           )}
         >
-          <div className="ml-[17px] inline-flex items-center justify-start gap-[60px]">
+          <div className="ml-17 inline-flex items-center justify-start gap-60">
             <img
               src={allChecked ? IcChecked : IcUnchecked}
               alt=""
@@ -86,7 +134,7 @@ export default function TermsPage() {
                 </span>
               </button>
 
-              <div className="max-h-[180px] w-full overflow-y-auto rounded-lg border border-gray-400 bg-white px-14 py-12">
+              <div className="max-h-180 w-full overflow-y-auto rounded-lg border border-gray-400 bg-white px-14 py-12">
                 <p className="body-4 whitespace-pre-line text-gray-700">
                   {term.content}
                 </p>
@@ -99,10 +147,19 @@ export default function TermsPage() {
       <div className="sticky bottom-0 mt-auto bg-white pt-24 pb-40">
         <Button
           type="button"
-          disabled={!requiredChecked}
-          onClick={() =>
-            navigate("/signup", { state: { agreements: checked } })
-          }
+          disabled={!requiredChecked || isPending}
+          onClick={() => {
+            if (from && from !== "/signup") {
+              submitAgreements({
+                agreements: TERMS.map((term) => ({
+                  policyId: term.policyId,
+                  isAgreed: checked[term.key],
+                })),
+              });
+              return;
+            }
+            navigate("/signup");
+          }}
           className={cn(
             "body-2 h-48 w-full text-white",
             requiredChecked ? "bg-moamoa-300" : "bg-gray-300"
