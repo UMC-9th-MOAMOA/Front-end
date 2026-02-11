@@ -130,11 +130,11 @@ export default function AcornHistory() {
                       <div className="flex h-40 w-full items-center">
                         <div className="flex h-28 flex-1 items-center gap-12 truncate">
                           {item.itemType && (
-                            <span className="body-4 flex h-27 w-60 flex-shrink-0 items-center justify-center gap-4 rounded-sm bg-gray-100 px-16 py-5 text-gray-700">
+                            <span className="body-4 flex h-27 w-60 flex-shrink-0 items-center justify-center gap-4 rounded-[8px] bg-gray-100 px-16 py-5 text-gray-700">
                               {ITEM_TYPE_LABEL[item.itemType] ?? item.itemType}
                             </span>
                           )}
-                          <span className="heading-5 truncate pr-5 text-black">
+                          <span className="heading-5 truncate text-black">
                             {getTitle(item.title, item.categoryLabel)}
                           </span>
                         </div>

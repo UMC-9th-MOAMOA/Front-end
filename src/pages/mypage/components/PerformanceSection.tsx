@@ -12,7 +12,6 @@ export default function PerformanceSection({
   const rows: PerformanceMissionRow[] = data.items.flatMap((item) =>
     item.missions.map((mission) => ({
       rowId: `${item.id}-${mission.id}`,
-      missionId: mission.kind === "mission" ? mission.id : undefined,
       kind: mission.kind,
       title: mission.title,
       acornDelta: mission.acornDelta,
