@@ -1,6 +1,7 @@
 import IcTutorialAcornArrow from "@/assets/icons/home/tutorial/ic_tutorial_acron_arrow.svg?react";
 import IcTutorialQuestionArrow from "@/assets/icons/home/tutorial/ic_tutorial_question_arrow.svg?react";
 import type { ComponentPositions } from "./TutorialOverlay";
+import TutorialSpotlight from "./TutorialSpotlight";
 
 interface TutorialStep2Props {
   positions: ComponentPositions;
@@ -10,8 +11,10 @@ const TutorialStep2 = ({ positions }: TutorialStep2Props) => {
   const { acorn, boomerang, questionBox } = positions;
 
   return (
-    <div className="pointer-events-none relative h-full w-full">
-      {acorn && (
+    <>
+      <TutorialSpotlight positions={[acorn, boomerang, questionBox]} />
+      <div className="pointer-events-none relative h-full w-full" style={{ zIndex: 20 }}>
+        {acorn && (
         <>
           <IcTutorialAcornArrow
             className="absolute"
@@ -83,7 +86,8 @@ const TutorialStep2 = ({ positions }: TutorialStep2Props) => {
           </div>
         </>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 
