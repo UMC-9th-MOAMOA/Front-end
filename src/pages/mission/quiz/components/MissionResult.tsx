@@ -28,7 +28,6 @@ interface MissionResultProps {
   isDailyGoalAchieved?: boolean;
   isWeeklyGoalAchieved?: boolean;
   missionName?: string;
-  onClose: () => void;
   onRetryWrong: () => void;
 }
 

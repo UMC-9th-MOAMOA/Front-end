@@ -44,6 +44,14 @@ export default defineConfig({
       output: {
         manualChunks(id) {
           if (id.includes("node_modules")) {
+            if (
+              id.includes("react") ||
+              id.includes("react-dom") ||
+              id.includes("react-router-dom") ||
+              id.includes("zustand")
+            ) {
+              return "react-vendor";
+            }
             if (id.includes("motion")) {
               return "motion-vendor";
             }
