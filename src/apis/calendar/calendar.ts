@@ -1,7 +1,16 @@
 import { authAPI } from "@/apis/axios";
-import type { ApiResponse } from "@/types/api/api";
-import type { CalendarDayResult, CalendarMonthResult } from "@/types/calendar/calendar";
-import { toApiError } from "@/utils/apiError";
+import type { ApiError, ApiResponse } from "@/types/api/api";
+import type {
+  CalendarDayResult,
+  CalendarMonthResult,
+} from "@/types/calendar/calendar";
+
+const toApiError = (code: string, message: string): ApiError => {
+  const error = new Error(message) as ApiError;
+  error.serverCode = code;
+  error.serverMessage = message;
+  return error;
+};
 
 export const getSpaceCalendarDay = async (date: string) => {
   const { data } = await authAPI.get<ApiResponse<CalendarDayResult>>(
