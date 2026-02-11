@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcAd from "@/assets/icons/ic_ad.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
@@ -12,6 +13,7 @@ const GRID_COLS_ROW = "grid-cols-[1fr_64px_max-content_20px_24px]";
 
 export type PerformanceMissionRow = {
   rowId: string;
+  missionId?: string;
   kind: RowKind;
   title: string;
   acornDelta: number;
@@ -44,6 +46,8 @@ export default function PerformanceMissionList({
 }: {
   rows: PerformanceMissionRow[];
 }) {
+  const navigate = useNavigate();
+
   return (
     <div className="flex w-full flex-col gap-4">
       <div className="w-full px-10 text-black">
@@ -79,7 +83,7 @@ export default function PerformanceMissionList({
                       <span className="body-2 truncate">{row.title}</span>
                     </div>
 
-                    <span className="body-4 justify-self-center mr-20 text-black">
+                    <span className="body-4 mr-20 justify-self-center text-black">
                       {row.durationMin != null ? `${row.durationMin}분` : ""}
                     </span>
 
@@ -91,10 +95,21 @@ export default function PerformanceMissionList({
 
                     <span aria-hidden />
 
-                    <IcDropdown
-                      className="h-24 w-24 -rotate-90 justify-self-end text-gray-700"
-                      aria-hidden
-                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (row.missionId) {
+                          navigate(`/mypage/mission/${row.missionId}`);
+                        }
+                      }}
+                      className="justify-self-end"
+                      aria-label="View mission detail"
+                    >
+                      <IcDropdown
+                        className="h-24 w-24 -rotate-90 text-gray-700"
+                        aria-hidden
+                      />
+                    </button>
                   </div>
                 </div>
               </div>

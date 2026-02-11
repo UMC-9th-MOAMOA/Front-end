@@ -94,7 +94,7 @@ function SettingsPageInner() {
           <div className="mt-45 px-25">
             <LogoutAction onLogout={onLogout} />
           </div>
-          <div className="-mx-25 mt-34 h-2 w-screen" style={dividerStyle} />
+          <div className="mt-34 h-2 w-full" style={dividerStyle} />
           <div className="px-25">
             <WithdrawAction onWithdraw={onWithdraw} />
           </div>
