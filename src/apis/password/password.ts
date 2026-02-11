@@ -11,10 +11,11 @@ import type {
 } from "@/types/password/password";
 import { toApiError } from "@/utils/apiError";
 
-const CHANGE_PASSWORD_ENDPOINT = "/auth/password";
+const CHANGE_PASSWORD_ENDPOINT = "/members/me/password";
 const PASSWORD_RESET_EMAIL_ENDPOINT = "/auth/password-resets";
 const PASSWORD_RESET_VERIFY_ENDPOINT = "/auth/password-resets/verifications";
 const PASSWORD_RESET_ENDPOINT = "/auth/password-resets";
+
 
 export const changePassword = async (payload: ChangePasswordRequest) => {
   try {
