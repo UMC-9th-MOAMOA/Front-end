@@ -4,10 +4,10 @@ import Header from "@/components/common/header/Header";
 import type { ApiError } from "@/types/api/api";
 import type { ChangePasswordRequest } from "@/types/password/password";
 import BottomActionBar from "./components/common/BottomActionBar";
+import { useChangePassword } from "./components/Password/hooks/useChangePassword";
 import PasswordChangeForm from "./components/Password/PasswordChangeForm";
 import PasswordChangeIntro from "./components/Password/PasswordChangeIntro";
 import PasswordChangeSuccessModal from "./components/Password/PasswordChangeSuccessModal";
-import { useChangePassword } from "./components/Password/hooks/useChangePassword";
 
 export default function PasswordChangePage() {
   const [successOpen, setSuccessOpen] = useState(false);

@@ -105,7 +105,7 @@ export default function MissionTab() {
               {visibleMissions.length === 0 ? (
                 <div className="mt-105 flex w-full flex-col items-center gap-4">
                   <p className="heading-5 text-gray-500">
-                    미션 내역이 없습니다
+                    이용 내역이 없습니다
                   </p>
                   <IcSadSquirrel aria-hidden />
                 </div>
