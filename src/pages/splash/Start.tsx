@@ -45,7 +45,7 @@ const StartPage = ({ enableFade = true }: StartPageProps) => {
       <Button
         type="button"
         className="mt-auto mb-80 h-48 w-full rounded-lg bg-moamoa-300 py-16 font-semibold text-base text-white"
-        onClick={() => navigate("/login")}
+        onClick={() => navigate("/home")}
       >
         시작하기
       </Button>

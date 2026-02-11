@@ -89,7 +89,13 @@ const ShopItemsGrid = ({ category, isBackground }: ShopItemsGridProps) => {
       <PurchaseCompleteModal
         isOpen={modalType === "complete"}
         onClose={closeModal}
-        onGoToMission={() => navigate("/search")}
+        onApply={() => {
+          if (!purchaseTarget || equipMutation.isPending) return;
+          equipMutation.mutate(purchaseTarget.itemId, {
+            onSuccess: () => closeModal(),
+          });
+        }}
+        isLoading={equipMutation.isPending}
         name={purchaseTarget?.name ?? ""}
       />
 

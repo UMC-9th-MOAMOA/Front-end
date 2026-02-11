@@ -1,18 +1,12 @@
 import { authAPI } from "@/apis/axios";
-import type { ApiError, ApiResponse } from "@/types/api/api";
+import type { ApiResponse } from "@/types/api/api";
 
 import type {
   MyProfile,
   UpdateMyProfileRequest,
   UpdateMyProfileResult,
 } from "@/types/profile/profile";
-
-function toApiError(code: string, message: string): ApiError {
-  const e = new Error(message) as ApiError;
-  e.serverCode = code;
-  e.serverMessage = message;
-  return e;
-}
+import { toApiError } from "@/utils/apiError";
 
 export const getMyProfile = async () => {
   const { data } = await authAPI.get<ApiResponse<MyProfile>>(
@@ -31,6 +25,16 @@ export const updateMyProfile = async (payload: UpdateMyProfileRequest) => {
     "/members/me",
     payload
   );
+
+  if (!data.isSuccess) {
+    throw toApiError(data.code, data.message);
+  }
+
+  return data.result;
+};
+
+export const deleteMember = async () => {
+  const { data } = await authAPI.delete<ApiResponse<null>>("/members/me");
 
   if (!data.isSuccess) {
     throw toApiError(data.code, data.message);

@@ -1,22 +1,22 @@
 import { useState } from "react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
-import AsyncBoundary from "@/components/AsyncBoundary";
-import AcornSection from "./components/AcornSection";
-import Calendar from "./components/calendar/Calendar";
-import MyPageTabs from "./components/MyPageTabs";
-import MissionList from "./components/missioncard/MissionList";
-import PerformanceSection from "./components/PerformanceSection";
-import type { AttendanceDay } from "./components/calendar/calendar.types";
 import type {
   SpaceCalendarDayItem,
   SpaceCalendarMonthResult,
 } from "@/types/calendar/spaceCalendar";
-import type { PerformanceMissionKind } from "./types/mypage.type";
+import AcornSection from "./components/AcornSection";
+import Calendar from "./components/calendar/Calendar";
+import type { AttendanceDay } from "./components/calendar/calendar.types";
+import MyPageTabs from "./components/MyPageTabs";
+import MissionList from "./components/missioncard/MissionList";
+import PerformanceSection from "./components/PerformanceSection";
+import { useMyPageTab } from "./hooks/useMyPageTab";
 import { useMyProfile } from "./hooks/useMyProfile";
 import { useSpaceCalendarDay } from "./hooks/useSpaceCalendarDay";
 import { useSpaceCalendarMonth } from "./hooks/useSpaceCalendarMonth";
-import { useMyPageTab } from "./hooks/useMyPageTab";
+import type { PerformanceMissionKind } from "./types/mypage.type";
 
 const toYMD = (d: Date) => {
   const y = d.getFullYear();
@@ -43,9 +43,7 @@ export default function MyPage() {
       </div>
 
       {activeTab === "all" && (
-        <AsyncBoundary
-          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
-        >
+        <AsyncBoundary>
           <AllTabContent
             month={month}
             selectedYMD={selectedYMD}
@@ -58,9 +56,7 @@ export default function MyPage() {
       {activeTab === "mission" && <MissionList />}
 
       {activeTab === "acorn" && (
-        <AsyncBoundary
-          loadingFallback={<LoadingSpinner className="mx-auto mt-40 size-40" />}
-        >
+        <AsyncBoundary>
           <AcornSection />
         </AsyncBoundary>
       )}
@@ -119,14 +115,14 @@ function AllTabContent({
         ? "ad"
         : "attendance";
     const title = isMission
-      ? item.missionTitle ?? "미션"
+      ? (item.missionTitle ?? "미션")
       : isAd
         ? "광고"
         : "출석";
 
     return {
       id: `${item.type}-${item.occurredAt}-${idx}`,
-      durationMin: isMission ? item.missionDurationMinutes ?? 0 : 0,
+      durationMin: isMission ? (item.missionDurationMinutes ?? 0) : 0,
       status: "success" as const,
       missions: [
         {
@@ -155,7 +151,7 @@ function AllTabContent({
           onSelectYMD={onSelectYMD}
         />
       </div>
-      <div className="mt-[16px] mr-[-10px] ml-[-7px] mb-50">
+      <div className="mt-[16px] mr-[-10px] mb-50 ml-[-7px]">
         {isDayLoading && !dayData ? (
           <LoadingSpinner className="mx-auto mt-40 size-40" />
         ) : (
