@@ -1,17 +1,11 @@
 import { authAPI } from "@/apis/axios";
-import type { ApiError, ApiResponse } from "@/types/api/api";
+import type { ApiResponse } from "@/types/api/api";
 import type { WalletBalanceResult } from "@/types/wallet/wallet";
 import type {
   WalletHistoryParams,
   WalletHistoryResult,
 } from "@/types/wallet/walletHistory";
-
-const toApiError = (code: string, message: string): ApiError => {
-  const error = new Error(message) as ApiError;
-  error.serverCode = code;
-  error.serverMessage = message;
-  return error;
-};
+import { toApiError } from "@/utils/apiError";
 
 export const getMyWalletBalance = async () => {
   const { data } = await authAPI.get<ApiResponse<WalletBalanceResult>>(

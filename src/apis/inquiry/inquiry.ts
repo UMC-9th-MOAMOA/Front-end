@@ -1,5 +1,5 @@
 import { authAPI } from "@/apis/axios";
-import type { ApiError, ApiResponse } from "@/types/api/api";
+import type { ApiResponse } from "@/types/api/api";
 import type {
   CreateInquiryPayload,
   CreateInquiryResult,
@@ -7,16 +7,11 @@ import type {
   MyInquiryDetailResultApi,
   MyInquiryListResultApi,
 } from "@/types/inquiry/inquiry";
+import { toApiError } from "@/utils/apiError";
 
 const CREATE_ENDPOINT = "/support/inquiries";
 const MY_LIST_ENDPOINT = "/members/me/support/inquiries";
 
-function toApiError(code: string, message: string): ApiError {
-  const e = new Error(message) as ApiError;
-  e.serverCode = code;
-  e.serverMessage = message;
-  return e;
-}
 
 export const createInquiry = async (payload: CreateInquiryPayload) => {
   const form = new FormData();

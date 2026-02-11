@@ -1,11 +1,27 @@
+﻿import type { ReactNode } from "react";
 import { Button } from "@/components/common/button/Button";
 
 type Props = {
   open: boolean;
   onConfirm: () => void;
+  title?: string;
+  description?: ReactNode;
+  confirmText?: string;
 };
 
-export default function InterestsSuccessModal({ open, onConfirm }: Props) {
+export default function InterestsSuccessModal({
+  open,
+  onConfirm,
+  title = "관심사 변경 완료!",
+  description = (
+    <>
+      이제 새로운 관심사를
+      <br />
+      기반으로 콘텐츠가 추천돼요.
+    </>
+  ),
+  confirmText = "확인",
+}: Props) {
   if (!open) return null;
 
   return (
@@ -24,15 +40,11 @@ export default function InterestsSuccessModal({ open, onConfirm }: Props) {
             id="interests-success-title"
             className="heading-3 text-center text-moamoa-400"
           >
-            관심사 변경 완료 !
+            {title}
           </p>
 
-          <p
-            id="interests-success-desc"
-            className="body-2 whitespace-pre-line text-center text-gray-600"
-          >
-            이제 새로운 관심사를
-            {"\n"}기준으로 콘텐츠가 추천돼요.
+          <p id="interests-success-desc" className="body-2 text-center text-gray-600">
+            {description}
           </p>
 
           <div className="flex w-full items-center justify-center">
@@ -42,7 +54,7 @@ export default function InterestsSuccessModal({ open, onConfirm }: Props) {
               className="flex h-48 w-154 items-center justify-center rounded-lg bg-moamoa-300"
             >
               <span className="heading-5 whitespace-nowrap text-white">
-                확인
+                {confirmText}
               </span>
             </Button>
           </div>
