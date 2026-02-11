@@ -33,7 +33,7 @@ const HeaderButtons = ({
         </div>
         <div
           ref={acornRef}
-          className="mt-9 flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-15.5 py-4"
+          className="mt-9 flex items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white px-15.5 py-4"
         >
           <BigAcornIcon className="h-24 w-24" />
           <span className="body-4 text-black">{acornCount}</span>
