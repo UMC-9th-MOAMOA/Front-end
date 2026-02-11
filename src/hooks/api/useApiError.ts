@@ -28,6 +28,12 @@ export function useApiError(handlers?: Record<string, ErrorHandler>) {
       return;
     }
 
+    // 온보딩 미완료 에러 처리
+    if (code === ERROR_CODES.AUTH.ONBOARDING_INCOMPLETE) {
+      navigate("/onboarding", { replace: true });
+      return;
+    }
+
     // 재로그인 필요한 상황 에러 기본 처리
     if (RELOGIN_CODES.includes(code)) {
       storage.removeToken();
