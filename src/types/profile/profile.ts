@@ -5,8 +5,8 @@ export interface MyProfile {
   profileImage: number;
   name: string;
   email: string;
-  birthday: string;
-  gender: MemberGender;
+  birthday: string | null;
+  gender: MemberGender | null;
   phoneNumber: string | null;
   provider: MemberProvider;
 }

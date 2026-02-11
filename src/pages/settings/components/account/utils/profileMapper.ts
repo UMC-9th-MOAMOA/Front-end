@@ -11,8 +11,8 @@ export const toUserProfile = (p: MyProfile): UserProfile => ({
   name: p.name,
   email: p.email,
   profileId: String(p.profileImage),
-  birthDate: p.birthday.replaceAll("-", "."),
-  gender: toUiGender(p.gender),
+  birthDate: p.birthday ? p.birthday.replaceAll("-", ".") : "",
+  gender: p.gender ? toUiGender(p.gender) : "남자",
   phone: p.phoneNumber ?? "",
 });
 
