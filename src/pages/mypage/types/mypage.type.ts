@@ -1,5 +1,10 @@
 export type MissionStatus = "success" | "progress" | "fail";
-export type PerformanceMissionKind = "attendance" | "ad" | "mission";
+export type PerformanceMissionKind =
+  | "attendance"
+  | "attendanceStreakBonus"
+  | "dailyReward"
+  | "weeklyReward"
+  | "mission";
 
 export interface PerformanceMission {
   id: string;

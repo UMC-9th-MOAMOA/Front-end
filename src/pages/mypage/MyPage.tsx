@@ -112,17 +112,27 @@ function AllTabContent({
   const dayItems = dayData?.items ?? [];
   const rows = dayItems.map((item: SpaceCalendarDayItem, idx: number) => {
     const isMission = item.type.startsWith("MISSION");
-    const isAd = item.type === "AD";
+    const isDailyReward = item.type === "DAILY_REWARD";
+    const isWeeklyReward = item.type === "WEEKLY_REWARD";
+    const isAttendanceStreakBonus = item.type === "ATTENDANCE_STREAK_BONUS";
     const kind: PerformanceMissionKind = isMission
       ? "mission"
-      : isAd
-        ? "ad"
-        : "attendance";
+      : isDailyReward
+        ? "dailyReward"
+        : isWeeklyReward
+          ? "weeklyReward"
+          : isAttendanceStreakBonus
+            ? "attendanceStreakBonus"
+            : "attendance";
     const title = isMission
-      ? (item.missionTitle ?? "미션")
-      : isAd
-        ? "광고"
-        : "출석";
+      ? (item.missionTitle ?? "??")
+      : isDailyReward
+        ? "????"
+        : isWeeklyReward
+          ? "????"
+          : isAttendanceStreakBonus
+            ? "?? ??"
+            : "??";
 
     return {
       id: `${item.type}-${item.occurredAt}-${idx}`,
