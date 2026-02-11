@@ -3,9 +3,11 @@ import { Component, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
+import MissionErrorToast from "@/pages/mission/components/MissionErrorToast";
 import { useChangeMissionStatus } from "@/pages/mission/hooks/useMutation/useChangeMissionStatus";
 import { useWatchMission } from "@/pages/mission/hooks/useMutation/useWatchMission";
 import { useMissionDetail } from "@/pages/mission/hooks/useQuery/useMissionDetail";
+import type { ApiError } from "@/types/api/api";
 import MissionInfoCard from "./components/MissionInfoCard";
 
 class MissionErrorBoundary extends Component<
@@ -32,7 +34,9 @@ class MissionErrorBoundary extends Component<
           <button
             type="button"
             className="body-2 rounded-xl bg-moamoa-100 px-24 py-12 text-moamoa-500"
-            onClick={() => this.setState({ hasError: false })}
+            onClick={() => {
+              this.setState({ hasError: false });
+            }}
           >
             다시 시도
           </button>
@@ -54,6 +58,12 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
 
   const watchMission = useWatchMission();
   const changeMissionStatus = useChangeMissionStatus();
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+
+  const handleMutationError = (error: unknown) => {
+    const apiError = error as ApiError;
+    setErrorMessage(apiError.serverMessage || "오류가 발생했습니다.");
+  };
 
   const handleContentClick = () => {
     if (isContentWatched) return;
@@ -66,6 +76,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
         onSuccess: (data) => {
           setIsContentWatched(data.isContentWatched);
         },
+        onError: handleMutationError,
       });
     }, watchDuration);
   };
@@ -85,6 +96,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
         onSuccess: () => {
           navigate(`/mission/quiz/${missionId}`);
         },
+        onError: handleMutationError,
       }
     );
   };
@@ -92,7 +104,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
   const canStartQuiz = isContentWatched || mission.attemptCount > 0;
 
   return (
-    <div className="flex w-full flex-col items-center py-31">
+    <div className="flex w-full flex-col items-center py-30">
       <MissionInfoCard
         title={mission.title}
         interest={mission.interest}
@@ -104,6 +116,12 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
         onContentClick={handleContentClick}
         onQuizStart={handleStartQuiz}
       />
+      {errorMessage && (
+        <MissionErrorToast
+          message={errorMessage}
+          onClose={() => setErrorMessage(null)}
+        />
+      )}
     </div>
   );
 }
