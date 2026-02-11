@@ -1,7 +1,7 @@
-import { Suspense, useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MissionErrorToast from "@/pages/mission/components/MissionErrorToast";
 import { useChangeMissionStatus } from "@/pages/mission/hooks/useMutation/useChangeMissionStatus";
 import { useSubmitMissionQuiz } from "@/pages/mission/hooks/useMutation/useSubmitMissionQuiz";
@@ -315,7 +315,12 @@ function QuizPageContent({ missionId }: { missionId: number }) {
           onQuit={() => {
             changeMissionStatus.mutate(
               { missionId, status: "FAIL" },
-              { onSettled: () => navigate("/home") }
+              {
+                onError: (error) => {
+                  console.error("미션 상태 변경 실패:", error);
+                },
+                onSettled: () => navigate("/home"),
+              }
             );
           }}
           onStay={() => setShowQuitPopup(false)}
@@ -324,7 +329,10 @@ function QuizPageContent({ missionId }: { missionId: number }) {
       {errorMessage && (
         <MissionErrorToast
           message={errorMessage}
-          onClose={() => setErrorMessage(null)}
+          onClose={() => {
+            setErrorMessage(null);
+            handleNext();
+          }}
         />
       )}
     </div>
@@ -338,14 +346,8 @@ export default function QuizPage() {
     return <Navigate to="/home" replace />;
   }
   return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center">
-          <LoadingSpinner className="size-60" />
-        </div>
-      }
-    >
+    <AsyncBoundary>
       <QuizPageContent missionId={numericMissionId} />
-    </Suspense>
+    </AsyncBoundary>
   );
 }
