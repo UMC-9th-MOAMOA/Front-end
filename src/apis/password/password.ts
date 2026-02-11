@@ -1,6 +1,6 @@
 import axios from "axios";
 import { authAPI, publicAPI } from "@/apis/axios";
-import type { ApiError, ApiResponse } from "@/types/api/api";
+import type { ApiResponse } from "@/types/api/api";
 import type {
   ChangePasswordRequest,
   ChangePasswordResult,
@@ -9,18 +9,13 @@ import type {
   PasswordResetResult,
   PasswordResetVerificationResult,
 } from "@/types/password/password";
+import { toApiError } from "@/utils/apiError";
 
-const CHANGE_PASSWORD_ENDPOINT = "/auth/password";
+const CHANGE_PASSWORD_ENDPOINT = "/members/me/password";
 const PASSWORD_RESET_EMAIL_ENDPOINT = "/auth/password-resets";
 const PASSWORD_RESET_VERIFY_ENDPOINT = "/auth/password-resets/verifications";
 const PASSWORD_RESET_ENDPOINT = "/auth/password-resets";
 
-function toApiError(code: string, message: string): ApiError {
-  const e = new Error(message) as ApiError;
-  e.serverCode = code;
-  e.serverMessage = message;
-  return e;
-}
 
 export const changePassword = async (payload: ChangePasswordRequest) => {
   try {

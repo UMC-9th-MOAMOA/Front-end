@@ -1,5 +1,6 @@
 ﻿import type { ReactNode } from "react";
-import { Component, Suspense, useEffect, useState } from "react";
+import { Component, useEffect, useState } from "react";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import { useApiError } from "@/hooks/api/useApiError";
 import AccountInfoSuccessModal from "./components/AccountInfoSuccessModal";
@@ -113,9 +114,9 @@ export default function AccountInfoPage() {
       fallback={<div className="p-20">Error occurred.</div>}
       onError={handleError}
     >
-      <Suspense fallback={<div className="p-20">Loading...</div>}>
+      <AsyncBoundary>
         <AccountInfoPageInner />
-      </Suspense>
+      </AsyncBoundary>
     </ErrorBoundary>
   );
 }

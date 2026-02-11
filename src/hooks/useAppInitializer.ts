@@ -14,13 +14,20 @@ export const useAppInitializer = ({
     const token = storage.getToken();
     if (!token) return;
 
+    const isOnboardingPage =
+      window.location.pathname.startsWith("/onboarding");
+    if (isOnboardingPage) return;
+
     onCheckAttendance();
     onCheckGoalPopups();
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         const currentToken = storage.getToken();
-        if (currentToken) {
+        const currentIsOnboarding =
+          window.location.pathname.startsWith("/onboarding");
+
+        if (currentToken && !currentIsOnboarding) {
           onCheckAttendance();
           onCheckGoalPopups();
         }
@@ -32,6 +39,5 @@ export const useAppInitializer = ({
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-    
   }, []);
 };
