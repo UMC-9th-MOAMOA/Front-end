@@ -1,12 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
-import IcAd from "@/assets/icons/ic_ad.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 import IcMinus from "@/assets/icons/ic_minus.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 
-type RowKind = "attendance" | "ad" | "mission";
+type RowKind =
+  | "attendance"
+  | "attendanceStreakBonus"
+  | "dailyReward"
+  | "weeklyReward"
+  | "mission";
 
 const GRID_COLS_HEADER = "grid-cols-[1fr_64px_41px_28px_24px]";
 const GRID_COLS_ROW = "grid-cols-[1fr_64px_max-content_20px_24px]";
@@ -122,15 +126,17 @@ export default function PerformanceMissionList({
             <li key={row.rowId} className="w-full">
               <div className="flex h-56 w-full flex-col items-center justify-center px-10">
                 <div className="flex w-full items-center gap-2">
-                  {row.kind === "attendance" ? (
-                    <IcAttendance className="h-24 w-24 shrink-0" aria-hidden />
-                  ) : (
-                    <IcAd className="h-24 w-24 shrink-0" aria-hidden />
-                  )}
+                  <IcAttendance className="h-24 w-24 shrink-0" aria-hidden />
 
                   <div className="flex h-25 items-center text-black">
                     <span className="body-2">
-                      {row.kind === "attendance" ? "출석" : "광고"}
+                      {row.kind === "attendance"
+                        ? "출석"
+                        : row.kind === "attendanceStreakBonus"
+                          ? "연속 출석"
+                          : row.kind === "dailyReward"
+                            ? "일일 보상"
+                            : "주간 보상"}
                     </span>
                   </div>
 
