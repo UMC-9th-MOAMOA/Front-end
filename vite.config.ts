@@ -62,6 +62,13 @@ export default defineConfig({
             ) {
               return "data-vendor";
             }
+            if (
+              id.includes("react") ||
+              id.includes("scheduler") ||
+              id.includes("zustand")
+            ) {
+              return "react-vendor";
+            }
             return "vendor";
           }
         },
