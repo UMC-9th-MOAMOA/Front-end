@@ -69,7 +69,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
     if (isContentWatched) return;
     if (watchTimeoutRef.current) window.clearTimeout(watchTimeoutRef.current);
 
-    const watchDuration = mission.videoLength * 1000;
+    const watchDuration = mission.videoLength * 1;
 
     watchTimeoutRef.current = window.setTimeout(() => {
       watchMission.mutate(missionId, {
@@ -94,7 +94,9 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
       { missionId, status: "NONE" },
       {
         onSuccess: () => {
-          navigate(`/mission/quiz/${missionId}`);
+          navigate(`/mission/quiz/${missionId}`, {
+            state: { isRetry: mission.attemptCount > 0 },
+          });
         },
         onError: handleMutationError,
       }
