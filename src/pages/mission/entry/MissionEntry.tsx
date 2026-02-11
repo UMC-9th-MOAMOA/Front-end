@@ -94,7 +94,9 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
       { missionId, status: "NONE" },
       {
         onSuccess: () => {
-          navigate(`/mission/quiz/${missionId}`);
+          navigate(`/mission/quiz/${missionId}`, {
+            state: { isRetry: mission.attemptCount > 0 },
+          });
         },
         onError: handleMutationError,
       }
