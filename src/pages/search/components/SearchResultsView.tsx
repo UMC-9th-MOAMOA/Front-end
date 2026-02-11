@@ -42,7 +42,7 @@ export default function SearchResultsView({
   return (
     <>
       {searchText && (
-        <AsyncBoundary loadingFallback={null} errorFallback={null}>
+        <AsyncBoundary >
           <RelatedKeywordsBar
             keyword={searchText}
             selectedKeywords={selectedKeywords}

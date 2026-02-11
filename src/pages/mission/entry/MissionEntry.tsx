@@ -1,8 +1,8 @@
 import type { ErrorInfo, ReactNode } from "react";
-import { Component, Suspense, useEffect, useRef, useState } from "react";
+import { Component, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useChangeMissionStatus } from "@/pages/mission/hooks/useMutation/useChangeMissionStatus";
 import { useWatchMission } from "@/pages/mission/hooks/useMutation/useWatchMission";
 import { useMissionDetail } from "@/pages/mission/hooks/useQuery/useMissionDetail";
@@ -117,15 +117,9 @@ export default function MissionEntry() {
       <Header title="미션 수행하기" property="common" />
 
       <MissionErrorBoundary>
-        <Suspense
-          fallback={
-            <div className="flex flex-1 items-center justify-center">
-              <LoadingSpinner className="size-60" />
-            </div>
-          }
-        >
+        <AsyncBoundary>
           <MissionEntryContent missionId={numericMissionId} />
-        </Suspense>
+        </AsyncBoundary>
       </MissionErrorBoundary>
     </div>
   );
