@@ -92,14 +92,14 @@ export default function MissionInfoCard({
         </div>
       </div>
 
-      <div className="flex w-full flex-col items-center gap-16 self-center px-30">
+      <div className="flex w-full flex-col items-center gap-16 self-center px-30 pt-30">
         <span
           className={`heading-6 flex text-center ${
             isContentWatched ? "text-moamoa-500" : "w-208 text-red-400"
           }`}
         >
           {isContentWatched ? (
-            <div className="flex flex-wrap items-center justify-center pt-30">
+            <div className="flex flex-wrap items-center justify-center">
               <span className="heading-6 whitespace-nowrap text-moamoa-400">
                 지금 퀴즈 도전하고
               </span>
