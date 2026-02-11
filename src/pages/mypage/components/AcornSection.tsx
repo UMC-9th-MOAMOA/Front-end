@@ -1,5 +1,4 @@
-import { Suspense } from "react";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import { useMyWalletBalance } from "../hooks/useMyWalletBalance";
 import AcornHistory from "./AcornHistory";
 import AcornSummary from "./AcornSummary";
@@ -10,9 +9,9 @@ export default function AcornSection() {
   return (
     <>
       <AcornSummary count={data.point} />
-      <Suspense fallback={<LoadingSpinner className="mx-auto mt-20 size-28" />}>
+      <AsyncBoundary>
         <AcornHistory />
-      </Suspense>
+      </AsyncBoundary>
     </>
   );
 }

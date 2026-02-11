@@ -43,7 +43,7 @@ export default function MainSearchView() {
 
       <AsyncBoundary
         loadingFallback={
-          <div className="mt-30 flex items-center justify-center">
+          <div className="mt-40 flex h-200 items-center justify-center">
             <LoadingSpinner className="size-60" />
           </div>
         }

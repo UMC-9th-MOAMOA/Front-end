@@ -1,5 +1,6 @@
-﻿import { Suspense, useState } from "react";
+﻿import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import { useAuthStore } from "@/store/auth";
 import { useSettingsStore } from "@/store/settings";
@@ -40,7 +41,6 @@ function SettingsPageInner() {
     onSuccess: () => {
       setIsWithdrawOpen(false);
       setShowWithdrawSuccessModal(true);
-      
     },
   });
 
@@ -118,8 +118,8 @@ function SettingsPageInner() {
 
 export default function SettingsPage() {
   return (
-    <Suspense fallback={<div className="p-20">로딩중...</div>}>
+    <AsyncBoundary>
       <SettingsPageInner />
-    </Suspense>
+    </AsyncBoundary>
   );
 }

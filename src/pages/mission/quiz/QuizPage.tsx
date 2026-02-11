@@ -1,7 +1,7 @@
-import { Suspense, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { useSubmitMissionQuiz } from "@/pages/mission/hooks/useMutation/useSubmitMissionQuiz";
 import { useMissionDetail } from "@/pages/mission/hooks/useQuery/useMissionDetail";
 import type { Quiz } from "@/types/mission/mission";
@@ -317,14 +317,8 @@ export default function QuizPage() {
     return <Navigate to="/home" replace />;
   }
   return (
-    <Suspense
-      fallback={
-        <div className="flex min-h-screen items-center justify-center">
-          <LoadingSpinner className="size-60" />
-        </div>
-      }
-    >
+    <AsyncBoundary>
       <QuizPageContent missionId={numericMissionId} />
-    </Suspense>
+    </AsyncBoundary>
   );
 }

@@ -1,18 +1,12 @@
 import { authAPI } from "@/apis/axios";
-import type { ApiError, ApiResponse } from "@/types/api/api";
+import type { ApiResponse } from "@/types/api/api";
 
 import type {
   MyProfile,
   UpdateMyProfileRequest,
   UpdateMyProfileResult,
 } from "@/types/profile/profile";
-
-function toApiError(code: string, message: string): ApiError {
-  const e = new Error(message) as ApiError;
-  e.serverCode = code;
-  e.serverMessage = message;
-  return e;
-}
+import { toApiError } from "@/utils/apiError";
 
 export const getMyProfile = async () => {
   const { data } = await authAPI.get<ApiResponse<MyProfile>>(
