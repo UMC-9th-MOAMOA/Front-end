@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Navigate, useNavigate, useParams } from "react-router-dom";
+import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import MissionErrorToast from "@/pages/mission/components/MissionErrorToast";
@@ -39,6 +39,7 @@ function mapQuizToQuestion(quiz: Quiz) {
 
 function QuizPageContent({ missionId }: { missionId: number }) {
   const navigate = useNavigate();
+  const location = useLocation();
   const { data: mission } = useMissionDetail(missionId);
   const submitQuiz = useSubmitMissionQuiz();
   const changeMissionStatus = useChangeMissionStatus();
@@ -63,7 +64,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
 
   const feedbackTimeoutRef = useRef<number | null>(null);
 
-  const isRetry = mission.attemptCount > 0;
+  const isRetry = (location.state as { isRetry?: boolean })?.isRetry ?? mission.attemptCount > 0;
 
   const handleMutationError = useCallback((error: unknown) => {
     const apiError = error as ApiError;
