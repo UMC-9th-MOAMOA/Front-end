@@ -1,5 +1,4 @@
 import IcTutorialAcornArrow from "@/assets/icons/home/tutorial/ic_tutorial_acron_arrow.svg?react";
-import IcTutorialBoomerangArrow from "@/assets/icons/home/tutorial/ic_tutorial_boomerang_arrow.svg?react";
 import IcTutorialQuestionArrow from "@/assets/icons/home/tutorial/ic_tutorial_question_arrow.svg?react";
 import type { ComponentPositions } from "./TutorialOverlay";
 
@@ -44,7 +43,7 @@ const TutorialStep2 = ({ positions }: TutorialStep2Props) => {
             className="body3 absolute text-right text-white"
             style={{
               right: `calc(100% - ${boomerang.right}px + 19px)`,
-              top: boomerang.bottom + 30,
+              top: boomerang.bottom + 40,
             }}
           >
             <p className="whitespace-nowrap">퀴즈를 다시 풀 수 있어요!</p>
@@ -53,7 +52,7 @@ const TutorialStep2 = ({ positions }: TutorialStep2Props) => {
               이동해보세요.
             </p>
           </div>
-          <IcTutorialBoomerangArrow
+          <IcTutorialQuestionArrow
             className="absolute"
             style={{
               left: boomerang.left,
