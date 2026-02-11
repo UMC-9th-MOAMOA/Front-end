@@ -17,7 +17,7 @@ export default function QuizFirstFailResult({
   onNext,
 }: QuizFirstFailResultProps) {
   return (
-    <div className="flex min-h-screen flex-col items-center">
+    <div className="-mb-96 flex min-h-screen flex-col items-center">
       <div className="absolute top-50 z-10 flex items-end justify-center">
         <IcFirstFailSquirrel />
       </div>
@@ -25,26 +25,30 @@ export default function QuizFirstFailResult({
         <IcFirstFailBook />
       </div>
 
-      <div className="z-20 mt-234 w-full rounded-[20px] bg-white px-25 pb-38">
+      <div className="z-20 mt-234 w-full rounded-[20px] bg-white px-25 pb-50">
         <h1 className="heading-0 pt-25 text-center text-black">FAIL..</h1>
         <p className="heading-3 mt-15 text-center text-black">
           아쉽게도 오답이에요
         </p>
         {questionType === "subjective" && (
-          <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-90 py-9">
-            <span className="heading-5 text-black">{userAnswer}</span>
+          <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-9 py-9">
+            <span className="body-4 text-black">{userAnswer}</span>
           </div>
         )}
         {questionType === "ox" && (
           <div className="mt-39 flex items-center justify-center">
-            <div className="flex h-80 w-82 items-center justify-center rounded-[10px] border border-red-300 bg-red-200">
-              {userAnswer === "O" ? <IcOxO /> : <IcOxX />}
+            <div className="flex h-82 w-82 items-center justify-center rounded-[10px] border border-red-300 bg-red-200">
+              {userAnswer === "O" ? (
+                <IcOxO className="h-35 w-35" />
+              ) : (
+                <IcOxX className="h-35 w-35" />
+              )}
             </div>
           </div>
         )}
         {questionType === "multiple" && (
-          <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-90 py-9">
-            <span className="heading-5 text-black">{userAnswer}</span>
+          <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-9 py-9">
+            <span className="body-4 text-black">{userAnswer}</span>
           </div>
         )}
         <p
@@ -54,7 +58,7 @@ export default function QuizFirstFailResult({
         </p>
       </div>
 
-      <div className="mt-auto flex w-full flex-col items-center px-25 pt-34 pb-42">
+      <div className="mt-auto flex w-full flex-col items-center pt-22 pb-42">
         <p className="body-2 text-gray-600">다시 한 번 도전해볼까요?</p>
         <button
           type="button"
