@@ -1,5 +1,4 @@
 import AsyncBoundary from "@/components/AsyncBoundary";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import { MAIN_CATEGORIES } from "@/constants/missions/categories";
 import CategoryButton from "../components/CategoryButton";
 import CategoryMissionInfiniteList from "../components/CategoryMissionInfiniteList";
@@ -50,13 +49,7 @@ export default function CategoryDetailView() {
       </div>
 
       {selectedSubCategory.categoryId !== 0 && (
-        <AsyncBoundary
-          loadingFallback={
-            <div className="mt-30 flex items-center justify-center">
-              <LoadingSpinner className="size-60" />
-            </div>
-          }
-        >
+        <AsyncBoundary>
           <CategoryMissionInfiniteList
             key={`${categoryId}-${selectedSubCategory.categoryId}`}
             categoryId={categoryId}

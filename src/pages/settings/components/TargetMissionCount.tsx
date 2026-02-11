@@ -1,7 +1,6 @@
 ﻿import { useId, useState } from "react";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MoaToggle from "@/pages/settings/components/common/Moatoggle";
 import BottomActionBar from "./common/BottomActionBar";
 import InterestsSuccessModal from "./InterestsSuccessModal";
@@ -130,13 +129,7 @@ function TargetMissionCountInner() {
 
 export default function TargetMissionCount() {
   return (
-    <AsyncBoundary
-      loadingFallback={
-        <div className="flex w-full items-center justify-center py-40">
-          <LoadingSpinner className="size-60" />
-        </div>
-      }
-    >
+    <AsyncBoundary>
       <TargetMissionCountInner />
     </AsyncBoundary>
   );
