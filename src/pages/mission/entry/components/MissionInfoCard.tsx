@@ -37,11 +37,11 @@ export default function MissionInfoCard({
   };
 
   return (
-    <div className="flex w-full flex-col gap-8 rounded-xl bg-white px-23 py-21">
-      <div className="flex items-center gap-10">
+    <div className="flex w-full flex-col gap-8 rounded-xl bg-white px-23 pt-21">
+      <div className="flex items-center">
         <h2 className="heading-3 pb-4 text-center text-black">{title}</h2>
       </div>
-      <div className="flex items-start gap-4 self-stretch pb-8">
+      <div className="flex items-start gap-4 self-stretch pb-16">
         {keyword.map((kw, index) => (
           <div
             key={index}
@@ -81,31 +81,31 @@ export default function MissionInfoCard({
         </Button>
       </div>
 
-      <div className="relative flex w-full items-center justify-center pt-42">
+      <div className="relative flex w-full items-center justify-center pt-30">
         <div className="inline-flex w-full gap-4 px-12">
           {Array.from({ length: 12 }).map((_, index) => (
             <div
               key={index}
-              className="h-4 flex-1 items-start rounded-md bg-moamoa-50 px-4 py-4"
+              className="h-4 flex-1 items-start rounded-md bg-moamoa-50"
             />
           ))}
         </div>
       </div>
 
-      <div className="flex w-full flex-col items-center gap-16 self-center px-48 pt-35 pb-32">
+      <div className="flex w-full flex-col items-center gap-16 self-center px-30">
         <span
           className={`heading-6 flex text-center ${
             isContentWatched ? "text-moamoa-500" : "w-208 text-red-400"
           }`}
         >
           {isContentWatched ? (
-            <div className="flex flex-wrap items-center justify-center">
-              <span className="heading-6 whitespace-nowrap text-moamoa-500">
+            <div className="flex flex-wrap items-center justify-center pt-30">
+              <span className="heading-6 whitespace-nowrap text-moamoa-400">
                 지금 퀴즈 도전하고
               </span>
               <span className="flex items-center whitespace-nowrap">
                 <IcAcorn className="h-30 w-30 shrink-0" />
-                <span className="heading-6 text-moamoa-500">도토리 받기</span>
+                <span className="heading-6 text-moamoa-400">도토리 받기</span>
               </span>
             </div>
           ) : (
@@ -137,7 +137,7 @@ export default function MissionInfoCard({
           </Button>
         )}
 
-        <p className="body-4 w-full pt-24 text-center text-gray-600">
+        <p className="body-4 w-full pt-24 pb-32 text-center text-gray-600">
           {isContentWatched
             ? "퀴즈 풀 준비 됐나요?"
             : "시청 후 퀴즈를 풀면 도토리를 받을 수 있어요"}
