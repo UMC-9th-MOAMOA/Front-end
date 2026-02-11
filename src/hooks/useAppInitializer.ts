@@ -1,5 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { storage } from "@/apis/storage";
+import router from "@/routes/router";
 
 interface UseAppInitializerProps {
   onCheckAttendance: () => void;
@@ -10,34 +11,43 @@ export const useAppInitializer = ({
   onCheckAttendance,
   onCheckGoalPopups,
 }: UseAppInitializerProps) => {
+  const callbacksRef = useRef({ onCheckAttendance, onCheckGoalPopups });
+  callbacksRef.current = { onCheckAttendance, onCheckGoalPopups };
+
   useEffect(() => {
-    const token = storage.getToken();
-    if (!token) return;
+    const runChecks = () => {
+      const token = storage.getToken();
+      if (!token) return;
 
-    const isOnboardingPage =
-      window.location.pathname.startsWith("/onboarding");
-    if (isOnboardingPage) return;
+      const isOnboardingPage =
+        window.location.pathname.startsWith("/onboarding");
+      if (isOnboardingPage) return;
 
-    onCheckAttendance();
-    onCheckGoalPopups();
+      callbacksRef.current.onCheckAttendance();
+      callbacksRef.current.onCheckGoalPopups();
+    };
+
+    runChecks();
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
-        const currentToken = storage.getToken();
-        const currentIsOnboarding =
-          window.location.pathname.startsWith("/onboarding");
-
-        if (currentToken && !currentIsOnboarding) {
-          onCheckAttendance();
-          onCheckGoalPopups();
-        }
+        runChecks();
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
 
+    // 온보딩 → 홈 등 SPA 네비게이션 시 체크 재실행
+    const unsubscribe = router.subscribe((state) => {
+      const pathname = state.location.pathname;
+      if (!pathname.startsWith("/onboarding")) {
+        runChecks();
+      }
+    });
+
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
+      unsubscribe();
     };
   }, []);
 };
