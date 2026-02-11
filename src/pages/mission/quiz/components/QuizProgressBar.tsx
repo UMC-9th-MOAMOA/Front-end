@@ -60,10 +60,9 @@ export default function QuizProgressBar({
             ref={squirrelRef}
             className="absolute bottom-10 z-10 transition-all duration-500 ease-in-out"
             style={{
-              left: isStart ? "0px" : `${currentProgress}%`,
-              transform: isStart
-                ? "translateZ(0)"
-                : "translateX(-67px) translateZ(0)",
+              left: isStart
+                ? "0px"
+                : `max(0px, calc(${currentProgress}% - 67px))`,
             }}
           >
             <IcWalkingSquirrel className="h-80 w-67 drop-shadow-md" />
