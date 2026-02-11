@@ -9,6 +9,7 @@ interface HeaderProps {
   title: string;
   onBack?: () => void;
   iconType?: HeaderIconType;
+  showBack?: boolean;
 }
 
 const ICON_MAP: Record<
@@ -24,6 +25,7 @@ export default function AuthHeader({
   title,
   onBack,
   iconType = "close",
+  showBack = true,
 }: HeaderProps) {
   const navigate = useNavigate();
   const Icon = ICON_MAP[iconType];
@@ -37,14 +39,18 @@ export default function AuthHeader({
   };
 
   return (
-    <>
-      <header className="grid grid-cols-[1.5rem_1fr_1.5rem] items-center pt-24 pb-14">
-        <button type="button" aria-label="뒤로가기" onClick={handleBack}>
-          <Icon className="size-24" />
-        </button>
+    <header className="sticky top-0 z-50 -mx-layout-side bg-white px-layout-side">
+      <div className="grid grid-cols-[1.5rem_1fr_1.5rem] items-center pt-24 pb-14">
+        {showBack ? (
+          <button type="button" aria-label="뒤로가기" onClick={handleBack}>
+            <Icon className="size-24" />
+          </button>
+        ) : (
+          <div aria-hidden="true" />
+        )}
         <h1 className="heading-2 text-center text-black">{title}</h1>
-      </header>
+      </div>
       <div className="-mx-layout-side h-1 w-[calc(100%+50px)] bg-gray-200" />
-    </>
+    </header>
   );
 }
