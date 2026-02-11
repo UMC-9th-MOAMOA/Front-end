@@ -1,14 +1,13 @@
-﻿import { Suspense, useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
-import { LoadingSpinner } from "@/components/LoadingSpinner";
 import type { InquiryCategoryServer } from "@/types/inquiry/inquiry";
 import type {
   InquiryCategory,
   InquiryDraft,
   TabKey,
 } from "../../types/inquiry.type";
-
 import BottomActionBar from "../common/BottomActionBar";
 import { useCreateInquiry } from "./hooks/useCreateInquiry";
 import InquiryList from "./InquiryList";
@@ -78,13 +77,11 @@ export default function InquiryPage() {
             setDraft={setDraft}
           />
         ) : (
-          <Suspense
-            fallback={<LoadingSpinner className="mx-auto mt-40 size-60" />}
-          >
+          <AsyncBoundary>
             <InquiryList
               onSelect={(id) => navigate(`/settings/inquiry/${id}`)}
             />
-          </Suspense>
+          </AsyncBoundary>
         )}
       </div>
 
