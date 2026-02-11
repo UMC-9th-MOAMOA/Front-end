@@ -26,7 +26,7 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
 
   const isPublicPath = PUBLIC_PATHS.includes(location.pathname);
   const isTermsPage = location.pathname === "/terms";
-  const isOnboardingPage = location.pathname === "/onboarding";
+  const isOnboardingPage = location.pathname.startsWith("/onboarding");
 
   useEffect(() => {
     if (isLoading) return;

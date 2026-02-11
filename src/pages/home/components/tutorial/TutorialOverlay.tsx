@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useDrag } from "@use-gesture/react";
 import { AnimatePresence, motion } from "motion/react";
 import type { RefObject } from "react";
@@ -37,6 +38,7 @@ const TutorialOverlay = ({
   toolbarRef,
   questionBoxRef,
 }: TutorialOverlayProps) => {
+  const queryClient = useQueryClient();
   const [currentStep, setCurrentStep] = useState(1);
   const [direction, setDirection] = useState(1);
   const [dontShowAgain, setDontShowAgain] = useState(false);
@@ -60,6 +62,7 @@ const TutorialOverlay = ({
     if (dontShowAgain) {
       try {
         await dismissPopup("HOME_TUTORIAL");
+        queryClient.invalidateQueries({ queryKey: ["home"] });
       } catch {}
     }
     onClose();
