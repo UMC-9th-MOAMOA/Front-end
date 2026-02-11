@@ -3,7 +3,7 @@ import type { ApiError, ApiResponse } from "@/types/api/api";
 import type {
   GetMyMissionsParams,
   MyMissionsResponse,
-} from "@/types/mission/myMissions";
+} from "@/types/mission/myMission";
 
 const toApiError = (code: string, message: string): ApiError => {
   const error = new Error(message) as ApiError;
