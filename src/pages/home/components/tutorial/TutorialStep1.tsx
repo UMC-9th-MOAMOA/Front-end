@@ -1,5 +1,6 @@
 import IcTutorialArrow from "@/assets/icons/home/tutorial/ic_tutorial_arrow.svg?react";
 import type { ComponentPositions } from "./TutorialOverlay";
+import TutorialSpotlight from "./TutorialSpotlight";
 
 interface TutorialStep1Props {
   positions: ComponentPositions;
@@ -9,8 +10,10 @@ const TutorialStep1 = ({ positions }: TutorialStep1Props) => {
   const { pocket, toolbar } = positions;
 
   return (
-    <div className="pointer-events-none relative h-full w-full">
-      {pocket && (
+    <>
+      <TutorialSpotlight positions={[pocket, toolbar]} />
+      <div className="pointer-events-none relative h-full w-full" style={{ zIndex: 20 }}>
+        {pocket && (
         <>
           <div
             className="body3 absolute text-right text-white"
@@ -61,7 +64,8 @@ const TutorialStep1 = ({ positions }: TutorialStep1Props) => {
           </div>
         </>
       )}
-    </div>
+      </div>
+    </>
   );
 };
 
