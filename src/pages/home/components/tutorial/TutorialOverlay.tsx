@@ -1,3 +1,4 @@
+import { useQueryClient } from "@tanstack/react-query";
 import { useDrag } from "@use-gesture/react";
 import { AnimatePresence, motion } from "motion/react";
 import type { RefObject } from "react";
@@ -37,6 +38,7 @@ const TutorialOverlay = ({
   toolbarRef,
   questionBoxRef,
 }: TutorialOverlayProps) => {
+  const queryClient = useQueryClient();
   const [currentStep, setCurrentStep] = useState(1);
   const [direction, setDirection] = useState(1);
   const [dontShowAgain, setDontShowAgain] = useState(false);
@@ -60,6 +62,7 @@ const TutorialOverlay = ({
     if (dontShowAgain) {
       try {
         await dismissPopup("HOME_TUTORIAL");
+        queryClient.invalidateQueries({ queryKey: ["home"] });
       } catch {}
     }
     onClose();
@@ -86,7 +89,6 @@ const TutorialOverlay = ({
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="fixed inset-0 z-50"
-      style={{ backgroundColor: "#242C3DCC" }}
     >
       <div
         className="relative h-full w-full touch-none overflow-hidden"
@@ -111,16 +113,20 @@ const TutorialOverlay = ({
         </AnimatePresence>
       </div>
 
-      <TutorialIndicators currentStep={currentStep} totalSteps={TOTAL_STEPS} />
+      <div style={{ zIndex: 30, position: "relative" }}>
+        <TutorialIndicators currentStep={currentStep} totalSteps={TOTAL_STEPS} />
+      </div>
 
-      <TutorialControls
-        currentStep={currentStep}
-        totalSteps={TOTAL_STEPS}
-        dontShowAgain={dontShowAgain}
-        onDontShowAgainToggle={() => setDontShowAgain(!dontShowAgain)}
-        onNext={handleNext}
-        onClose={handleClose}
-      />
+      <div style={{ zIndex: 30, position: "relative" }}>
+        <TutorialControls
+          currentStep={currentStep}
+          totalSteps={TOTAL_STEPS}
+          dontShowAgain={dontShowAgain}
+          onDontShowAgainToggle={() => setDontShowAgain(!dontShowAgain)}
+          onNext={handleNext}
+          onClose={handleClose}
+        />
+      </div>
     </motion.div>
   );
 };
