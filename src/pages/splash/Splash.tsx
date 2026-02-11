@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Logo from "@/assets/LOGO.svg?react";
+import { useAuth } from "@/hooks/auth/useAuth";
 
 const SplashPage = () => {
   const navigate = useNavigate();
   const [isExiting, setIsExiting] = useState(false);
+  const { isLoading, isAuthenticated } = useAuth();
 
   useEffect(() => {
+    if (isLoading) return;
     let exitTimer = 0;
     let timer = 0;
+    const targetPath = isAuthenticated ? "/home" : "/start";
 
     const raf = window.requestAnimationFrame(() => {
       exitTimer = window.setTimeout(() => {
@@ -16,7 +20,7 @@ const SplashPage = () => {
       }, 600);
 
       timer = window.setTimeout(() => {
-        navigate("/start", { replace: true });
+        navigate(targetPath, { replace: true });
       }, 1000);
     });
 
@@ -25,7 +29,7 @@ const SplashPage = () => {
       window.clearTimeout(exitTimer);
       window.clearTimeout(timer);
     };
-  }, [navigate]);
+  }, [isAuthenticated, isLoading, navigate]);
 
   return (
     <div className="-mb-96 flex flex-1 flex-col items-center justify-center px-24">

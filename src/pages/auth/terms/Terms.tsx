@@ -1,5 +1,6 @@
 import { useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { storage } from "@/apis/storage";
 import IcChecked from "@/assets/icons/auth/ic_checked_blue.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked_gray.svg";
 import { Button } from "@/components/common/button/Button";
@@ -37,6 +38,7 @@ export default function TermsPage() {
 
   const { mutate: submitAgreements, isPending } = useSubmitPolicyAgreements({
     onSuccess: () => {
+      storage.setPolicyAgreed(true);
       setPolicyAgreed(true);
       if (from && !["/signup", "/login", "/oauth/callback"].includes(from)) {
         navigate(from, { replace: true });
