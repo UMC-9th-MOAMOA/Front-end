@@ -1,17 +1,12 @@
-import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked.svg";
 import IcRight from "@/assets/icons/ic_right.svg";
-
-export type AgreementKey =
-  | "terms"
-  | "privacy"
-  | "privacyCollection"
-  | "marketing";
+import { useSignUpStore } from "@/store/signup";
+import type { TermKey } from "@/pages/auth/terms/constants/terms";
 
 interface AgreementItem {
-  key: AgreementKey;
+  key: TermKey;
   label: string;
 }
 
@@ -22,37 +17,23 @@ const AGREEMENTS: AgreementItem[] = [
   { key: "marketing", label: "마케팅 정보 수신 동의(선택)" },
 ];
 
-interface AgreementListProps {
-  initialChecked?: Record<AgreementKey, boolean>;
-}
-
-export default function AgreementList({ initialChecked }: AgreementListProps) {
+export default function AgreementList() {
   const navigate = useNavigate();
   const location = useLocation();
+  const checked = useSignUpStore((state) => state.agreements);
+  const setAgreements = useSignUpStore((state) => state.setAgreements);
 
   const openDetailPage = () => {
     navigate("/terms", {
-      state: { agreements: checked, from: location.pathname },
+      state: { from: location.pathname },
     });
   };
-
-  const [checked, setChecked] = useState<Record<AgreementKey, boolean>>({
-    terms: false,
-    privacy: false,
-    privacyCollection: false,
-    marketing: false,
-  });
-
-  useEffect(() => {
-    if (!initialChecked) return;
-    setChecked((prev) => ({ ...prev, ...initialChecked }));
-  }, [initialChecked]);
 
   const allChecked = Object.values(checked).every(Boolean);
 
   const toggleAll = () => {
     const next = !allChecked;
-    setChecked({
+    setAgreements({
       terms: next,
       privacy: next,
       privacyCollection: next,
@@ -60,8 +41,11 @@ export default function AgreementList({ initialChecked }: AgreementListProps) {
     });
   };
 
-  const toggleItem = (key: AgreementKey) => {
-    setChecked((prev) => ({ ...prev, [key]: !prev[key] }));
+  const toggleItem = (key: TermKey) => {
+    setAgreements({
+      ...checked,
+      [key]: !checked[key],
+    });
   };
 
   return (
