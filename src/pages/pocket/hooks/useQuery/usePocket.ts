@@ -5,5 +5,7 @@ export const usePocket = () => {
   return useSuspenseQuery({
     queryKey: ["pocket"],
     queryFn: getPocket,
+    staleTime: 0,
+    gcTime: 0,
   });
 };
