@@ -27,6 +27,7 @@ interface DailyWeeklyGoalAchievementProps {
   goalReward: number;
   missionName: string;
   questionResults: QuestionResult[];
+  onConfirm: () => void;
 }
 
 export default function DailyWeeklyGoalAchievement({
@@ -34,6 +35,7 @@ export default function DailyWeeklyGoalAchievement({
   goalReward,
   missionName,
   questionResults,
+  onConfirm,
 }: DailyWeeklyGoalAchievementProps) {
   const navigate = useNavigate();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
@@ -152,7 +154,7 @@ export default function DailyWeeklyGoalAchievement({
         <div className="flex w-full gap-12">
           <button
             type="button"
-            onClick={() => navigate("/mypage?tab=mission")}
+            onClick={onConfirm}
             className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
           >
             확인
