@@ -1,5 +1,4 @@
 ﻿import { useId } from "react";
-import { useNavigate } from "react-router-dom";
 import type { InquiryDraft } from "../../types/inquiry.type";
 import InquiryAttachmentSection from "./InquiryAttachmentSection";
 import InquiryCategorySection from "./InquiryCategorySection";
@@ -11,8 +10,6 @@ const MAX_IMAGES = 5;
 const MAX_IMAGE_SIZE = 10 * 1024 * 1024;
 
 type Props = {
-  agreed: boolean;
-  onToggleAgreed: () => void;
   draft: InquiryDraft;
   setDraft: React.Dispatch<React.SetStateAction<InquiryDraft>>;
 };
@@ -22,13 +19,10 @@ function clamp(n: number, max: number) {
 }
 
 export default function InquiryWriteForm({
-  agreed,
-  onToggleAgreed,
   draft,
   setDraft,
 }: Props) {
   const fileInputId = useId();
-  const navigate = useNavigate();
 
   const titleCount = draft.title.length;
   const contentCount = draft.content.length;
