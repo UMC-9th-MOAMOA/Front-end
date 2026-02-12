@@ -1,7 +1,7 @@
 {
   "id": "/",
   "short_name": "모아모아",
-  "name": "모아모아 프로젝트",
+  "name": "모아모아",
   "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
