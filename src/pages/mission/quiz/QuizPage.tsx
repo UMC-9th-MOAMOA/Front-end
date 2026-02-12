@@ -1,11 +1,16 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
+import MissionErrorToast from "@/pages/mission/components/MissionErrorToast";
 import DailyGoalAchievement from "@/pages/mission/goal/DailyGoalAchievement";
 import DailyWeeklyGoalAchievement from "@/pages/mission/goal/DailyWeeklyGoalAchievement";
 import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
-import MissionErrorToast from "@/pages/mission/components/MissionErrorToast";
 import { useChangeMissionStatus } from "@/pages/mission/hooks/useMutation/useChangeMissionStatus";
 import { useSubmitMissionQuiz } from "@/pages/mission/hooks/useMutation/useSubmitMissionQuiz";
 import { useMissionDetail } from "@/pages/mission/hooks/useQuery/useMissionDetail";
@@ -69,7 +74,9 @@ function QuizPageContent({ missionId }: { missionId: number }) {
 
   const feedbackTimeoutRef = useRef<number | null>(null);
 
-  const isRetry = (location.state as { isRetry?: boolean })?.isRetry ?? mission.attemptCount > 0;
+  const isRetry =
+    (location.state as { isRetry?: boolean })?.isRetry ??
+    mission.attemptCount > 0;
 
   const handleMutationError = useCallback((error: unknown) => {
     const apiError = error as ApiError;
@@ -201,7 +208,10 @@ function QuizPageContent({ missionId }: { missionId: number }) {
                 isWeeklyGoalAchieved: data.weeklyGoalAchieved,
               });
               setShowFeedback(false);
-              if (data.goalReward > 0) {
+              if (
+                data.goalReward > 0 &&
+                (data.dailyGoalAchieved || data.weeklyGoalAchieved)
+              ) {
                 setShowGoalAchievement(true);
               } else {
                 setShowMissionResult(true);
