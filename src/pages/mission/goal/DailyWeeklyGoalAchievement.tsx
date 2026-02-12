@@ -6,9 +6,15 @@ import IcExpand from "@/assets/icons/mission/ic_expand.svg?react";
 import IcSimple from "@/assets/icons/mission/ic_simple.svg?react";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
-  subjective: "단답형",
-  ox: "OX",
-  multiple: "객관식",
+  SHORT: "단답식",
+  OX: "OX",
+  MULTIPLE: "객관식",
+};
+
+const QUESTION_TYPE_REWARDS: Record<string, number> = {
+  OX: 3,
+  MULTIPLE: 5,
+  SHORT: 10,
 };
 
 interface QuestionResult {
@@ -18,28 +24,28 @@ interface QuestionResult {
 
 interface DailyWeeklyGoalAchievementProps {
   totalAcorns: number;
+  goalReward: number;
   missionName: string;
   questionResults: QuestionResult[];
-  dailyBonusAcorns?: number;
-  weeklyBonusAcorns?: number;
+  onConfirm: () => void;
 }
 
 export default function DailyWeeklyGoalAchievement({
   totalAcorns,
+  goalReward,
   missionName,
   questionResults,
-  dailyBonusAcorns = 1,
-  weeklyBonusAcorns = 1,
+  onConfirm,
 }: DailyWeeklyGoalAchievementProps) {
   const navigate = useNavigate();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
   const [isMissionOpen, setIsMissionOpen] = useState(false);
 
   const missionAcorns = questionResults.reduce(
-    (sum, r) => sum + (r.isCorrect ? 1 : 0),
+    (sum, r) => sum + (r.isCorrect ? (QUESTION_TYPE_REWARDS[r.type] ?? 1) : 0),
     0
   );
-  const grandTotal = missionAcorns + dailyBonusAcorns + weeklyBonusAcorns;
+  const grandTotal = totalAcorns;
 
   return (
     <div className="relative -mb-96 flex min-h-screen flex-col items-center">
@@ -83,8 +89,8 @@ export default function DailyWeeklyGoalAchievement({
                   className="flex w-full items-center justify-between py-8"
                   onClick={() => setIsMissionOpen((prev) => !prev)}
                 >
-                  <span className="body-2 text-black">{missionName}</span>
-                  <div className="flex items-center">
+                  <span className="body-2 line-clamp-2 min-w-0 flex-1 text-left text-black">{missionName}</span>
+                  <div className="flex shrink-0 items-center">
                     <span className="body-2 text-black">+{missionAcorns}</span>
                     <IcColoredAcorn className="h-24 w-24" />
                     <span className="w-12" />
@@ -108,7 +114,7 @@ export default function DailyWeeklyGoalAchievement({
                         </span>
                         <div className="flex items-center">
                           <span className="body-4 text-gray-500">
-                            +{result.isCorrect ? 1 : 0}
+                            +{result.isCorrect ? (QUESTION_TYPE_REWARDS[result.type] ?? 1) : 0}
                           </span>
                           <IcColoredAcorn className="h-24 w-24" />
                         </div>
@@ -119,19 +125,9 @@ export default function DailyWeeklyGoalAchievement({
               </div>
 
               <div className="flex items-center justify-between py-8 pl-10">
-                <span className="body-2 text-black">일간 목표 달성</span>
+                <span className="body-2 text-black">목표 달성 보너스</span>
                 <div className="flex items-center gap-10">
-                  <span className="body-2 text-black">+{dailyBonusAcorns}</span>
-                  <IcColoredAcorn className="h-24 w-24" />
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between py-8 pl-10">
-                <span className="body-2 text-black">주간 목표 달성</span>
-                <div className="flex items-center gap-10">
-                  <span className="body-2 text-black">
-                    +{weeklyBonusAcorns}
-                  </span>
+                  <span className="body-2 text-black">+{goalReward}</span>
                   <IcColoredAcorn className="h-24 w-24" />
                 </div>
               </div>
@@ -158,7 +154,7 @@ export default function DailyWeeklyGoalAchievement({
         <div className="flex w-full gap-12">
           <button
             type="button"
-            onClick={() => navigate("/mypage?tab=mission")}
+            onClick={onConfirm}
             className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
           >
             확인

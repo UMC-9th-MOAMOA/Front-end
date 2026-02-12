@@ -15,6 +15,12 @@ const QUESTION_TYPE_LABELS: Record<string, string> = {
   MULTIPLE: "객관식",
 };
 
+const QUESTION_TYPE_REWARDS: Record<string, number> = {
+  OX: 3,
+  MULTIPLE: 5,
+  SHORT: 10,
+};
+
 interface QuestionResult {
   type: string;
   isCorrect: boolean;
@@ -22,6 +28,7 @@ interface QuestionResult {
 
 interface MissionResultProps {
   totalAcorns: number;
+  goalReward: number;
   questionResults: QuestionResult[];
   correctCount: number;
   totalQuestions: number;
@@ -33,6 +40,7 @@ interface MissionResultProps {
 
 export default function MissionResult({
   totalAcorns,
+  goalReward,
   questionResults,
   correctCount,
   totalQuestions,
@@ -44,22 +52,32 @@ export default function MissionResult({
   const navigate = useNavigate();
   const isAllCorrect = correctCount === totalQuestions;
   const [showGoalScreen, setShowGoalScreen] = useState(false);
+  const [goalRedirect, setGoalRedirect] = useState<(() => void) | null>(null);
+
+  const hasGoal = isDailyGoalAchieved || isWeeklyGoalAchieved;
+
+  const showGoalThen = (redirect: () => void) => {
+    setGoalRedirect(() => redirect);
+    setShowGoalScreen(true);
+  };
 
   const handleExit = () => {
-    if (isDailyGoalAchieved || isWeeklyGoalAchieved) {
-      setShowGoalScreen(true);
+    if (hasGoal) {
+      showGoalThen(() => navigate("/home", { replace: true }));
     } else {
-      navigate("/home");
+      navigate("/home", { replace: true });
     }
   };
 
-  if (showGoalScreen) {
+  if (showGoalScreen && goalRedirect) {
     if (isDailyGoalAchieved && isWeeklyGoalAchieved) {
       return (
         <DailyWeeklyGoalAchievement
           totalAcorns={totalAcorns}
+          goalReward={goalReward}
           missionName={missionName}
           questionResults={questionResults}
+          onConfirm={goalRedirect}
         />
       );
     }
@@ -67,9 +85,9 @@ export default function MissionResult({
       return (
         <DailyGoalAchievement
           totalAcorns={totalAcorns}
+          goalReward={goalReward}
           questionResults={questionResults}
-          correctCount={correctCount}
-          onClose={() => navigate("/home")}
+          onClose={goalRedirect}
         />
       );
     }
@@ -77,9 +95,9 @@ export default function MissionResult({
       return (
         <WeeklyGoalAchievement
           totalAcorns={totalAcorns}
+          goalReward={goalReward}
           questionResults={questionResults}
-          correctCount={correctCount}
-          onClose={() => navigate("/home")}
+          onClose={goalRedirect}
         />
       );
     }
@@ -119,7 +137,10 @@ export default function MissionResult({
               </span>
               <div className="flex items-center gap-10">
                 <span className="body-2 text-black">
-                  +{result.isCorrect ? 1 : 0}
+                  +
+                  {result.isCorrect
+                    ? (QUESTION_TYPE_REWARDS[result.type] ?? 1)
+                    : 0}
                 </span>
                 <IcColoredAcorn className="h-24 w-24" />
               </div>
@@ -131,7 +152,7 @@ export default function MissionResult({
           <div className="flex items-center justify-between pl-30">
             <span className="heading-3 text-black">Total</span>
             <div className="flex items-center gap-10 pr-30">
-              <span className="heading-3 text-black">+{correctCount}</span>
+              <span className="heading-3 text-black">+{totalAcorns}</span>
               <IcColoredAcorn className="h-30 w-30" />
             </div>
           </div>
@@ -168,14 +189,20 @@ export default function MissionResult({
             <>
               <button
                 type="button"
-                onClick={() => navigate("/search")}
+                onClick={() => {
+                  if (hasGoal) {
+                    showGoalThen(() => navigate("/search", { replace: true }));
+                  } else {
+                    navigate("/search", { replace: true });
+                  }
+                }}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
               >
                 미션 탐색
               </button>
               <button
                 type="button"
-                onClick={() => navigate("/home")}
+                onClick={handleExit}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-300 py-12 text-white"
               >
                 상점으로
@@ -185,14 +212,20 @@ export default function MissionResult({
             <>
               <button
                 type="button"
-                onClick={() => navigate("/home")}
+                onClick={handleExit}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
               >
                 상점으로
               </button>
               <button
                 type="button"
-                onClick={onRetryWrong}
+                onClick={() => {
+                  if (hasGoal) {
+                    showGoalThen(onRetryWrong);
+                  } else {
+                    onRetryWrong();
+                  }
+                }}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-300 py-12 text-white"
               >
                 오답 풀기

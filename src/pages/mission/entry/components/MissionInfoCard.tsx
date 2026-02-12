@@ -39,7 +39,9 @@ export default function MissionInfoCard({
   return (
     <div className="flex w-full flex-col gap-8 rounded-xl bg-white px-23 pt-21">
       <div className="flex items-center">
-        <h2 className="heading-3 pb-4 text-center text-black">{title}</h2>
+        <h2 className="heading-3 line-clamp-2 pb-4 text-center text-black">
+          {title}
+        </h2>
       </div>
       <div className="flex items-start gap-4 self-stretch pb-16">
         {keyword.map((kw, index) => (
