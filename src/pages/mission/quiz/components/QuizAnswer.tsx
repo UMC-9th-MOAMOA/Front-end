@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import IcOxO from "@/assets/icons/mission/ic_ox_o.svg?react";
 import IcOxX from "@/assets/icons/mission/ic_ox_x.svg?react";
 
@@ -18,6 +19,8 @@ export default function QuizAnswer({
   onInputChange,
   onOptionSelect,
 }: QuizAnswerProps) {
+  const shouldBlurRef = useRef(false);
+
   if (questionType === "subjective") {
     return (
       <div className="pt-39">
@@ -25,8 +28,18 @@ export default function QuizAnswer({
           value={userInput}
           onChange={(e) => onInputChange(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.nativeEvent.isComposing) {
+            if (e.key === "Enter") {
               e.preventDefault();
+              if (e.nativeEvent.isComposing) {
+                shouldBlurRef.current = true;
+              } else {
+                e.currentTarget.blur();
+              }
+            }
+          }}
+          onCompositionEnd={(e) => {
+            if (shouldBlurRef.current) {
+              shouldBlurRef.current = false;
               e.currentTarget.blur();
             }
           }}
