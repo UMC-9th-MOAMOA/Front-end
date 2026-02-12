@@ -56,6 +56,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
   );
   const watchTimeoutRef = useRef<number | null>(null);
   const clickedAtRef = useRef<number | null>(null);
+  const popupRef = useRef<Window | null>(null);
 
   const watchMission = useWatchMission();
   const changeMissionStatus = useChangeMissionStatus();
@@ -80,25 +81,75 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
     if (isContentWatched) return;
     if (watchTimeoutRef.current) window.clearTimeout(watchTimeoutRef.current);
 
+    const now = Date.now();
     const watchDuration = mission.videoLength * 1000;
-    clickedAtRef.current = Date.now();
+    clickedAtRef.current = now;
 
+    sessionStorage.setItem("missionReturnUrl", `/mission/${missionId}`);
+    sessionStorage.setItem("missionClickedAt", String(now));
+
+    popupRef.current = window.open(mission.videoUrl, "_blank");
+
+    if (!popupRef.current) {
+      // 팝업이 차단된 경우: 타이머를 시작하지 않고 사용자에게 안내
+      sessionStorage.removeItem("missionClickedAt");
+      sessionStorage.removeItem("missionReturnUrl");
+      clickedAtRef.current = null;
+      setErrorMessage("팝업이 차단되었습니다. 팝업 허용 후 다시 시도해주세요.");
+      return;
+    }
     watchTimeoutRef.current = window.setTimeout(() => {
       callWatchApi();
+      sessionStorage.removeItem("missionClickedAt");
+      sessionStorage.removeItem("missionReturnUrl");
     }, watchDuration);
   };
 
   useEffect(() => {
-    const handleVisibilityChange = () => {
-      if (
-        document.visibilityState === "visible" &&
-        clickedAtRef.current &&
-        !isContentWatched
-      ) {
-        const elapsed = Date.now() - clickedAtRef.current;
+    if (!isContentWatched) {
+      const savedClickedAt = sessionStorage.getItem("missionClickedAt");
+      if (savedClickedAt) {
+        const elapsed = Date.now() - Number(savedClickedAt);
         const watchDuration = mission.videoLength * 1000;
         if (elapsed >= watchDuration) {
+          sessionStorage.removeItem("missionClickedAt");
+          sessionStorage.removeItem("missionReturnUrl");
           callWatchApi();
+        } else {
+          clickedAtRef.current = Number(savedClickedAt);
+          watchTimeoutRef.current = window.setTimeout(() => {
+            callWatchApi();
+            sessionStorage.removeItem("missionClickedAt");
+            sessionStorage.removeItem("missionReturnUrl");
+          }, watchDuration - elapsed);
+        }
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "visible") {
+        const isMobileChrome =
+          (/Android/i.test(navigator.userAgent) &&
+            /Chrome/i.test(navigator.userAgent)) ||
+          (/iPhone|iPad/i.test(navigator.userAgent) &&
+            /CriOS/i.test(navigator.userAgent));
+        if (isMobileChrome && popupRef.current && !popupRef.current.closed) {
+          try {
+            popupRef.current.close();
+          } catch {}
+          popupRef.current = null;
+        }
+
+        if (clickedAtRef.current && !isContentWatched) {
+          const elapsed = Date.now() - clickedAtRef.current;
+          const watchDuration = mission.videoLength * 1000;
+          if (elapsed >= watchDuration) {
+            callWatchApi();
+            sessionStorage.removeItem("missionClickedAt");
+            sessionStorage.removeItem("missionReturnUrl");
+          }
         }
       }
     };

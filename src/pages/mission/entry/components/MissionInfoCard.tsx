@@ -32,7 +32,6 @@ export default function MissionInfoCard({
   const thumbnailUrl = getYoutubeThumbnail(videoUrl);
 
   const handleContentClick = () => {
-    window.open(videoUrl, "_blank", "noopener,noreferrer");
     onContentClick();
   };
 

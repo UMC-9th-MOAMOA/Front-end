@@ -1,13 +1,9 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcAllCorrect from "@/assets/icons/mission/ic_all_correct.svg?react";
 import IcColoredAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
 import IcResultHands from "@/assets/icons/mission/ic_result_fail_hands.svg?react";
 import IcResultSquirrel from "@/assets/icons/mission/ic_result_fail_squirrel.svg?react";
 import Header from "@/components/common/header/Header";
-import DailyGoalAchievement from "@/pages/mission/goal/DailyGoalAchievement";
-import DailyWeeklyGoalAchievement from "@/pages/mission/goal/DailyWeeklyGoalAchievement";
-import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
   SHORT: "단답식",
@@ -28,80 +24,25 @@ interface QuestionResult {
 
 interface MissionResultProps {
   totalAcorns: number;
-  goalReward: number;
   questionResults: QuestionResult[];
   correctCount: number;
   totalQuestions: number;
-  isDailyGoalAchieved?: boolean;
-  isWeeklyGoalAchieved?: boolean;
-  missionName?: string;
   onRetryWrong: () => void;
 }
 
 export default function MissionResult({
   totalAcorns,
-  goalReward,
   questionResults,
   correctCount,
   totalQuestions,
-  isDailyGoalAchieved = false,
-  isWeeklyGoalAchieved = false,
-  missionName = "",
   onRetryWrong,
 }: MissionResultProps) {
   const navigate = useNavigate();
   const isAllCorrect = correctCount === totalQuestions;
-  const [showGoalScreen, setShowGoalScreen] = useState(false);
-  const [goalRedirect, setGoalRedirect] = useState<(() => void) | null>(null);
-
-  const hasGoal = goalReward > 0;
-
-  const showGoalThen = (redirect: () => void) => {
-    setGoalRedirect(() => redirect);
-    setShowGoalScreen(true);
-  };
 
   const handleExit = () => {
-    if (hasGoal) {
-      showGoalThen(() => navigate("/home", { replace: true }));
-    } else {
-      navigate("/home", { replace: true });
-    }
+    navigate("/home", { replace: true });
   };
-
-  if (showGoalScreen && goalRedirect) {
-    if (isDailyGoalAchieved && isWeeklyGoalAchieved) {
-      return (
-        <DailyWeeklyGoalAchievement
-          totalAcorns={totalAcorns}
-          goalReward={goalReward}
-          missionName={missionName}
-          questionResults={questionResults}
-          onConfirm={goalRedirect}
-        />
-      );
-    }
-    if (isDailyGoalAchieved) {
-      return (
-        <DailyGoalAchievement
-          totalAcorns={totalAcorns}
-          goalReward={goalReward}
-          questionResults={questionResults}
-          onClose={goalRedirect}
-        />
-      );
-    }
-    if (isWeeklyGoalAchieved) {
-      return (
-        <WeeklyGoalAchievement
-          totalAcorns={totalAcorns}
-          goalReward={goalReward}
-          questionResults={questionResults}
-          onClose={goalRedirect}
-        />
-      );
-    }
-  }
 
   return (
     <div className="relative -mb-96 flex min-h-screen flex-col items-center">
@@ -189,13 +130,7 @@ export default function MissionResult({
             <>
               <button
                 type="button"
-                onClick={() => {
-                  if (hasGoal) {
-                    showGoalThen(() => navigate("/search", { replace: true }));
-                  } else {
-                    navigate("/search", { replace: true });
-                  }
-                }}
+                onClick={() => navigate("/search", { replace: true })}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
               >
                 미션 탐색
@@ -219,13 +154,7 @@ export default function MissionResult({
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (hasGoal) {
-                    showGoalThen(onRetryWrong);
-                  } else {
-                    onRetryWrong();
-                  }
-                }}
+                onClick={onRetryWrong}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-300 py-12 text-white"
               >
                 오답 풀기
