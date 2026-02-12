@@ -1,9 +1,10 @@
 import { useEffect, useRef } from "react";
 import { storage } from "@/apis/storage";
 import router from "@/routes/router";
+import { useAttendanceStore } from "@/store/attendance/attendance";
 
 interface UseAppInitializerProps {
-  onCheckAttendance: () => void;
+  onCheckAttendance: () => Promise<boolean>;
   onCheckGoalPopups: () => void;
 }
 
@@ -17,7 +18,7 @@ export const useAppInitializer = ({
   const prevPathnameRef = useRef(window.location.pathname);
 
   useEffect(() => {
-    const runChecks = () => {
+    const runChecks = async () => {
       const token = storage.getToken();
       if (!token) return;
 
@@ -25,8 +26,16 @@ export const useAppInitializer = ({
         window.location.pathname.startsWith("/onboarding");
       if (isOnboardingPage) return;
 
-      callbacksRef.current.onCheckAttendance();
-      callbacksRef.current.onCheckGoalPopups();
+      const modalShown =
+        await callbacksRef.current.onCheckAttendance();
+
+      if (modalShown) {
+        useAttendanceStore
+          .getState()
+          .setOnModalClosed(() => callbacksRef.current.onCheckGoalPopups());
+      } else {
+        callbacksRef.current.onCheckGoalPopups();
+      }
     };
 
     runChecks();
