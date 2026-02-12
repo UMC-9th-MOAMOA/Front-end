@@ -63,9 +63,9 @@ export default function MissionResult({
 
   const handleExit = () => {
     if (hasGoal) {
-      showGoalThen(() => navigate("/home"));
+      showGoalThen(() => navigate("/home", { replace: true }));
     } else {
-      navigate("/home");
+      navigate("/home", { replace: true });
     }
   };
 
@@ -191,9 +191,9 @@ export default function MissionResult({
                 type="button"
                 onClick={() => {
                   if (hasGoal) {
-                    showGoalThen(() => navigate("/search"));
+                    showGoalThen(() => navigate("/search", { replace: true }));
                   } else {
-                    navigate("/search");
+                    navigate("/search", { replace: true });
                   }
                 }}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-50 py-12 text-moamoa-600"
