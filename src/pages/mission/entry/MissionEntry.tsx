@@ -90,6 +90,14 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
 
     popupRef.current = window.open(mission.videoUrl, "_blank");
 
+    if (!popupRef.current) {
+      // 팝업이 차단된 경우: 타이머를 시작하지 않고 사용자에게 안내
+      sessionStorage.removeItem("missionClickedAt");
+      sessionStorage.removeItem("missionReturnUrl");
+      clickedAtRef.current = null;
+      setErrorMessage("팝업이 차단되었습니다. 팝업 허용 후 다시 시도해주세요.");
+      return;
+    }
     watchTimeoutRef.current = window.setTimeout(() => {
       callWatchApi();
       sessionStorage.removeItem("missionClickedAt");
