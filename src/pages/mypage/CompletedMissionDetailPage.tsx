@@ -86,7 +86,10 @@ function OxQuizSection({
             ].join(" ")}
           >
             <IcSubtract
-              className="h-[47px] w-[47px] text-[#2664ED]"
+              className={[
+                "h-[47px] w-[47px]",
+                isO ? "text-moamoa-400" : "text-[#BDBDBD]",
+              ].join(" ")}
               aria-hidden
             />
           </button>
@@ -97,14 +100,14 @@ function OxQuizSection({
             className={[
               "flex h-[94px] w-[124px] flex-col items-center justify-center gap-4 rounded-lg px-6 py-6",
               isX
-                ? "border border-[#2664ED] bg-[#B4C9F9]"
+                ? "border border-[#FD8585] bg-[#FFBEBF]"
                 : "border border-[#E0E0E0] bg-[#FAFAFA]",
             ].join(" ")}
           >
             <IcUnion
               className={[
                 "h-[47px] w-[47px]",
-                isX ? "text-moamoa-warning" : "text-[#424242]",
+                isX ? "text-warning" : "text-[#BDBDBD]",
               ].join(" ")}
               aria-hidden
             />

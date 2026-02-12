@@ -10,14 +10,22 @@ export default function PerformanceSection({
   data: PerformanceSummary;
 }) {
   const rows: PerformanceMissionRow[] = data.items.flatMap((item) =>
-    item.missions.map((mission) => ({
+    item.missions.map((mission) => {
+      const parsedMissionId = Number(mission.id);
+      const missionId =
+        mission.kind === "mission" && Number.isFinite(parsedMissionId)
+          ? parsedMissionId
+          : undefined;
+
+      return ({
       rowId: `${item.id}-${mission.id}`,
-      missionId: mission.kind === "mission" ? mission.id : undefined,
+      missionId,
       kind: mission.kind,
       title: mission.title,
       acornDelta: mission.acornDelta,
       durationMin: mission.kind === "mission" ? item.durationMin : null,
-    }))
+    });
+    })
   );
 
   const totalMin = rows.reduce((sum, r) => sum + (r.durationMin ?? 0), 0);

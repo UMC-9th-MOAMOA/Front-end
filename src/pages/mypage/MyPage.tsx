@@ -134,13 +134,18 @@ function AllTabContent({
             ? "?? ??"
             : "??";
 
+    const missionItemId =
+      isMission && item.missionId != null
+        ? String(item.missionId)
+        : `${item.type}-${idx}`;
+
     return {
       id: `${item.type}-${item.occurredAt}-${idx}`,
       durationMin: isMission ? (item.missionDurationMinutes ?? 0) : 0,
       status: "success" as const,
       missions: [
         {
-          id: `${item.type}-${idx}`,
+          id: missionItemId,
           kind,
           title,
           acornDelta: item.amount,

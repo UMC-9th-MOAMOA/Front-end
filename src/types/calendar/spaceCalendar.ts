@@ -7,6 +7,7 @@ export interface SpaceCalendarDayItem {
   type: string;
   amount: number;
   occurredAt: string;
+  missionId?: number | null;
   missionTitle?: string | null;
   missionDurationMinutes?: number | null;
 }
