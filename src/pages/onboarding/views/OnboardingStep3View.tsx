@@ -23,7 +23,7 @@ export default function OnboardingStep3View({
   };
 
   return (
-    <section className="mt-47 flex flex-col items-center pb-24">
+    <section className="mt-47 flex flex-col items-center pb-120">
       <h2 className="heading-2 whitespace-pre-line text-center text-black">
         {"평소 00님의\n하루 속 빈칸은 어떤 모습인가요?"}
       </h2>
@@ -47,10 +47,10 @@ export default function OnboardingStep3View({
           </button>
         ))}
       </div>
-      <div className="absolute inset-x-24 bottom-42">
-        <p className="body-5 mb-27 text-center text-gray-600">
-          자투리 시간 선택은 필수 선택입니다.
-        </p>
+      <p className="body-5 mt-40 text-center text-gray-600">
+        자투리 시간 선택은 필수 선택입니다.
+      </p>
+      <div className="sticky bottom-0 mt-40 w-full bg-white">
         <Button
           type="button"
           className="heading-5 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-600"
