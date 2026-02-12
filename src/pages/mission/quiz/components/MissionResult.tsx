@@ -52,16 +52,24 @@ export default function MissionResult({
   const navigate = useNavigate();
   const isAllCorrect = correctCount === totalQuestions;
   const [showGoalScreen, setShowGoalScreen] = useState(false);
+  const [goalRedirect, setGoalRedirect] = useState<(() => void) | null>(null);
+
+  const hasGoal = isDailyGoalAchieved || isWeeklyGoalAchieved;
+
+  const showGoalThen = (redirect: () => void) => {
+    setGoalRedirect(() => redirect);
+    setShowGoalScreen(true);
+  };
 
   const handleExit = () => {
-    if (isDailyGoalAchieved || isWeeklyGoalAchieved) {
-      setShowGoalScreen(true);
+    if (hasGoal) {
+      showGoalThen(() => navigate("/home"));
     } else {
       navigate("/home");
     }
   };
 
-  if (showGoalScreen) {
+  if (showGoalScreen && goalRedirect) {
     if (isDailyGoalAchieved && isWeeklyGoalAchieved) {
       return (
         <DailyWeeklyGoalAchievement
@@ -69,6 +77,7 @@ export default function MissionResult({
           goalReward={goalReward}
           missionName={missionName}
           questionResults={questionResults}
+          onConfirm={goalRedirect}
         />
       );
     }
@@ -78,7 +87,7 @@ export default function MissionResult({
           totalAcorns={totalAcorns}
           goalReward={goalReward}
           questionResults={questionResults}
-          onClose={() => navigate("/home")}
+          onClose={goalRedirect}
         />
       );
     }
@@ -88,7 +97,7 @@ export default function MissionResult({
           totalAcorns={totalAcorns}
           goalReward={goalReward}
           questionResults={questionResults}
-          onClose={() => navigate("/home")}
+          onClose={goalRedirect}
         />
       );
     }
@@ -181,8 +190,8 @@ export default function MissionResult({
               <button
                 type="button"
                 onClick={() => {
-                  if (isDailyGoalAchieved || isWeeklyGoalAchieved) {
-                    setShowGoalScreen(true);
+                  if (hasGoal) {
+                    showGoalThen(() => navigate("/search"));
                   } else {
                     navigate("/search");
                   }
@@ -210,7 +219,13 @@ export default function MissionResult({
               </button>
               <button
                 type="button"
-                onClick={onRetryWrong}
+                onClick={() => {
+                  if (hasGoal) {
+                    showGoalThen(onRetryWrong);
+                  } else {
+                    onRetryWrong();
+                  }
+                }}
                 className="body-2-1 h-50 flex-1 rounded-xl bg-moamoa-300 py-12 text-white"
               >
                 오답 풀기
