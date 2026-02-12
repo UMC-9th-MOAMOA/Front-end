@@ -25,7 +25,7 @@ export default function QuizAnswer({
           value={userInput}
           onChange={(e) => onInputChange(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === "Enter") {
+            if (e.key === "Enter" && !e.nativeEvent.isComposing) {
               e.preventDefault();
               e.currentTarget.blur();
             }
