@@ -18,7 +18,6 @@ export const createInquiry = async (payload: CreateInquiryPayload) => {
   form.append("category", payload.category);
   form.append("title", payload.title);
   form.append("content", payload.content);
-  form.append("termsAgreed", String(payload.termsAgreed));
 
   (payload.images ?? []).forEach((file) => {
     form.append("images", file);
