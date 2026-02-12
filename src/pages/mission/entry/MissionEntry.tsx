@@ -93,6 +93,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
     watchTimeoutRef.current = window.setTimeout(() => {
       callWatchApi();
       sessionStorage.removeItem("missionClickedAt");
+      sessionStorage.removeItem("missionReturnUrl");
     }, watchDuration);
   };
 
