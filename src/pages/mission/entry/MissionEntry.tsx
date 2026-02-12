@@ -55,6 +55,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
     mission.isContentWatched
   );
   const watchTimeoutRef = useRef<number | null>(null);
+  const clickedAtRef = useRef<number | null>(null);
 
   const watchMission = useWatchMission();
   const changeMissionStatus = useChangeMissionStatus();
@@ -65,29 +66,51 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
     setErrorMessage(apiError.serverMessage || "오류가 발생했습니다.");
   };
 
+  const callWatchApi = () => {
+    watchMission.mutate(missionId, {
+      onSuccess: (data) => {
+        setIsContentWatched(data.isContentWatched);
+        clickedAtRef.current = null;
+      },
+      onError: handleMutationError,
+    });
+  };
+
   const handleContentClick = () => {
     if (isContentWatched) return;
     if (watchTimeoutRef.current) window.clearTimeout(watchTimeoutRef.current);
 
     const watchDuration = mission.videoLength * 1000;
+    clickedAtRef.current = Date.now();
 
     watchTimeoutRef.current = window.setTimeout(() => {
-      watchMission.mutate(missionId, {
-        onSuccess: (data) => {
-          setIsContentWatched(data.isContentWatched);
-        },
-        onError: handleMutationError,
-      });
+      callWatchApi();
     }, watchDuration);
   };
 
   useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (
+        document.visibilityState === "visible" &&
+        clickedAtRef.current &&
+        !isContentWatched
+      ) {
+        const elapsed = Date.now() - clickedAtRef.current;
+        const watchDuration = mission.videoLength * 1000;
+        if (elapsed >= watchDuration) {
+          callWatchApi();
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
       if (watchTimeoutRef.current) {
         window.clearTimeout(watchTimeoutRef.current);
       }
     };
-  }, []);
+  }, [isContentWatched, mission.videoLength]);
 
   const handleStartQuiz = () => {
     changeMissionStatus.mutate(

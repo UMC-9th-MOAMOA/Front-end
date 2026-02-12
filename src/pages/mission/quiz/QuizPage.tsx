@@ -57,6 +57,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
   const [quizResult, setQuizResult] = useState<{
     isSuccess: boolean;
     totalAcorns: number;
+    goalReward: number;
     isDailyGoalAchieved: boolean;
     isWeeklyGoalAchieved: boolean;
   } | null>(null);
@@ -186,11 +187,12 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         {
           onSuccess: (data) => {
             if (isRetry) {
-              navigate("/mypage?tab=mission");
+              navigate("/mypage?tab=mission", { replace: true });
             } else {
               setQuizResult({
                 isSuccess: data.isSuccess,
                 totalAcorns: data.totalReward,
+                goalReward: data.goalReward,
                 isDailyGoalAchieved: data.dailyGoalAchieved,
                 isWeeklyGoalAchieved: data.weeklyGoalAchieved,
               });
@@ -227,14 +229,15 @@ function QuizPageContent({ missionId }: { missionId: number }) {
     return (
       <MissionResult
         totalAcorns={quizResult.totalAcorns}
+        goalReward={quizResult.goalReward}
         questionResults={questionResults}
         correctCount={correctCount}
         totalQuestions={mission.quizzes.length}
-        missionName={mission.interest}
+        missionName={mission.title}
         isDailyGoalAchieved={quizResult.isDailyGoalAchieved}
         isWeeklyGoalAchieved={quizResult.isWeeklyGoalAchieved}
         onRetryWrong={() => {
-          navigate(`/mission/entry/${missionId}`);
+          navigate(`/mission/${missionId}`, { replace: true });
         }}
       />
     );
