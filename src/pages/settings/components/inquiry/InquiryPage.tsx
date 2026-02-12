@@ -102,16 +102,8 @@ export default function InquiryPage() {
                 images: draft.images,
               },
               {
-                onSuccess: (result) => {
-                  // ✅ 성공 후 행동 택1
-                  // 1) 상세로 이동
-                  navigate(`/settings/inquiry/${result.inquiryId}`);
-
-                  // 2) 또는 탭을 list로 전환
-                  // setTab("list");
-
-                  // (선택) 폼 초기화
-                  // setDraft({ category: null, title: "", content: "", images: [] });
+                onSuccess: () => {
+                  navigate("/settings");
                 },
               }
             );

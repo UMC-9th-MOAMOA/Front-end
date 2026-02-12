@@ -1,5 +1,6 @@
 ﻿import { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import type { ApiError } from "@/types/api/api";
 import type { ChangePasswordRequest } from "@/types/password/password";
@@ -10,6 +11,7 @@ import PasswordChangeIntro from "./components/Password/PasswordChangeIntro";
 import PasswordChangeSuccessModal from "./components/Password/PasswordChangeSuccessModal";
 
 export default function PasswordChangePage() {
+  const navigate = useNavigate();
   const [successOpen, setSuccessOpen] = useState(false);
   const { mutate, isPending } = useChangePassword();
   const {
@@ -108,6 +110,7 @@ export default function PasswordChangePage() {
 
   const onConfirmSuccess = () => {
     setSuccessOpen(false);
+    navigate("/settings");
   };
 
   return (
