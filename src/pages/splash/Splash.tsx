@@ -12,7 +12,13 @@ const SplashPage = () => {
     if (isLoading) return;
     let exitTimer = 0;
     let timer = 0;
-    const targetPath = isAuthenticated ? "/home" : "/start";
+    const returnUrl = sessionStorage.getItem("missionReturnUrl");
+    if (returnUrl) {
+      sessionStorage.removeItem("missionReturnUrl");
+    }
+    const targetPath = isAuthenticated
+      ? (returnUrl || "/home")
+      : "/start";
 
     const raf = window.requestAnimationFrame(() => {
       exitTimer = window.setTimeout(() => {
