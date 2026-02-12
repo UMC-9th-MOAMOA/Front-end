@@ -56,9 +56,9 @@ export const sections: Section[] = [
     title: "서비스 편의 기능",
     wrapperClass:
       "flex min-h-174 w-full flex-col items-center gap-22 self-stretch",
-    innerClass: "flex min-h-147 w-full flex-col items-start gap-8",
+    innerClass: "flex min-h-150 w-full flex-col items-start gap-16",
     titleClass: "flex min-h-25 w-full items-center",
-    listClass: "flex w-full flex-col gap-8",
+    listClass: "flex w-full flex-col gap-3",
     buttonClass:
       "flex min-h-53 w-full items-center justify-between self-stretch py-12",
     items: [
