@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import type { InquiryDraft } from "../../types/inquiry.type";
 import InquiryAttachmentSection from "./InquiryAttachmentSection";
 import InquiryCategorySection from "./InquiryCategorySection";
-import InquiryConsentRow from "./InquiryConsentRow";
 import InquiryTextFields from "./InquiryTextFields";
 
 const MAX_TITLE = 20;
@@ -83,15 +82,6 @@ export default function InquiryWriteForm({
         onAddImages={onAddImages}
       />
 
-      <div className="mt-67 w-full">
-        <InquiryConsentRow
-          onToggle={onToggleAgreed}
-          onViewPolicy={() =>
-            navigate("/settings/inquiry/consent", { state: { draft } })
-          }
-          agreed={agreed}
-        />
-      </div>
     </div>
   );
 }

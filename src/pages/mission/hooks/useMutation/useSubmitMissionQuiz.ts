@@ -20,6 +20,9 @@ export const useSubmitMissionQuiz = () => {
       queryClient.invalidateQueries({
         queryKey: ["missions", "detail", missionId],
       });
+      queryClient.invalidateQueries({
+        queryKey: ["missions", "scrapped"],
+      });
     },
     onError: (error: ApiError) => handleError(error),
   });

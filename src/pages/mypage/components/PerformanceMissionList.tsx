@@ -17,7 +17,7 @@ const GRID_COLS_ROW = "grid-cols-[1fr_64px_max-content_20px_24px]";
 
 export type PerformanceMissionRow = {
   rowId: string;
-  missionId?: string;
+  missionId?: number | null;
   kind: RowKind;
   title: string;
   acornDelta: number;
@@ -102,7 +102,10 @@ export default function PerformanceMissionList({
                     <button
                       type="button"
                       onClick={() => {
-                        if (row.missionId) {
+                        if (
+                          row.missionId != null &&
+                          Number.isFinite(row.missionId)
+                        ) {
                           navigate(`/mypage/mission/${row.missionId}`);
                         }
                       }}
