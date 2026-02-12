@@ -75,7 +75,7 @@ export default function Onboarding() {
   };
 
   return (
-    <main className="flex flex-1 flex-col">
+    <main className="-mb-96 flex flex-1 flex-col">
       {currentStep !== 5 && (
         <OnboardingHeader
           currentStep={currentStep}

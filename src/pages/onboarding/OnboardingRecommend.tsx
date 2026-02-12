@@ -34,7 +34,7 @@ function OnboardingRecommendContent() {
   }
 
   return (
-    <section className="mt-18 flex flex-1 flex-col pb-120">
+    <section className="mt-18 -mb-96 flex flex-1 flex-col pb-29">
       <button
         type="button"
         aria-label="뒤로가기"
