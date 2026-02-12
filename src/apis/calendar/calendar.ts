@@ -27,7 +27,7 @@ export const getSpaceCalendarDay = async (date: string) => {
 
 export const getSpaceCalendarMonth = async (year: number, month: number) => {
   const { data } = await authAPI.get<ApiResponse<CalendarMonthResult>>(
-    "/space/calendar/calendar",
+    "/space/calendar",
     { params: { year, month } }
   );
 
