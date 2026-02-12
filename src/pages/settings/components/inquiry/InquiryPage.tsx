@@ -25,7 +25,6 @@ const CATEGORY_TO_SERVER: Record<InquiryCategory, InquiryCategoryServer> = {
 export default function InquiryPage() {
   const navigate = useNavigate();
   const [tab, setTab] = useState<TabKey>("write");
-  const [agreed, setAgreed] = useState(false);
   const [draft, setDraft] = useState<InquiryDraft>({
     category: null,
     title: "",
@@ -35,13 +34,7 @@ export default function InquiryPage() {
   const location = useLocation();
 
   useEffect(() => {
-    const state = location.state as {
-      consentAgreed?: boolean;
-      draft?: InquiryDraft;
-    } | null;
-    if (typeof state?.consentAgreed === "boolean") {
-      setAgreed(state.consentAgreed);
-    }
+    const state = location.state as { draft?: InquiryDraft } | null;
     if (state?.draft) {
       setDraft(state.draft);
     }
@@ -70,12 +63,7 @@ export default function InquiryPage() {
 
       <div className="flex w-full flex-col items-center">
         {tab === "write" ? (
-          <InquiryWriteForm
-            agreed={agreed}
-            onToggleAgreed={() => setAgreed((prev) => !prev)}
-            draft={draft}
-            setDraft={setDraft}
-          />
+          <InquiryWriteForm draft={draft} setDraft={setDraft} />
         ) : (
           <AsyncBoundary>
             <InquiryList
@@ -88,10 +76,9 @@ export default function InquiryPage() {
       {tab === "write" && (
         <BottomActionBar
           label={isPending ? "접수 중..." : "문의 접수"}
-          disabled={!agreed || !canSubmit || isPending}
-          buttonClassName={agreed ? "bg-moamoa-300" : "bg-gray-300"}
+          disabled={!canSubmit || isPending}
           onClick={() => {
-            if (!agreed || !canSubmit || isPending) return;
+            if (!canSubmit || isPending) return;
 
             mutate(
               {
