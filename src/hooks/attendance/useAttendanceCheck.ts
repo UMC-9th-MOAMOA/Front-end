@@ -38,7 +38,7 @@ export const useAttendanceCheck = () => {
     },
   });
 
-  const handleCheckAttendance = async () => {
+  const handleCheckAttendance = async (): Promise<boolean> => {
     const currentAttendanceData = useAttendanceStore.getState().attendanceData;
 
     // 이미 오늘 체크했지만 store에 데이터가 없는 경우 (앱 재시작)
@@ -52,13 +52,19 @@ export const useAttendanceCheck = () => {
       } catch (error) {
         console.error("출석 정보 가져오기 실패 (앱 재시작): ", error);
       }
-      return;
+      return false;
     }
 
     if (attendanceCache.hasCheckedToday() || checkMutation.isPending) {
-      return;
+      return false;
     }
-    checkMutation.mutate();
+
+    return new Promise<boolean>((resolve) => {
+      checkMutation.mutate(undefined, {
+        onSuccess: () => resolve(true),
+        onError: () => resolve(false),
+      });
+    });
   };
 
   return { handleCheckAttendance };
