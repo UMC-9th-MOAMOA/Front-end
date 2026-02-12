@@ -34,7 +34,7 @@ function OnboardingRecommendContent() {
   }
 
   return (
-    <section className="mt-18 flex flex-1 flex-col">
+    <section className="mt-18 -mb-96 flex flex-1 flex-col pb-29">
       <button
         type="button"
         aria-label="뒤로가기"
@@ -97,7 +97,7 @@ function OnboardingRecommendContent() {
         </button>
       </div>
 
-      <div className="absolute inset-x-24 bottom-42">
+      <div className="sticky bottom-0 z-30 mt-40 w-full bg-white">
         <Button
           type="button"
           className="heading-5 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"

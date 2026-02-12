@@ -26,9 +26,7 @@ export default function OnboardingStep2View({
   const selectedTopics = payload.selections
     .map((selection) => ({
       selection,
-      topic: interests.find(
-        (interest) => interest.id === selection.interestId
-      ),
+      topic: interests.find((interest) => interest.id === selection.interestId),
     }))
     .filter((item) => item.topic);
 
@@ -151,7 +149,7 @@ export default function OnboardingStep2View({
   }
 
   return (
-    <section className="mt-47 flex flex-col items-center pb-24">
+    <section className="mt-47 flex flex-col items-center pb-120">
       <h2 className="heading-3 whitespace-pre-line text-center text-black">
         {`${titleLabel}${topicObjectParticle} 고르셨군요 !\n당신의 세부 관심사를 골라주세요.`}
       </h2>
@@ -193,10 +191,10 @@ export default function OnboardingStep2View({
           <OnboardingToast message="세부 관심사를 1개 이상 선택해 주세요" />
         </div>
       )}
-      <div className="absolute inset-x-24 bottom-42">
-        <p className="body-5 mb-27 text-center text-gray-600">
-          관심사는 추후 변경 및 복수 선택이 가능합니다.
-        </p>
+      <p className="body-5 mt-40 text-center text-gray-600">
+        관심사는 추후 변경 및 복수 선택이 가능합니다.
+      </p>
+      <div className="sticky bottom-0 mt-40 w-full bg-white">
         <div ref={buttonWrapperRef} className="w-full">
           <Button
             type="button"
