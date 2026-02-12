@@ -16,7 +16,7 @@ export default function GoalPopups({
   if (!currentPopup) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-white px-layout-side">
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-white px-layout-side">
       {currentPopup.goalType === "DAILY" && (
         <DailyGoalFailure
           completedMissions={currentPopup.achievedCount}
