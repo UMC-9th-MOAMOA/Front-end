@@ -8,9 +8,15 @@ import IcSimple from "@/assets/icons/mission/ic_simple.svg?react";
 import Header from "@/components/common/header/Header";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
-  subjective: "단답형",
-  ox: "OX",
-  multiple: "객관식",
+  SHORT: "단답식",
+  OX: "OX",
+  MULTIPLE: "객관식",
+};
+
+const QUESTION_TYPE_REWARDS: Record<string, number> = {
+  OX: 3,
+  MULTIPLE: 5,
+  SHORT: 10,
 };
 
 interface QuestionResult {
@@ -20,23 +26,21 @@ interface QuestionResult {
 
 interface WeeklyGoalAchievementProps {
   totalAcorns: number;
+  goalReward: number;
   questionResults: QuestionResult[];
-  correctCount: number;
-  weeklyBonusAcorns?: number;
   onClose: () => void;
 }
 
 export default function WeeklyGoalAchievement({
   totalAcorns,
+  goalReward,
   questionResults,
-  correctCount,
-  weeklyBonusAcorns = 1,
   onClose,
 }: WeeklyGoalAchievementProps) {
   const navigate = useNavigate();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
-  const grandTotal = correctCount + weeklyBonusAcorns;
+  const grandTotal = totalAcorns;
 
   return (
     <div className="relative -mb-96 flex min-h-screen flex-col items-center">
@@ -83,7 +87,7 @@ export default function WeeklyGoalAchievement({
                   <span className="body-2 text-black">주간 목표 달성</span>
                   <div className="flex items-center gap-10">
                     <span className="body-2 text-black">
-                      +{weeklyBonusAcorns}
+                      +{goalReward}
                     </span>
                     <IcColoredAcorn className="h-24 w-24" />
                   </div>
@@ -99,7 +103,7 @@ export default function WeeklyGoalAchievement({
                     </span>
                     <div className="flex items-center gap-10">
                       <span className="body-2 text-black">
-                        +{result.isCorrect ? 1 : 0}
+                        +{result.isCorrect ? (QUESTION_TYPE_REWARDS[result.type] ?? 1) : 0}
                       </span>
                       <IcColoredAcorn className="h-24 w-24" />
                     </div>

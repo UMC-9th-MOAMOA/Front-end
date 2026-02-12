@@ -7,9 +7,15 @@ import IcSuccessOX from "@/assets/icons/mission/ic_success_ox.svg?react";
 import Header from "@/components/common/header/Header";
 
 const QUESTION_TYPE_LABELS: Record<string, string> = {
-  subjective: "단답형",
-  ox: "OX",
-  multiple: "객관식",
+  SHORT: "단답식",
+  OX: "OX",
+  MULTIPLE: "객관식",
+};
+
+const QUESTION_TYPE_REWARDS: Record<string, number> = {
+  OX: 3,
+  MULTIPLE: 5,
+  SHORT: 10,
 };
 
 interface QuestionResult {
@@ -19,15 +25,15 @@ interface QuestionResult {
 
 interface DailyGoalAchievementProps {
   totalAcorns: number;
+  goalReward: number;
   questionResults: QuestionResult[];
-  correctCount: number;
   onClose: () => void;
 }
 
 export default function DailyGoalAchievement({
   totalAcorns,
+  goalReward,
   questionResults,
-  correctCount,
   onClose,
 }: DailyGoalAchievementProps) {
   const navigate = useNavigate();
@@ -70,6 +76,14 @@ export default function DailyGoalAchievement({
             <div className="px-20 pb-17">
               <div className="mb-16 border-moamoa-300 border-t border-dashed" />
 
+              <div className="flex items-center justify-between py-8 pl-10">
+                <span className="body-2 text-black">일간 목표 달성</span>
+                <div className="flex items-center gap-10">
+                  <span className="body-2 text-black">+{goalReward}</span>
+                  <IcColoredAcorn className="h-24 w-24" />
+                </div>
+              </div>
+
               {questionResults.map((result, index) => (
                 <div
                   key={index}
@@ -80,7 +94,10 @@ export default function DailyGoalAchievement({
                   </span>
                   <div className="flex items-center gap-10">
                     <span className="body-2 text-black">
-                      +{result.isCorrect ? 1 : 0}
+                      +
+                      {result.isCorrect
+                        ? (QUESTION_TYPE_REWARDS[result.type] ?? 1)
+                        : 0}
                     </span>
                     <IcColoredAcorn className="h-24 w-24" />
                   </div>
@@ -92,7 +109,7 @@ export default function DailyGoalAchievement({
               <div className="flex items-center justify-between pl-30">
                 <span className="heading-3 text-black">Total</span>
                 <div className="flex items-center pr-30">
-                  <span className="heading-3 text-black">+{correctCount}</span>
+                  <span className="heading-3 text-black">+{totalAcorns}</span>
                   <IcColoredAcorn className="h-30 w-30" />
                 </div>
               </div>
