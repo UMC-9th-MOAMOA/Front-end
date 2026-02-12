@@ -16,11 +16,7 @@ export default function OnboardingStep1View({
   onChange,
   onNext,
 }: OnboardingStep1ViewProps) {
-  const {
-    data: interests = [],
-    isLoading,
-    isError,
-  } = useInterests();
+  const { data: interests = [], isLoading, isError } = useInterests();
 
   const toggleTopic = (interestId: number) => {
     const exists = payload.selections.some(
@@ -89,11 +85,10 @@ export default function OnboardingStep1View({
           );
         })}
       </div>
-      <div className="absolute inset-x-24 bottom-42">
-        <p className="body-5 mb-27 text-center text-gray-600">
-          관심사는 추후 변경 및 복수 선택이 가능합니다.
-        </p>
-
+      <p className="body-5 mt-40 text-center text-gray-600">
+        관심사는 추후 변경 및 복수 선택이 가능합니다.
+      </p>
+      <div className="sticky bottom-0 mt-40 w-full bg-gray-50">
         <Button
           type="button"
           className="heading-5 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500 disabled:text-gray-600"
