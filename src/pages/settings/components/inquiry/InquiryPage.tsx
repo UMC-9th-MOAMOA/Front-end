@@ -98,7 +98,6 @@ export default function InquiryPage() {
                 category: CATEGORY_TO_SERVER[draft.category!],
                 title: draft.title.trim(),
                 content: draft.content.trim(),
-                termsAgreed: agreed,
                 images: draft.images,
               },
               {
