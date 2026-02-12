@@ -25,7 +25,7 @@ export default function OnboardingStep4View({
   };
 
   return (
-    <section className="mt-53 flex flex-col items-center pb-120">
+    <section className="mt-53 flex flex-col items-center">
       <h2 className="heading-3 whitespace-pre-line text-center text-black">
         {"하루에 몇 개의 미션을\n수행하고 싶나요?"}
       </h2>
