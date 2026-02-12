@@ -36,7 +36,7 @@ export default function WeeklyAttendanceSection({
       </div>
 
       <Button
-        onClick={() => navigate("/calendar")}
+        onClick={() => navigate("/mypage")}
         className="body-2 mt-20 w-full rounded-lg bg-moamoa-50 px-20 py-12 text-moamoa-700"
       >
         캘린더 보러가기
