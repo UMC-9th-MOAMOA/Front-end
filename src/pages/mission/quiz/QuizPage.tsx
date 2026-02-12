@@ -187,7 +187,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         {
           onSuccess: (data) => {
             if (isRetry) {
-              navigate("/mypage?tab=mission");
+              navigate("/mypage?tab=mission", { replace: true });
             } else {
               setQuizResult({
                 isSuccess: data.isSuccess,
@@ -237,7 +237,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         isDailyGoalAchieved={quizResult.isDailyGoalAchieved}
         isWeeklyGoalAchieved={quizResult.isWeeklyGoalAchieved}
         onRetryWrong={() => {
-          navigate(`/mission/${missionId}`);
+          navigate(`/mission/${missionId}`, { replace: true });
         }}
       />
     );
