@@ -39,7 +39,9 @@ export default function MissionInfoCard({
   return (
     <div className="flex w-full flex-col gap-8 rounded-xl bg-white px-23 pt-21">
       <div className="flex items-center">
-        <h2 className="heading-3 pb-4 text-center text-black">{title}</h2>
+        <h2 className="heading-3 line-clamp-2 pb-4 text-center text-black">
+          {title}
+        </h2>
       </div>
       <div className="flex items-start gap-4 self-stretch pb-16">
         {keyword.map((kw, index) => (
@@ -92,14 +94,14 @@ export default function MissionInfoCard({
         </div>
       </div>
 
-      <div className="flex w-full flex-col items-center gap-16 self-center px-30">
+      <div className="flex w-full flex-col items-center gap-16 self-center px-30 pt-30">
         <span
           className={`heading-6 flex text-center ${
             isContentWatched ? "text-moamoa-500" : "w-208 text-red-400"
           }`}
         >
           {isContentWatched ? (
-            <div className="flex flex-wrap items-center justify-center pt-30">
+            <div className="flex flex-wrap items-center justify-center">
               <span className="heading-6 whitespace-nowrap text-moamoa-400">
                 지금 퀴즈 도전하고
               </span>
