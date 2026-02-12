@@ -54,7 +54,7 @@ export default function MissionResult({
   const [showGoalScreen, setShowGoalScreen] = useState(false);
   const [goalRedirect, setGoalRedirect] = useState<(() => void) | null>(null);
 
-  const hasGoal = isDailyGoalAchieved || isWeeklyGoalAchieved;
+  const hasGoal = goalReward > 0;
 
   const showGoalThen = (redirect: () => void) => {
     setGoalRedirect(() => redirect);
