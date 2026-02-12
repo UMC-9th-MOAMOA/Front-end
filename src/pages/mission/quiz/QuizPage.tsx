@@ -2,6 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Navigate, useLocation, useNavigate, useParams } from "react-router-dom";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
+import DailyGoalAchievement from "@/pages/mission/goal/DailyGoalAchievement";
+import DailyWeeklyGoalAchievement from "@/pages/mission/goal/DailyWeeklyGoalAchievement";
+import WeeklyGoalAchievement from "@/pages/mission/goal/WeeklyGoalAchievement";
 import MissionErrorToast from "@/pages/mission/components/MissionErrorToast";
 import { useChangeMissionStatus } from "@/pages/mission/hooks/useMutation/useChangeMissionStatus";
 import { useSubmitMissionQuiz } from "@/pages/mission/hooks/useMutation/useSubmitMissionQuiz";
@@ -54,6 +57,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
   const [isAnimating, setIsAnimating] = useState(false);
   const [showQuitPopup, setShowQuitPopup] = useState(false);
   const [showMissionResult, setShowMissionResult] = useState(false);
+  const [showGoalAchievement, setShowGoalAchievement] = useState(false);
   const [quizResult, setQuizResult] = useState<{
     isSuccess: boolean;
     totalAcorns: number;
@@ -197,7 +201,11 @@ function QuizPageContent({ missionId }: { missionId: number }) {
                 isWeeklyGoalAchieved: data.weeklyGoalAchieved,
               });
               setShowFeedback(false);
-              setShowMissionResult(true);
+              if (data.goalReward > 0) {
+                setShowGoalAchievement(true);
+              } else {
+                setShowMissionResult(true);
+              }
             }
           },
           onError: handleMutationError,
@@ -219,6 +227,46 @@ function QuizPageContent({ missionId }: { missionId: number }) {
     return userInput.trim() === "";
   };
 
+  if (showGoalAchievement && quizResult) {
+    const questionResults = answers.map((a) => ({
+      type: mission.quizzes.find((q) => q.quizId === a.quizId)?.type || "",
+      isCorrect: a.isCorrect,
+    }));
+    const goToMyAcorn = () => navigate("/mypage?tab=acorn", { replace: true });
+
+    if (quizResult.isDailyGoalAchieved && quizResult.isWeeklyGoalAchieved) {
+      return (
+        <DailyWeeklyGoalAchievement
+          totalAcorns={quizResult.totalAcorns}
+          goalReward={quizResult.goalReward}
+          missionName={mission.title}
+          questionResults={questionResults}
+          onConfirm={goToMyAcorn}
+        />
+      );
+    }
+    if (quizResult.isDailyGoalAchieved) {
+      return (
+        <DailyGoalAchievement
+          totalAcorns={quizResult.totalAcorns}
+          goalReward={quizResult.goalReward}
+          questionResults={questionResults}
+          onClose={goToMyAcorn}
+        />
+      );
+    }
+    if (quizResult.isWeeklyGoalAchieved) {
+      return (
+        <WeeklyGoalAchievement
+          totalAcorns={quizResult.totalAcorns}
+          goalReward={quizResult.goalReward}
+          questionResults={questionResults}
+          onClose={goToMyAcorn}
+        />
+      );
+    }
+  }
+
   if (showMissionResult && quizResult) {
     const correctCount = answers.filter((a) => a.isCorrect).length;
     const questionResults = answers.map((a) => ({
@@ -229,13 +277,9 @@ function QuizPageContent({ missionId }: { missionId: number }) {
     return (
       <MissionResult
         totalAcorns={quizResult.totalAcorns}
-        goalReward={quizResult.goalReward}
         questionResults={questionResults}
         correctCount={correctCount}
         totalQuestions={mission.quizzes.length}
-        missionName={mission.title}
-        isDailyGoalAchieved={quizResult.isDailyGoalAchieved}
-        isWeeklyGoalAchieved={quizResult.isWeeklyGoalAchieved}
         onRetryWrong={() => {
           navigate(`/mission/${missionId}`, { replace: true });
         }}
