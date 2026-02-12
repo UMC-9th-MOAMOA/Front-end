@@ -1,5 +1,6 @@
 ﻿import type { ReactNode } from "react";
 import { Component, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import { useApiError } from "@/hooks/api/useApiError";
@@ -43,6 +44,7 @@ class ErrorBoundary extends Component<
 }
 
 function AccountInfoPageInner() {
+  const navigate = useNavigate();
   const { data: profile } = useMyProfile();
   const { mutate, isPending } = useUpdateMyProfile();
 
@@ -74,9 +76,9 @@ function AccountInfoPageInner() {
   return (
     <div>
       <Header title="프로필 설정" property="common" />
-      <div className="-mx-25 mt-14 h-2 bg-gray-200" />
+      <div className="-mx-layout-side mt-14 h-2 bg-gray-200" />
 
-      <div className="flex min-h-dvh w-full flex-col overflow-y-auto">
+      <div className="flex min-h-dvh w-full flex-col">
         <div className="flex w-full flex-1 flex-col items-center pb-40">
           <AccountInfoHeader
             selectedId={draft.profileId}
@@ -100,7 +102,10 @@ function AccountInfoPageInner() {
 
       <AccountInfoSuccessModal
         open={isSuccessOpen}
-        onConfirm={() => setIsSuccessOpen(false)}
+        onConfirm={() => {
+          setIsSuccessOpen(false);
+          navigate("/settings");
+        }}
       />
     </div>
   );

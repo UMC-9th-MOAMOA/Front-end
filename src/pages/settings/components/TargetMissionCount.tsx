@@ -1,4 +1,5 @@
 ﻿import { useId, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import MoaToggle from "@/pages/settings/components/common/Moatoggle";
@@ -17,6 +18,7 @@ const DURATION_OPTIONS: DurationOption[] = [
 ];
 
 function TargetMissionCountInner() {
+  const navigate = useNavigate();
   const labelId = useId();
   const [isSuccessOpen, setIsSuccessOpen] = useState(false);
   const {
@@ -113,7 +115,10 @@ function TargetMissionCountInner() {
 
       <InterestsSuccessModal
         open={isSuccessOpen}
-        onConfirm={() => setIsSuccessOpen(false)}
+        onConfirm={() => {
+          setIsSuccessOpen(false);
+          navigate("/settings");
+        }}
         title="목표 설정 변경 완료!"
         description={
           <>
