@@ -21,13 +21,13 @@ import type {
 } from "./missionList.types";
 
 export default function MissionTab() {
-  const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const viewParam = searchParams.get("view");
-  const initialDoneView = viewParam === "retry" ? "retry" : "done";
-  const initialSubTab = viewParam === "retry" ? "done" : "liked";
 
-  const [subTab, setSubTab] = useState<MissionSubTabKey>(initialSubTab);
-  const [doneView, setDoneView] = useState<"done" | "retry">(initialDoneView);
+  const subTab: MissionSubTabKey = viewParam === "retry" ? "done" : "liked";
+  const doneView: "done" | "retry" = viewParam === "retry" ? "retry" : "done";
+
   const [retryModalOpen, setRetryModalOpen] = useState(false);
   const [retryMissionId, setRetryMissionId] = useState<string | null>(null);
 
@@ -72,10 +72,20 @@ export default function MissionTab() {
         : "자세히 보기";
   const hideHeart = subTab !== "liked";
 
-  const navigate = useNavigate();
-
   const goDetail = (id: string) => {
     navigate(`/mission/${id}`);
+  };
+
+  const handleTabChange = (
+    nextSubTab: MissionSubTabKey,
+    nextDoneView: "done" | "retry"
+  ) => {
+    const params = { tab: "mission" as const };
+    if (nextSubTab === "done" && nextDoneView === "retry") {
+      setSearchParams({ ...params, view: "retry" });
+    } else {
+      setSearchParams(params);
+    }
   };
 
   return (
@@ -83,13 +93,10 @@ export default function MissionTab() {
       <MissionTabs
         subTab={subTab}
         doneView={doneView}
-        onSelect={(nextSubTab, nextDoneView) => {
-          setSubTab(nextSubTab);
-          setDoneView(nextDoneView);
-        }}
+        onSelect={handleTabChange}
       />
 
-      <div className="-mx-25 w-screen">
+      <div className="-mx-layout-side w-screen">
         <div
           className={[
             "relative flex w-full flex-col gap-6 rounded-t-xl pt-17 shadow-sm",
@@ -97,7 +104,7 @@ export default function MissionTab() {
             visibleMissions.length === 0 ? "bg-[#E6E6E6]" : "bg-white",
           ].join(" ")}
         >
-          <div className="flex w-full flex-col gap-4 px-25">
+          <div className="flex w-full flex-col gap-4 px-layout-side">
             <MissionFilters
               timeSort={timeSort}
               category={category}
