@@ -34,7 +34,10 @@ export const useAppInitializer = ({
           .getState()
           .setOnModalClosed(() => callbacksRef.current.onCheckGoalPopups());
       } else {
-        callbacksRef.current.onCheckGoalPopups();
+        const store = useAttendanceStore.getState();
+        if (!store.onModalClosed) {
+          callbacksRef.current.onCheckGoalPopups();
+        }
       }
     };
 
