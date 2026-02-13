@@ -54,7 +54,7 @@ export default function InterestCategoryCard({
     <div
       className={[
         "flex w-full flex-col items-start rounded-xl border-2 bg-white",
-        isActive ? "border-moamoa-300" : "border-black",
+        isOpen ? "border-moamoa-100" : "border-gray-300",
       ].join(" ")}
     >
       <button
