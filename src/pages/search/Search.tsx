@@ -37,7 +37,7 @@ export default function Search() {
           onRightIconClick={
             mode === "category"
               ? () => navigate("/search?mode=keyword")
-              : undefined
+              : () => navigate("/mypage?tab=mission")
           }
         />
       )}
