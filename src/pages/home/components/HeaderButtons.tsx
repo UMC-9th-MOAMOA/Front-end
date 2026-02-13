@@ -53,7 +53,7 @@ const HeaderButtons = ({
           ref={boomerangRef}
           type="button"
           className="flex items-center justify-center rounded-lg border border-gray-300 bg-white p-11"
-          onClick={() => navigate("/mypage?tab=mission")}
+          onClick={() => navigate("/mypage?tab=mission&view=retry")}
         >
           <BoomerangIcon className="h-40 w-40" />
         </button>
