@@ -26,18 +26,21 @@ export const useAppInitializer = ({
         window.location.pathname.startsWith("/onboarding");
       if (isOnboardingPage) return;
 
-      const modalShown =
-        await callbacksRef.current.onCheckAttendance();
+      try {
+        const modalShown =
+          await callbacksRef.current.onCheckAttendance();
 
-      if (modalShown) {
-        useAttendanceStore
-          .getState()
-          .setOnModalClosed(() => callbacksRef.current.onCheckGoalPopups());
-      } else {
         const store = useAttendanceStore.getState();
-        if (!store.onModalClosed) {
-          callbacksRef.current.onCheckGoalPopups();
+        if (modalShown) {
+          store.setOnModalClosed(() => callbacksRef.current.onCheckGoalPopups());
+        } else {
+          if (!store.onModalClosed) {
+            callbacksRef.current.onCheckGoalPopups();
+          }
         }
+      } catch (error) {
+        console.error("출석 체크 실패:", error);
+        callbacksRef.current.onCheckGoalPopups();
       }
     };
 
