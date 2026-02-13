@@ -7,15 +7,15 @@ export const useGoalPopupCheck = () => {
   const [popupQueue, setPopupQueue] = useState<GoalPopup[]>([]);
   const [currentPopup, setCurrentPopup] = useState<GoalPopup | null>(null);
   const [shouldNavigateToSearch, setShouldNavigateToSearch] = useState(false);
-  const hasCheckedRef = useRef(false);
+  const isCheckingRef = useRef(false);
   const markShownMutation = useMarkGoalPopupShown();
 
   const handleCheckGoalPopups = async () => {
-    if (hasCheckedRef.current) return;
+    if (isCheckingRef.current || popupQueue.length > 0) return;
 
+    isCheckingRef.current = true;
     try {
       const result = await getGoalPopups();
-      hasCheckedRef.current = true;
 
       if (result.popups.length > 0) {
         setPopupQueue(result.popups);
@@ -23,6 +23,8 @@ export const useGoalPopupCheck = () => {
       }
     } catch (error) {
       console.error("Goal popups 조회 실패:", error);
+    } finally {
+      isCheckingRef.current = false;
     }
   };
 

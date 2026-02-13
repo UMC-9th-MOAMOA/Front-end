@@ -60,7 +60,7 @@ function NavItem({ to, label, Icon }: NavItemProps) {
 export default function BottomNavigation() {
   return (
     <nav
-      className="fixed right-0 bottom-0 left-0 z-20 mx-auto w-full bg-white"
+      className="fixed right-0 bottom-0 left-0 z-20 mx-auto w-full bg-white pb-safe-bottom"
       style={{
         boxShadow: "0px -8px 50px 3px rgba(0, 0, 0, 0.1)",
       }}
