@@ -34,7 +34,7 @@ export default function CategoryDetailView() {
 
       <div className="-mx-layout-side mt-1 h-2 bg-gray-200" />
 
-      <div className="-mx-layout-side mt-18 overflow-x-auto">
+      <div key={selectedCategory} className="-mx-layout-side mt-18 overflow-x-auto">
         <div className="flex min-w-full gap-10 px-layout-side">
           {subCategories.map((sub) => (
             <SubCategoryButton
