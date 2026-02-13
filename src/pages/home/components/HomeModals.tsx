@@ -19,7 +19,10 @@ const HomeModals = () => {
     <AttendanceModal
       isOpen={showModal}
       onClose={handleClose}
-      onGoToCalendar={handleClose}
+      onGoToCalendar={() => {
+        handleClose();
+        window.location.href = "/mypage";
+      }}
       count={attendanceData.streak}
       attendance={getWeeklyAttendance(attendanceData.streak)}
     />
