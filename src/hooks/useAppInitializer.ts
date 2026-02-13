@@ -18,6 +18,14 @@ export const useAppInitializer = ({
   const prevPathnameRef = useRef(window.location.pathname);
 
   useEffect(() => {
+    // 중복 호출 방지하며 목표 팝업 실행
+    const runGoalPopupsIfNeeded = () => {
+      const store = useAttendanceStore.getState();
+      if (!store.onModalClosed) {
+        callbacksRef.current.onCheckGoalPopups();
+      }
+    };
+
     const runChecks = async () => {
       const token = storage.getToken();
       if (!token) return;
@@ -30,17 +38,16 @@ export const useAppInitializer = ({
         const modalShown =
           await callbacksRef.current.onCheckAttendance();
 
-        const store = useAttendanceStore.getState();
         if (modalShown) {
-          store.setOnModalClosed(() => callbacksRef.current.onCheckGoalPopups());
+          useAttendanceStore
+            .getState()
+            .setOnModalClosed(() => callbacksRef.current.onCheckGoalPopups());
         } else {
-          if (!store.onModalClosed) {
-            callbacksRef.current.onCheckGoalPopups();
-          }
+          runGoalPopupsIfNeeded();
         }
       } catch (error) {
         console.error("출석 체크 실패:", error);
-        callbacksRef.current.onCheckGoalPopups();
+        runGoalPopupsIfNeeded();
       }
     };
 
