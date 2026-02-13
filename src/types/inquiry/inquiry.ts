@@ -14,7 +14,6 @@ export interface CreateInquiryPayload {
   category: InquiryCategoryServer;
   title: string;
   content: string;
-  termsAgreed: boolean;
   images?: File[];
 }
 

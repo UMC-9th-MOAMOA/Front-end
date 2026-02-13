@@ -2,6 +2,7 @@ export type CalendarDayItem = {
   type: string;
   amount: number;
   occurredAt: string;
+  missionId?: number | null;
   missionTitle?: string | null;
   missionDurationMinutes?: number | null;
 };
@@ -17,4 +18,3 @@ export type CalendarMonthResult = {
   attendedDays: number[];
   missionRewardDays: number[];
 };
-
