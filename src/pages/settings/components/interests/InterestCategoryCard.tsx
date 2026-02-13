@@ -48,7 +48,6 @@ export default function InterestCategoryCard({
     (row) => row.length > 0
   );
   const selectedCount = selected[category.id]?.length ?? 0;
-  const isActive = selectedCount > 0;
 
   return (
     <div
