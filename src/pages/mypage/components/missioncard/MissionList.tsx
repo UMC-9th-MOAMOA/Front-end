@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import IcSadSquirrel from "@/assets/icons/ic_sadsquirrel.svg?react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MissionCard from "@/components/MissionCard";
@@ -21,8 +21,13 @@ import type {
 } from "./missionList.types";
 
 export default function MissionTab() {
-  const [subTab, setSubTab] = useState<MissionSubTabKey>("liked");
-  const [doneView, setDoneView] = useState<"done" | "retry">("done");
+  const [searchParams] = useSearchParams();
+  const viewParam = searchParams.get("view");
+  const initialDoneView = viewParam === "retry" ? "retry" : "done";
+  const initialSubTab = viewParam === "retry" ? "done" : "liked";
+
+  const [subTab, setSubTab] = useState<MissionSubTabKey>(initialSubTab);
+  const [doneView, setDoneView] = useState<"done" | "retry">(initialDoneView);
   const [retryModalOpen, setRetryModalOpen] = useState(false);
   const [retryMissionId, setRetryMissionId] = useState<string | null>(null);
 
