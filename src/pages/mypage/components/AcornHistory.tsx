@@ -63,7 +63,7 @@ export default function AcornHistory() {
       tab: toApiTab(filter),
       sort: toApiSort(sortKey),
       period: toApiPeriod(sortKey),
-      earnSource: filter === "progress" ? toApiEarnSource(earnSource) : "ALL",
+      earnSource: filter === "progress" ? toApiEarnSource(earnSource) : undefined,
     });
 
   const { ref } = useInfiniteScroll({
