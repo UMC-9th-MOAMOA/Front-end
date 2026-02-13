@@ -17,14 +17,14 @@ export default function PerformanceSection({
           ? parsedMissionId
           : undefined;
 
-      return ({
-      rowId: `${item.id}-${mission.id}`,
-      missionId,
-      kind: mission.kind,
-      title: mission.title,
-      acornDelta: mission.acornDelta,
-      durationMin: mission.kind === "mission" ? item.durationMin : null,
-    });
+      return {
+        rowId: `${item.id}-${mission.id}`,
+        missionId,
+        kind: mission.kind,
+        title: mission.title,
+        acornDelta: mission.acornDelta,
+        durationMin: mission.kind === "mission" ? item.durationMin : null,
+      };
     })
   );
 
@@ -48,7 +48,7 @@ export default function PerformanceSection({
           <div className="heading-3 flex h-28 w-full min-w-[273px] items-center px-[24.5px]">
             <span className="h-28 w-45">Total</span>
             <span className="min-w-[70px] flex-1" aria-hidden />
-            <span className="h-28 w-40">{totalMin}분</span>
+            <span className="h-28 w-40 whitespace-nowrap">{totalMin}분</span>
             <span className="min-w-[70px] flex-1" aria-hidden />
             <span className="flex h-28 w-48 items-center justify-center">
               <span className="mr-4 flex h-20 items-center text-center">

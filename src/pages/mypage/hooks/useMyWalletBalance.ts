@@ -5,5 +5,6 @@ export const useMyWalletBalance = () => {
   return useSuspenseQuery({
     queryKey: ["wallet", "me", "balance"],
     queryFn: getMyWalletBalance,
+    staleTime: 0,
   });
 };
