@@ -15,7 +15,6 @@ export const getRecommendedMissions = async (
     "/missions/recommend",
     { params }
   );
-  ``;
 
   if (!data.isSuccess) {
     throw new Error(data.message);
