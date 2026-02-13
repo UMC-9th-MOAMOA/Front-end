@@ -7,7 +7,7 @@ export interface WalletHistoryParams {
   tab: WalletHistoryTab;
   sort: WalletHistorySort;
   period: WalletHistoryPeriod;
-  earnSource: WalletHistoryEarnSource;
+  earnSource?: WalletHistoryEarnSource;
   page: number;
   size: number;
 }

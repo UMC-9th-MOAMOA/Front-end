@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
@@ -54,13 +55,16 @@ export default function PerformanceMissionList({
 }) {
   const navigate = useNavigate();
   const { handleError } = useApiError();
+  const [isNavigating, setIsNavigating] = useState(false);
 
   const handleOpenMission = async (row: PerformanceMissionRow) => {
+    if (isNavigating) return;
     if (row.missionId == null || !Number.isFinite(row.missionId)) {
       return;
     }
 
     try {
+      setIsNavigating(true);
       let page = 0;
       let hasNext = true;
       let isRetry = false;
@@ -89,7 +93,8 @@ export default function PerformanceMissionList({
       }
     } catch (error) {
       handleError(error);
-      navigate(`/mypage/mission/${row.missionId}`);
+    } finally {
+      setIsNavigating(false);
     }
   };
 
@@ -145,6 +150,7 @@ export default function PerformanceMissionList({
                       onClick={() => handleOpenMission(row)}
                       className="justify-self-end"
                       aria-label="View mission detail"
+                      disabled={isNavigating}
                     >
                       <IcDropdown
                         className="h-24 w-24 -rotate-90 text-gray-700"
