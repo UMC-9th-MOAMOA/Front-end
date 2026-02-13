@@ -6,6 +6,5 @@ export const usePocket = () => {
     queryKey: ["pocket"],
     queryFn: getPocket,
     staleTime: 0,
-    gcTime: 0,
   });
 };
