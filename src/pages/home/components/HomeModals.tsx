@@ -1,9 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import { useAttendanceStore } from "@/store/attendance/attendance";
 import { getWeeklyAttendance } from "@/utils/attendance/attendance";
 import AttendanceModal from "./modal/AttendanceModal";
 
 const HomeModals = () => {
-  const { showModal, setShowModal, attendanceData, onModalClosed, setOnModalClosed } = useAttendanceStore();
+  const navigate = useNavigate();
+  const {
+    showModal,
+    setShowModal,
+    attendanceData,
+    onModalClosed,
+    setOnModalClosed,
+  } = useAttendanceStore();
 
   const handleClose = () => {
     setShowModal(false);
@@ -21,7 +29,7 @@ const HomeModals = () => {
       onClose={handleClose}
       onGoToCalendar={() => {
         handleClose();
-        window.location.href = "/mypage";
+        navigate("/mypage");
       }}
       count={attendanceData.streak}
       attendance={getWeeklyAttendance(attendanceData.streak)}
