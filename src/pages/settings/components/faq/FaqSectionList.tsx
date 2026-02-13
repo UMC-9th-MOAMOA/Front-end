@@ -42,17 +42,17 @@ export default function FaqSectionList() {
                         : "py-8 pr-18 pl-16",
                     ].join(" ")}
                   >
-                    <div className="flex w-full items-start gap-5">
-                      <span className="body-2 h-21 w-15 text-black">Q.</span>
-                      <span className="body-2 flex-1 text-black">
+                    <button
+                      type="button"
+                      onClick={() => setOpenIndex(isOpen ? null : itemKey)}
+                      className="flex w-full items-start gap-5"
+                      aria-expanded={isOpen}
+                    >
+                      <span className="body-2 h-21 w-15 text-left text-black">Q.</span>
+                      <span className="body-2 flex-1 text-left text-black">
                         {item.question}
                       </span>
-                      <button
-                        type="button"
-                        onClick={() => setOpenIndex(isOpen ? null : itemKey)}
-                        className="flex h-24 w-24 items-center justify-center self-start"
-                        aria-label={isOpen ? "닫기" : "펼치기"}
-                      >
+                      <span className="flex h-24 w-24 shrink-0 items-center justify-center self-start">
                         <IcLeft
                           className={[
                             "h-16 w-16 text-gray-700",
@@ -60,8 +60,8 @@ export default function FaqSectionList() {
                           ].join(" ")}
                           aria-hidden
                         />
-                      </button>
-                    </div>
+                      </span>
+                    </button>
 
                     {isOpen && (
                       <div

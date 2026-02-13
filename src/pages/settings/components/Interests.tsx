@@ -1,4 +1,5 @@
 ﻿import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/common/header/Header";
 import BottomActionBar from "./common/BottomActionBar";
 import InterestCategoryCard from "./interests/InterestCategoryCard";
@@ -9,6 +10,7 @@ import { useSettingOnboarding, useUpdateSettingOnboarding } from "./interests/ho
 type SelectedMap = Record<number, number[]>;
 
 export default function InterestPage() {
+  const navigate = useNavigate();
   const { data: interests } = useSettingInterests();
   const { data: selectedFromServer } = useSettingOnboarding();
   const { mutate, isPending } = useUpdateSettingOnboarding();
@@ -100,7 +102,10 @@ export default function InterestPage() {
 
       <InterestsSuccessModal
         open={isSuccessOpen}
-        onConfirm={() => setIsSuccessOpen(false)}
+        onConfirm={() => {
+          setIsSuccessOpen(false);
+          navigate("/settings");
+        }}
       />
     </div>
   );
