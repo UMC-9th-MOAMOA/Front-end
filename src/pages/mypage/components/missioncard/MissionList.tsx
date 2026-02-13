@@ -25,7 +25,8 @@ export default function MissionTab() {
   const [searchParams, setSearchParams] = useSearchParams();
   const viewParam = searchParams.get("view");
 
-  const subTab: MissionSubTabKey = viewParam === "retry" ? "done" : "liked";
+  const subTab: MissionSubTabKey =
+    viewParam === "retry" || viewParam === "done" ? "done" : "liked";
   const doneView: "done" | "retry" = viewParam === "retry" ? "retry" : "done";
 
   const [retryModalOpen, setRetryModalOpen] = useState(false);
@@ -83,9 +84,13 @@ export default function MissionTab() {
     const params = { tab: "mission" as const };
     if (nextSubTab === "done" && nextDoneView === "retry") {
       setSearchParams({ ...params, view: "retry" });
-    } else {
-      setSearchParams(params);
+      return;
     }
+    if (nextSubTab === "done") {
+      setSearchParams({ ...params, view: "done" });
+      return;
+    }
+    setSearchParams(params);
   };
 
   return (

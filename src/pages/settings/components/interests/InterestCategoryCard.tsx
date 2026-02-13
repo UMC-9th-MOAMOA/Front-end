@@ -48,13 +48,12 @@ export default function InterestCategoryCard({
     (row) => row.length > 0
   );
   const selectedCount = selected[category.id]?.length ?? 0;
-  const isActive = selectedCount > 0;
 
   return (
     <div
       className={[
         "flex w-full flex-col items-start rounded-xl border-2 bg-white",
-        isActive ? "border-moamoa-300" : "border-black",
+        isOpen ? "border-moamoa-100" : "border-gray-300",
       ].join(" ")}
     >
       <button

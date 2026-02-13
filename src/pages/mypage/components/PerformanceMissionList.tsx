@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
 import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 import IcMinus from "@/assets/icons/ic_minus.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
+import { getMyMissions } from "@/apis/missions/myMissions";
+import { useApiError } from "@/hooks/api/useApiError";
 
 type RowKind =
   | "attendance"
@@ -51,6 +54,49 @@ export default function PerformanceMissionList({
   rows: PerformanceMissionRow[];
 }) {
   const navigate = useNavigate();
+  const { handleError } = useApiError();
+  const [isNavigating, setIsNavigating] = useState(false);
+
+  const handleOpenMission = async (row: PerformanceMissionRow) => {
+    if (isNavigating) return;
+    if (row.missionId == null || !Number.isFinite(row.missionId)) {
+      return;
+    }
+
+    try {
+      setIsNavigating(true);
+      let page = 0;
+      let hasNext = true;
+      let isRetry = false;
+      let guard = 0;
+
+      while (hasNext && guard < 20) {
+        const retryList = await getMyMissions({
+          status: "RETRY",
+          condition: "LATEST",
+          page,
+          size: 50,
+        });
+        isRetry = retryList.missions.some(
+          (mission) => mission.missionId === row.missionId
+        );
+        if (isRetry) break;
+        hasNext = retryList.hasNext;
+        page += 1;
+        guard += 1;
+      }
+
+      if (isRetry) {
+        navigate(`/mission/${row.missionId}`);
+      } else {
+        navigate(`/mypage/mission/${row.missionId}`);
+      }
+    } catch (error) {
+      handleError(error);
+    } finally {
+      setIsNavigating(false);
+    }
+  };
 
   return (
     <div className="flex w-full flex-col gap-4">
@@ -101,16 +147,10 @@ export default function PerformanceMissionList({
 
                     <button
                       type="button"
-                      onClick={() => {
-                        if (
-                          row.missionId != null &&
-                          Number.isFinite(row.missionId)
-                        ) {
-                          navigate(`/mypage/mission/${row.missionId}`);
-                        }
-                      }}
+                      onClick={() => handleOpenMission(row)}
                       className="justify-self-end"
                       aria-label="View mission detail"
+                      disabled={isNavigating}
                     >
                       <IcDropdown
                         className="h-24 w-24 -rotate-90 text-gray-700"
