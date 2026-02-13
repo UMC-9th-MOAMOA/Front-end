@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcCircleLeftArrow from "@/assets/icons/ic_circle_left_arrow.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
@@ -19,8 +20,12 @@ export default function OnboardingRecommend() {
 
 function OnboardingRecommendContent() {
   const navigate = useNavigate();
+  const [isRefresh, setIsRefresh] = useState(false);
 
-  const { data: missions, refetch } = useRecommendedMissions({ time: null });
+  const { data: missions, refetch } = useRecommendedMissions({
+    time: null,
+    isRefresh,
+  });
   const { activeIndex, dragX, isDragging, bind } = useCarouselDrag({
     totalItems: missions.length,
   });
@@ -90,7 +95,13 @@ function OnboardingRecommendContent() {
         <button
           type="button"
           className="absolute bottom-20 left-1/2 z-20 flex -translate-x-1/2 cursor-pointer items-center gap-6 rounded-2xl bg-moamoa-50 px-16 py-8"
-          onClick={() => refetch()}
+          onClick={() => {
+            if (isRefresh) {
+              refetch();
+            } else {
+              setIsRefresh(true);
+            }
+          }}
         >
           <IcReload className="size-19 text-moamoa-400" />
           <span className="body-2 text-moamoa-600">새로고침</span>

@@ -1,4 +1,5 @@
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
@@ -12,11 +13,20 @@ export default function TodayMissionListView() {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time");
   const timeValue = time ? Number(time) : null;
+  const [isRefresh, setIsRefresh] = useState(false);
 
   const handleRefresh = () => {
-    queryClient.invalidateQueries({
-      queryKey: ["missions", "recommended", { time: timeValue }],
-    });
+    if (isRefresh) {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "missions",
+          "recommended",
+          { time: timeValue, isRefresh: true },
+        ],
+      });
+    } else {
+      setIsRefresh(true);
+    }
   };
 
   return (
@@ -44,7 +54,7 @@ export default function TodayMissionListView() {
       </div>
 
       <AsyncBoundary>
-        <TodayMissionList />
+        <TodayMissionList isRefresh={isRefresh} />
       </AsyncBoundary>
     </div>
   );
