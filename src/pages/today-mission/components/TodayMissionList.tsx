@@ -6,12 +6,21 @@ import { useRecommendedMissions } from "@/pages/search/hooks/useQuery/useRecomme
 
 const ITEMS_PER_PAGE = 10;
 
-export default function TodayMissionList() {
+interface TodayMissionListProps {
+  refreshTrigger?: number;
+}
+
+export default function TodayMissionList({
+  refreshTrigger = 0,
+}: TodayMissionListProps) {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time");
   const timeValue = time ? Number(time) : null;
 
-  const { data: missions } = useRecommendedMissions({ time: timeValue });
+  const { data: missions } = useRecommendedMissions({
+    time: timeValue,
+    refreshTrigger,
+  });
   const scrapMutation = useScrapMission();
 
   const [displayedCount, setDisplayedCount] = useState(ITEMS_PER_PAGE);
