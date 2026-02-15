@@ -1,4 +1,4 @@
-import IcBigAcorn from "@/assets/icons/ic_big_acorn.svg?react";
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import Modal from "./Modal";
@@ -25,7 +25,7 @@ export default function PurchaseCompleteModal({
           <span className="text-moamoa-400">{name}</span> 구매 완료!
         </h4>
 
-        <IcBigAcorn className="mt-3" width={43} height={58} />
+        <AcornIcon className="mt-3" width={43} height={58} />
 
         <p className="body-4 mt-3 text-center text-gray-600">
           지금 바로 아이템을 사용할 수 있어요.

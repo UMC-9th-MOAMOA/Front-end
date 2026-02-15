@@ -1,4 +1,4 @@
-import IcBigAcorn from "@/assets/icons/ic_big_acorn.svg?react";
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import { Button } from "@/components/common/button/Button";
 import Modal from "./Modal";
 
@@ -20,7 +20,7 @@ export default function InsufficientAcornsModal({
       <div className="flex flex-col items-center gap-4">
         <h4 className="heading-4 text-black">도토리가 부족해요</h4>
 
-        <IcBigAcorn width={43} height={58} />
+        <AcornIcon width={43} height={58} />
 
         <p className="body-4 mt-3 text-center text-gray-600">
           이 아이템을 구매하려면

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IcColoredAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import IcEatingHeartSquirrel from "@/assets/icons/mission/ic_eating_heart_squirrel.svg?react";
 import IcExpand from "@/assets/icons/mission/ic_expand.svg?react";
 import IcSimple from "@/assets/icons/mission/ic_simple.svg?react";
@@ -89,10 +89,12 @@ export default function DailyWeeklyGoalAchievement({
                   className="flex w-full items-center justify-between py-8"
                   onClick={() => setIsMissionOpen((prev) => !prev)}
                 >
-                  <span className="body-2 line-clamp-2 min-w-0 flex-1 text-left text-black">{missionName}</span>
+                  <span className="body-2 line-clamp-2 min-w-0 flex-1 text-left text-black">
+                    {missionName}
+                  </span>
                   <div className="flex shrink-0 items-center">
                     <span className="body-2 text-black">+{missionAcorns}</span>
-                    <IcColoredAcorn className="h-24 w-24" />
+                    <AcornIcon className="h-24 w-24" />
                     <span className="w-12" />
                     {isMissionOpen ? (
                       <IcSimple className="size-16" />
@@ -114,9 +116,12 @@ export default function DailyWeeklyGoalAchievement({
                         </span>
                         <div className="flex items-center">
                           <span className="body-4 text-gray-500">
-                            +{result.isCorrect ? (QUESTION_TYPE_REWARDS[result.type] ?? 1) : 0}
+                            +
+                            {result.isCorrect
+                              ? (QUESTION_TYPE_REWARDS[result.type] ?? 1)
+                              : 0}
                           </span>
-                          <IcColoredAcorn className="h-24 w-24" />
+                          <AcornIcon className="h-24 w-24" />
                         </div>
                       </div>
                     ))}
@@ -128,7 +133,7 @@ export default function DailyWeeklyGoalAchievement({
                 <span className="body-2 text-black">목표 달성 보너스</span>
                 <div className="flex items-center gap-10">
                   <span className="body-2 text-black">+{goalReward}</span>
-                  <IcColoredAcorn className="h-24 w-24" />
+                  <AcornIcon className="h-24 w-24" />
                 </div>
               </div>
 
@@ -138,7 +143,7 @@ export default function DailyWeeklyGoalAchievement({
                 <span className="heading-3 text-black">Total</span>
                 <div className="flex items-center pr-30">
                   <span className="heading-3 text-black">+{grandTotal}</span>
-                  <IcColoredAcorn className="h-30 w-30" />
+                  <AcornIcon className="h-30 w-30" />
                 </div>
               </div>
             </div>

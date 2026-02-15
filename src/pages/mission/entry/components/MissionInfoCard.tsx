@@ -1,6 +1,6 @@
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import IcLock from "@/assets/icons/ic_lock.svg?react";
 import IcPolygon from "@/assets/icons/ic_polygon.svg?react";
-import IcAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { buttonVariants } from "@/components/common/button/buttonVariants";
 import { getYoutubeThumbnail } from "@/utils/youtube";
@@ -105,7 +105,7 @@ export default function MissionInfoCard({
                 지금 퀴즈 도전하고
               </span>
               <span className="flex items-center whitespace-nowrap">
-                <IcAcorn className="h-30 w-30 shrink-0" />
+                <AcornIcon className="h-30 w-30 shrink-0" />
                 <span className="heading-6 text-moamoa-400">도토리 받기</span>
               </span>
             </div>

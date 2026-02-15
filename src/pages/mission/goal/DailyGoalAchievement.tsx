@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IcColoredAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import IcExpand from "@/assets/icons/mission/ic_expand.svg?react";
 import IcSimple from "@/assets/icons/mission/ic_simple.svg?react";
 import IcSuccessOX from "@/assets/icons/mission/ic_success_ox.svg?react";
@@ -80,7 +80,7 @@ export default function DailyGoalAchievement({
                 <span className="body-2 text-black">일간 목표 달성</span>
                 <div className="flex items-center gap-10">
                   <span className="body-2 text-black">+{goalReward}</span>
-                  <IcColoredAcorn className="h-24 w-24" />
+                  <AcornIcon className="h-24 w-24" />
                 </div>
               </div>
 
@@ -99,7 +99,7 @@ export default function DailyGoalAchievement({
                         ? (QUESTION_TYPE_REWARDS[result.type] ?? 1)
                         : 0}
                     </span>
-                    <IcColoredAcorn className="h-24 w-24" />
+                    <AcornIcon className="h-24 w-24" />
                   </div>
                 </div>
               ))}
@@ -110,7 +110,7 @@ export default function DailyGoalAchievement({
                 <span className="heading-3 text-black">Total</span>
                 <div className="flex items-center pr-30">
                   <span className="heading-3 text-black">+{totalAcorns}</span>
-                  <IcColoredAcorn className="h-30 w-30" />
+                  <AcornIcon className="h-30 w-30" />
                 </div>
               </div>
             </div>
