@@ -107,6 +107,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
+      startWatchTimer(mission.videoLength * 1000);
       return;
     }
 
