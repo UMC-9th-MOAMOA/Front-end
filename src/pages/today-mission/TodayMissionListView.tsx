@@ -18,6 +18,7 @@ export default function TodayMissionListView() {
           onClick={() => navigate(-1)}
         />
       </div>
+      
 
       <h2 className="heading-2 -mt-19 text-center text-black">
         오늘의 미션
@@ -35,7 +36,7 @@ export default function TodayMissionListView() {
       </div>
 
       <AsyncBoundary>
-        <TodayMissionList refreshTrigger={refreshTrigger} />
+        <TodayMissionList key={refreshTrigger} refreshTrigger={refreshTrigger} />
       </AsyncBoundary>
     </div>
   );
