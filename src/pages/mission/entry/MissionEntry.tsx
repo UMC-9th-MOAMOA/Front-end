@@ -67,6 +67,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
   };
 
   const callWatchApi = () => {
+    if (isContentWatched) return;
     watchMission.mutate(missionId, {
       onSuccess: (data) => {
         setIsContentWatched(data.isContentWatched);
