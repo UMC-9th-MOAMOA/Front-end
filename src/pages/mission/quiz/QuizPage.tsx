@@ -102,6 +102,20 @@ function QuizPageContent({ missionId }: { missionId: number }) {
 
   const currentQuestion = mission.quizzes[currentQuestionIndex];
   const isLastQuestion = currentQuestionIndex === mission.quizzes.length - 1;
+  const isPreviouslyCorrect =
+    isRetry && currentQuestion.previousCorrectAnswer != null;
+
+  const getPreviousCorrectDisplayValue = () => {
+    const prev = currentQuestion.previousCorrectAnswer;
+    if (!prev) return null;
+    if (currentQuestion.type === "MULTIPLE") {
+      const idx = Number(prev);
+      if (!Number.isNaN(idx) && currentQuestion.option[idx - 1]) {
+        return currentQuestion.option[idx - 1];
+      }
+    }
+    return prev;
+  };
 
   const handleSubmit = () => {
     if (!currentQuestion) return;
@@ -151,6 +165,58 @@ function QuizPageContent({ missionId }: { missionId: number }) {
       setIsAnimating(false);
       feedbackTimeoutRef.current = null;
     }, totalDelay);
+  };
+
+  const handleRetryCorrectSkip = () => {
+    if (submitQuiz.isPending) return;
+
+    let userAnswer = currentQuestion.previousCorrectAnswer!;
+    if (currentQuestion.type === "MULTIPLE") {
+      const idx = Number(userAnswer);
+      if (!Number.isNaN(idx) && currentQuestion.option[idx - 1]) {
+        userAnswer = currentQuestion.option[idx - 1];
+      }
+    }
+
+    const newAnswers = [
+      ...answers,
+      { quizId: currentQuestion.quizId, userAnswer, isCorrect: true },
+    ];
+    setAnswers(newAnswers);
+    setCompletedQuestions(completedQuestions + 1);
+
+    if (isLastQuestion) {
+      submitQuiz.mutate(
+        {
+          missionId,
+          submissions: {
+            submissions: newAnswers.map((a) => {
+              const quiz = mission.quizzes.find(
+                (q) => q.quizId === a.quizId
+              );
+              let answerToSend = a.userAnswer;
+              if (quiz?.type === "MULTIPLE" && quiz.option) {
+                const optionIndex = quiz.option.indexOf(a.userAnswer);
+                if (optionIndex !== -1) {
+                  answerToSend = String(optionIndex + 1);
+                }
+              }
+              return { quizId: a.quizId, answer: answerToSend };
+            }),
+          },
+        },
+        {
+          onSuccess: () => {
+            navigate("/mypage?tab=mission", { replace: true });
+          },
+          onError: handleMutationError,
+        }
+      );
+    } else {
+      setCurrentQuestionIndex((prev) => prev + 1);
+      setUserInput("");
+      setSelectedOption(null);
+    }
   };
 
   const handleNext = () => {
@@ -352,19 +418,36 @@ function QuizPageContent({ missionId }: { missionId: number }) {
           showFeedback={showFeedback}
           onInputChange={setUserInput}
           onOptionSelect={setSelectedOption}
+          previousCorrectAnswer={
+            isPreviouslyCorrect ? getPreviousCorrectDisplayValue() : null
+          }
         />
       </div>
 
       <div className="mt-auto flex justify-center pt-44 pb-42">
         <div className="h-48 w-full">
           <QuizSubmitButton
-            text={showFeedback ? "다음 문제" : "정답 확인하기"}
+            text={
+              showFeedback
+                ? "다음 문제"
+                : isRetry && isLastQuestion
+                  ? "미션 완료하기"
+                  : isPreviouslyCorrect
+                    ? "다음 문제"
+                    : "정답 확인하기"
+            }
             disabled={
               isAnimating ||
               submitQuiz.isPending ||
-              (!showFeedback && isAnswerEmpty())
+              (!showFeedback && !isPreviouslyCorrect && isAnswerEmpty())
             }
-            onClick={showFeedback ? handleNext : handleSubmit}
+            onClick={
+              showFeedback
+                ? handleNext
+                : isPreviouslyCorrect
+                  ? handleRetryCorrectSkip
+                  : handleSubmit
+            }
           />
         </div>
       </div>
