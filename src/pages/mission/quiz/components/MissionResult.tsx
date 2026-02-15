@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import IcAllCorrect from "@/assets/icons/mission/ic_all_correct.svg?react";
-import IcColoredAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
 import IcResultHands from "@/assets/icons/mission/ic_result_fail_hands.svg?react";
 import IcResultSquirrel from "@/assets/icons/mission/ic_result_fail_squirrel.svg?react";
 import Header from "@/components/common/header/Header";
@@ -83,7 +83,7 @@ export default function MissionResult({
                     ? (QUESTION_TYPE_REWARDS[result.type] ?? 1)
                     : 0}
                 </span>
-                <IcColoredAcorn className="h-24 w-24" />
+                <AcornIcon className="h-24 w-24" />
               </div>
             </div>
           ))}
@@ -94,7 +94,7 @@ export default function MissionResult({
             <span className="heading-3 text-black">Total</span>
             <div className="flex items-center gap-10 pr-30">
               <span className="heading-3 text-black">+{totalAcorns}</span>
-              <IcColoredAcorn className="h-30 w-30" />
+              <AcornIcon className="h-30 w-30" />
             </div>
           </div>
         </div>

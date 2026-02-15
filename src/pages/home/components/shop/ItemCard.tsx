@@ -1,5 +1,5 @@
 import LockIcon from "@/assets/icons/home/ic_lock.svg?react";
-import BigAcornIcon from "@/assets/icons/ic_big_acorn.svg?react";
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import CheckCircleIcon from "@/assets/icons/ic_check_circle.svg?react";
 import type { ShopItem } from "@/types/home/shop";
 import { cn } from "@/utils/cn/cn";
@@ -57,7 +57,7 @@ const ItemCard = ({ item, isBackground, status, onSelect }: ItemCardProps) => {
       )}
 
       <div className="absolute bottom-6 left-1/2 z-5 flex -translate-x-1/2 items-center gap-1 rounded-sm px-4 py-2">
-        <BigAcornIcon className="h-24 w-24" />
+        <AcornIcon className="h-24 w-24" />
         <span className="body-5 text-black">{item.price}</span>
       </div>
     </button>

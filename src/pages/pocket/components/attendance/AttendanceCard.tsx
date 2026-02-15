@@ -1,5 +1,5 @@
-import IcBigAcorn from "@/assets/icons/ic_big_acorn.svg?react";
-import IcBigAcornDisabled from "@/assets/icons/ic_big_acorn_disabled.svg?react";
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
+import AcornDisabledIcon from "@/assets/icons/ic_acorn_disabled.svg?react";
 import IcComplete from "@/assets/icons/ic_complete.svg?react";
 import { cn } from "@/utils/cn/cn";
 
@@ -9,13 +9,13 @@ interface AttendanceCardProps {
 }
 
 export default function AttendanceCard({ day, isActive }: AttendanceCardProps) {
-  const AcornIcon = isActive ? IcBigAcorn : IcBigAcornDisabled;
+  const Icon = isActive ? AcornIcon : AcornDisabledIcon;
 
   return (
     <div
       className={cn(
         "relative flex flex-col items-center gap-4 rounded-xl px-20 py-8",
-        isActive ? "bg-moamoa-50" : "bg-gray-200",
+        isActive ? "bg-moamoa-50" : "bg-gray-200"
       )}
     >
       {isActive && (
@@ -26,7 +26,7 @@ export default function AttendanceCard({ day, isActive }: AttendanceCardProps) {
       >
         {day}일
       </span>
-      <AcornIcon className="size-40" />
+      <Icon className="size-40" />
     </div>
   );
 }

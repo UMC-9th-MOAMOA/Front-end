@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IcColoredAcorn from "@/assets/icons/mission/ic_colored_acorn.svg?react";
+import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import IcCongratulateSquirrel from "@/assets/icons/mission/ic_congratulate_squirrel.svg?react";
 import IcExpand from "@/assets/icons/mission/ic_expand.svg?react";
 import IcPartyPoppers from "@/assets/icons/mission/ic_party_poppers.svg?react";
@@ -86,10 +86,8 @@ export default function WeeklyGoalAchievement({
                 <div className="flex items-center justify-between py-8 pl-10">
                   <span className="body-2 text-black">주간 목표 달성</span>
                   <div className="flex items-center gap-10">
-                    <span className="body-2 text-black">
-                      +{goalReward}
-                    </span>
-                    <IcColoredAcorn className="h-24 w-24" />
+                    <span className="body-2 text-black">+{goalReward}</span>
+                    <AcornIcon className="h-24 w-24" />
                   </div>
                 </div>
 
@@ -103,9 +101,12 @@ export default function WeeklyGoalAchievement({
                     </span>
                     <div className="flex items-center gap-10">
                       <span className="body-2 text-black">
-                        +{result.isCorrect ? (QUESTION_TYPE_REWARDS[result.type] ?? 1) : 0}
+                        +
+                        {result.isCorrect
+                          ? (QUESTION_TYPE_REWARDS[result.type] ?? 1)
+                          : 0}
                       </span>
-                      <IcColoredAcorn className="h-24 w-24" />
+                      <AcornIcon className="h-24 w-24" />
                     </div>
                   </div>
                 ))}
@@ -117,7 +118,7 @@ export default function WeeklyGoalAchievement({
                 <span className="heading-3 text-black">Total</span>
                 <div className="flex items-center pr-30">
                   <span className="heading-3 text-black">+{grandTotal}</span>
-                  <IcColoredAcorn className="h-30 w-30" />
+                  <AcornIcon className="h-30 w-30" />
                 </div>
               </div>
             </div>
