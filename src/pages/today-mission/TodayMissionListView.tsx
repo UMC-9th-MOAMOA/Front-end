@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
 import AsyncBoundary from "@/components/AsyncBoundary";
