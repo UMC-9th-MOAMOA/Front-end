@@ -1,3 +1,4 @@
+import { useState } from "react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
 import { useScrapMission } from "@/hooks/useScrapMission";
 import { cn } from "@/utils/cn/cn";
@@ -5,7 +6,11 @@ import { useRecommendedMissions } from "../hooks/useQuery/useRecommendedMissions
 import RecommendedMissionCard from "./common/RecommendedMissionCard";
 
 export default function TodayMissionSection() {
-  const { data: missions, refetch } = useRecommendedMissions({ time: null });
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const { data: missions } = useRecommendedMissions({
+    time: null,
+    refreshTrigger,
+  });
   const scrapMutation = useScrapMission();
   return (
     <div className="mt-48">
@@ -14,7 +19,7 @@ export default function TodayMissionSection() {
         <button
           type="button"
           className="flex cursor-pointer items-center gap-6"
-          onClick={() => refetch()}
+          onClick={() => setRefreshTrigger((prev) => prev + 1)}
         >
           <IcReload className="size-19 text-moamoa-400" />
           <span className="body-2 text-black">새로고침</span>
