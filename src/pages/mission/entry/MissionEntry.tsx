@@ -91,15 +91,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
     }, duration);
   };
 
-  const handleContentClick = () => {
-    if (isContentWatched) return;
-    if (watchTimeoutRef.current) window.clearTimeout(watchTimeoutRef.current);
-
-    const now = Date.now();
-    clickedAtRef.current = now;
-    sessionStorage.setItem("missionReturnUrl", `/mission/${missionId}`);
-    sessionStorage.setItem("missionClickedAt", String(now));
-
+  const openVideoUrl = () => {
     if (isMobile) {
       const link = document.createElement("a");
       link.href = mission.videoUrl;
@@ -108,18 +100,35 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
-      startWatchTimer(mission.videoLength * 1000);
-      return;
+      return true;
     }
 
     if (!window.open(mission.videoUrl, "_blank")) {
-      clearMissionSession();
-      clickedAtRef.current = null;
       setErrorMessage("팝업이 차단되었습니다. 팝업 허용 후 다시 시도해주세요.");
+      return false;
+    }
+    return true;
+  };
+
+  const handleContentClick = () => {
+    if (isContentWatched) {
+      openVideoUrl();
       return;
     }
 
-    startWatchTimer(mission.videoLength * 1000);
+    if (watchTimeoutRef.current) window.clearTimeout(watchTimeoutRef.current);
+
+    const now = Date.now();
+    clickedAtRef.current = now;
+    sessionStorage.setItem("missionReturnUrl", `/mission/${missionId}`);
+    sessionStorage.setItem("missionClickedAt", String(now));
+
+    if (openVideoUrl()) {
+      startWatchTimer(mission.videoLength * 1000);
+    } else {
+      clearMissionSession();
+      clickedAtRef.current = null;
+    }
   };
 
   useEffect(() => {
