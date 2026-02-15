@@ -16,6 +16,7 @@ interface QuizCardProps {
   showFeedback: boolean;
   onInputChange: (value: string) => void;
   onOptionSelect: (option: string) => void;
+  previousCorrectAnswer?: string | null;
 }
 
 export default function QuizCard({
@@ -25,6 +26,7 @@ export default function QuizCard({
   showFeedback,
   onInputChange,
   onOptionSelect,
+  previousCorrectAnswer,
 }: QuizCardProps) {
   return (
     <div className="flex w-full flex-col rounded-2xl bg-white px-18 pt-30 pb-30">
@@ -43,7 +45,6 @@ export default function QuizCard({
             />
           ))}
         </div>
-        {/* 양옆 동그라미 추가 */}
       </div>
 
       {!showFeedback && (
@@ -54,6 +55,7 @@ export default function QuizCard({
           options={question.options}
           onInputChange={onInputChange}
           onOptionSelect={onOptionSelect}
+          previousCorrectAnswer={previousCorrectAnswer}
         />
       )}
     </div>
