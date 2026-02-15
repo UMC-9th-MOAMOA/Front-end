@@ -3,15 +3,15 @@ import { getRecommendedMissions } from "@/apis/missions/recommendedMissions";
 
 interface UseRecommendedMissionsParams {
   time?: number | null;
-  isRefresh?: boolean;
+  refreshTrigger?: number;
 }
 
 export const useRecommendedMissions = ({
   time = null,
-  isRefresh = false,
+  refreshTrigger = 0,
 }: UseRecommendedMissionsParams = {}) => {
   return useSuspenseQuery({
-    queryKey: ["missions", "recommended", { time, isRefresh }],
-    queryFn: () => getRecommendedMissions(time, isRefresh),
+    queryKey: ["missions", "recommended", { time, refreshTrigger }],
+    queryFn: () => getRecommendedMissions(time, refreshTrigger > 0),
   });
 };

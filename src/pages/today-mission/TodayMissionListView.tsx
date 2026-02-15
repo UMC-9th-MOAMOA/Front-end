@@ -1,4 +1,3 @@
-import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
@@ -9,25 +8,7 @@ import TodayMissionList from "./components/TodayMissionList";
 
 export default function TodayMissionListView() {
   const navigate = useNavigate();
-  const queryClient = useQueryClient();
-  const [searchParams] = useSearchParams();
-  const time = searchParams.get("time");
-  const timeValue = time ? Number(time) : null;
-  const [isRefresh, setIsRefresh] = useState(false);
-
-  const handleRefresh = () => {
-    if (isRefresh) {
-      queryClient.invalidateQueries({
-        queryKey: [
-          "missions",
-          "recommended",
-          { time: timeValue, isRefresh: true },
-        ],
-      });
-    } else {
-      setIsRefresh(true);
-    }
-  };
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   return (
     <div>
@@ -45,7 +26,7 @@ export default function TodayMissionListView() {
 
       <div className="mt-19 flex justify-end">
         <Button
-          onClick={handleRefresh}
+          onClick={() => setRefreshTrigger((prev) => prev + 1)}
           leftIcon={<IcReload className="size-19" />}
           className="body-2 gap-6 rounded-2xl bg-moamoa-50 px-16 py-8 text-moamoa-400"
         >
@@ -54,7 +35,7 @@ export default function TodayMissionListView() {
       </div>
 
       <AsyncBoundary>
-        <TodayMissionList isRefresh={isRefresh} />
+        <TodayMissionList refreshTrigger={refreshTrigger} />
       </AsyncBoundary>
     </div>
   );

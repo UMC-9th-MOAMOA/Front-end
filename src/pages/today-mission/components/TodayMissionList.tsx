@@ -7,11 +7,11 @@ import { useRecommendedMissions } from "@/pages/search/hooks/useQuery/useRecomme
 const ITEMS_PER_PAGE = 10;
 
 interface TodayMissionListProps {
-  isRefresh?: boolean;
+  refreshTrigger?: number;
 }
 
 export default function TodayMissionList({
-  isRefresh = false,
+  refreshTrigger = 0,
 }: TodayMissionListProps) {
   const [searchParams] = useSearchParams();
   const time = searchParams.get("time");
@@ -19,7 +19,7 @@ export default function TodayMissionList({
 
   const { data: missions } = useRecommendedMissions({
     time: timeValue,
-    isRefresh,
+    refreshTrigger,
   });
   const scrapMutation = useScrapMission();
 

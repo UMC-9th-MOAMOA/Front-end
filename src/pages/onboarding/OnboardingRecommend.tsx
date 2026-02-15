@@ -20,11 +20,11 @@ export default function OnboardingRecommend() {
 
 function OnboardingRecommendContent() {
   const navigate = useNavigate();
-  const [isRefresh, setIsRefresh] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
-  const { data: missions, refetch } = useRecommendedMissions({
+  const { data: missions } = useRecommendedMissions({
     time: null,
-    isRefresh,
+    refreshTrigger,
   });
   const { activeIndex, dragX, isDragging, bind } = useCarouselDrag({
     totalItems: missions.length,
@@ -95,13 +95,7 @@ function OnboardingRecommendContent() {
         <button
           type="button"
           className="absolute bottom-20 left-1/2 z-20 flex -translate-x-1/2 cursor-pointer items-center gap-6 rounded-2xl bg-moamoa-50 px-16 py-8"
-          onClick={() => {
-            if (isRefresh) {
-              refetch();
-            } else {
-              setIsRefresh(true);
-            }
-          }}
+          onClick={() => setRefreshTrigger((prev) => prev + 1)}
         >
           <IcReload className="size-19 text-moamoa-400" />
           <span className="body-2 text-moamoa-600">새로고침</span>

@@ -6,10 +6,10 @@ import { useRecommendedMissions } from "../hooks/useQuery/useRecommendedMissions
 import RecommendedMissionCard from "./common/RecommendedMissionCard";
 
 export default function TodayMissionSection() {
-  const [isRefresh, setIsRefresh] = useState(false);
-  const { data: missions, refetch } = useRecommendedMissions({
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const { data: missions } = useRecommendedMissions({
     time: null,
-    isRefresh,
+    refreshTrigger,
   });
   const scrapMutation = useScrapMission();
   return (
@@ -19,13 +19,7 @@ export default function TodayMissionSection() {
         <button
           type="button"
           className="flex cursor-pointer items-center gap-6"
-          onClick={() => {
-            if (isRefresh) {
-              refetch();
-            } else {
-              setIsRefresh(true);
-            }
-          }}
+          onClick={() => setRefreshTrigger((prev) => prev + 1)}
         >
           <IcReload className="size-19 text-moamoa-400" />
           <span className="body-2 text-black">새로고침</span>
