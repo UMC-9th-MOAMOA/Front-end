@@ -25,7 +25,7 @@ const RootLayout = () => {
           ref={mainRef}
           className={cn(
             "relative flex h-dvh w-full flex-col overflow-y-auto overflow-x-hidden",
-            "pt-safe-top pr-safe-right pb-safe-bottom pl-safe-left",
+            "pt-safe-top pr-safe-right pl-safe-left",
             bgColor
           )}
         >
