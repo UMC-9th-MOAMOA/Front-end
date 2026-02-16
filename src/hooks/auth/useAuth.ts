@@ -3,8 +3,6 @@ import { refreshAccessToken } from "@/apis/auth/auth";
 import { storage } from "@/apis/storage";
 import { useAuthStore } from "@/store/auth";
 
-const PUBLIC_PATHS = ["/", "/start", "/login", "/signup", "/find-id", "/password", "/terms", "/oauth/callback"];
-
 export const useAuth = () => {
   const {
     isLoading,
@@ -29,14 +27,6 @@ export const useAuth = () => {
         setLoading(false);
         return;
       }
-
-      const isPublicPath = PUBLIC_PATHS.includes(window.location.pathname);
-      if (isPublicPath) {
-        setAuthenticated(false);
-        setLoading(false);
-        return;
-      }
-
       try {
         const newToken = await refreshAccessToken();
         storage.setToken(newToken);
