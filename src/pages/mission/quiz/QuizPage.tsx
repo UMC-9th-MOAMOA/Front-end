@@ -207,7 +207,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         },
         {
           onSuccess: () => {
-            navigate("/mypage?tab=mission", { replace: true });
+            navigate("/mypage?tab=mission&view=retry", { replace: true });
           },
           onError: handleMutationError,
         }
@@ -264,7 +264,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
         {
           onSuccess: (data) => {
             if (isRetry) {
-              navigate("/mypage?tab=mission", { replace: true });
+              navigate("/mypage?tab=mission&view=retry", { replace: true });
             } else {
               setQuizResult({
                 isSuccess: data.isSuccess,
@@ -430,7 +430,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
             text={
               showFeedback
                 ? "다음 문제"
-                : isRetry && isLastQuestion
+                : isPreviouslyCorrect && isLastQuestion
                   ? "미션 완료하기"
                   : isPreviouslyCorrect
                     ? "다음 문제"
