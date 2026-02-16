@@ -41,10 +41,10 @@ const StartPage = ({ enableFade = true }: StartPageProps) => {
           함께 숨겨진 시간을 찾아 생산적인 하루를 보내보세요.
         </p>
       </div>
-      <SquirrelStart className="mt-40 h-auto w-300 px-7" aria-hidden="true" />
+      <SquirrelStart className="mt-40 h-auto w-311 px-7" aria-hidden="true" />
       <Button
         type="button"
-        className="mt-auto mb-80 h-48 w-full rounded-lg bg-moamoa-300 py-16 font-semibold text-base text-white"
+        className="mt-84 mb-80 h-48 w-full rounded-lg bg-moamoa-300 py-16 font-semibold text-base text-white"
         onClick={() => navigate("/home")}
       >
         시작하기
