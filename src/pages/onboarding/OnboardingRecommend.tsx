@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IcCircleLeftArrow from "@/assets/icons/ic_circle_left_arrow.svg?react";
+import IcCircleLeftArrow from "@/assets/icons/auth/onboarding/ic_circle_left_arrow.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import { Button } from "@/components/common/button/Button";

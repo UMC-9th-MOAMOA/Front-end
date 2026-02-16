@@ -1,4 +1,4 @@
-import faceDefault from "@/assets/icons/home/character/ic_face_default.svg";
+import faceDefault from "@/assets/icons/home/character/items/emotion/ic_face_default.svg";
 import shadowDefault from "@/assets/icons/home/character/shadow/ic_shadow_default.svg";
 import shadowField from "@/assets/icons/home/character/shadow/ic_shadow_field.svg";
 import shadowHill from "@/assets/icons/home/character/shadow/ic_shadow_hill.svg";

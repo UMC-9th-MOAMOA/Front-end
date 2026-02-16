@@ -1,7 +1,7 @@
 ﻿import { useParams } from "react-router-dom";
 import IcPolygon from "@/assets/icons/ic_polygon.svg?react";
-import IcSubtract from "@/assets/icons/ic_subtract.svg?react";
-import IcUnion from "@/assets/icons/ic_union.svg?react";
+import IcSubtract from "@/assets/icons/mypage/ic_subtract.svg?react";
+import IcUnion from "@/assets/icons/mypage/ic_union.svg?react";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import type { MissionDetailQuiz } from "@/types/mission/missionDetail";

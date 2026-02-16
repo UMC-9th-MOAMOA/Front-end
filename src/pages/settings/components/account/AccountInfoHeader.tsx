@@ -1,7 +1,7 @@
 import IcCheckActive from "@/assets/icons/ic_check_active.svg?react";
-import IcProfile1 from "@/assets/icons/profile/ic_profile1.svg?react";
-import IcProfile2 from "@/assets/icons/profile/ic_profile2.svg?react";
-import IcProfile3 from "@/assets/icons/profile/ic_profile3.svg?react";
+import IcProfile1 from "@/assets/icons/settings/profile/ic_profile1.svg?react";
+import IcProfile2 from "@/assets/icons/settings/profile/ic_profile2.svg?react";
+import IcProfile3 from "@/assets/icons/settings/profile/ic_profile3.svg?react";
 
 const PROFILE_OPTIONS = [
   { id: "1", Icon: IcProfile1 },

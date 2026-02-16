@@ -1,6 +1,6 @@
 import LockIcon from "@/assets/icons/home/ic_lock.svg?react";
 import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
-import CheckCircleIcon from "@/assets/icons/ic_check_circle.svg?react";
+import CheckCircleIcon from "@/assets/icons/ic_check_active.svg?react";
 import type { ShopItem } from "@/types/home/shop";
 import { cn } from "@/utils/cn/cn";
 import type { ItemStatus } from "../../types/types";

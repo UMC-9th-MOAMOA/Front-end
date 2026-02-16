@@ -1,4 +1,4 @@
-﻿import IcButtonCheck from "@/assets/icons/ic_buttoncheck.svg?react";
+﻿import IcButtonCheck from "@/assets/icons/ic_check_active.svg?react";
 import { Button } from "@/components/common/button/Button";
 import type { DurationKey, DurationOption } from "./types";
 

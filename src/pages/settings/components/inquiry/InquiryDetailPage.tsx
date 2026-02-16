@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import IcReply from "@/assets/icons/ic_reply.svg?react";
+import IcReply from "@/assets/icons/settings/inquiry/ic_reply.svg?react";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import Header from "@/components/common/header/Header";
 import { useMyInquiryDetail } from "./hooks/useMyInquiryDetail";

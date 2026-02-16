@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import IcCart from "@/assets/icons/ic_cart.svg?react";
+import IcCart from "@/assets/icons/common/header/ic_cart.svg?react";
 import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
-import IcMenu from "@/assets/icons/ic_menu.svg?react";
+import IcMenu from "@/assets/icons/common/header/ic_menu.svg?react";
 import IcQuit from "@/assets/icons/ic_quit.svg?react";
 import IcSearch from "@/assets/icons/ic_search.svg?react";
 import { cn } from "@/utils/cn/cn";

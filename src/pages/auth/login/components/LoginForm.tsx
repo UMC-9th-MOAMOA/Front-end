@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import DividerIcon from "@/assets/icons/ic_divider.svg?react";
+import DividerIcon from "@/assets/icons/auth/ic_divider.svg?react";
 import { Button } from "@/components/common/button/Button";
 import { AuthTextField } from "../../components/AuthTextField";
 import { Modal } from "../../components/Modal";
