@@ -22,7 +22,7 @@ export default function OAuthCallback() {
 
       const state = searchParams.get("state");
       const savedState = sessionStorage.getItem("oauth_state");
-      if (state && savedState && state !== savedState) {
+      if (savedState && state !== savedState) {
         setErrorMessage("잘못된 요청입니다.");
         return;
       }
