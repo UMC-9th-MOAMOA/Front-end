@@ -65,7 +65,7 @@ export default function QuizFirstFailResult({
           onClick={onNext}
           className="body-2-1 mt-18 h-48 w-full rounded-xl bg-moamoa-300 text-white"
         >
-          {isLastQuestion ? "미션 완료하기" : "다음 문제"}
+          {isLastQuestion ? "결과 확인하기" : "다음 문제"}
         </button>
       </div>
     </div>
