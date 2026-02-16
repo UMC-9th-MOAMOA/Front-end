@@ -6,7 +6,12 @@ export default function SocialLoginButtons() {
     window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/social/google`;
   };
   const handleKakaoLogin = () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/auth/social/kakao`;
+    const params = new URLSearchParams({
+      client_id: import.meta.env.VITE_KAKAO_CLIENT_ID,
+      redirect_uri: `${window.location.origin}/oauth/callback`,
+      response_type: "code",
+    });
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?${params}`;
   };
 
   return (
