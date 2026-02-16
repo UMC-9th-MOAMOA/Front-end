@@ -103,13 +103,13 @@ export default function MissionResult({
           <p className="body-2 text-center text-black">
             {isAllCorrect ? (
               <>
-                문제를 모두 맞추셨어요!
+                문제를 모두 맞히셨어요!
                 <br />
                 얻은 도토리로 다람쥐를 꾸며볼까요?
               </>
             ) : (
               <>
-                {totalQuestions}개 중 {correctCount}개를 맞추셨어요 !
+                {totalQuestions}개 중 {correctCount}개를 맞히셨어요 !
                 <br />
                 틀린 문제를 다시 풀어볼까요?
               </>
