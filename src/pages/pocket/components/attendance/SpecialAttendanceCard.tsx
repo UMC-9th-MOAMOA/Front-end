@@ -1,7 +1,7 @@
-import Ic7Days from "@/assets/icons/ic_7days.svg?react";
-import Ic7DaysDisabled from "@/assets/icons/ic_7days_disabled.svg?react";
-import IcGoldAcorn from "@/assets/icons/ic_gold_acorn.svg?react";
-import IcGoldAcornDisabled from "@/assets/icons/ic_gold_acorn_disabled.svg?react";
+import Ic7Days from "@/assets/icons/home/attendance/ic_7days.svg?react";
+import Ic7DaysDisabled from "@/assets/icons/home/attendance/ic_7days_disabled.svg?react";
+import IcGoldAcorn from "@/assets/icons/home/attendance/ic_gold_acorn.svg?react";
+import IcGoldAcornDisabled from "@/assets/icons/home/attendance/ic_gold_acorn_disabled.svg?react";
 import { cn } from "@/utils/cn/cn";
 
 interface SpecialAttendanceCardProps {

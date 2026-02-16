@@ -1,4 +1,4 @@
-import SquirrelOnboarding from "@/assets/images/squirrel_onboarding.svg";
+import SquirrelOnboarding from "@/assets/icons/auth/onboarding/squirrel_onboarding.svg";
 import { Button } from "@/components/common/button/Button";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import type { OnboardingPayload } from "@/types/onboarding/onboarding";

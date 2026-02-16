@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IcAcorn from "@/assets/icons/ic_acorn.svg?react";
-import IcAttendance from "@/assets/icons/ic_attendance.svg?react";
+import IcAttendance from "@/assets/icons/mypage/ic_attendance.svg?react";
 import IcDropdown from "@/assets/icons/ic_dropdown.svg?react";
 import IcMinus from "@/assets/icons/ic_minus.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";

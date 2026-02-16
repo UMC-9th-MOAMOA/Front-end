@@ -1,8 +1,8 @@
 import { NavLink } from "react-router-dom";
-import IcHome from "@/assets/icons/navbar/ic_home.svg?react";
-import IcMyPage from "@/assets/icons/navbar/ic_my.svg?react";
-import IcSearch from "@/assets/icons/navbar/ic_search.svg?react";
-import IcSettings from "@/assets/icons/navbar/ic_settings.svg?react";
+import IcHome from "@/assets/icons/common/navbar/ic_home.svg?react";
+import IcMyPage from "@/assets/icons/common/navbar/ic_my.svg?react";
+import IcSearch from "@/assets/icons/common/navbar/ic_search.svg?react";
+import IcSettings from "@/assets/icons/common/navbar/ic_settings.svg?react";
 
 interface NavItemProps {
   to: string;

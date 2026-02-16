@@ -1,4 +1,4 @@
-﻿import IcDash from "@/assets/icons/ic.dottedline.svg?react";
+﻿import IcDash from "@/assets/icons/settings/ic_dottedline.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
 import type { InterestWithDetails } from "@/types/interest/interest.setting";
 

@@ -1,6 +1,6 @@
 import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
 import AcornDisabledIcon from "@/assets/icons/ic_acorn_disabled.svg?react";
-import IcComplete from "@/assets/icons/ic_complete.svg?react";
+import IcComplete from "@/assets/icons/home/attendance/ic_complete.svg?react";
 import { cn } from "@/utils/cn/cn";
 
 interface AttendanceCardProps {

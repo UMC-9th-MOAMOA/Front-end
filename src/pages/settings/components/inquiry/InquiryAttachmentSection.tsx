@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import IcCamera from "@/assets/icons/ic_camera.svg?react";
+import IcCamera from "@/assets/icons/settings/inquiry/ic_camera.svg?react";
 
 type Props = {
   fileInputId: string;

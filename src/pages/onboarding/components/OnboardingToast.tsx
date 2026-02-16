@@ -1,4 +1,4 @@
-import IcErred from "@/assets/icons/ic_erred.svg?react";
+import IcErred from "@/assets/icons/ic_errored.svg?react";
 import { cn } from "@/utils/cn/cn";
 
 interface OnboardingToastProps {

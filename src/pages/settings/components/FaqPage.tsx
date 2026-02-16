@@ -1,5 +1,5 @@
 ﻿import { useNavigate } from "react-router-dom";
-import IcPencil from "@/assets/icons/ic_pencil.svg?react";
+import IcPencil from "@/assets/icons/settings/ic_pencil.svg?react";
 import Header from "@/components/common/header/Header";
 import BottomActionBar from "./common/BottomActionBar";
 import FaqSectionList from "./faq/FaqSectionList";

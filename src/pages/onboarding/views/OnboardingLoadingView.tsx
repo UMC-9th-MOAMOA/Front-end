@@ -1,4 +1,4 @@
-import IcAcornOnboarding from "@/assets/icons/ic_acorn_onboarding.svg?react";
+import IcAcornOnboarding from "@/assets/icons/auth/onboarding/ic_acorn_onboarding.svg?react";
 import IcCheckOnboarding from "@/assets/icons/ic_check_active.svg?react";
 
 const LOADING_ITEMS = ["내 관심사 분석 중", "나의 미션 목표 분석 중"];

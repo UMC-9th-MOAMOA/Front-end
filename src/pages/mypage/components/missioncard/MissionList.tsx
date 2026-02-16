@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import IcSadSquirrel from "@/assets/icons/ic_sadsquirrel.svg?react";
+import IcSadSquirrel from "@/assets/icons/mypage/ic_sadsquirrel.svg?react";
 import { LoadingSpinner } from "@/components/LoadingSpinner";
 import MissionCard from "@/components/MissionCard";
 import { CATEGORY_ID_MAP } from "@/constants/missions/categories";

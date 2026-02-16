@@ -11,7 +11,7 @@ export default function TodayMissionListView() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   return (
-    <div>
+    <div className="flex min-h-dvh flex-col">
       <div className="mt-32">
         <IcLeft
           className="size-24 cursor-pointer"

@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import IcSquirrelNoRecommend from "@/assets/icons/mission/ic_squirrel_no_recommend.svg?react";
 import MissionCard from "@/components/MissionCard";
 import { useScrapMission } from "@/hooks/useScrapMission";
 import { useRecommendedMissions } from "@/pages/search/hooks/useQuery/useRecommendedMissions";
@@ -48,6 +49,17 @@ export default function TodayMissionList({
       }
     };
   }, [displayedCount, missions.length]);
+
+  if (!missions || missions.length === 0) {
+    return (
+      <div className="flex flex-1 flex-col items-center justify-center">
+        <span className="heading-6 text-gray-500">
+          새로운 미션을 준비 중이에요.
+        </span>
+        <IcSquirrelNoRecommend className="mt-19" />
+      </div>
+    );
+  }
 
   return (
     <div className="mt-16 -mb-96 flex flex-col gap-16">

@@ -1,6 +1,6 @@
+import IcSubjectiveCheck from "@/assets/icons/ic_check_active.svg?react";
 import IcOxO from "@/assets/icons/mission/ic_ox_o.svg?react";
 import IcOxX from "@/assets/icons/mission/ic_ox_x.svg?react";
-import IcSubjectiveCheck from "@/assets/icons/mission/ic_subjective_check.svg?react";
 import IcSuccessMultiple from "@/assets/icons/mission/ic_success_multiple.svg?react";
 import IcSuccessOx from "@/assets/icons/mission/ic_success_ox.svg?react";
 import IcSuccessSubjective from "@/assets/icons/mission/ic_success_subjective.svg?react";

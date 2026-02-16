@@ -1,7 +1,7 @@
 ﻿import { useEffect, useRef, useState } from "react";
 import IcCheck from "@/assets/icons/ic_check.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
-import IcReply from "@/assets/icons/ic_reply.svg?react";
+import IcReply from "@/assets/icons/settings/inquiry/ic_reply.svg?react";
 
 import type {
   InquiryAnswerStatusServer,

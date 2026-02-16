@@ -1,4 +1,4 @@
-import IcCircleLeftArrow from "@/assets/icons/ic_circle_left_arrow.svg?react";
+import IcCircleLeftArrow from "@/assets/icons/auth/onboarding/ic_circle_left_arrow.svg?react";
 
 interface OnboardingHeaderProps {
   currentStep: number;

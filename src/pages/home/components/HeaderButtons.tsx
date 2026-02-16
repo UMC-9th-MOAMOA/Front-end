@@ -1,8 +1,8 @@
 import type { ForwardedRef } from "react";
 import { useNavigate } from "react-router-dom";
+import BoomerangIcon from "@/assets/icons/home/ic_boomerang.svg?react";
 import AcornIcon from "@/assets/icons/ic_acorn.svg?react";
-import BoomerangIcon from "@/assets/icons/ic_boomerang.svg?react";
-import PocketIcon from "@/assets/icons/ic_pocket.svg?react";
+import PocketIcon from "@/assets/icons/home/ic_pocket.svg?react";
 import MoaToggle from "@/pages/settings/components/common/Moatoggle";
 
 interface HeaderButtonsProps {

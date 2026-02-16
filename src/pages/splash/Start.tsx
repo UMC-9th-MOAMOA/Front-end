@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import SquirrelStart from "@/assets/icons/squirrel_start.svg?react";
+import SquirrelStart from "@/assets/icons/auth/squirrel_start.svg?react";
 import Logo from "@/assets/LOGO.svg?react";
 import { Button } from "@/components/common/button/Button";
 
