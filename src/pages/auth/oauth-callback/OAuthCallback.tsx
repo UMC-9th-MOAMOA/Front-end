@@ -20,6 +20,14 @@ export default function OAuthCallback() {
         return;
       }
 
+      const state = searchParams.get("state");
+      const savedState = sessionStorage.getItem("oauth_state");
+      if (state && savedState && state !== savedState) {
+        setErrorMessage("잘못된 요청입니다.");
+        return;
+      }
+      sessionStorage.removeItem("oauth_state");
+
       const code = searchParams.get("code");
       if (!code) {
         setErrorMessage("소셜 로그인 코드가 없습니다.");
