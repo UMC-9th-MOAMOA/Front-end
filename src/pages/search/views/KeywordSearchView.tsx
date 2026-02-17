@@ -49,7 +49,7 @@ export default function KeywordSearchView() {
     <>
       <div className="mt-41 flex items-center gap-12">
         <button type="button" onClick={handleBack}>
-          <IcLeft className="size-24" />
+          <IcLeft className="size-24 text-gray-600" />
         </button>
         <SearchBar
           value={searchValue}

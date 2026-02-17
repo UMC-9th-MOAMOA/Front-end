@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import IcCart from "@/assets/icons/common/header/ic_cart.svg?react";
+import IcMenu from "@/assets/icons/common/header/ic_menu.svg?react";
 import IcHeart from "@/assets/icons/ic_heart.svg?react";
 import IcLeft from "@/assets/icons/ic_left.svg?react";
-import IcMenu from "@/assets/icons/common/header/ic_menu.svg?react";
 import IcQuit from "@/assets/icons/ic_quit.svg?react";
 import IcSearch from "@/assets/icons/ic_search.svg?react";
 import { cn } from "@/utils/cn/cn";
@@ -43,32 +43,35 @@ export default function Header({
         className
       )}
     >
-      <LeftIcon className="size-24 cursor-pointer" onClick={handleBack} />
-      <h1 className="heading-2 min-w-0 truncate text-center text-black">
+      <LeftIcon
+        className="size-24 cursor-pointer text-gray-600"
+        onClick={handleBack}
+      />
+      <h1 className="heading-2 min-w-0 truncate text-center text-gray-800">
         {title}
       </h1>
       <div className="flex justify-end">
         {property === "search" && (
           <IcSearch
-            className="size-24 cursor-pointer"
+            className="size-24 cursor-pointer text-gray-600"
             onClick={onRightIconClick}
           />
         )}
         {property === "menu" && (
           <IcMenu
-            className="size-24 cursor-pointer"
+            className="size-24 cursor-pointer text-gray-600"
             onClick={onRightIconClick}
           />
         )}
         {property === "cart" && (
           <IcCart
-            className="size-24 cursor-pointer"
+            className="size-24 cursor-pointer text-gray-600"
             onClick={onRightIconClick}
           />
         )}
         {property === "heart" && (
           <IcHeart
-            className="size-24 cursor-pointer"
+            className="size-24 cursor-pointer text-gray-600"
             onClick={onRightIconClick}
           />
         )}

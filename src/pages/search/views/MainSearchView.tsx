@@ -20,7 +20,7 @@ export default function MainSearchView() {
           onClick={() => navigate("/search?mode=keyword")}
           className="flex w-full items-center gap-18 rounded-full border border-gray-400 bg-gray-100 px-17 py-8"
         >
-          <IcSearch className="shrink-0 text-gray-500" />
+          <IcSearch className="shrink-0 text-gray-400" />
           <span className="body-2 text-gray-400">키워드 검색</span>
         </button>
       </div>
