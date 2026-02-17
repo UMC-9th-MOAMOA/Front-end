@@ -44,10 +44,10 @@ export default function AttendanceModal({
           <SpecialAttendanceCard isActive={attendance[6]} />
         </div>
 
-        <div className="mt-29 flex w-full gap-12">
+        <div className="mt-29 flex w-full gap-8">
           <Button
             onClick={onClose}
-            className="body-2 rounded-lg bg-moamoa-50 px-30 py-12 text-moamoa-600"
+            className="body-2 rounded-lg bg-moamoa-50 px-32 py-12 text-moamoa-600"
           >
             닫기
           </Button>
