@@ -27,7 +27,7 @@ export default function PurchaseConfirmModal({
           <br /> 도토리 {price}개가 필요해요.
         </p>
 
-        <div className="mt-23 flex gap-12">
+        <div className="mt-23 flex gap-8">
           <Button
             onClick={onClose}
             className="body-2 rounded-lg bg-moamoa-50 px-30 py-12 text-moamoa-600"
@@ -36,7 +36,7 @@ export default function PurchaseConfirmModal({
           </Button>
           <Button
             onClick={onConfirm}
-            className="body-2 rounded-lg bg-moamoa-300 px-50 py-12 text-white"
+            className="body-2 rounded-lg bg-moamoa-300 px-52 py-12 text-white"
           >
             구매하기
           </Button>
