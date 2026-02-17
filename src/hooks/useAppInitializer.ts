@@ -16,43 +16,44 @@ export const useAppInitializer = ({
   callbacksRef.current = { onCheckAttendance, onCheckGoalPopups };
 
   const prevPathnameRef = useRef(window.location.pathname);
+  const hasInitRef = useRef(false);
 
-  useEffect(() => {
-    // 중복 호출 방지하며 목표 팝업 실행
-    const runGoalPopupsIfNeeded = () => {
-      const store = useAttendanceStore.getState();
-      if (!store.onModalClosed) {
-        callbacksRef.current.onCheckGoalPopups();
-      }
-    };
+  const runGoalPopupsIfNeeded = () => {
+    const store = useAttendanceStore.getState();
+    if (!store.onModalClosed) {
+      callbacksRef.current.onCheckGoalPopups();
+    }
+  };
 
-    const runChecks = async () => {
-      const token = storage.getToken();
-      if (!token) return;
+  const runChecks = async () => {
+    const token = storage.getToken();
+    if (!token) return;
 
-      const isOnboardingPage =
-        window.location.pathname.startsWith("/onboarding");
-      if (isOnboardingPage) return;
+    const isOnboardingPage = window.location.pathname.startsWith("/onboarding");
+    if (isOnboardingPage) return;
 
-      try {
-        const modalShown =
-          await callbacksRef.current.onCheckAttendance();
+    try {
+      const modalShown = await callbacksRef.current.onCheckAttendance();
 
-        if (modalShown) {
-          useAttendanceStore
-            .getState()
-            .setOnModalClosed(() => callbacksRef.current.onCheckGoalPopups());
-        } else {
-          runGoalPopupsIfNeeded();
-        }
-      } catch (error) {
-        console.error("출석 체크 실패:", error);
+      if (modalShown) {
+        useAttendanceStore
+          .getState()
+          .setOnModalClosed(() => callbacksRef.current.onCheckGoalPopups());
+      } else {
         runGoalPopupsIfNeeded();
       }
-    };
+    } catch (error) {
+      console.error("출석 체크 실패:", error);
+      runGoalPopupsIfNeeded();
+    }
+  };
 
+  if (!hasInitRef.current) {
+    hasInitRef.current = true;
     runChecks();
+  }
 
+  useEffect(() => {
     const handleVisibilityChange = () => {
       if (document.visibilityState === "visible") {
         runChecks();
