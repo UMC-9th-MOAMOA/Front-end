@@ -24,7 +24,7 @@ export default function Search() {
   };
 
   const handleBackToHome = () => {
-    navigate("/");
+    navigate("/home");
   };
 
   return (
