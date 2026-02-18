@@ -36,7 +36,7 @@ export default function WeeklyGoalFailure({
             <br />
             미션을 탐색해보시겠어요?
           </p>
-          <p className="body-2 mt-20 text-center text-gray-800">
+          <p className="body-2 mt-20 text-center text-gray-500">
             조금 부족해도 괜찮아요
           </p>
         </div>

@@ -74,9 +74,9 @@ export default function DailyWeeklyGoalAchievement({
           >
             <span className="body-2 text-black">상세 내역 확인하기</span>
             {isDetailOpen ? (
-              <IcSimple className="size-24" />
+              <IcSimple className="size-24 text-gray-400" />
             ) : (
-              <IcExpand className="h-24 w-24" />
+              <IcExpand className="h-24 w-24 text-moamoa-200" />
             )}
           </button>
 
@@ -97,9 +97,9 @@ export default function DailyWeeklyGoalAchievement({
                     <AcornIcon className="h-24 w-24" />
                     <span className="w-12" />
                     {isMissionOpen ? (
-                      <IcSimple className="size-16" />
+                      <IcSimple className="size-16 text-gray-400" />
                     ) : (
-                      <IcExpand className="size-16" />
+                      <IcExpand className="size-16 text-gray-400" />
                     )}
                   </div>
                 </button>
@@ -137,7 +137,7 @@ export default function DailyWeeklyGoalAchievement({
                 </div>
               </div>
 
-              <div className="my-17 h-px bg-black" />
+              <div className="my-17 h-px bg-gray-400" />
 
               <div className="flex items-center justify-between pl-30">
                 <span className="heading-3 text-black">Total</span>

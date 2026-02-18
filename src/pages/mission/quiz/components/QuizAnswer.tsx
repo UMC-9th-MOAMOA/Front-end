@@ -56,7 +56,7 @@ export default function QuizAnswer({
             }
           }}
           placeholder="답안을 작성해주세요"
-          className="body-2 h-139 w-full resize-none rounded-xl border-2 border-moamoa-50 bg-white px-14 py-16 text-black placeholder:text-gray-400 focus:border-moamoa-300 focus:outline-none"
+          className="body-2 h-139 w-full resize-none rounded-xl bg-gray-100 px-14 py-16 text-black placeholder:text-gray-400 focus:outline-none"
         />
       </div>
     );
@@ -159,7 +159,7 @@ export default function QuizAnswer({
             {options.map((option) => (
               <div
                 key={option}
-                className={`body-4 flex w-full items-center justify-center rounded-md border px-10 py-10 ${
+                className={`body-4 flex w-full items-center justify-center break-keep rounded-md border px-10 py-10 ${
                   option === correctOptionText
                     ? "border-moamoa-200 bg-moamoa-50 text-black"
                     : "border-moamoa-100 bg-white text-black"
@@ -181,7 +181,7 @@ export default function QuizAnswer({
               key={option}
               type="button"
               onClick={() => onOptionSelect(option)}
-              className={`body-4 flex w-full items-center justify-center rounded-md border px-10 py-10 transition-colors ${
+              className={`body-4 flex w-full items-center justify-center break-keep rounded-md border px-10 py-10 transition-colors ${
                 selectedOption === option
                   ? "border-moamoa-200 bg-moamoa-50 text-black"
                   : "border-moamoa-100 bg-white text-black hover:bg-moamoa-50"

@@ -38,7 +38,7 @@ export default function MissionInfoCard({
   return (
     <div className="flex w-full flex-col gap-8 rounded-xl bg-white px-23 pt-21">
       <div className="flex items-center">
-        <h2 className="heading-3 line-clamp-2 pb-4 text-center text-black">
+        <h2 className="heading-3 line-clamp-2 break-keep pb-4 text-center text-black">
           {title}
         </h2>
       </div>
@@ -53,7 +53,7 @@ export default function MissionInfoCard({
         ))}
       </div>
 
-      <div className="body-4 flex items-start justify-between self-stretch text-black">
+      <div className="body-4 flex items-start justify-between self-stretch text-gray-700">
         <span>예상 소요시간 : {durationMinutes}분</span>
         <span>{interest}</span>
       </div>

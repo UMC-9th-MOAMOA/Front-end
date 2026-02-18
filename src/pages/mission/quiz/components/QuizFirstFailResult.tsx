@@ -32,7 +32,7 @@ export default function QuizFirstFailResult({
         </p>
         {questionType === "subjective" && (
           <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-9 py-9">
-            <span className="body-4 text-black">{userAnswer}</span>
+            <span className="body-4 break-keep text-black">{userAnswer}</span>
           </div>
         )}
         {questionType === "ox" && (
@@ -48,7 +48,7 @@ export default function QuizFirstFailResult({
         )}
         {questionType === "multiple" && (
           <div className="mx-31 mt-58 flex items-center justify-center rounded-xl border-2 border-red-400 bg-[#FFF1F2] px-9 py-9">
-            <span className="body-4 text-black">{userAnswer}</span>
+            <span className="body-4 break-keep text-black">{userAnswer}</span>
           </div>
         )}
         <p

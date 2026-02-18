@@ -48,7 +48,7 @@ export default function QuizSuccessResult({
           <>
             <p className="heading-3 pt-8 text-center text-black">정답이에요</p>
             <div className="mt-17 flex items-center justify-center gap-4 rounded-xl border-2 border-blue-400 bg-moamoa-50 px-9 py-9">
-              <span className="body-4 text-black">{userAnswer}</span>
+              <span className="body-4 break-keep text-black">{userAnswer}</span>
               <IcSubjectiveCheck className="h-24 w-24" />
             </div>
           </>
@@ -66,7 +66,7 @@ export default function QuizSuccessResult({
         )}
         {questionType === "multiple" && (
           <div className="mt-18 flex items-center justify-center gap-4 rounded-xl border-2 border-blue-400 bg-moamoa-50 px-9 py-9">
-            <span className="body-4 text-black">{userAnswer}</span>
+            <span className="body-4 break-keep text-black">{userAnswer}</span>
             <IcSubjectiveCheck className="h-24 w-24" />
           </div>
         )}
@@ -78,7 +78,7 @@ export default function QuizSuccessResult({
           {explanation && (
             <div className="mt-18 flex items-center gap-9">
               <div className="w-2 shrink-0 self-stretch rounded-full bg-moamoa-200" />
-              <p className="body-4 text-moamoa-700">{explanation}</p>
+              <p className="body-4 break-keep text-moamoa-700">{explanation}</p>
             </div>
           )}
         </div>
