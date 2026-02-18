@@ -38,15 +38,15 @@ export default function MissionInfoCard({
   return (
     <div className="flex w-full flex-col gap-8 rounded-xl bg-white px-23 pt-21">
       <div className="flex items-center">
-        <h2 className="heading-3 line-clamp-2 break-keep pb-4 text-center text-black">
+        <h2 className="heading-3 line-clamp-2 break-keep pb-4 text-left text-black">
           {title}
         </h2>
       </div>
-      <div className="flex items-start gap-4 self-stretch pb-16">
+      <div className="flex items-start gap-4 self-stretch overflow-x-auto pb-16">
         {keyword.map((kw, index) => (
           <div
             key={index}
-            className="body-4 flex items-center justify-center gap-4 rounded-lg bg-moamoa-50 px-16 py-8 text-center text-moamoa-500"
+            className="body-4 flex shrink-0 items-center justify-center gap-4 rounded-lg bg-moamoa-50 px-16 py-8 text-center text-moamoa-500"
           >
             {kw}
           </div>
