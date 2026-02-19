@@ -11,6 +11,7 @@ export const useGoalPopupCheck = () => {
   const markShownMutation = useMarkGoalPopupShown();
 
   const handleCheckGoalPopups = async () => {
+    // 이미 체크 중이거나 팝업이 표시 중이면 중복 호출 방지
     if (isCheckingRef.current || popupQueue.length > 0) return;
 
     isCheckingRef.current = true;
@@ -63,6 +64,14 @@ export const useGoalPopupCheck = () => {
     setShouldNavigateToSearch(false);
   };
 
+  // 로그아웃 시 이전 세션의 팝업 큐 초기화
+  const resetGoalPopups = () => {
+    setPopupQueue([]);
+    setCurrentPopup(null);
+    setShouldNavigateToSearch(false);
+    isCheckingRef.current = false;
+  };
+
   return {
     currentPopup,
     shouldNavigateToSearch,
@@ -70,5 +79,6 @@ export const useGoalPopupCheck = () => {
     handleClosePopup,
     handleMissionExplore,
     resetNavigateToSearch,
+    resetGoalPopups,
   };
 };
