@@ -12,13 +12,20 @@ interface AttendanceStore {
   setShowModal: (show: boolean) => void;
   setAttendanceData: (data: AttendanceData) => void;
   setOnModalClosed: (callback: (() => void) | null) => void;
+  reset: () => void;
 }
 
-export const useAttendanceStore = create<AttendanceStore>((set) => ({
+// reset() 호출 시 복원할 초기값
+const initialState = {
   showModal: false,
   attendanceData: null,
   onModalClosed: null,
+};
+
+export const useAttendanceStore = create<AttendanceStore>((set) => ({
+  ...initialState,
   setShowModal: (show) => set({ showModal: show }),
   setAttendanceData: (data) => set({ attendanceData: data }),
   setOnModalClosed: (callback) => set({ onModalClosed: callback }),
+  reset: () => set(initialState),
 }));

@@ -1,4 +1,3 @@
-import IcCheckOnboarding from "@/assets/icons/ic_check_active.svg?react";
 import { cn } from "@/utils/cn/cn";
 
 type OnboardingCardVariant = "chip" | "panel";
@@ -42,11 +41,6 @@ export default function OnboardingCard({
       {isChip ? (
         <div className="flex h-full items-center justify-center">
           <h3 className="body-2 text-center text-base text-black">{title}</h3>
-          {selected && (
-            <span className="flex h-22 w-22 items-center justify-center">
-              <IcCheckOnboarding className="h-21 w-21" aria-hidden="true" />
-            </span>
-          )}
         </div>
       ) : (
         <div className="flex flex-col items-center text-center">

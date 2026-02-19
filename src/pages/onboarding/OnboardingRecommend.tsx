@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IcCircleLeftArrow from "@/assets/icons/auth/onboarding/ic_circle_left_arrow.svg?react";
+import IcBackChevron from "@/assets/icons/ic_back_chevron.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import { Button } from "@/components/common/button/Button";
@@ -50,7 +50,7 @@ function OnboardingRecommendContent() {
         onClick={() => navigate("/onboarding")}
         className="flex h-33 w-33 items-center justify-center"
       >
-        <IcCircleLeftArrow className="h-33 w-33" />
+        <IcBackChevron className="h-24 w-24" />
       </button>
 
       <h2 className="heading-2 mt-11 self-center whitespace-pre-line text-center text-black">
