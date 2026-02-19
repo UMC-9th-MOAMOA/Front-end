@@ -3,10 +3,7 @@ interface QuizQuitPopupProps {
   onStay: () => void;
 }
 
-export default function QuizQuitPopup({
-  onQuit,
-  onStay,
-}: QuizQuitPopupProps) {
+export default function QuizQuitPopup({ onQuit, onStay }: QuizQuitPopupProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="mx-48 w-full rounded-xl bg-white px-20 pt-28 pb-20">

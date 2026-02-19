@@ -18,7 +18,7 @@ const QUESTION_TYPE_REWARDS: Record<string, number> = {
 };
 
 const BOOTH_MISSION_REWARDS: Record<number, Record<string, number>> = {
-  140: { OX: 100, MULTIPLE: 200, SHORT: 300 },
+  140: { OX: 2000, MULTIPLE: 3000, SHORT: 5000 },
 };
 
 interface QuestionResult {
@@ -124,9 +124,7 @@ export default function DailyWeeklyGoalAchievement({
                         <div className="flex items-center">
                           <span className="body-4 text-gray-500">
                             +
-                            {result.isCorrect
-                              ? (rewards[result.type] ?? 1)
-                              : 0}
+                            {result.isCorrect ? (rewards[result.type] ?? 1) : 0}
                           </span>
                           <AcornIcon className="h-24 w-24" />
                         </div>

@@ -191,9 +191,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
           missionId,
           submissions: {
             submissions: newAnswers.map((a) => {
-              const quiz = mission.quizzes.find(
-                (q) => q.quizId === a.quizId
-              );
+              const quiz = mission.quizzes.find((q) => q.quizId === a.quizId);
               let answerToSend = a.userAnswer;
               if (quiz?.type === "MULTIPLE" && quiz.option) {
                 const optionIndex = quiz.option.indexOf(a.userAnswer);
