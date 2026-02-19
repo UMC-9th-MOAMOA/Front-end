@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked.svg";
+import IcRight from "@/assets/icons/auth/ic_right-arrow.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked.svg";
-import IcRight from "@/assets/icons/ic_right.svg";
-import { useSignUpStore } from "@/store/signup";
 import type { TermKey } from "@/pages/auth/terms/constants/terms";
+import { useSignUpStore } from "@/store/signup";
 
 interface AgreementItem {
   key: TermKey;

@@ -36,7 +36,7 @@ export function NewPasswordStepView({
 
   return (
     <>
-      <h1 className="heading-3 mt-113 text-center text-black">
+      <h1 className="heading-3 mt-113 text-left text-black">
         새로운 비밀번호를 입력해주세요
       </h1>
       <div className="mt-40 flex flex-col gap-10">

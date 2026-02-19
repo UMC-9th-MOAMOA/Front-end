@@ -26,10 +26,10 @@ export function CodeStepView({
 
   return (
     <>
-      <h1 className="heading-3 mt-156 text-center text-black">
+      <h1 className="heading-3 mt-156 text-left text-black">
         인증번호를 입력해주세요.
       </h1>
-      <p className="body-4 mt-6 text-center text-gray-600">
+      <p className="body-4 mt-6 text-left text-gray-600">
         제공하신 이메일 주소로 인증번호를 보내드렸습니다.
       </p>
       <div className="flex flex-col gap-8">

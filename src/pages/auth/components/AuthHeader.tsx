@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
+import IcLeft from "@/assets/icons/auth/ic_left-arrow.svg?react";
 import IcBackChevron from "@/assets/icons/ic_back_chevron.svg?react";
 import IcClose from "@/assets/icons/ic_close.svg?react";
-import IcLeft from "@/assets/icons/ic_left.svg?react";
 
 type HeaderIconType = "close" | "chevron" | "arrow";
 
@@ -48,7 +48,7 @@ export default function AuthHeader({
         ) : (
           <div aria-hidden="true" />
         )}
-        <h1 className="heading-2 text-center text-black">{title}</h1>
+        <h1 className="heading-2 text-center text-gray-800">{title}</h1>
       </div>
       <div className="-mx-layout-side h-1 w-[calc(100%+50px)] bg-gray-200" />
     </header>

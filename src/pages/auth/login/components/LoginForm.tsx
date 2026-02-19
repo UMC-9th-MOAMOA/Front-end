@@ -55,11 +55,14 @@ export default function LoginForm() {
     if (error === "ACCOUNT_BANNED") {
       setBlockedCode("AUTH403_3");
       setIsBlockedModalOpen(true);
-      setSearchParams((prev) => {
-        const nextParams = new URLSearchParams(prev);
-        nextParams.delete("error");
-        return nextParams;
-      }, { replace: true });
+      setSearchParams(
+        (prev) => {
+          const nextParams = new URLSearchParams(prev);
+          nextParams.delete("error");
+          return nextParams;
+        },
+        { replace: true }
+      );
     }
   }, [error, setSearchParams]);
 
@@ -76,7 +79,7 @@ export default function LoginForm() {
 
   return (
     <form className="flex flex-col" onSubmit={handleSubmit}>
-      <div className="flex flex-col gap-20">
+      <div className="flex flex-col gap-10">
         <AuthTextField
           name="email"
           placeholder="이메일 주소를 입력해주세요"
@@ -84,7 +87,7 @@ export default function LoginForm() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           width="full"
-          variant="outlined"
+          variant="ghost"
         />
         <PasswordTextField
           name="password"
@@ -92,7 +95,7 @@ export default function LoginForm() {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           width="full"
-          variant="outlined"
+          variant="ghost"
         />
       </div>
       <div className="text-center">

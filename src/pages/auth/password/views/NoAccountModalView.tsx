@@ -25,7 +25,7 @@ export function NoAccountModalView({
         <br />
         회원가입을 진행해 주세요.
       </p>
-      <div className="mt-32 flex justify-center gap-12">
+      <div className="mt-32 flex justify-center gap-8">
         <Button
           type="button"
           onClick={onRetry}
