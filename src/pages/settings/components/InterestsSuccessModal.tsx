@@ -55,7 +55,7 @@ export default function InterestsSuccessModal({
             {description}
           </p>
 
-          <div className="flex w-full items-center justify-center gap-12">
+          <div className="flex w-full items-center justify-center gap-8">
             {showSecondary && (
               <Button
                 type="button"

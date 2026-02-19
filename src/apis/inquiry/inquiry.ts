@@ -48,7 +48,7 @@ export const getMyInquiries = async (params: GetMyInquiriesParams) => {
       params: {
         period,
         answerStatus,
-        category,
+        ...(category ? { category } : {}),
         size,
         cursorCreatedAt,
         cursorId,

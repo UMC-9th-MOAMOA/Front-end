@@ -7,7 +7,7 @@ import type {
 } from "../../types/mypage.type";
 
 type RecentSortOption = "recent" | "oldest" | "3m" | "6m";
-export type DoneMissionOption = "mission" | "attendance";
+export type DoneMissionOption = "all" | "mission" | "attendance";
 
 const FILTER_TABS: Array<{ key: AcornHistoryFilterKey; label: string }> = [
   { key: "all", label: "전체" },
@@ -23,6 +23,7 @@ const RECENT_SORT_OPTIONS: Array<{ key: RecentSortOption; label: string }> = [
 ];
 
 const DONE_MISSION_OPTIONS: Array<{ key: DoneMissionOption; label: string }> = [
+  { key: "all", label: "전체" },
   { key: "mission", label: "미션" },
   { key: "attendance", label: "출석" },
 ];
@@ -204,7 +205,7 @@ export default function AcornHistoryFilter({
                   </Button>
 
                   {isEarnSourceOpen && (
-                    <div className="absolute top-0 left-0 z-50 flex h-80 w-60 flex-col items-center gap-2 rounded-sm bg-gray-200 px-8 py-4 pb-6 shadow-sm">
+                    <div className="absolute top-0 left-0 z-50 flex h-102 w-60 flex-col items-center gap-2 rounded-sm bg-gray-200 px-8 py-4 pb-6 shadow-sm">
                       <Button
                         type="button"
                         onClick={() => setIsEarnSourceOpen(false)}
@@ -262,4 +263,3 @@ export default function AcornHistoryFilter({
     </>
   );
 }
-

@@ -9,7 +9,7 @@ import type {
 type Cursor = { cursorCreatedAt?: string; cursorId?: number } | undefined;
 
 type Args = {
-  category: InquiryCategoryServer;
+  category?: InquiryCategoryServer;
   period: InquiryPeriodServer;
   answerStatus: InquiryAnswerStatusServer;
   size?: number;
