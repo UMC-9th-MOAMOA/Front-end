@@ -84,7 +84,6 @@ const AvatarBoard = ({ equippedItems }: AvatarBoardProps) => {
           style={{ zIndex: AVATAR_LAYER_ORDER[type] }}
           onLoad={handleImageSettle}
           onError={handleImageSettle}
-          그
         />
       ))}
     </div>
