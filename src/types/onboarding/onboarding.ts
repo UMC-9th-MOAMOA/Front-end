@@ -13,20 +13,20 @@ export type OnboardingPayload = {
 export type OnboardingRequest = {
   selections: OnboardingSelection[];
   dailyMissionGoal?: number | null;
-  goalRetention?:
+  goalRetention?: "ONE_WEEK" | "TWO_WEEKS" | "ONE_MONTH" | "CONTINUE" | null;
+};
+
+export type OnboardingApiResponse = {
+  selections: OnboardingSelection[];
+  dailyMissionGoal: number | null;
+  goalRetention: "ONE_WEEK" | "TWO_WEEKS" | "ONE_MONTH" | "CONTINUE" | null;
+  goalEndDate: string;
+  pendingDailyMissionGoal: number;
+  pendingGoalRetention:
     | "ONE_WEEK"
     | "TWO_WEEKS"
     | "ONE_MONTH"
     | "CONTINUE"
     | null;
-};
-
-export type OnboardingApiResponse = {
-  selections: OnboardingSelection[];
-  dailyMissionGoal: number;
-  goalRetention: "ONE_WEEK" | "TWO_WEEKS" | "ONE_MONTH" | "CONTINUE";
-  goalEndDate: string;
-  pendingDailyMissionGoal: number;
-  pendingGoalRetention: "ONE_WEEK" | "TWO_WEEKS" | "ONE_MONTH" | "CONTINUE";
   pendingApplyDate: string;
 };
