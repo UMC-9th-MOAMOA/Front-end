@@ -33,6 +33,7 @@ export default function PasswordChangeForm({
                 value={field.value}
                 onChange={field.onChange}
                 placeholder="기존 비밀번호를 입력해주세요"
+                variant="ghost"
                 errorMessage={
                   errors.currentPassword?.message ?? serverCurrentPwError
                 }
@@ -54,6 +55,7 @@ export default function PasswordChangeForm({
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="비밀번호"
+                  variant="ghost"
                   errorMessage={errors.newPassword?.message}
                 />
               )}
@@ -76,6 +78,7 @@ export default function PasswordChangeForm({
                   value={field.value}
                   onChange={field.onChange}
                   placeholder="비밀번호를 입력해주세요"
+                  variant="ghost"
                   errorMessage={
                     errors.newPasswordCheck?.message ?? serverNewPwCheckError
                   }

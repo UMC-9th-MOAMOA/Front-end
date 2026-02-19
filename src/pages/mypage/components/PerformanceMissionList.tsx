@@ -7,6 +7,7 @@ import IcMinus from "@/assets/icons/ic_minus.svg?react";
 import IcPlus from "@/assets/icons/ic_plus.svg?react";
 import { getMyMissions } from "@/apis/missions/myMissions";
 import { useApiError } from "@/hooks/api/useApiError";
+import InterestsSuccessModal from "@/pages/settings/components/InterestsSuccessModal";
 
 type RowKind =
   | "attendance"
@@ -56,6 +57,8 @@ export default function PerformanceMissionList({
   const navigate = useNavigate();
   const { handleError } = useApiError();
   const [isNavigating, setIsNavigating] = useState(false);
+  const [retryModalOpen, setRetryModalOpen] = useState(false);
+  const [retryMissionId, setRetryMissionId] = useState<number | null>(null);
 
   const handleOpenMission = async (row: PerformanceMissionRow) => {
     if (isNavigating) return;
@@ -87,7 +90,8 @@ export default function PerformanceMissionList({
       }
 
       if (isRetry) {
-        navigate(`/mission/${row.missionId}`);
+        setRetryMissionId(row.missionId);
+        setRetryModalOpen(true);
       } else {
         navigate(`/mypage/mission/${row.missionId}`);
       }
@@ -195,6 +199,32 @@ export default function PerformanceMissionList({
       </ul>
 
       <div className="mt-13 h-2 w-full bg-moamoa-100" />
+
+      <InterestsSuccessModal
+        open={retryModalOpen}
+        onConfirm={() => {
+          if (retryMissionId != null) {
+            navigate(`/mission/${retryMissionId}`);
+          }
+          setRetryModalOpen(false);
+          setRetryMissionId(null);
+        }}
+        titleClassName="heading-4 text-center text-black"
+        title={
+          <>
+            다시 풀 때에는
+            <br />
+            보상이 지급되지 않아요
+          </>
+        }
+        description={<>그래도 진행하시겠어요?</>}
+        confirmText="다시 풀기"
+        secondaryText="아니요"
+        onSecondary={() => {
+          setRetryModalOpen(false);
+          setRetryMissionId(null);
+        }}
+      />
     </div>
   );
 }

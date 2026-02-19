@@ -70,7 +70,8 @@ export default function AccountInfoForm({
       <FormField label="이름(닉네임)">
         <input
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setName(e.target.value.slice(0, 10))}
+          maxLength={10}
           className="h-46 w-full rounded-lg bg-gray-100 px-15 py-8 text-black outline-none"
           placeholder="이름"
         />

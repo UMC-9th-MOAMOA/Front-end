@@ -44,7 +44,10 @@ export default function MissionFilters({
   useEffect(() => {
     if (!openMenu) return;
     const handleClick = (e: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(e.target as Node)
+      ) {
         setOpenMenu(null);
       }
     };
@@ -53,23 +56,26 @@ export default function MissionFilters({
   }, [openMenu]);
 
   return (
-    <div ref={containerRef} className="mb-9 flex w-full flex-nowrap items-start gap-60">
+    <div
+      ref={containerRef}
+      className="mb-9 flex w-full flex-nowrap items-start gap-70"
+    >
       <div className="relative">
         <Button
           type="button"
           onClick={() =>
             setOpenMenu((prev) => (prev === "time" ? null : "time"))
           }
-          className="flex h-28 w-134 flex-col items-start gap-4 py-4 pr-10 pl-33"
+          className="flex h-28 w-134 flex-col items-start gap-4 py-4 pr-10 pl-18"
         >
-          <div className="flex items-center justify-start gap-10">
+          <div className="flex items-center justify-start gap-4">
             <span className="body-4 whitespace-nowrap text-black">
               {TIME_OPTIONS.find((opt) => opt.key === timeSort)?.label ??
                 "소요시간 순"}
             </span>
             <IcDropdown
               className={[
-                "h-12 w-12 shrink-0",
+                "h-15 w-15 shrink-0",
                 openMenu === "time" ? "rotate-180" : "",
               ].join(" ")}
               aria-hidden
@@ -80,7 +86,7 @@ export default function MissionFilters({
         {openMenu === "time" && (
           <div
             className={[
-              "absolute top-full right-0 z-50 flex h-103 w-128 flex-col items-start justify-center gap-4 rounded-lg border border-gray-400 py-10 px-10",
+              "absolute top-full right-0 z-50 flex h-103 w-128 flex-col items-start justify-center gap-4 rounded-lg border border-gray-400 px-10 py-10",
               isEmpty ? "bg-[#E6E6E6]" : "bg-gray-100",
             ].join(" ")}
             style={{ boxShadow: "3px 9px 20.1px 3px rgba(0, 0, 0, 0.10)" }}
@@ -127,7 +133,7 @@ export default function MissionFilters({
           }
           className="flex h-28 w-116 flex-col items-center gap-4 py-4"
         >
-          <div className="flex items-center gap-14">
+          <div className="flex items-center gap-4">
             <span className="body-4 text-black">
               {CATEGORY_OPTIONS.find((opt) => opt.key === category)?.label ??
                 "전체"}

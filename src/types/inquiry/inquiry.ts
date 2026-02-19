@@ -47,7 +47,7 @@ export interface MyInquiryListResultApi {
 export interface GetMyInquiriesParams {
   period: InquiryPeriodServer;
   answerStatus?: InquiryAnswerStatusServer; // default ALL
-  category: InquiryCategoryServer;
+  category?: InquiryCategoryServer;
   size?: number; // default 10
   cursorCreatedAt?: string;
   cursorId?: number;

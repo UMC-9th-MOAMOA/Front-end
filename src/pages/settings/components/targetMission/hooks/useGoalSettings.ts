@@ -7,7 +7,7 @@ import {
 } from "./useSettingGoalOnboarding";
 
 const LOCAL_KEY = "settings:lastGoalConfig";
-const MIN_COUNT = 0;
+const MIN_COUNT = 1;
 const MAX_COUNT = 5;
 
 type LastGoalConfig = {

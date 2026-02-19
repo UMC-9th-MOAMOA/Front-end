@@ -46,7 +46,7 @@ export default function PocketContent() {
           <WeeklyGoalSection
             weekData={data.goalProgress.thisWeekDailyMissionCounts}
             dailyGoal={data.goalProgress.dailyGoal}
-            totalGoal={data.goalProgress.dailyGoal * 7}
+            totalGoal={data.goalProgress.dailyGoal * 5}
             completed={data.goalProgress.thisWeekTotalMissionCount}
             lastWeekGap={
               data.goalProgress.thisWeekTotalMissionCount -
