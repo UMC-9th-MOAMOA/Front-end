@@ -31,7 +31,7 @@ export default function QuizCard({
   return (
     <div className="flex w-full flex-col rounded-2xl bg-white px-18 pt-30 pb-30">
       <div className="flex flex-col px-10">
-        <p className="body-2 break-keep whitespace-pre-line text-black">
+        <p className="body-2 whitespace-pre-line break-keep text-black">
           {question.questionText}
         </p>
       </div>
