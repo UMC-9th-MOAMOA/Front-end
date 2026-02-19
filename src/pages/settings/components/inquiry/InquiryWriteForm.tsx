@@ -1,4 +1,4 @@
-﻿import { useId } from "react";
+﻿import { useId, useState } from "react";
 import type { InquiryDraft } from "../../types/inquiry.type";
 import InquiryAttachmentSection from "./InquiryAttachmentSection";
 import InquiryCategorySection from "./InquiryCategorySection";
@@ -18,11 +18,9 @@ function clamp(n: number, max: number) {
   return Math.min(max, Math.max(0, n));
 }
 
-export default function InquiryWriteForm({
-  draft,
-  setDraft,
-}: Props) {
+export default function InquiryWriteForm({ draft, setDraft }: Props) {
   const fileInputId = useId();
+  const [imageError, setImageError] = useState("");
 
   const titleCount = draft.title.length;
   const contentCount = draft.content.length;
@@ -41,12 +39,20 @@ export default function InquiryWriteForm({
 
   const onAddImages = (files: FileList | null) => {
     if (!files) return;
-    const list = Array.from(files).filter(
-      (file) => file.size <= MAX_IMAGE_SIZE
-    );
+    const list = Array.from(files);
+    const hasOversized = list.some((file) => file.size > MAX_IMAGE_SIZE);
+    setImageError(hasOversized ? "용량이 큰 사진입니다." : "");
+    const valid = list.filter((file) => file.size <= MAX_IMAGE_SIZE);
     setDraft((prev) => ({
       ...prev,
-      images: [...prev.images, ...list].slice(0, MAX_IMAGES),
+      images: [...prev.images, ...valid].slice(0, MAX_IMAGES),
+    }));
+  };
+
+  const onRemoveImage = (index: number) => {
+    setDraft((prev) => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index),
     }));
   };
 
@@ -74,8 +80,9 @@ export default function InquiryWriteForm({
         fileInputId={fileInputId}
         images={draft.images}
         onAddImages={onAddImages}
+        onRemoveImage={onRemoveImage}
+        errorMessage={imageError}
       />
-
     </div>
   );
 }

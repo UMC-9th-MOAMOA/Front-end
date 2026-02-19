@@ -14,6 +14,7 @@ import { useMyInquiries } from "./hooks/useMyInquiries";
 import StatusPill from "./StatusPill";
 
 const CATEGORY_OPTIONS = [
+  { value: "전체", label: "전체" },
   { value: "보상", label: "보상" },
   { value: "미션 및 퀴즈", label: "미션/퀴즈" },
   { value: "상점 및 꾸미기", label: "상점/꾸미기" },
@@ -28,7 +29,10 @@ type CategoryValue = (typeof CATEGORY_OPTIONS)[number]["value"];
 type PeriodValue = (typeof PERIOD_OPTIONS)[number];
 type StatusValue = (typeof STATUS_OPTIONS)[number];
 
-const CATEGORY_TO_SERVER: Record<CategoryValue, InquiryCategoryServer> = {
+const CATEGORY_TO_SERVER: Record<
+  Exclude<CategoryValue, "전체">,
+  InquiryCategoryServer
+> = {
   보상: "REWARD",
   "미션 및 퀴즈": "MISSION_QUIZ",
   "상점 및 꾸미기": "SHOP_DECORATION",
@@ -136,7 +140,10 @@ export default function InquiryList({ onSelect }: Props) {
     CATEGORY_OPTIONS.find((option) => option.value === selectedCategory)
       ?.label ?? selectedCategory;
 
-  const categoryParam = CATEGORY_TO_SERVER[selectedCategory];
+  const categoryParam =
+    selectedCategory === "전체"
+      ? undefined
+      : CATEGORY_TO_SERVER[selectedCategory];
   const periodParam = PERIOD_TO_SERVER[selectedPeriod];
   const statusParam = STATUS_TO_SERVER[selectedStatus];
 

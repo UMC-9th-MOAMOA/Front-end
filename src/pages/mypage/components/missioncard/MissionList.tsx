@@ -131,7 +131,7 @@ export default function MissionTab() {
                   const keywords =
                     mission.keywords && mission.keywords.length > 0
                       ? mission.keywords
-                      : ["키워드", "키워드", "키워드"];
+                      : [];
 
                   const handleAction = () => {
                     if (subTab === "liked") {

@@ -31,6 +31,7 @@ const toApiPeriod = (sortKey: AcornHistorySortKey) => {
 };
 
 const toApiEarnSource = (value: DoneMissionOption) => {
+  if (value === "all") return "ALL" as const;
   if (value === "attendance") return "ATTENDANCE" as const;
   return "MISSION" as const;
 };
@@ -56,7 +57,7 @@ const ITEM_TYPE_LABEL: Record<string, string> = {
 export default function AcornHistory() {
   const [filter, setFilter] = useState<AcornHistoryFilterKey>("all");
   const [sortKey, setSortKey] = useState<AcornHistorySortKey>("recent");
-  const [earnSource, setEarnSource] = useState<DoneMissionOption>("mission");
+  const [earnSource, setEarnSource] = useState<DoneMissionOption>("all");
 
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
     useMyWalletHistory({
@@ -110,13 +111,18 @@ export default function AcornHistory() {
                 const delta = item.amount;
                 const isMinus = delta < 0;
 
+                const isLast = index === items.length - 1;
+
                 return (
                   <li
                     key={
                       item.walletHistoryId ??
                       `${item.createdAt}-${item.type}-${index}`
                     }
-                    className="border-gray-400 border-b py-4"
+                    className={[
+                      "py-4",
+                      isLast ? "" : "border-b border-gray-400",
+                    ].join(" ")}
                   >
                     <div className="flex h-106 w-full flex-col items-start justify-center gap-4 self-stretch px-17 py-12">
                       <div className="body-2 flex items-center gap-4 text-gray-500">

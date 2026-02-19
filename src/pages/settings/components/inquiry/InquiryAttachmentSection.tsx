@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
 import IcCamera from "@/assets/icons/settings/inquiry/ic_camera.svg?react";
+import IcCameraUnion from "@/assets/icons/settings/inquiry/ic_camera_union.svg?react";
 
 type Props = {
   fileInputId: string;
   images: File[];
   onAddImages: (files: FileList | null) => void;
+  onRemoveImage: (index: number) => void;
 };
 
 export default function InquiryAttachmentSection({
   fileInputId,
   images,
   onAddImages,
+  onRemoveImage,
 }: Props) {
   const [previews, setPreviews] = useState<{ file: File; url: string }[]>([]);
 
@@ -35,7 +38,7 @@ export default function InquiryAttachmentSection({
         {previews.map((preview, index) => (
           <div
             key={`${preview.file.name}-${preview.file.size}-${index}`}
-            className="flex aspect-square w-76 flex-shrink-0 items-center justify-center overflow-hidden rounded-sm border border-gray-400"
+            className="relative flex aspect-square w-76 flex-shrink-0 items-center justify-center overflow-hidden rounded-sm border border-gray-400"
             title={preview.file.name}
           >
             <img
@@ -44,6 +47,19 @@ export default function InquiryAttachmentSection({
               className="h-full w-full object-cover"
               loading="lazy"
             />
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onRemoveImage(index);
+              }}
+              className="absolute -top-7 -right-7 flex h-24 w-24 items-center justify-center p-[2px_2px_3px_3px]"
+              aria-label="첨부 이미지 제거"
+            >
+              <span className="flex h-[19px] w-[19px] items-center justify-center rounded-full bg-gray-300">
+                <IcCameraUnion className="h-[8.32px] w-[8.32px]" aria-hidden />
+              </span>
+            </button>
           </div>
         ))}
 

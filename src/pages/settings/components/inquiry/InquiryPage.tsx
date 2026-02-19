@@ -89,7 +89,13 @@ export default function InquiryPage() {
               },
               {
                 onSuccess: () => {
-                  navigate("/settings");
+                  setDraft({
+                    category: null,
+                    title: "",
+                    content: "",
+                    images: [],
+                  });
+                  setTab("mine");
                 },
               }
             );
