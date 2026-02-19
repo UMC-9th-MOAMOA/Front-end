@@ -12,13 +12,12 @@ export default function TodayMissionListView() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <div className="mt-32">
+      <div className="relative z-10 mt-32">
         <IcLeft
           className="size-24 cursor-pointer"
           onClick={() => navigate(-1)}
         />
       </div>
-      
 
       <h2 className="heading-2 -mt-19 text-center text-black">
         오늘의 미션
@@ -36,7 +35,10 @@ export default function TodayMissionListView() {
       </div>
 
       <AsyncBoundary>
-        <TodayMissionList key={refreshTrigger} refreshTrigger={refreshTrigger} />
+        <TodayMissionList
+          key={refreshTrigger}
+          refreshTrigger={refreshTrigger}
+        />
       </AsyncBoundary>
     </div>
   );
