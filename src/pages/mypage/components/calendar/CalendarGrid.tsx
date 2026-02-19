@@ -104,8 +104,8 @@ export default function CalendarGrid({
                 })}
               </div>
 
-              <div className="pointer-events-none absolute top-26 right-0 left-0 z-0 h-39">
-                <div className="grid h-39 w-full grid-cols-7">
+              <div className="pointer-events-none absolute top-24 right-0 left-0 z-0 h-32">
+                <div className="grid h-32 w-full grid-cols-7">
                   {ranges.map((range) => {
                     const isSingle = range.start === range.end;
                     const radiusClass = isSingle
@@ -122,7 +122,7 @@ export default function CalendarGrid({
                       >
                         <div
                           className={[
-                            "h-32 w-full border border-moamoa-300 border-dashed bg-moamoa-50",
+                            "h-28 w-full border border-moamoa-300 border-dashed bg-moamoa-50",
                             radiusClass,
                           ].join(" ")}
                         />
