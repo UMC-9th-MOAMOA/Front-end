@@ -56,6 +56,23 @@ export default function DailyWeeklyGoalAchievement({
 
   return (
     <div className="relative -mb-96 flex min-h-screen flex-col items-center">
+      <style>{`
+        .scrollbar-gray {
+          scrollbar-width: thin;
+          scrollbar-color: var(--color-gray-400) transparent;
+        }
+        .scrollbar-gray::-webkit-scrollbar {
+          display: block;
+          width: 4px;
+        }
+        .scrollbar-gray::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .scrollbar-gray::-webkit-scrollbar-thumb {
+          background-color: var(--color-gray-400);
+          border-radius: 2px;
+        }
+      `}</style>
       <h2 className="heading-2 z-40 mt-40 text-center">
         <span className="text-black">오늘의 </span>
         <span className="text-moamoa-400">MVP</span>
@@ -88,53 +105,62 @@ export default function DailyWeeklyGoalAchievement({
           </button>
 
           {isDetailOpen && (
-            <div className="px-20 pb-17">
-              <div className="mb-16 border-moamoa-300 border-t border-dashed" />
-              <div>
-                <button
-                  type="button"
-                  className="flex w-full items-center justify-between py-8"
-                  onClick={() => setIsMissionOpen((prev) => !prev)}
-                >
-                  <span className="body-2 line-clamp-2 min-w-0 flex-1 text-left text-black">
-                    {missionName}
-                  </span>
-                  <div className="flex shrink-0 items-center">
-                    <span className="body-2 text-black">+{missionAcorns}</span>
-                    <AcornIcon className="h-24 w-24" />
-                    <span className="w-12" />
-                    {isMissionOpen ? (
-                      <IcSimple className="size-16 text-gray-400" />
-                    ) : (
-                      <IcExpand className="size-16 text-gray-400" />
+            <div className="pb-17">
+              <div className="mx-20 mb-16 border-moamoa-300 border-t border-dashed" />
+
+              <div className="scrollbar-gray mr-8 max-h-160 overflow-y-scroll">
+                <div className="px-20">
+                  <div>
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-between py-8 pl-10"
+                      onClick={() => setIsMissionOpen((prev) => !prev)}
+                    >
+                      <span className="body-2 line-clamp-2 min-w-0 flex-1 text-left text-black">
+                        {missionName}
+                      </span>
+                      <div className="flex shrink-0 items-center">
+                        <span className="body-2 text-black">
+                          +{missionAcorns}
+                        </span>
+                        <AcornIcon className="h-24 w-24" />
+                        <span className="w-12" />
+                        {isMissionOpen ? (
+                          <IcSimple className="size-16 text-gray-400" />
+                        ) : (
+                          <IcExpand className="size-16 text-gray-400" />
+                        )}
+                      </div>
+                    </button>
+
+                    {isMissionOpen && (
+                      <div className="pl-20">
+                        {questionResults.map((result, index) => (
+                          <div
+                            key={index}
+                            className="flex items-center justify-between py-4 pl-9"
+                          >
+                            <span className="body-4 text-gray-500">
+                              {QUESTION_TYPE_LABELS[result.type] || result.type}
+                            </span>
+                            <div className="flex items-center">
+                              <span className="body-4 text-gray-500">
+                                +
+                                {result.isCorrect
+                                  ? (rewards[result.type] ?? 1)
+                                  : 0}
+                              </span>
+                              <AcornIcon className="h-24 w-24" />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
                     )}
                   </div>
-                </button>
-
-                {isMissionOpen && (
-                  <div className="pl-20">
-                    {questionResults.map((result, index) => (
-                      <div
-                        key={index}
-                        className="flex items-center justify-between py-4 pl-9"
-                      >
-                        <span className="body-4 text-gray-500">
-                          {QUESTION_TYPE_LABELS[result.type] || result.type}
-                        </span>
-                        <div className="flex items-center">
-                          <span className="body-4 text-gray-500">
-                            +
-                            {result.isCorrect ? (rewards[result.type] ?? 1) : 0}
-                          </span>
-                          <AcornIcon className="h-24 w-24" />
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                </div>
               </div>
 
-              <div className="flex items-center justify-between py-8 pl-10">
+              <div className="flex items-center justify-between px-20 py-8 pl-30">
                 <span className="body-2 text-black">목표 달성 보너스</span>
                 <div className="flex items-center gap-10">
                   <span className="body-2 text-black">+{goalReward}</span>
@@ -142,9 +168,9 @@ export default function DailyWeeklyGoalAchievement({
                 </div>
               </div>
 
-              <div className="my-17 h-px bg-gray-400" />
+              <div className="mx-20 my-17 h-px bg-gray-400" />
 
-              <div className="flex items-center justify-between pl-30">
+              <div className="flex items-center justify-between px-20 pl-30">
                 <span className="heading-3 text-black">Total</span>
                 <div className="flex items-center pr-30">
                   <span className="heading-3 text-black">+{grandTotal}</span>
