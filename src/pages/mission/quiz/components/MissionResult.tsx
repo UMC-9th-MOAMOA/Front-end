@@ -17,12 +17,17 @@ const QUESTION_TYPE_REWARDS: Record<string, number> = {
   SHORT: 10,
 };
 
+const BOOTH_MISSION_REWARDS: Record<number, Record<string, number>> = {
+  140: { OX: 100, MULTIPLE: 200, SHORT: 300 },
+};
+
 interface QuestionResult {
   type: string;
   isCorrect: boolean;
 }
 
 interface MissionResultProps {
+  missionId: number;
   totalAcorns: number;
   questionResults: QuestionResult[];
   correctCount: number;
@@ -31,12 +36,14 @@ interface MissionResultProps {
 }
 
 export default function MissionResult({
+  missionId,
   totalAcorns,
   questionResults,
   correctCount,
   totalQuestions,
   onRetryWrong,
 }: MissionResultProps) {
+  const rewards = BOOTH_MISSION_REWARDS[missionId] ?? QUESTION_TYPE_REWARDS;
   const navigate = useNavigate();
   const isAllCorrect = correctCount === totalQuestions;
 
@@ -80,7 +87,7 @@ export default function MissionResult({
                 <span className="body-2 text-black">
                   +
                   {result.isCorrect
-                    ? (QUESTION_TYPE_REWARDS[result.type] ?? 1)
+                    ? (rewards[result.type] ?? 1)
                     : 0}
                 </span>
                 <AcornIcon className="h-24 w-24" />

@@ -313,6 +313,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
     if (quizResult.isDailyGoalAchieved && quizResult.isWeeklyGoalAchieved) {
       return (
         <DailyWeeklyGoalAchievement
+          missionId={missionId}
           totalAcorns={quizResult.totalAcorns}
           goalReward={quizResult.goalReward}
           missionName={mission.title}
@@ -324,6 +325,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
     if (quizResult.isDailyGoalAchieved) {
       return (
         <DailyGoalAchievement
+          missionId={missionId}
           totalAcorns={quizResult.totalAcorns}
           goalReward={quizResult.goalReward}
           questionResults={questionResults}
@@ -334,6 +336,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
     if (quizResult.isWeeklyGoalAchieved) {
       return (
         <WeeklyGoalAchievement
+          missionId={missionId}
           totalAcorns={quizResult.totalAcorns}
           goalReward={quizResult.goalReward}
           questionResults={questionResults}
@@ -352,6 +355,7 @@ function QuizPageContent({ missionId }: { missionId: number }) {
 
     return (
       <MissionResult
+        missionId={missionId}
         totalAcorns={quizResult.totalAcorns}
         questionResults={questionResults}
         correctCount={correctCount}
