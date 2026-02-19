@@ -1,3 +1,4 @@
+import { useCallback, useState } from "react";
 import faceDefault from "@/assets/icons/home/character/items/emotion/ic_face_default.svg";
 import shadowDefault from "@/assets/icons/home/character/shadow/ic_shadow_default.svg";
 import shadowField from "@/assets/icons/home/character/shadow/ic_shadow_field.svg";
@@ -34,8 +35,19 @@ const AvatarBoard = ({ equippedItems }: AvatarBoardProps) => {
     ? BACKGROUND_SHADOW_MAP[backgroundId]
     : shadowDefault;
 
+  const totalImages = 2 + itemEntries.length; // squirrel + face + 장착 아이템
+  const [loadedCount, setLoadedCount] = useState(0);
+  const allLoaded = loadedCount >= totalImages;
+
+  const handleImageSettle = useCallback(() => {
+    setLoadedCount((c) => c + 1);
+  }, []);
+
   return (
-    <div className="relative h-360 w-360">
+    <div
+      className="relative h-360 w-360"
+      style={{ opacity: allLoaded ? 1 : 0 }}
+    >
       {shadowSrc && (
         <img
           src={shadowSrc}
@@ -50,6 +62,8 @@ const AvatarBoard = ({ equippedItems }: AvatarBoardProps) => {
         alt="다람쥐 캐릭터"
         className="absolute inset-0 h-full w-full"
         style={{ zIndex: 1 }}
+        onLoad={handleImageSettle}
+        onError={handleImageSettle}
       />
 
       <img
@@ -57,6 +71,8 @@ const AvatarBoard = ({ equippedItems }: AvatarBoardProps) => {
         alt={equippedItems.FACE?.name ?? "기본 표정"}
         className="absolute inset-0 h-full w-full"
         style={{ zIndex: AVATAR_LAYER_ORDER.FACE }}
+        onLoad={handleImageSettle}
+        onError={handleImageSettle}
       />
 
       {itemEntries.map(([type, item]) => (
@@ -66,6 +82,8 @@ const AvatarBoard = ({ equippedItems }: AvatarBoardProps) => {
           alt={item.name}
           className="absolute inset-0 h-full w-full"
           style={{ zIndex: AVATAR_LAYER_ORDER[type] }}
+          onLoad={handleImageSettle}
+          onError={handleImageSettle}
         />
       ))}
     </div>
