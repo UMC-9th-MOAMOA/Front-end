@@ -17,7 +17,7 @@ export default function Onboarding() {
     selections: [],
     dailyMissionTime: null,
     dailyMissionGoal: null,
-    goalRetention: "ONE_WEEK",
+    goalRetention: "CONTINUE",
   });
   const { mutate: updateOnboardingMutation } = useUpdateOnboarding();
 
@@ -28,7 +28,7 @@ export default function Onboarding() {
     const request: OnboardingRequest = {
       selections: nextPayload.selections,
       dailyMissionGoal,
-      goalRetention: nextPayload.goalRetention ?? "ONE_WEEK",
+      goalRetention: nextPayload.goalRetention ?? "CONTINUE",
     };
 
     updateOnboardingMutation(request);

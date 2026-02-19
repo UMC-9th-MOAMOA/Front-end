@@ -13,14 +13,18 @@ export default function OnboardingStep4View({
   onSubmit,
 }: OnboardingStep4ViewProps) {
   const min = 0;
+  const minSelectable = 1;
   const max = 5;
-  const value = payload.dailyMissionGoal ?? 0;
+  const value = Math.max(
+    minSelectable,
+    payload.dailyMissionGoal ?? minSelectable
+  );
   const percent = ((value - min) / (max - min)) * 100;
 
   const handleSliderChange = (nextValue: number) => {
     onChange({
       ...payload,
-      dailyMissionGoal: Math.min(max, Math.max(min, nextValue)),
+      dailyMissionGoal: Math.min(max, Math.max(minSelectable, nextValue)),
     });
   };
 
@@ -99,9 +103,12 @@ export default function OnboardingStep4View({
             type="button"
             className="body-2 h-50 rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
             onClick={() => {
-              const nextPayload = { ...payload, dailyMissionGoal: null };
+              const nextPayload = {
+                ...payload,
+                dailyMissionGoal: minSelectable,
+              };
               onChange(nextPayload);
-              onSubmit(nextPayload, 0);
+              onSubmit(nextPayload, minSelectable);
             }}
           >
             나중에 설정
