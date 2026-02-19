@@ -7,6 +7,7 @@ interface RecommendMissionCardProps {
   quizCount: number;
   videoUrl: string;
   isActive: boolean;
+  selected?: boolean;
   onClick?: () => void;
 }
 
@@ -17,6 +18,7 @@ export default function RecommendMissionCard({
   quizCount,
   videoUrl,
   isActive,
+  selected = false,
   onClick,
 }: RecommendMissionCardProps) {
   const thumbnailUrl = getYoutubeThumbnail(videoUrl);
@@ -27,11 +29,11 @@ export default function RecommendMissionCard({
       tabIndex={0}
       onClick={onClick}
       onKeyDown={(e) => e.key === "Enter" && onClick?.()}
-      className={`flex w-260 cursor-pointer flex-col items-center rounded-xl bg-white px-20 py-40 ${
-        isActive ? "opacity-100" : "opacity-50"
-      }`}
+      className={`flex w-246 cursor-pointer flex-col items-center rounded-xl bg-white px-20 py-40 ${
+        isActive ? "opacity-100" : "opacity-80"
+      } ${selected ? "bg-[#E9EFFE] outline-2 outline-moamoa-200 outline-solid -outline-offset-2" : ""}`}
       style={{
-        boxShadow: "0 0 16.9px 0 rgba(0, 0, 0, 0.04)",
+        boxShadow: "0 0 16.9px 0 rgba(0, 0, 0, 0.08)",
       }}
     >
       <h3 className="heading-3 line-clamp-2 w-full text-center text-black">
