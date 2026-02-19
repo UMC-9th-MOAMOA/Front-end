@@ -29,17 +29,13 @@ export function useCarouselDrag({
         setIsDragging(false);
         if (isHorizontal && (Math.abs(mx) > SWIPE_THRESHOLD || vx > 0.3)) {
           if (dx < 0) {
-            setActiveIndex((prev) => {
-              const next = (prev + 1) % totalItems;
-              onActiveIndexChange?.(next);
-              return next;
-            });
+            const next = (activeIndex + 1) % totalItems;
+            setActiveIndex(next);
+            onActiveIndexChange?.(next);
           } else if (dx > 0) {
-            setActiveIndex((prev) => {
-              const next = (prev - 1 + totalItems) % totalItems;
-              onActiveIndexChange?.(next);
-              return next;
-            });
+            const next = (activeIndex - 1 + totalItems) % totalItems;
+            setActiveIndex(next);
+            onActiveIndexChange?.(next);
           }
         }
         setDragX(0);

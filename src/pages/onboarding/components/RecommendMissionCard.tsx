@@ -31,7 +31,7 @@ export default function RecommendMissionCard({
       onKeyDown={(e) => e.key === "Enter" && onClick?.()}
       className={`flex w-246 cursor-pointer flex-col items-center rounded-xl bg-white px-20 py-40 ${
         isActive ? "opacity-100" : "opacity-80"
-      } ${selected ? "bg-[#E9EFFE] outline-2 outline-moamoa-200 -outline-offset-2" : ""}`}
+      } ${selected ? "bg-[#E9EFFE] outline-2 outline-moamoa-200 outline-solid -outline-offset-2" : ""}`}
       style={{
         boxShadow: "0 0 16.9px 0 rgba(0, 0, 0, 0.08)",
       }}
