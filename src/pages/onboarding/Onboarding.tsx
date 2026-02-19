@@ -17,19 +17,24 @@ export default function Onboarding() {
     selections: [],
     dailyMissionTime: null,
     dailyMissionGoal: null,
-    goalRetention: "ONE_WEEK",
+    goalRetention: "CONTINUE",
   });
   const { mutate: updateOnboardingMutation } = useUpdateOnboarding();
 
   const handleSubmit = (
     nextPayload: OnboardingPayload,
-    dailyMissionGoal: number
+    dailyMissionGoal: number | null
   ) => {
     const request: OnboardingRequest = {
       selections: nextPayload.selections,
-      dailyMissionGoal,
-      goalRetention: nextPayload.goalRetention ?? "ONE_WEEK",
     };
+    if (dailyMissionGoal === null) {
+      request.dailyMissionGoal = null;
+      request.goalRetention = null;
+    } else {
+      request.dailyMissionGoal = dailyMissionGoal;
+      request.goalRetention = nextPayload.goalRetention ?? "CONTINUE";
+    }
 
     updateOnboardingMutation(request);
     setCurrentStep(5);
