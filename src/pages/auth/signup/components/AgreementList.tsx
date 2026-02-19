@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import IcChecked from "@/assets/icons/auth/ic_checked.svg";
 import IcUnchecked from "@/assets/icons/auth/ic_unchecked.svg";
-import IcRight from "@/assets/icons/ic_right.svg";
-import { useSignUpStore } from "@/store/signup";
+import IcRight from "@/assets/icons/ic_right.svg?react";
 import type { TermKey } from "@/pages/auth/terms/constants/terms";
+import { useSignUpStore } from "@/store/signup";
 
 interface AgreementItem {
   key: TermKey;
@@ -114,7 +114,7 @@ function AgreementRow({
           aria-label={`${label} 상세 보기`}
           className="flex cursor-pointer items-center border-none bg-transparent p-0"
         >
-          <img src={IcRight} alt="" />
+          <IcRight className="h-16 w-16 text-gray-400" aria-hidden="true" />
         </button>
       )}
     </div>

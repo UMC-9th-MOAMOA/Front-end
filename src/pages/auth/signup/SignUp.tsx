@@ -6,6 +6,7 @@ import AuthHeader from "@/pages/auth/components/AuthHeader";
 import { Modal } from "@/pages/auth/components/Modal";
 import AgreementList from "@/pages/auth/signup/components/AgreementList";
 import { PWTextField } from "@/pages/auth/signup/components/PWTextField";
+import { TERMS } from "@/pages/auth/terms/constants/terms";
 import {
   getPasswordStrength,
   PASSWORD_INVALID_MESSAGE,
@@ -14,7 +15,6 @@ import { useAuthStore } from "@/store/auth";
 import { useSignUpStore } from "@/store/signup";
 import { AuthTextField } from "../components/AuthTextField";
 import EmailVerifySection from "./components/EmailVerifySection";
-import { TERMS } from "@/pages/auth/terms/constants/terms";
 import { useSendVerificationEmail } from "./hooks/useMutation/useSendVerificationEmail";
 import { useSignUp } from "./hooks/useMutation/useSignUp";
 import { useVerifyEmailAuthCode } from "./hooks/useMutation/useVerifyEmailAuthCode";
@@ -244,6 +244,7 @@ export default function SignUp() {
           resetSignUp();
           navigate("/login");
         }}
+        iconType="arrow"
       />
       <div className="flex flex-col gap-18 pt-50 pb-120">
         <AuthTextField
@@ -323,7 +324,7 @@ export default function SignUp() {
           <div className="flex flex-col items-center">
             <p className="heading-3 text-red-400">인증번호 확인 실패</p>
             <p className="body-2 mt-20 text-gray-600">{verifyModalMessage}</p>
-            <div className="mt-32 flex w-full gap-12">
+            <div className="mt-32 flex w-full gap-8">
               <Button
                 type="button"
                 className="body-2 h-50 w-full bg-moamoa-50 text-moamoa-600"

@@ -31,7 +31,7 @@ export default function RecommendMissionCard({
         isActive ? "opacity-100" : "opacity-50"
       }`}
       style={{
-        boxShadow: "0 0 16.9px 0 rgba(0, 0, 0, 0.16)",
+        boxShadow: "0 0 16.9px 0 rgba(0, 0, 0, 0.04)",
       }}
     >
       <h3 className="heading-3 line-clamp-2 w-full text-center text-black">
