@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { RouterProvider } from "react-router-dom";
 import GlobalModals from "./components/GlobalModals";
 import GoalPopups from "./components/GoalPopups";
+import { RunChecksContext } from "./context/RunChecksContext";
 import { useAttendanceCheck } from "./hooks/attendance/useAttendanceCheck";
 import { useGoalPopupCheck } from "./hooks/goal/useGoalPopupCheck";
 import { useAppInitializer } from "./hooks/useAppInitializer";
@@ -17,15 +18,17 @@ function App() {
     handleClosePopup,
     handleMissionExplore,
     resetNavigateToSearch,
+    resetGoalPopups,
   } = useGoalPopupCheck();
   const showLogoutToast = useSettingsStore((state) => state.showLogoutToast);
   const setShowLogoutToast = useSettingsStore(
     (state) => state.setShowLogoutToast
   );
 
-  useAppInitializer({
+  const { runChecks } = useAppInitializer({
     onCheckAttendance: handleCheckAttendance,
     onCheckGoalPopups: handleCheckGoalPopups,
+    onReset: resetGoalPopups,
   });
 
   useEffect(() => {
@@ -45,7 +48,7 @@ function App() {
   }, [showLogoutToast, setShowLogoutToast]);
 
   return (
-    <>
+    <RunChecksContext.Provider value={runChecks}>
       <RouterProvider router={router} />
       <GoalPopups
         currentPopup={currentPopup}
@@ -53,7 +56,7 @@ function App() {
         onMissionExplore={handleMissionExplore}
       />
       <GlobalModals />
-    </>
+    </RunChecksContext.Provider>
   );
 }
 
