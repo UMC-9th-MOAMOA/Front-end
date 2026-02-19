@@ -23,13 +23,18 @@ export default function Onboarding() {
 
   const handleSubmit = (
     nextPayload: OnboardingPayload,
-    dailyMissionGoal: number
+    dailyMissionGoal: number | null
   ) => {
     const request: OnboardingRequest = {
       selections: nextPayload.selections,
-      dailyMissionGoal,
-      goalRetention: nextPayload.goalRetention ?? "CONTINUE",
     };
+    if (dailyMissionGoal === null) {
+      request.dailyMissionGoal = null;
+      request.goalRetention = null;
+    } else {
+      request.dailyMissionGoal = dailyMissionGoal;
+      request.goalRetention = nextPayload.goalRetention ?? "CONTINUE";
+    }
 
     updateOnboardingMutation(request);
     setCurrentStep(5);

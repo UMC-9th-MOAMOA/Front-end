@@ -12,8 +12,13 @@ export type OnboardingPayload = {
 
 export type OnboardingRequest = {
   selections: OnboardingSelection[];
-  dailyMissionGoal: number;
-  goalRetention: "ONE_WEEK" | "TWO_WEEKS" | "ONE_MONTH" | "CONTINUE";
+  dailyMissionGoal?: number | null;
+  goalRetention?:
+    | "ONE_WEEK"
+    | "TWO_WEEKS"
+    | "ONE_MONTH"
+    | "CONTINUE"
+    | null;
 };
 
 export type OnboardingApiResponse = {

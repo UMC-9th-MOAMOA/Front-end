@@ -4,7 +4,7 @@ import type { OnboardingPayload } from "@/types/onboarding/onboarding";
 interface OnboardingStep4ViewProps {
   payload: OnboardingPayload;
   onChange: (next: OnboardingPayload) => void;
-  onSubmit: (next: OnboardingPayload, dailyMissionGoal: number) => void;
+  onSubmit: (next: OnboardingPayload, dailyMissionGoal: number | null) => void;
 }
 
 export default function OnboardingStep4View({
@@ -105,10 +105,11 @@ export default function OnboardingStep4View({
             onClick={() => {
               const nextPayload = {
                 ...payload,
-                dailyMissionGoal: minSelectable,
+                dailyMissionGoal: null,
+                goalRetention: null,
               };
               onChange(nextPayload);
-              onSubmit(nextPayload, minSelectable);
+              onSubmit(nextPayload, null);
             }}
           >
             나중에 설정
