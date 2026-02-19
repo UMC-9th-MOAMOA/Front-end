@@ -1,4 +1,5 @@
 import { type ReactNode, useId } from "react";
+import { cn } from "@/utils/cn/cn";
 import { textFieldVariants } from "./authTextField.variants";
 
 export type AuthTextFieldProps = {
@@ -20,6 +21,7 @@ export type AuthTextFieldProps = {
   name?: string;
   endAdornment?: ReactNode;
   endAdornmentPaddingClassName?: string;
+  className?: string;
 };
 
 export function AuthTextField({
@@ -38,6 +40,7 @@ export function AuthTextField({
   name,
   endAdornment,
   endAdornmentPaddingClassName,
+  className,
 }: AuthTextFieldProps) {
   const reactId = useId();
 
@@ -55,7 +58,7 @@ export function AuthTextField({
     ? (endAdornmentPaddingClassName ?? "pr-44")
     : "";
 
-  const inputClassName = `${baseClassName} ${paddingRight}`;
+  const inputClassName = cn(baseClassName, paddingRight, className);
 
   return (
     <div className="flex flex-col gap-10">
