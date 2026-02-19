@@ -18,7 +18,7 @@ const QUESTION_TYPE_REWARDS: Record<string, number> = {
 };
 
 const BOOTH_MISSION_REWARDS: Record<number, Record<string, number>> = {
-  140: { OX: 100, MULTIPLE: 200, SHORT: 300 },
+  140: { OX: 2000, MULTIPLE: 3000, SHORT: 5000 },
 };
 
 interface QuestionResult {
