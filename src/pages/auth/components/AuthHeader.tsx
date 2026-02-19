@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import IcLeft from "@/assets/icons/auth/ic_left-arrow.svg?react";
+import IcLeft from "@/assets/icons/ic_left.svg?react";
 import IcBackChevron from "@/assets/icons/ic_back_chevron.svg?react";
 import IcClose from "@/assets/icons/ic_close.svg?react";
 
@@ -43,7 +43,9 @@ export default function AuthHeader({
       <div className="grid grid-cols-[1.5rem_1fr_1.5rem] items-center pt-24 pb-14">
         {showBack ? (
           <button type="button" aria-label="뒤로가기" onClick={handleBack}>
-            <Icon className="size-24" />
+            <Icon
+              className={iconType === "arrow" ? "size-24 text-gray-600" : "size-24"}
+            />
           </button>
         ) : (
           <div aria-hidden="true" />

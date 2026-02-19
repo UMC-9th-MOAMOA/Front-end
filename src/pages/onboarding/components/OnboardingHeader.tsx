@@ -1,4 +1,4 @@
-import IcBackShevron from "@/assets/icons/auth/onboarding/ic_back-shevron.svg?react";
+import IcBackShevron from "@/assets/icons/ic_back_chevron.svg?react";
 
 interface OnboardingHeaderProps {
   currentStep: number;
@@ -37,7 +37,7 @@ export default function OnboardingHeader({
             onClick={handleBack}
             className="flex h-33 w-33 items-center justify-center"
           >
-            <IcBackShevron className="h-24 w-24" />
+            <IcBackShevron className="h-24 w-24 text-gray-400" />
           </button>
         ) : (
           <div className="h-33 w-33" aria-hidden="true" />

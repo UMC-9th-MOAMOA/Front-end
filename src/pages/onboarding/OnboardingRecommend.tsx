@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import IcBackShevron from "@/assets/icons/auth/onboarding/ic_back-shevron.svg?react";
+import IcBackShevron from "@/assets/icons/ic_back_chevron.svg?react";
 import IcReload from "@/assets/icons/ic_reload.svg?react";
 import AsyncBoundary from "@/components/AsyncBoundary";
 import { Button } from "@/components/common/button/Button";
