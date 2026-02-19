@@ -124,9 +124,7 @@ export default function DailyWeeklyGoalAchievement({
                         <div className="flex items-center">
                           <span className="body-4 text-gray-500">
                             +
-                            {result.isCorrect
-                              ? (rewards[result.type] ?? 1)
-                              : 0}
+                            {result.isCorrect ? (rewards[result.type] ?? 1) : 0}
                           </span>
                           <AcornIcon className="h-24 w-24" />
                         </div>

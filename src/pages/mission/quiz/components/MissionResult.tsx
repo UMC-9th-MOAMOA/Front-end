@@ -85,10 +85,7 @@ export default function MissionResult({
               </span>
               <div className="flex items-center gap-10">
                 <span className="body-2 text-black">
-                  +
-                  {result.isCorrect
-                    ? (rewards[result.type] ?? 1)
-                    : 0}
+                  +{result.isCorrect ? (rewards[result.type] ?? 1) : 0}
                 </span>
                 <AcornIcon className="h-24 w-24" />
               </div>
