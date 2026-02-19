@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { login } from "@/apis/auth/auth";
 import { storage } from "@/apis/storage";
 import { useApiError } from "@/hooks/api/useApiError";
@@ -26,6 +26,7 @@ const resolveLoginErrorMessage = (code?: string, fallback?: string) => {
 
 export const useLogin = (handlers?: LoginErrorHandlers) => {
   const { handleError } = useApiError();
+  const queryClient = useQueryClient();
   const setAuthenticated = useAuthStore((state) => state.setAuthenticated);
   const setPolicyAgreed = useAuthStore((state) => state.setPolicyAgreed);
   const setOnboardingCompleted = useAuthStore(
@@ -35,6 +36,8 @@ export const useLogin = (handlers?: LoginErrorHandlers) => {
   return useMutation({
     mutationFn: (payload: LoginRequest) => login(payload),
     onSuccess: (result) => {
+      queryClient.removeQueries({ queryKey: ["home"] });
+      queryClient.removeQueries({ queryKey: ["members", "me", "profile"] });
       storage.setToken(result.token.accessToken);
       storage.setPolicyAgreed(result.policyAgreed);
       storage.setOnboardingCompleted(result.onboardingCompleted);
