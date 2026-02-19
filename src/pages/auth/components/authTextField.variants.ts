@@ -3,7 +3,7 @@ import { cva } from "class-variance-authority";
 export const textFieldVariants = cva(
   [
     "px-13 py-8 rounded-lg",
-    "body-4 text-gray-900 placeholder:text-gray-500",
+    "body-2 text-gray-900 placeholder:text-gray-500",
     "transition-colors",
     "focus:outline focus:outline-1 focus:outline-moamoa-300 focus:outline-offset-[-1px]",
   ],

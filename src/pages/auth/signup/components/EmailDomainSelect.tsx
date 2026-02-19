@@ -77,57 +77,46 @@ export default function EmailDomainSelect({
         className
       )}
     >
-      {/* 🔥 수정: !open 조건으로 드롭다운 열렸을 때 선택 버튼만 숨김 */}
-      {!open && (
-        <>
-          {isDirectInput ? (
-            <input
-              value={directValue}
-              onChange={(e) => handleDirectChange(e.target.value)}
-              disabled={disabled}
-              placeholder="직접입력"
-              className={cn(
-                "body-4 w-full bg-transparent outline-none",
-                !disabled &&
-                  "focus:outline focus:outline-1 focus:outline-moamoa-300",
-                disabled ? "cursor-not-allowed text-gray-900" : "text-gray-900"
-              )}
-            />
-          ) : (
-            <button
-              type="button"
-              disabled={disabled}
-              onClick={() => setOpen((p) => !p)}
-              className={cn(
-                "body-4 w-full bg-transparent text-left outline-none",
-                disabled
-                  ? "cursor-not-allowed text-gray-900"
-                  : "cursor-pointer",
-                value ? "text-gray-900" : "text-gray-500"
-              )}
-            >
-              {buttonText}
-            </button>
-          )}
-        </>
-      )}
+      {!open &&
+        (isDirectInput ? (
+          <input
+            value={directValue}
+            onChange={(e) => handleDirectChange(e.target.value)}
+            disabled={disabled}
+            placeholder="직접입력"
+            className={cn(
+              "body-4 w-full bg-transparent outline-none",
+              !disabled && "focus:outline-1 focus:outline-moamoa-300",
+              disabled ? "cursor-not-allowed text-gray-900" : "text-gray-900"
+            )}
+          />
+        ) : (
+          <button
+            type="button"
+            disabled={disabled}
+            onClick={() => setOpen((p) => !p)}
+            className={cn(
+              "body-4 w-full bg-transparent text-left outline-none",
+              disabled ? "cursor-not-allowed text-gray-900" : "cursor-pointer",
+              value ? "text-gray-900" : "text-gray-500"
+            )}
+          >
+            {buttonText}
+          </button>
+        ))}
 
-      {/* 🔥 수정: 아이콘은 항상 표시, 열렸을 때는 클릭 가능 */}
-      {!hideIcon && (
-        <>
-          {open ? (
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="absolute top-1/2 right-10 -translate-y-1/2 cursor-pointer"
-            >
-              <IcDropdownClose />
-            </button>
-          ) : (
-            <IcDropdownOpen className="pointer-events-none absolute top-1/2 right-10 -translate-y-1/2" />
-          )}
-        </>
-      )}
+      {!hideIcon &&
+        (open ? (
+          <button
+            type="button"
+            onClick={() => setOpen(false)}
+            className="absolute top-1/2 right-10 -translate-y-1/2 cursor-pointer"
+          >
+            <IcDropdownClose />
+          </button>
+        ) : (
+          <IcDropdownOpen className="pointer-events-none absolute top-1/2 right-10 -translate-y-1/2" />
+        ))}
 
       {open && !disabled && !isDirectInput && (
         <div

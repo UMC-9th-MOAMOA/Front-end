@@ -60,13 +60,14 @@ export default function EmailVerifySection({
           <AuthTextField
             placeholder="이메일을 입력해주세요"
             value={emailLocal}
-          onChange={onChangeEmailLocal}
-          width="full"
-          height="sm"
-          variant="ghost"
-          disabled={isVerified || disabledEmailInput}
-        />
-      </div>
+            onChange={onChangeEmailLocal}
+            width="full"
+            height="sm"
+            variant="ghost"
+            disabled={isVerified || disabledEmailInput}
+            className="body-4"
+          />
+        </div>
 
         <span className="body-2 mr-2 ml-4 text-gray-700">@</span>
 
@@ -100,6 +101,7 @@ export default function EmailVerifySection({
             width="full"
             height="sm"
             disabled={isVerified}
+            className="body-4"
           />
         </div>
         <div className="ml-12">
