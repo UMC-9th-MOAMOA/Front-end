@@ -29,7 +29,8 @@ export default function DailyGoalFailure({
       <div className="z-35 mt-235 w-full rounded-2xl border-2 border-moamoa-100 bg-white px-23 pt-32 pb-28">
         <div className="flex flex-col items-center gap-12">
           <p className="heading-2 text-center text-black">
-            오늘 목표 중 <br />
+            일간 목표
+            <br />
             {completedMissions}/{totalMissions}개를 성공했어요.
           </p>
           <p className="heading-4 pt-64 text-center text-gray-800">
@@ -37,7 +38,7 @@ export default function DailyGoalFailure({
             <br />
             미션을 탐색해보시겠어요?
           </p>
-          <p className="body-2 mt-20 text-center text-gray-800">
+          <p className="body-2 mt-20 text-center text-gray-500">
             완벽하지 않아도 괜찮아요
           </p>
         </div>

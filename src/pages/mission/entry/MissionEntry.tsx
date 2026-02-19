@@ -9,6 +9,7 @@ import { useWatchMission } from "@/pages/mission/hooks/useMutation/useWatchMissi
 import { useMissionDetail } from "@/pages/mission/hooks/useQuery/useMissionDetail";
 import type { ApiError } from "@/types/api/api";
 import MissionInfoCard from "./components/MissionInfoCard";
+import RetryConfirmPopup from "./components/RetryConfirmPopup";
 
 class MissionErrorBoundary extends Component<
   { children: ReactNode },
@@ -60,6 +61,7 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
   const watchMission = useWatchMission();
   const changeMissionStatus = useChangeMissionStatus();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [showRetryPopup, setShowRetryPopup] = useState(false);
 
   const handleMutationError = (error: unknown) => {
     const apiError = error as ApiError;
@@ -198,8 +200,21 @@ function MissionEntryContent({ missionId }: { missionId: number }) {
         isContentWatched={canStartQuiz}
         attemptCount={mission.attemptCount}
         onContentClick={handleContentClick}
-        onQuizStart={handleStartQuiz}
+        onQuizStart={
+          mission.attemptCount > 0
+            ? () => setShowRetryPopup(true)
+            : handleStartQuiz
+        }
       />
+      {showRetryPopup && (
+        <RetryConfirmPopup
+          onConfirm={() => {
+            setShowRetryPopup(false);
+            handleStartQuiz();
+          }}
+          onCancel={() => setShowRetryPopup(false)}
+        />
+      )}
       {errorMessage && (
         <MissionErrorToast
           message={errorMessage}

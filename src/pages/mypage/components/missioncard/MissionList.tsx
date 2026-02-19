@@ -6,7 +6,6 @@ import MissionCard from "@/components/MissionCard";
 import { CATEGORY_ID_MAP } from "@/constants/missions/categories";
 import { useInfiniteScroll } from "@/hooks/useInfiniteScroll";
 import { useScrapMission } from "@/hooks/useScrapMission";
-import InterestsSuccessModal from "@/pages/settings/components/InterestsSuccessModal";
 import { useMyMissionsInfinite } from "../../hooks/useMyMissionsInfinite";
 import type {
   MissionCategory,
@@ -29,8 +28,6 @@ export default function MissionTab() {
     viewParam === "retry" || viewParam === "done" ? "done" : "liked";
   const doneView: "done" | "retry" = viewParam === "retry" ? "retry" : "done";
 
-  const [retryModalOpen, setRetryModalOpen] = useState(false);
-  const [retryMissionId, setRetryMissionId] = useState<string | null>(null);
 
   const [timeSort, setTimeSort] = useState<MissionTimeSort>("short");
   const [category, setCategory] = useState<MissionCategoryFilter>("all");
@@ -139,8 +136,7 @@ export default function MissionTab() {
                       return;
                     }
                     if (doneView === "retry") {
-                      setRetryMissionId(String(mission.missionId));
-                      setRetryModalOpen(true);
+                      goDetail(String(mission.missionId));
                       return;
                     }
                     navigate(`/mypage/mission/${mission.missionId}`, {
@@ -187,31 +183,6 @@ export default function MissionTab() {
         </div>
       </div>
 
-      <InterestsSuccessModal
-        open={retryModalOpen}
-        onConfirm={() => {
-          if (retryMissionId) {
-            goDetail(retryMissionId);
-          }
-          setRetryModalOpen(false);
-          setRetryMissionId(null);
-        }}
-        titleClassName="heading-4 text-center text-black"
-        title={
-          <>
-            다시 풀 때는
-            <br />
-            도토리가 지급되지 않아요.
-          </>
-        }
-        description={<>그래도 진행하시겠어요?</>}
-        confirmText="다시 풀기"
-        secondaryText="아니요"
-        onSecondary={() => {
-          setRetryModalOpen(false);
-          setRetryMissionId(null);
-        }}
-      />
     </section>
   );
 }

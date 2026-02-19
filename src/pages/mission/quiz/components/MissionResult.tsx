@@ -61,13 +61,13 @@ export default function MissionResult({
         </div>
       )}
 
-      <div className="z-35 mt-178 w-full rounded-[20px] border-2 border-moamoa-100 bg-white px-25 pb-23">
+      <div className="z-35 mt-178 w-full rounded-[20px] border border-moamoa-50 bg-white px-25 pb-23">
         <h1 className="heading-0 flex items-center justify-center gap-5 pt-47">
           <span className="text-acorn">+ {totalAcorns}</span>
           <span className="text-black">획득 !</span>
         </h1>
 
-        <div className="mt-16 rounded-xl border border-moamoa-100 px-20 py-17">
+        <div className="mt-16 rounded-xl bg-gray-100 px-20 py-17">
           {questionResults.map((result, index) => (
             <div
               key={index}
@@ -88,7 +88,7 @@ export default function MissionResult({
             </div>
           ))}
 
-          <div className="my-17 h-px bg-black" />
+          <div className="my-17 h-px bg-gray-400" />
 
           <div className="flex items-center justify-between pl-30">
             <span className="heading-3 text-black">Total</span>
@@ -100,7 +100,7 @@ export default function MissionResult({
         </div>
 
         <div className="mt-19 px-23 py-3">
-          <p className="body-2 text-center text-black">
+          <p className="body-2 text-center text-gray-700">
             {isAllCorrect ? (
               <>
                 문제를 모두 맞히셨어요!

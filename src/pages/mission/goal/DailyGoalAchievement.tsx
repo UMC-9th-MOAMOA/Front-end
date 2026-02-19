@@ -66,9 +66,9 @@ export default function DailyGoalAchievement({
           >
             <span className="body-2 text-black">상세 내역 확인하기</span>
             {isDetailOpen ? (
-              <IcSimple className="size-24" />
+              <IcSimple className="size-24 text-gray-400" />
             ) : (
-              <IcExpand className="h-24 w-24" />
+              <IcExpand className="h-24 w-24 text-moamoa-200" />
             )}
           </button>
 
