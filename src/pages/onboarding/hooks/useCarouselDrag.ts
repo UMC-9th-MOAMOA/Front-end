@@ -5,9 +5,13 @@ const SWIPE_THRESHOLD = 50;
 
 interface UseCarouselDragParams {
   totalItems: number;
+  onActiveIndexChange?: (nextIndex: number) => void;
 }
 
-export function useCarouselDrag({ totalItems }: UseCarouselDragParams) {
+export function useCarouselDrag({
+  totalItems,
+  onActiveIndexChange,
+}: UseCarouselDragParams) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [dragX, setDragX] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
@@ -25,9 +29,17 @@ export function useCarouselDrag({ totalItems }: UseCarouselDragParams) {
         setIsDragging(false);
         if (isHorizontal && (Math.abs(mx) > SWIPE_THRESHOLD || vx > 0.3)) {
           if (dx < 0) {
-            setActiveIndex((prev) => (prev + 1) % totalItems);
+            setActiveIndex((prev) => {
+              const next = (prev + 1) % totalItems;
+              onActiveIndexChange?.(next);
+              return next;
+            });
           } else if (dx > 0) {
-            setActiveIndex((prev) => (prev - 1 + totalItems) % totalItems);
+            setActiveIndex((prev) => {
+              const next = (prev - 1 + totalItems) % totalItems;
+              onActiveIndexChange?.(next);
+              return next;
+            });
           }
         }
         setDragX(0);

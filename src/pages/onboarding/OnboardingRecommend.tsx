@@ -8,7 +8,7 @@ import { useRecommendedMissions } from "@/pages/search/hooks/useQuery/useRecomme
 import RecommendMissionCard from "./components/RecommendMissionCard";
 import { useCarouselDrag } from "./hooks/useCarouselDrag";
 
-const CARD_GAP = 280;
+const CARD_GAP = 270;
 
 export default function OnboardingRecommend() {
   return (
@@ -21,6 +21,9 @@ export default function OnboardingRecommend() {
 function OnboardingRecommendContent() {
   const navigate = useNavigate();
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [selectedMissionId, setSelectedMissionId] = useState<number | null>(
+    null
+  );
 
   const { data: missions } = useRecommendedMissions({
     time: null,
@@ -28,6 +31,7 @@ function OnboardingRecommendContent() {
   });
   const { activeIndex, dragX, isDragging, bind } = useCarouselDrag({
     totalItems: missions.length,
+    onActiveIndexChange: () => setSelectedMissionId(null),
   });
 
   if (missions.length === 0) {
@@ -86,7 +90,8 @@ function OnboardingRecommendContent() {
                 quizCount={mission.quizCount}
                 videoUrl={mission.videoUrl}
                 isActive={isActive}
-                onClick={() => navigate(`/mission/${mission.missionId}`)}
+                selected={selectedMissionId === mission.missionId}
+                onClick={() => setSelectedMissionId(mission.missionId)}
               />
             </div>
           );
@@ -95,7 +100,10 @@ function OnboardingRecommendContent() {
         <button
           type="button"
           className="absolute bottom-20 left-1/2 z-20 flex -translate-x-1/2 cursor-pointer items-center gap-6 rounded-2xl bg-moamoa-50 px-16 py-8"
-          onClick={() => setRefreshTrigger((prev) => prev + 1)}
+          onClick={() => {
+            setSelectedMissionId(null);
+            setRefreshTrigger((prev) => prev + 1);
+          }}
         >
           <IcReload className="size-19 text-moamoa-400" />
           <span className="body-2 text-moamoa-600">새로고침</span>
@@ -103,13 +111,27 @@ function OnboardingRecommendContent() {
       </div>
 
       <div className="sticky bottom-0 z-30 mt-40 w-full bg-white">
-        <Button
-          type="button"
-          className="heading-5 w-full rounded-lg bg-moamoa-300 py-12 text-white active:bg-moamoa-500"
-          onClick={() => navigate("/home")}
-        >
-          계속하기
-        </Button>
+        <div className="grid w-full grid-cols-2 gap-12">
+          <Button
+            type="button"
+            className="heading-5 h-50 rounded-lg bg-moamoa-50 py-12 text-moamoa-500 active:bg-moamoa-100"
+            onClick={() => navigate("/home")}
+          >
+            홈으로
+          </Button>
+          <Button
+            type="button"
+            disabled={selectedMissionId === null}
+            className="heading-5 h-50 rounded-lg bg-moamoa-300 py-12 text-white enabled:active:bg-moamoa-500 disabled:bg-gray-200 disabled:text-gray-600"
+            onClick={() => {
+              if (selectedMissionId !== null) {
+                navigate(`/mission/${selectedMissionId}`);
+              }
+            }}
+          >
+            계속하기
+          </Button>
+        </div>
       </div>
     </section>
   );
