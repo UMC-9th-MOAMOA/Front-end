@@ -18,12 +18,17 @@ const QUESTION_TYPE_REWARDS: Record<string, number> = {
   SHORT: 10,
 };
 
+const BOOTH_MISSION_REWARDS: Record<number, Record<string, number>> = {
+  140: { OX: 100, MULTIPLE: 200, SHORT: 300 },
+};
+
 interface QuestionResult {
   type: string;
   isCorrect: boolean;
 }
 
 interface DailyGoalAchievementProps {
+  missionId: number;
   totalAcorns: number;
   goalReward: number;
   questionResults: QuestionResult[];
@@ -31,11 +36,13 @@ interface DailyGoalAchievementProps {
 }
 
 export default function DailyGoalAchievement({
+  missionId,
   totalAcorns,
   goalReward,
   questionResults,
   onClose,
 }: DailyGoalAchievementProps) {
+  const rewards = BOOTH_MISSION_REWARDS[missionId] ?? QUESTION_TYPE_REWARDS;
   const navigate = useNavigate();
   const [isDetailOpen, setIsDetailOpen] = useState(false);
 
@@ -96,7 +103,7 @@ export default function DailyGoalAchievement({
                     <span className="body-2 text-black">
                       +
                       {result.isCorrect
-                        ? (QUESTION_TYPE_REWARDS[result.type] ?? 1)
+                        ? (rewards[result.type] ?? 1)
                         : 0}
                     </span>
                     <AcornIcon className="h-24 w-24" />
