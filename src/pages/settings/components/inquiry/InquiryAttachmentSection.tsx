@@ -7,6 +7,7 @@ type Props = {
   images: File[];
   onAddImages: (files: FileList | null) => void;
   onRemoveImage: (index: number) => void;
+  errorMessage?: string;
 };
 
 export default function InquiryAttachmentSection({
@@ -14,6 +15,7 @@ export default function InquiryAttachmentSection({
   images,
   onAddImages,
   onRemoveImage,
+  errorMessage,
 }: Props) {
   const [previews, setPreviews] = useState<{ file: File; url: string }[]>([]);
 
@@ -83,6 +85,8 @@ export default function InquiryAttachmentSection({
           </label>
         )}
       </div>
+
+      {errorMessage && <p className="body-5 text-red-500">{errorMessage}</p>}
 
       <p className="body-5 mt-12 whitespace-pre-line pb-126 text-gray-700">
         이미지 ( JPG,PNG )를 기준으로 한장당 10MB,
