@@ -1,4 +1,4 @@
-import IcCircleLeftArrow from "@/assets/icons/auth/onboarding/ic_circle_left_arrow.svg?react";
+import IcBackShevron from "@/assets/icons/auth/onboarding/ic_back-shevron.svg?react";
 
 interface OnboardingHeaderProps {
   currentStep: number;
@@ -37,7 +37,7 @@ export default function OnboardingHeader({
             onClick={handleBack}
             className="flex h-33 w-33 items-center justify-center"
           >
-            <IcCircleLeftArrow className="h-33 w-33" />
+            <IcBackShevron className="h-24 w-24" />
           </button>
         ) : (
           <div className="h-33 w-33" aria-hidden="true" />
